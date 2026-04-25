@@ -12,8 +12,7 @@
       "https://patreon.com/tallero"
   },
   "man": [
-    "./man/bin2txt.js.1",
-    "./man/txt2bin.js.1"
+    "./man/evm-chains-info.js.1"
   ],
   "files": [
     "AUTHORS.rst",
