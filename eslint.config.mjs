@@ -29,7 +29,7 @@ import { defineConfig } from "eslint/config";
 
 const
   _project =
-    "evm-chains-info";
+    "libevm";
 
 export default defineConfig([
  {
@@ -46,8 +46,7 @@ export default defineConfig([
          "error" },
    files:
      [ "**/*js,mjs,cjs}",
-       `**/${_project}*`,
-       `**/lib${_project}`
+       `**/${_project}*`
      ],
    plugins:
      { js },
@@ -71,8 +70,7 @@ export default defineConfig([
          "error" },
    files:
      [ "**/*.js",
-       `**/${_project}*`,
-       `**/lib${_project}`,
+       `**/${_project}*`
      ],
    languageOptions:
      { sourceType:

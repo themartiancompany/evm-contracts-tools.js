@@ -106,6 +106,9 @@ build-man:
 	cp \
 	  "man/variables.rst" \
 	  "build/man"
+	cp \
+	  "man/$(_PROJECT).1.rst" \
+	  "build/man"
 	# cat \
 	#   "man/$(_PROJECT_NPM).1.rst" | \
 	#   sed \
