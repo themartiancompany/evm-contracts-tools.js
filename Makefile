@@ -26,15 +26,15 @@
 
 SHELL=bash
 PREFIX ?= /usr/local
-_PROJECT=evm-wallet
-_PROJECT_NPM=$(_PROJECT).js
+_PROJECT_NPM=evm-contracts-tools
+_PROJECT=$(_PROJECT_NPM).js
 _NAMESPACE=themartiancompany
-DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
+DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT_NPM)
 USR_DIR=$(DESTDIR)$(PREFIX)
 BIN_DIR=$(DESTDIR)$(PREFIX)/bin
-LIB_DIR=$(DESTDIR)$(PREFIX)/lib/$(_PROJECT)
+LIB_DIR=$(DESTDIR)$(PREFIX)/lib/$(_PROJECT_NPM)
 MAN_DIR?=$(DESTDIR)$(PREFIX)/share/man
-NODE_DIR=$(PREFIX)/lib/node_modules/$(_PROJECT)
+NODE_DIR=$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)
 BUILD_NPM_DIR=build
 
 _INSTALL_FILE=\
@@ -57,9 +57,8 @@ NPM_FILES=\
   "COPYING" \
   "AUTHORS.rst" \
   "lib" \
-  "lib$(_PROJECT)" \
-  "lib$(_PROJECT).webpack.config.cjs" \
-  "$(_PROJECT)" \
+  "lib$(_PROJECT_NPM)" \
+  "lib$(_PROJECT_NPM).webpack.config.cjs" \
   "eslint.config.mjs" \
   "fs-worker.webpack.config.cjs" \
   "package.json" \
@@ -82,6 +81,13 @@ install: install-scripts install-doc install-examples install-man
 
 install-scripts:
 
+	$(_INSTALL_DIR) \
+	  "$(LIB_DIR)/nodejs/lib"
+	for _file in $(NPM_FILES); do
+	  $(_INSTALL_FILE) \
+	    "$${_file}" \
+	    "$(LIB_DIR)/node/$${_file}"; \
+	done
 	$(_INSTALL_DIR) \
 	  "$(LIB_DIR)/node"
 	for _file in $(NPM_FILES); do
