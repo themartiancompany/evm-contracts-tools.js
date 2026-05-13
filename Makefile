@@ -57,6 +57,8 @@ NPM_FILES=\
   "COPYING" \
   "AUTHORS.rst" \
   "lib" \
+  "libevm-contract-call" \
+  "libevm-contract-call.webpack.config.cjs" \
   "lib$(_PROJECT_NPM)" \
   "lib$(_PROJECT_NPM).webpack.config.cjs" \
   "eslint.config.mjs" \
