@@ -1,0 +1,562 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     evm-chains-info.js
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2024, 2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+
+const
+  _libcrash =
+  require(
+    'crash-js');
+/* global
+     _argv_get */
+const
+  _argv_get =
+    _libcrash._argv_get;
+/* global
+     _argv_url_get */
+const
+  _argv_url_get =
+    _libcrash._argv_url_get;
+/* global
+     _cmdline_check */
+const
+  _cmdline_check =
+    _libcrash._cmdline_check;
+/* global
+     _get_date_human */
+const
+  _get_date_human =
+    _libcrash._get_date_human;
+/* global
+     _msg_info */
+const
+  _msg_info =
+    _libcrash._msg_info;
+/* global
+     _msg_error */
+const
+  _msg_error =
+    _libcrash._msg_error;
+/* global
+     _process_exit */
+const
+_process_exit =
+  _libcrash._process_exit;
+
+const
+  _libevm_chains_info =
+    require(
+      "./libevm-chains-info");
+/* global
+     _evm_chains_db_path_get */
+const
+  _evm_chains_db_path_get =
+    _libevm_chains_info._evm_chains_db_path_get;
+/* global
+     _evm_chains_info_get */
+const
+  _evm_chain_info_get =
+    _libevm_chains_info._evm_chain_info_get;
+/* global
+     _rpc_backends_get */
+const
+  _rpc_backend_get =
+    _libevm_chains_info._rpc_backend_get;
+/* global
+     _evm_chains_info */
+const
+  _evm_chains_info =
+    _libevm_chains_info._evm_chains_info;
+/* global
+     _db_paths_auto_detect */
+const
+  _db_paths_auto_detect =
+    _libevm_chains_info._db_paths_auto_detect;
+/* global
+     _input_type_auto_detect */
+const
+  _input_type_auto_detect =
+    _libevm_chains_info._input_type_auto_detect;
+
+function
+  _global_variables() {
+  /* global
+       app_name:
+         writable */
+  app_name =
+    "evm-chains-info.js";
+  /* global
+       app_opts:
+         writable */
+  app_opts =
+    [];
+  /* global
+       runtime_environment:
+         writable */
+  runtime_environment =
+    "";
+  /* global
+       call_date:
+         writable */
+  call_date =
+    "";
+  /* global
+       target_command:
+         writable */
+  target_command =
+    "";
+  /* global
+       input_type:
+         writable */
+  input_type =
+    "";
+  /* global
+       output_type:
+         writable */
+  output_type =
+    "";
+  /* global
+       retrieval_mode:
+         writable */
+  retrieval_mode =
+    "";
+  /* global
+       user_level:
+         writable */
+  user_level =
+    "";
+  /* global
+       db_paths:
+         writable */
+  db_paths =
+    [];
+  /* global
+       selection_method:
+         writable */
+  selection_method =
+    "";
+  /* global
+       api_key:
+         writable */
+  api_key =
+    "";
+  /* global
+       target_chain:
+         writable */
+  target_chain =
+    "";
+  /* global
+       networks_all:
+         writable */
+  networks_all =
+    "";
+  /* global
+       quiet:
+         writable */
+  quiet =
+    "";
+  /* global
+       verbose:
+         writable */
+  verbose =
+    "";
+}
+
+function 
+  _overrides_set() {
+  if ( call_date == "" ) {
+    call_date =
+      _get_date_human();
+  }
+  if ( target_command == "" ) {
+    target_command =
+      "get";
+  }
+  _input_type_auto_detect();
+  if ( output_type == "" ) {
+    output_type =
+      "name";
+  }
+  if ( retrieval_mode == "" ) {
+    retrieval_mode =
+      "offline";
+  }
+  if ( selection_method == "" ) {
+    // TODO:
+    //   remove all references
+    //   to that monster
+    selection_method =
+      "kirsh";
+  }
+  if ( api_key == "" ) {
+    api_key =
+      "n";
+  }
+  if ( user_level == "" ) {
+    user_level =
+      "y";
+  }
+  if ( networks_all == "" ) {
+    networks_all =
+      "n";
+  }
+  _db_paths_auto_detect(
+    target_chain);
+}
+
+function
+  _config_show() {
+  let
+    _line;
+  const
+    _text = [
+      `${app_name} configuration:`,
+      `                Call date:   ${call_date}`,
+      `      Runtime environment:   ${runtime_environment}`,
+      `           Target command:   ${target_command}`,
+      `               Input type:   ${input_type}`,
+      `              Output type:   ${output_type}`,
+      `           Retrieval mode:   ${retrieval_mode}`,
+      `      User-level database:   ${user_level}`,
+      `                  API key:   ${api_key}`,
+      `     RPC selection method:   ${selection_method}`,
+      `             All networks:   ${networks_all}`,
+      `             Target chain:   ${target_chain}`,
+      `           Database paths:   ${db_paths}`,
+    ];
+  for ( _line of _text ) {
+    _msg_info(
+      _line);
+  }
+}
+
+function
+  _usage(
+    _exit_code) {
+  let
+    _line;
+  const
+    _text = [
+      "Returns info about EVM blockchains.",
+      "",
+      "Usage:",
+      "",
+      "  evm-chains-info.js",
+      "    [options]",
+      "    <target-chain>",
+      "",
+      "  options:",
+      "",
+      "     -C --command                    Target command. Can be 'get' or 'set'.",
+      `       <target-command>              Default: '${target_command}`,
+      "",
+      "     -i --input-type                 Input type. It can be 'id' or 'name'.",
+      `       <input-type>                  Default: '${input_type}'`,
+      "",
+      "     -o --output-type                Output type. It can be 'id', 'name',",
+      "       <output-type>                 'rpc', 'explorers'.",
+      `                                     Default: '${output_type}'`,
+      "",
+      "     -m --retrieval-mode             It can be 'offline'.",
+      `       <retrieval-mode>              Default: '${retrieval_mode}'`,
+      "",
+      "     -u --user-level                 It can be 'y' or 'n'.",
+      `       <user-level>                  Default: '${user_level}'`,
+      "",
+      "     -d --db-path                    Path of the chains' info json file",
+      "       <db-path>                     to be used for 'offline' retrieval.",
+      `                                     Default: '${db_paths}'`,
+      "",
+      "     -s --selection-method           When output type is 'rpc',",
+      "       <selection-method>            selection criterion to use when",
+      "                                     more than one is available.",
+      "                                     It can be 'kirsh', 'random' or 'all'.",
+      `                                     Default: '${selection_method}'`,
+      "",
+      "     -k                              If selected, when output type is 'rpc',",
+      "                                     includes the ones requiring an API key.",
+      `                                     Default: '${api_key}'`,
+      "     -a --all                        Whether to show results for all networks.",
+      `                                     Default: '${networks_all}'`,
+      "",
+      "     -h --help                       This message.",
+      "     -v --verbose                    Enable verbose output."
+    ];
+  for ( _line of _text ) {
+    console.log(
+      _line);
+  }
+  _process_exit(
+    _exit_code);
+}
+
+function 
+  _cmdline_parse() {
+  let
+    _help_display,
+    _msg;
+  const
+    _argv =
+      _argv_get();
+  const
+    _options =
+      _argv[
+        "_"];
+  quiet = 
+    "y";
+  runtime_environment =
+    "node";
+  if ( _options.indexOf(
+         "--help") > -1 ||
+       _options.indexOf(
+         "-h") > -1) {
+    _help_display =
+      true;
+  }
+  if ( _help_display ) {
+    quiet =
+      "n";
+    _usage(
+      0);
+  }
+  if ( typeof(
+         _argv) == "undefined" ||
+       _argv[
+         "_"].length < 1 ) {
+    _msg =
+      "Target chain argument required.";
+    _msg_error(
+      _msg,
+      0);
+    _usage(
+      1);
+  }
+  target_chain =
+    _argv[
+      "_"][
+        0];
+  if ( "C" in _argv ) {
+    target_command =
+      _argv[
+        "C"];
+  }
+  if ( "command" in _argv ) {
+    target_command =
+      _argv[
+        "command"];
+  }
+  if ( "i" in _argv ) {
+    input_type =
+      _argv[
+        "i"];
+  }
+  if ( "input-type" in _argv ) {
+    input_type =
+      _argv[
+        "input-type"];
+  }
+  if ( "o" in _argv ) {
+    output_type =
+      _argv[
+        "o"];
+  }
+  if ( "output-type" in _argv ) {
+    output_type =
+      _argv[
+        "output-type"];
+  }
+  if ( "m" in _argv ) {
+    retrieval_mode =
+      _argv[
+        "m"];
+  }
+  if ( "retrieval-mode" in _argv ) {
+    retrieval_mode =
+      _argv[
+        "retrieval-mode"];
+  }
+  if ( "u" in _argv ) {
+    user_level =
+      _argv[
+        "u"];
+  }
+  if ( "user-level" in _argv ) {
+    user_level =
+      _argv[
+        "user-level"];
+  }
+  if ( "d" in _argv ) {
+    db_paths.push(
+      _argv[
+        "d"]);
+  }
+  if ( "db-path" in _argv ) {
+    db_paths.push(
+      _argv[
+        "user-level"]);
+  }
+  if ( "s" in _argv ) {
+    selection_method =
+      _argv[
+        "s"];
+  }
+  if ( "selection-method" in _argv ) {
+    selection_method =
+      _argv[
+        "selection-method"];
+  }
+  if ( "k" in _argv ) {
+    api_key =
+      "y";
+  }
+  if ( "api-key" in _argv ) {
+    api_key =
+      "y";
+  }
+  if ( "a" in _argv ) {
+    networks_all =
+      "y";
+  }
+  if ( "networks-all" in _argv ) {
+    networks_all =
+      "y";
+  }
+  if ( "v" in _argv ) {
+    verbose =
+      _argv[
+        "v"];
+  }
+  if ( "verbose" in _argv ) {
+    verbose =
+      _argv[
+        "verbose"];
+  }
+  if ( verbose ) {
+    quiet =
+      "n";
+  }
+}
+
+function
+  _url_parse() {
+  runtime_environment =
+    "browser";
+  target_chain =
+    _argv_url_get(
+      "chain")[
+        0];
+  target_command =
+    _argv_url_get(
+      "command")[
+        0];
+  input_type =
+    _argv_url_get(
+      "input_type")[
+        0];
+  output_type =
+    _argv_url_get(
+      "output_type")[
+        0];
+  input_type =
+    _argv_url_get(
+      "input_type")[
+        0];
+  retrieval_mode =
+    _argv_url_get(
+      "retrieval_mode")[
+        0];
+  user_level =
+    _argv_url_get(
+      "user_level")[
+        0];
+  db_paths.push(
+    _argv_url_get(
+      "db_path")[
+        0]);
+  selection_method =
+    _argv_url_get(
+      "selection_method")[
+        0];
+  api_key =
+    _argv_url_get(
+      "api_key")[
+        0];
+  networks_all =
+    _argv_url_get(
+      "networks_all")[
+        0];
+  quiet =
+    _argv_url_get(
+      "quiet");
+  if ( quiet.length === 0 ) {
+    quiet =
+      "n";
+  }
+}
+
+function
+  _evm_chains_info_cmdline(
+    _app_opts) {
+  let
+    _result;
+  const
+    _results =
+      _evm_chains_info.apply(
+        null,
+        app_opts);
+  for ( _result of _results ) {
+    console.log(
+      _result);
+  }
+}
+
+_global_variables();
+if ( _cmdline_check(
+       "evm-chains-info.js") == true ) {
+  _cmdline_parse();
+}
+else{
+  _url_parse();
+}
+_overrides_set();
+_config_show();
+app_opts = [
+  target_command,
+  input_type,
+  output_type,
+  retrieval_mode,
+  selection_method,
+  api_key,
+  networks_all,
+  target_chain,
+  db_paths
+];
+_evm_chains_info_cmdline(
+  app_opts);

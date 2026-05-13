@@ -1,0 +1,862 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     libevm-chains-info
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the
+ *     GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+/* eslint-disable
+     no-useless-assignment */
+
+/* global 
+     db_paths */
+/* global
+     input_type:
+       writable */
+/* global
+     user_level */
+/* global
+     target_chain */
+
+const
+  _libcrash_module =
+    require(
+      "crash-js");
+/* global
+     _homedir_get */
+/* eslint-disable-next-line
+     no-global-assign */
+_homedir_get =
+  _libcrash_module._homedir_get;
+/* global
+     _file_exists */
+/* eslint-disable-next-line
+     no-global-assign */
+_file_exists =
+  _libcrash_module._file_exists;
+/* global
+     _json_read */
+/* eslint-disable-next-line
+     no-global-assign */
+_json_read =
+  _libcrash_module._json_read;
+/* global
+     _lib_get */
+/* eslint-disable-next-line
+     no-global-assign */
+_lib_get =
+  _libcrash_module._lib_get;
+/* global
+     _msg_info */
+/* eslint-disable-next-line
+     no-global-assign */
+_msg_info =
+  _libcrash_module._msg_info;
+/* global
+     _msg_error */
+/* eslint-disable-next-line
+     no-global-assign */
+_msg_error =
+  _libcrash_module._msg_error;
+/* global
+     _path_join */
+/* eslint-disable-next-line
+     no-global-assign */
+_path_join =
+  _libcrash_module._path_join;
+/* global
+     _range */
+/* eslint-disable-next-line
+     no-global-assign */
+_range =
+  _libcrash_module._range;
+
+const
+  _ethereum_data_module =
+    require(
+      "ethereum-data");
+/* global
+     _data_get */
+const
+  _data_get =
+    _ethereum_data_module._data_get;
+
+function
+  _evm_chains_db_path_get(
+    _user,
+    _chain_id,
+    _format) {
+  let
+    _db_name,
+    _db_path,
+    _msg;
+  if ( typeof(
+         _user) == "undefined" ||
+       _user == "" ) {
+    _user =
+      "n";
+  }
+  if ( typeof(
+         _chain_id) == "undefined" ||
+       _chain_id == "" ) {
+    _chain_id =
+      "";
+  }
+  if ( typeof(
+         _format) == "undefined" ||
+      _format == "" ) {
+    if ( _chain_id != "" ) {
+      _format =
+        "split";
+    }
+    else if ( _chain_id == "" ) {
+      _format =
+        "unified";
+    }
+  }
+  _msg =
+    `Getting path for chain ` +
+    `with chain id '${_chain_id}' ` +
+    `with privilege user set to ` +
+    `'${_user}' in format '${_format}'.`;
+  _msg_info(
+    _msg);
+  if ( _format == "unified" ) {
+    _db_name =
+      "chains.json";
+  }
+  else if ( _format == "split" ) {
+    _db_name =
+      `${_chain_id}.json`;
+  }
+  if ( _user == "y" ) {
+    const
+      _home_dir =
+        _homedir_get();
+    _msg =
+      `Home directory: '${_home_dir}'`;
+    _msg_info(
+      _msg);
+    _db_path =
+      _path_join(
+        [ _home_dir,
+          ".config",
+          "evm-chains",
+          _db_name ]);
+    const
+      _db_exists =
+        _file_exists(
+          _db_path);
+    if ( _db_exists == true ) {
+      _msg =
+        `Found database '${_db_path}'.`;
+      _msg_info(
+        _msg);
+    }
+    else if ( _db_exists == false ) {
+      _msg =
+        `Database '${_db_path}' ` +
+        "not found";
+      _msg_info(
+        _msg);
+      // _user =
+      //   "n";
+    }
+    else {
+      _msg =
+        "wat";
+      _msg_error(
+        _msg);
+    }
+  }
+  else if ( _user == "n" ) {
+    const
+      _lib =
+        _lib_get();
+    _db_path =
+      _path_join(
+        [ _lib,
+          "evm-chains",
+          _db_name ]);
+  }
+  else {
+    _msg =
+      "Input variable '_user' must be a boolean. " +
+      `_user value is '${_user}'.`;
+    _msg_error(
+      _msg,
+      0);
+  }
+  return _db_path;
+}
+
+function
+  _evm_chain_info_get(
+    _chain_id,
+    _db_path,
+    _user_level,
+    _format,
+    _db_types) {
+  let
+    _chain_info,
+    _data,
+    _msg;
+  if ( typeof(
+         _user_level) == "undefined" ) {
+    _user_level =
+      false;
+  }
+  if ( typeof(
+         _format) == "undefined" ) {
+    _format =
+      "split";
+  }
+  if ( typeof(
+         _db_path) == "undefined" ) {
+    _db_path =
+      _evm_chains_db_path_get(
+        _user_level,
+        _chain_id,
+        _format);
+  }
+  const
+    _db_exists =
+      _file_exists(
+        _db_path);
+  if ( _db_exists == false ) {
+    if ( typeof window === 'undefined' &&
+         ( typeof global !== 'undefined' && global.global === global ) &&
+         typeof __webpack_require__ !== 'function' ) {
+      _data =
+        _data_get(
+          _chain_id);
+      _msg =
+        `Displaying data for ` +
+        `chain '${_chain_id}' `+
+        `of type '${_db_types}'.`;
+      _msg_info(
+        _msg);
+      console.log(
+        _data);
+    }
+    // _msg_error(
+    //   "Database file does not exists.",
+    //   1);
+  }
+  const 
+    _db =
+      _json_read(
+        _db_path);
+    // _data =
+    //   _data_get(
+    //     _chain_id);
+    _msg =
+      `Displaying data for ` +
+      `chain '${_chain_id}' `+
+      `of type '${_db_types}'.`;
+    _msg_info(
+      _msg);
+    // console.log(
+    //   _db);
+  for ( _chain_info of _db) {
+    if ( _chain_info["chainId"] == _chain_id ) {
+      return _chain_info;
+    }
+  }
+  _msg_error(
+    `Network '${_chain_id}' not found.`,
+    1);
+}
+
+function
+  _rpc_backend_get(
+    _network_chain_id,
+    _selection_method,
+    _db_path,
+    _user_level,
+    _db_types) {
+  if ( typeof(
+         _network_chain_id) == "undefined" ) {
+    const
+      _msg =
+       "Network's ChainID not specified.";
+    _msg_error(
+      _msg,
+      1);
+  }
+  if ( typeof(
+         _selection_method) == "undefined" ) {
+    _selection_method =
+      "kirsh";
+  }
+  if ( typeof(
+         _db_path) == "undefined" ) {
+    _db_path =
+      _evm_chains_db_path_get(
+        false);
+  }
+  if ( typeof(
+         _db_types) == "undefined" ) {
+    _db_types = [
+      "node",
+      "system"
+    ];
+  }
+  if ( _user_level == undefined ) {
+    _user_level =
+      true;
+  }
+  const
+    _chain_id =
+      Number(
+        _network_chain_id);
+  const
+    _chain_info =
+      _evm_chain_info_get(
+        _chain_id,
+        _db_path,
+        _user_level,
+        _db_types);
+  if ( _selection_method == "kirsh" ) {
+    return _chain_info["rpc"][0];
+  }
+  else {
+    _msg_error(
+      "Unknown selection method.",
+      1);
+  }
+}
+
+function _rpc_backends_get(
+    _networks_chain_ids,
+    _selection_method,
+    _db_path) {
+    let
+      _chain_id,
+      _rpc_backend_get_opts,
+      _rpc_backend;
+  if ( _selection_method == undefined ) {
+    _selection_method =
+      "kirsh";
+  }
+  if ( _db_path == undefined ) {
+    _db_path =
+      _evm_chains_db_path_get(
+        false);
+  }
+  const
+    _rpcs =
+      [];
+  for ( _chain_id of _networks_chain_ids ) {
+    _rpc_backend_get_opts = [
+      _chain_id,
+      _selection_method,
+      _db_path
+    ];
+    _rpc_backend =
+      _rpc_backend_get.apply(
+        null,
+        _rpc_backend_get_opts);
+    _rpcs.push(
+      _rpc_backend);
+  }
+  return _rpcs;
+}
+
+function
+  _db_path_check(
+    _db_path) {
+  if ( ! _file_exists(
+       _db_path) ) {
+    const
+      _msg =
+        `Database at ` +
+        `'${_db_path}' does not exist.`;
+    _msg_error(
+      _msg,
+      1);
+  }
+}
+
+function
+  _all_get(
+    _filter_output_type) {
+  console.log(
+    _filter_output_type);
+}
+
+function
+  _db_get(
+    _db_path,
+    _input_type,
+    _output_type,
+    _selection_method,
+    _api_key,
+    _networks_all,
+    _target_chain) {
+  let
+    _db,
+    _entry,
+    _filter,
+    _filter_key,
+    _filter_output_type,
+    _filter_value,
+    _results,
+    _msg;
+  _filter_output_type =
+    _output_type;
+  if ( _input_type == "id" ) {
+    /* eslint-disable-next-line
+         no-useless-assignment */
+    _filter_key =
+      "chainId";
+    _filter_value =
+      _target_chain;
+    _msg =
+      `Getting data for filter ` +
+      `key: '${_filter_key}' and value ` +
+      `'${_filter_value}'.`;
+    _msg_info(
+      _msg);
+  }
+  else if ( _input_type == "testnet" ) {
+    _msg =
+      "Like I have to agg a tag.";
+    _msg_info(
+      _msg);
+  }
+  if ( _output_type == "id"  ) {
+    _filter_output_type =
+      "chainId";
+  }
+  else if ( _output_type == "rpc"  ) {
+    _filter_output_type =
+      _output_type;
+  }
+  if ( _networks_all == "y" ) {
+    _filter =
+      _all_get(
+        _filter_output_type);
+    _msg =
+      "Showing results for all networks " +
+      `with filter '${_filter}'.`;
+    _msg_info(
+      _msg);
+    _db =
+      _json_read(
+        _db_path);
+    _msg =
+      "Showing results for all networks " +
+      `with filter '${_filter}'.`;
+    _msg_info(
+      _msg);
+    return _db;
+  }
+  else if ( _networks_all == "n" ) {
+    _results =
+      [];
+    _msg =
+      `Showing results for chain '${_target_chain}' in ` +
+      `database '${_db_path}' with filter '${_filter_output_type}'.`;
+    _msg_info(
+      _msg);
+    // this doesnt work the same in
+    // javascript as in bash i suppose.
+    // _filter =
+    //   _filter_get(
+    //     _filter_key,
+    //     _filter_value,
+    //     _filter_output_type);
+    // _json_read(
+    //   _db_path);
+    _db =
+      _json_read(
+        _db_path);
+    _msg =
+      `Database '${_db_path}' ` +
+      `contains '${_db.length}' items.`;
+    _msg_info(
+      _msg);
+    for ( _entry of _db ) {
+      if ( _entry[
+             _filter_key] == _target_chain ) {
+        _results.push(
+          _entry);
+        if ( _selection_method == "kirsh" ) {
+          break;
+        }
+      }
+    }
+    _msg =
+      `Total results returned for '${_db_path}' ` +
+      `are '${_results.length}'.`;
+    _msg_info(
+      _msg);
+    return _results;
+  }
+}
+
+function
+  _input_type_auto_detect() {
+  if ( input_type == "" ) {
+    if ( isNaN(target_chain) ) {
+      input_type =
+        "name";
+    }
+    else {
+      input_type =
+        "id";
+    }
+  }
+}
+
+function
+  _db_paths_auto_detect(
+    _chain_id) {
+  let
+    _type_primary,
+    _type_fallback,
+    _msg;
+  if ( user_level == "y" ) {
+    _type_primary =
+      true;
+    _type_fallback =
+      false;
+  }
+  else if ( user_level == "n" ) {
+    _type_primary =
+      true;
+    _type_fallback =
+      false;
+  }
+  const
+    _db =
+      _evm_chains_db_path_get(
+        _type_primary,
+        "",
+        "unified");
+  const
+    _db_split =
+      _evm_chains_db_path_get(
+        _type_primary,
+        _chain_id,
+        "split");
+  const
+    _db_fallback =
+      _evm_chains_db_path_get(
+        _type_fallback,
+        "",
+        "unified");
+  const
+    _db_fallback_split =
+      _evm_chains_db_path_get(
+        _type_fallback,
+        _chain_id,
+        "split");
+  if ( _file_exists(
+           _db_split) ) {
+    db_paths.push(
+      _db_split);
+    _msg =
+      `Found database ` +
+      `'${_db_split}', ` +
+      `adding.`;
+    _msg_info(
+      _msg);
+  }
+  else if ( ! _file_exists(
+                _db_split) ) {
+    _msg =
+      `Default per-network database ` +
+      `'${_db_split}' ` +
+      `not found, trying '${_db}'.`;
+    _msg_info(
+      _msg);
+  }
+  else {
+    _msg =
+      `wat`;
+    _msg_error(
+      _msg,
+      1);
+  }
+  if ( _file_exists(
+         _db) ) {
+    db_paths.push(
+      _db);
+  }
+  else {
+    _msg =
+      `Default unified database ` +
+      `'${_db_split}' ` +
+      `not found, trying '${_db}'.`;
+    _msg_info(
+      _msg);
+  }
+  if ( _file_exists(
+           _db_fallback_split) ) {
+    db_paths.push(
+      _db_fallback_split);
+  }
+  else {
+    _msg =
+      `Fallback per-network database ` +
+      `'${_db_fallback_split}' ` +
+      `not found, trying '${_db_fallback}'.`;
+    _msg_info(
+      _msg);
+  }
+  if ( _file_exists(
+         _db_fallback) ) {
+    db_paths.push(
+      _db_fallback);
+  }
+  else {
+    _msg =
+      `Fallback database ` +
+      `'${_db_fallback_split}' ` +
+      `not found too!`;
+    _msg_error(
+      _msg,
+      1);
+  }
+}
+
+function
+  _evm_chains_info_get(
+    _target_chain,
+    _retrieval_mode,
+    _input_type,
+    _output_type,
+    _selection_method,
+    _api_key,
+    _networks_all,
+    _db_paths) {
+  let
+    _db,
+    _db_path,
+    _entry,
+    _msg,
+    _networks_total,
+    _results;
+  _networks_total =
+    0;
+  if ( _retrieval_mode == "offline" ) {
+    _msg =
+      `Getting data from databases ` +
+      `'${_db_paths}'`;
+    _msg_info(
+      _msg);
+    for ( _db_path of _db_paths ) {
+      _msg =
+        `Looking in '${_db_path}'.`;
+      _msg_info(
+        _msg);
+      _db_path_check(
+        _db_path);
+      if ( _input_type != "amount" ) {
+        _db =
+          _db_get(
+            _db_path,
+            _input_type,
+            _output_type,
+            _selection_method,
+            _api_key,
+            _networks_all,
+            _target_chain);
+        if ( _selection_method == "kirsh" ) {
+          break;
+	}
+      }
+      else if ( _input_type == "amount" ) {
+        _db =
+          _json_read(
+            _db_path);
+        _networks_total =
+          _db.length;
+      }
+    }
+    if ( _input_type != "amount" ) {
+      _networks_total =
+        _db.length;
+      if ( _db.length == 0 ) {
+        _msg =
+          `No results found for network ` +
+          `'${_target_chain}'.`;
+        _msg_error(
+          _msg,
+          0);
+      }
+      const
+        _results =
+          [];
+      for ( _entry of _db ) {
+        if ( _entry['chainId'] == _target_chain ) {
+          _results.push(
+            _entry[
+              _output_type]);
+          if ( _selection_method != "all" ) {
+            break;
+          }
+        }
+      }
+      _db =
+        _results;
+      _msg =
+        `Found '${_networks_total}' ` +
+        `networks in database '${_db_path}'.`;
+      _msg_info(
+        _msg);
+    }
+    else if ( _input_type == "amount" ) {
+      _msg =
+        `Found '${_networks_total}' networks.`;
+      _msg_info(
+        _msg);
+      return _networks_total;
+    }
+  }
+  else if ( _retrieval_mode == "online" ) {
+    _msg =
+      `About to implement it probably.`;
+    _msg_error(
+      _msg,
+      1);
+  }
+  return _db;
+}
+
+function
+  _evm_chains_info_set(
+    _input_type) {
+  const
+    _msg =
+      `Setting value for type '${_input_type}'.`;
+  if ( _input_type == "id" ) {
+    _msg_info(
+      _msg);
+  }
+}
+
+function
+  _evm_chains_info(
+    _target_command,
+    _input_type,
+    _output_type,
+    _retrieval_mode,
+    _selection_method,
+    _api_key,
+    _networks_all,
+    _target_chain,
+    _db_paths) {
+  let
+    _explorer,
+    _result,
+    _rpc;
+  if ( _target_command == "get" ) {
+    const
+      _infos =
+        [];
+    const
+      _results =
+        _evm_chains_info_get(
+          _target_chain,
+          _retrieval_mode,
+          _input_type,
+          _output_type,
+          _selection_method,
+          _networks_all,
+          _api_key,
+          _db_paths);
+    if ( _output_type == "rpc" ) {
+      for ( _result of _results ) {
+        for ( _rpc of _result) {
+          _infos.push(
+            _rpc);
+          if ( _selection_method == "kirsh" ) {
+            break;
+          }
+        }
+      }
+      return _infos;
+    }
+    else if ( _output_type == "name" ) {
+      return _results;
+    }
+    else if ( _output_type == "id" ) {
+      return _results;
+    }
+    else if ( _output_type == "explorers" ) {
+      for ( _result of _results ) {
+        for ( _explorer of _result ) {
+          _infos.push(
+            _explorer[
+              "url"]);
+          if ( _selection_method == "kirsh" ) {
+            break;
+          }
+        }
+      }
+      return _infos;
+    }
+  }
+  else if ( _target_command == "set" ) {
+    _evm_chains_info_set(
+      _input_type);
+  }
+  else {
+    const
+      _msg =
+        `Unknown command ` +
+        `'${_target_command}'.`;
+    _msg_error(
+      _msg,
+      1);
+  }
+}
+
+module.exports = {
+  _data_get:
+    _data_get,
+  _db_paths_auto_detect:
+    _db_paths_auto_detect,
+  _evm_chains_db_path_get:
+    _evm_chains_db_path_get,
+  _evm_chains_info:
+    _evm_chains_info,
+  _evm_chains_info_get:
+    _evm_chains_info_get,
+  _evm_chains_info_set:
+    _evm_chains_info_set,
+  _input_type_auto_detect:
+    _input_type_auto_detect,
+  _rpc_backend_get:
+    _rpc_backend_get,
+  _rpc_backends_get:
+    _rpc_backends_get
+};
