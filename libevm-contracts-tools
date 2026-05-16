@@ -42,42 +42,42 @@ _path_join =
 const
   _bytecode_creation_get_module =
     require(
-      ".lib/bytecode_creation_get");
+      "./lib/bytecode_creation_get");
 const
   _bytecode_creation_get =
     _bytecode_creation_get_module._bytecode_creation_get;
 const
   _contract_get_module =
     require(
-      ".lib/contract_get");
+      "./lib/contract_get");
 const
   _contract_get =
     _contract_get_module._contract_get;
 const
   _deployer_get_module =
     require(
-      ".lib/deployer_get");
+      "./lib/deployer_get");
 const
   _deployer_get =
     _deployer_get_module._deployer_get;
 const
   _deployer_verify_module =
     require(
-      ".lib/deployer_verify");
+      "./lib/deployer_verify");
 const
   _deployer_verify =
     _deployer_verify_module._deployer_verify;
 const
   _evm_contract_call_dynamic_module =
     require(
-      ".lib/evm-contract-call-dynamic");
+      "./lib/evm-contract-call-dynamic");
 const
   _evm_contract_call_dynamic =
     _evm_contract_call_dynamic_module._evm_contract_call_dynamic;
 const
   _evm_contract_call_static_module =
     require(
-      ".lib/evm-contract-call-static");
+      "./lib/evm-contract-call-static");
 const
   _evm_contract_call_static =
     _evm_contract_call_static_module._evm_contract_call_static;
