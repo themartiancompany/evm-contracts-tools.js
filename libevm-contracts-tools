@@ -40,6 +40,34 @@ _json_read =
 _path_join =
   _libcrash_module._path_join;
 const
+  _bytecode_creation_get_module =
+    require(
+      ".lib/bytecode_creation_get");
+const
+  _bytecode_creation_get =
+    _bytecode_creation_get_module._bytecode_creation_get;
+const
+  _contract_get_module =
+    require(
+      ".lib/contract_get");
+const
+  _contract_get =
+    _contract_get_module._contract_get;
+const
+  _deployer_get_module =
+    require(
+      ".lib/deployer_get");
+const
+  _deployer_get =
+    _deployer_get_module._deployer_get;
+const
+  _deployer_verify_module =
+    require(
+      ".lib/deployer_verify");
+const
+  _deployer_verify =
+    _deployer_verify_module._deployer_verify;
+const
   _evm_contract_call_dynamic_module =
     require(
       ".lib/evm-contract-call-dynamic");
@@ -205,6 +233,12 @@ function _rpc_backends_get(
 }
 
 module.exports = {
+  _bytecode_creation_get:
+    _bytecode_creation_get,
+  _bytecode_runtime_get:
+    _bytecode_runtime_get,
+  _contract_get:
+    _contract_get,
   _evm_chains_db_path_get:
     _evm_chains_db_path_get,
   _evm_chain_info_get:
