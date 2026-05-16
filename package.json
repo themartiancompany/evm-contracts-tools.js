@@ -79,14 +79,12 @@
   "dependencies": {
     "crash-js":
       "^0.1.88",
-    "ethereum-data":
-      "^0.0.1",
     "ethers":
       "^6.13.2",
     "evm-chains-info":
       "^0.0.1",
     "libevm":
-      "^0.0.1",
+      "^0.0.6",
     "yargs":
       "18.0.0"
   },
