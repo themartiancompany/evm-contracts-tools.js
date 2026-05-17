@@ -374,36 +374,68 @@ function
       "     -t --call-type                  It can be 'static' or 'dynamic'.",
       `       <call-type>                   Default: '${call_type}`,
       "",
+      "  call options:",
       `     -V --msg-value                  How much '${measure_unit} to attach to the`,
       `       <msg-value>                   transaction.`,
       `                                     Default: '${msg_value}'`,
-      "",
-      "     -v --price-gas                  I dont remember. It can be 'idontknow'.",
-      "       <price-gas>",
-      `                                     Default: '${price_gas}'`,
       "",
       "     -u --measure-unit               Measure unit for the transacion.",
       `       <measure-unit>                It can be 'ether' or 'wei'.`,
       `                                     Default: '${measure_unit}'`,
       "",
-      "     -u --user-level                 It can be 'y' or 'n'.",
-      `       <user-level>                  Default: '${user_level}'`,
+      "     -v --price-gas                  I dont remember. It can be 'idontknow'.",
+      "       <price-gas>",
+      `                                     Default: '${price_gas}'`,
       "",
-      "     -d --db-path                    Path of the chains' info json file",
-      "       <db-path>                     to be used for 'offline' retrieval.",
-      `                                     Default: '${db_paths}'`,
+      "     -r --retries-max                Maximum number of retries before",
+      `       <retries-max>                 Declaring the call failed.`,
+      `                                     Default: '${retries_max}'`,
       "",
-      "     -s --selection-method           When output type is 'rpc',",
-      "       <selection-method>            selection criterion to use when",
-      "                                     more than one is available.",
-      "                                     It can be 'kirsh', 'random' or 'all'.",
-      `                                     Default: '${selection_method}'`,
+      "     -T --call-timeout               Maximum number of milliseconds before",
+      "       <call-timeout>                declaring the call failed.",
+      `                                     Default: '${call_timeout}'`,
       "",
-      "     -k                              If selected, when output type is 'rpc',",
-      "                                     includes the ones requiring an API key.",
-      `                                     Default: '${api_key}'`,
-      "     -a --all                        Whether to show results for all networks.",
-      `                                     Default: '${networks_all}'`,
+      "     -S --rpc-selection              RPC selection method. It can be",
+      "       <rpc-selection>               'kirsh', 'random', 'all'.",
+      `                                     Default: '${rpc_selection}'`,
+      "",
+      "  contract options:",
+      "",
+      "     -A --abi                        Contract ABI path.",
+      `       <contract-abi>                Default: '${contract_abi}'.`,
+      "",
+      "     -B --bytecode                   Contract bytecode path.",
+      `       <contract-bytecode>           Default: '${contract_bytecode}'.`,
+      "",
+      "     -C --compiler-output            Contract compiler output path",
+      `       <contract-bytecode>           (the hardhat artifact.`,
+      `                                     Default: '${contract_compiler_output}'.`,
+      "",
+      "     -I --index-retrieve             Enables retrieving contract's artifacts",
+      `                                     from the EVM Contracts Source Index.`,
+      `                                     Default: '${contract_compiler_output}'.`,
+      "",
+      "  credentials options:",
+      "",
+      "     -N --wallet-name                EVM Wallet name.",
+      `       <wallet-name>                 Default: '${wallet_name}'.`,
+      "",
+      "     -w --wallet-path                EVM Wallet path.",
+      `       <wallet-path>                 Default: '${wallet_path}'.`,
+      "",
+      "     -p --wallet-password            EVM Wallet password file.",
+      `       <wallet-password>             Default: '${wallet_password}'.`,
+      "",
+      "     -s --wallet-seed                EVM Wallet seed file.",
+      `       <wallet-seed>                 Default: '${wallet_seed}'.`,
+      "",
+      "     -k --api-key                    Etherscan-like service key file.",
+      `       <api-key>                     Default: '${api_key}'.`,
+      "",
+      "  libEVM options:",
+      "",
+      "     -a --auth                       Call authentication.",
+      `                                     Default: '${call_auth}'`,
       "",
       "     -h --help                       This message.",
       "     -v --verbose                    Enable verbose output."
@@ -424,8 +456,12 @@ function
   const
     _argv_args = {
       "booleans": [
+        "a",
+        "auth",
         "h",
         "help",
+        "I",
+        "index-retrieve",
         "v",
         "verbose"
       ]
@@ -587,26 +623,36 @@ function
       _argv[
         "A"];
   }
-  if ( "contract-abi" in _argv ) {
+  if ( "abi" in _argv ) {
     contract_abi =
       _argv[
-        "contract-abi"];
+        "abi"];
+  }
+  if ( "B" in _argv ) {
+    contract_bytecode =
+      _argv[
+        "B"];
+  }
+  if ( "bytecode" in _argv ) {
+    contract_bytecode =
+      _argv[
+        "bytecode"];
   }
   if ( "C" in _argv ) {
     contract_compiler_output =
       _argv[
         "C"];
   }
-  if ( "contract-compiler-output" in _argv ) {
+  if ( "compiler-output" in _argv ) {
     contract_compiler_output =
       _argv[
-        "contract-compiler-output"];
+        "compiler-output"];
   }
   if ( "a" in _argv ) {
     call_auth =
       "y";
   }
-  if ( "call-auth" in _argv ) {
+  if ( "auth" in _argv ) {
     call_auth =
       "y";
   }
@@ -676,7 +722,7 @@ function
         0];
   contract_compiler_output =
     _argv_url_get(
-      "contract_compiler_output")[
+      "compiler_output")[
         0];
   rpc_selection =
     _argv_url_get(
