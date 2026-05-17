@@ -112,7 +112,7 @@ const
 const
   _libevm_contract_call_module =
     require(
-      "libevm-contract-call");
+      "./libevm-contract-call");
 /* global
      _artifact_local_auto_detect */
 const
