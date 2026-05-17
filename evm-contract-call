@@ -49,6 +49,9 @@
      wallet_path:
        writable */
 /* global
+     wallet_password:
+       writable */
+/* global
      wallet_seed:
        writable */
 
@@ -257,6 +260,13 @@ function
   if ( retries_max == "" ) {
     retries_max =
       "300";
+  }
+  if ( target_networks == "" ||
+       target_networks == [] ) {
+    // to be auto-detected
+    target_networks = [
+      "1"
+    ];
   }
   if ( target_network == "" ) {
     // to be auto-detected
@@ -687,6 +697,9 @@ function
 
 function
   _url_parse() {
+  let
+    _method,
+    _network;
   runtime_environment =
     "browser";
   call_type =
@@ -723,7 +736,11 @@ function
         0];
   contract_abi =
     _argv_url_get(
-      "contract_abi")[
+      "abi")[
+        0];
+  contract_bytecode =
+    _argv_url_get(
+      "bytecode")[
         0];
   contract_compiler_output =
     _argv_url_get(
