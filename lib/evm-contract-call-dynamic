@@ -81,14 +81,14 @@ const
   _parse_units =
     _ethers.parseUnits;
 const
-  _price_gas_transaction_get_module =
+  _evm_wallet_module =
     require(
-      '../evm-wallet/price-gas-transaction-get');
+      "evm-wallet.js");
 /* global
      _price_gas_transaction_get */
 const
   _price_gas_transaction_get =
-    _price_gas_transaction_get_module._price_gas_transaction_get;
+    _evm_wallet_module._price_gas_transaction_get;
 const
   _contract_get_module =
     require(
