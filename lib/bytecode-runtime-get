@@ -28,49 +28,100 @@ const
   _libcrash =
     require(
       "crash-js");
-_cmdline_check =
-  _libcrash._cmdline_check;
-_error_display =
-  _libcrash._error_display;
-_file_read =
-  _libcrash._file_read;
-_file_write =
-  _libcrash._file_write;
-_msg_info =
-  _libcrash._msg_info
-_msg_error =
-  _libcrash._msg_error
-_printf =
-  _libcrash._printf
+/* global
+     _cmdline_check */
+const
+  _cmdline_check =
+    _libcrash._cmdline_check;
+/* global
+     _error_display */
+const
+  _error_display =
+    _libcrash._error_display;
+/* global
+     _file_read */
+const
+  _file_read =
+    _libcrash._file_read;
+/* global
+     _file_write */
+const
+  _file_write =
+    _libcrash._file_write;
+/* global
+     _msg_info */
+const
+  _msg_info =
+    _libcrash._msg_info
+/* global
+     _msg_error */
+const
+  _msg_error =
+    _libcrash._msg_error
+/* global
+     _printf */
+const
+  _printf =
+    _libcrash._printf
 const
   _contract_get_module =
     require(
       './contract-get');
-_contract_get =
-  _contract_get_module._contract_get
+/* global
+     _contract_get */
 const
-  _network_provider_module =
+  _contract_get =
+    _contract_get_module._contract_get
+const
+  _evm_wallet_module =
     require(
-      '../evm-wallet/network-provider');
-_provider_get =
-  _network_provider_module._provider_get;
+      "evm-wallet");
+/* global
+     _provider_get */
+const
+  _provider_get =
+    _evm_wallet_module._provider_get;
 
 function
   _global_variables() {
+  /* global
+       app_name:
+         writable */
   app_name =
     "bytecode-runtime-get";
+  /* global
+       wallet_seed:
+         writable */
   wallet_seed =
     "";
+  /* global
+       retries_max:
+         writable */
   retries_max =
     "";
+  /* global
+       api_key_path:
+         writable */
   api_key_path =
     "";
+  /* global
+       target_network:
+         writable */
   target_network =
     "";
+  /* global
+       contract_address:
+         writable */
   contract_address =
     "";
+  /* global
+       contract_abi_path:
+         writable */
   contract_abi_path =
     "";
+  /* global
+       contract_bytecode_path:
+         writable */
   contract_bytecode_path =
     "";
   // contract_compiler_output_path =
@@ -79,8 +130,11 @@ function
   //   "";
   // method_args =
   //   [];
+  /* global
+       quiet:
+         writable */
   quiet =
-    '';
+    "";
 }
 
 function
@@ -92,15 +146,9 @@ function
 function
   _msg_info_contract_obtained(
     _contract) {
-  let
-    _msg,
-    _template;
-  _template =
-    "Contract '{_contract}' obtained.";
-  _msg =
-    _template.replaceAll(
-      "{_contract}",
-      _contract);
+  const
+    _msg =
+      `Contract '${_contract}' obtained.`;
   _msg_info(
     _msg);
 }
@@ -108,10 +156,9 @@ function
 function
   _msg_info_method_obtained(
     _method) {
-  let
-    _msg;
-  _msg =
-    "Method obtained.";
+  const
+    _msg =
+      "Method obtained.";
   _msg_info(
     _msg);
 }
@@ -128,6 +175,7 @@ async function
   let
     _api_key,
     _code,
+    _msg,
     _network_provider,
     _passed,
     _wallet_password;
@@ -157,8 +205,10 @@ async function
         await _network_provider.getCode(
           _contract_address);
       if ( _code != undefined ) {
+        _msg =
+          `Bytecode length: ${_code.length}`;
         _msg_info(
-          `Bytecode length: ${_code.length}`);
+          _msg);
         _file_write(
           _contract_bytecode_path,
           _code);
@@ -166,9 +216,11 @@ async function
           true;
       }
       else if ( _code == undefined ) {
+        _msg =
+          "Code not retrieved."
         throw {"error": {
                  "message":
-                   "Code not retrieved." } };
+                   _msg } };
       }
     } catch (
         _error) {
@@ -176,8 +228,10 @@ async function
         _error);
       _retry =
         _retry + 1;
+      _msg =
+        "Increasing retry and waiting 3 seconds.";
       _msg_error(
-        "Increasing retry and waiting 3 seconds.",
+        _msg,
         0);
       await _delay(
         3000);
@@ -193,40 +247,19 @@ function
   _config_show() {
   let
     _line,
-    _method_args,
-    _text;
-  _text =
-    [];
-  _text.push(
-    "  bytecode-runtime-get configuration:");
-  _text.push(
-    "        Contract address: {contract_address}".replace(
-      "{contract_address}",
-      contract_address));
-  _text.push(
-    "       Contract bytecode: {contract_bytecode_path}".replace(
-      "{contract_bytecode_path}",
-      contract_bytecode_path));
-  _text.push(
-    "             Max retries: {retries_max}".replace(
-      "{retries_max}",
-      retries_max));
-  _text.push(
-    "   Credentials options:");
-  _text.push(
-    "             Wallet seed: {wallet_seed}".replace(
-      "{wallet_seed}",
-      wallet_seed));
-  _text.push(
-    "            API Key path: {api_key_path}".replace(
-      "{api_key_path}",
-      api_key_path));
-  _text.push(
-    "       Network options:");
-  _text.push(
-    "          Target network: {target_network}".replace(
-      "{target_network}",
-      target_network));
+    _method_args;
+  const
+    _text = [
+    "  bytecode-runtime-get configuration:",
+    `        Contract address: ${contract_address}`,
+    `       Contract bytecode: ${contract_bytecode_path}`,
+    `             Max retries: ${retries_max}`,
+    `   Credentials options:`,
+    `             Wallet seed: ${wallet_seed}`,
+    `            API Key path: ${api_key_path}`,
+    `       Network options:`,
+    `          Target network: ${target_network}`,
+  ];
   for (_line of _text)  { 
     _msg_info(
       _line);
@@ -245,26 +278,26 @@ function
     "Usage:",
     "  bytecode-runtime-get",
     "    <quiet>",
-    "    <wallet_seed>",
-    "    <retries_max>",
-    "    <api_key_path>",
-    "    <target_network>",
-    "    <contract_address>",
-    "    <contract_bytecode_path>",
+    "    <wallet-seed>",
+    "    <retries-max>",
+    "    <api-key-path>",
+    "    <target-network>",
+    "    <contract-address>",
+    "    <contract-bytecode_path>",
     "",
     "Args:",
     "  <quiet>                          Can be 'y' or 'n'",
-    "                                   Default: y",
-    "  <wallet_seed>                    Path of the file containing",
+    `                                   Default: ${quiet}`,
+    "  <wallet-seed>                    Path of the file containing",
     "                                   the seed phrase.",
-    "  <retries_max>                    Maximum number of retries before",
+    "  <retries-max>                    Maximum number of retries before",
     "                                   failing.",
-    "  <api_key_path>                   Path of the API key for the",
+    "  <api-key-path>                   Path of the API key for the",
     "                                   contract ABI provider service",
-    "  <target_network>                 Network on which the contract",
+    "  <target-network>                 Network on which the contract",
     "                                   resides.",
-    "  <contract_address>               Address of the contract",
-    "  <contract_bytecode_path>         Path in which to save",
+    "  <contract-address>               Address of the contract",
+    "  <contract-bytecode-path>         Path in which to save",
     "                                   the runtime bytecode.",
     "",
     "  Options:",
