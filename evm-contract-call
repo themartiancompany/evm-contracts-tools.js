@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     evm-chains-info.js
+ *     evm-contract-call.js
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
