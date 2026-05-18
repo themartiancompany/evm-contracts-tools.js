@@ -125,8 +125,57 @@ function
 }
 
 function
-  _contract_abi_auto_detect() {
+  _contract_artifacts_retrieve() {
   true;
+}
+
+function
+  _contract_abi_auto_detect() {
+  let
+    _abi,
+    _abi_target;
+  const
+    _network =
+      target_network;
+  const
+    _address =
+      contract_address;
+  const
+    _key =
+      api_key;
+  const
+    _compiler_output =
+      contract_compiler_output;
+  _abi =
+    contract_abi;
+  const
+    _abi_target =
+      _abi;
+  if ( typeof(
+         _abi_target) == "undefined" ||
+       _abi_target == "" ) {
+    _abi_target =
+      _default_artifact_path_get(
+        "abi");
+  }
+  const
+    _abi_dir =
+      _dirname(
+        _abi);
+  if ( ! _file_exists(
+           _abi) &&
+       ! _file_exists(
+           _compiler_output) ) {
+    if ( _file_exists(
+           _abi_target) ) {
+      _abi =
+        _abi_target;
+    }
+    else {
+      _contract_artifacts_retrieve(
+        _abi_dir);
+    }
+  }
 }
 
 function
