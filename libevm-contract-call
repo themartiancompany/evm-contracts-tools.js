@@ -241,6 +241,8 @@ function
 module.exports = {
   _contract_abi_auto_detect:
     _contract_abi_auto_detect,
+  _default_artifact_path_get:
+    _default_artifact_path_get,
   _evm_contract_call:
     _evm_contract_call,
   _target_networks_auto_detect:
