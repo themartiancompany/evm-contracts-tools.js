@@ -43,10 +43,10 @@
 /* global
      contract_compiler_output */
 /* global
-     target_network:
-       writable */
+     target_network */
 /* global
-     target_networks */
+     target_networks:
+       writable */
 
 const
   _libcrash_module =
