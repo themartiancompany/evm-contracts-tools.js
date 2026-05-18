@@ -82,9 +82,9 @@
     "ethers":
       "^6.13.2",
     "evm-chains-info":
-      "^0.0.16",
+      "^0.0.18",
     "evm-transactions-tools":
-      "^0.0.3",
+      "^0.0.4",
     "libevm":
       "^0.0.10",
     "yargs":
