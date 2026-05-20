@@ -108,7 +108,7 @@
         "lib/evm-contract-call-static" },
   "scripts": {
     "build-fs-worker":
-      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details cp 'fs-worker.js' 'dist/'{'evm-contract-call','evm-contracts-tools','libevm-contract-call'}",
+      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details && cp 'fs-worker.js' 'dist/'{'evm-contract-call','evm-contracts-tools','libevm-contract-call'}",
     "build-lib":
       "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
     "build-bin":
