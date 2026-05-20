@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.21",
+    "0.0.22",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -16,18 +16,18 @@
     "AUTHORS.rst",
     "COPYING",
     "README.md",
+    "dist",
     "evm-contract-call",
-    "evm-contract-call.js",
     "evm-contract-call.webpack.config.js",
-    "fs-worker.js",
     "fs-worker.webpack.config.js",
     "index.html",
     "libevm-contract-call",
     "libevm-contract-call.webpack.config.js",
     "lib",
-    "libevm-contracts-tools",
+    "evm-contracts-tools",
     "package.json",
-    "serve.json"
+    "serve.json",
+    "webpack.config.js"
   ],
   "keywords": [
     "ur",
@@ -95,7 +95,7 @@
   "type":
     "commonjs",
   "main":
-    "libevm-contracts-tools",
+    "evm-contracts-tools",
   "bin":
     { 
       "evm-contract-call":
@@ -108,9 +108,11 @@
         "lib/evm-contract-call-static" },
   "scripts": {
     "build-fs-worker":
-      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details cp 'fs-worker.js' 'dist/'{'evm-contract-call','evm-contracts-tools','libevm-contract-call'}",
     "build-lib":
-      "npx webpack --mode 'production' --config 'libevm-contracts-tools.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
+    "build-bin":
+      "npx webpack --mode 'production' --config 'evm-contract-call.webpack.config.cjs' --stats-error-details && mv 'evm-contract-call.js' 'dist/evm-contract-call' && npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
     "build":
       "npm run lint && npm run build-fs-worker && npm run build-lib",
     "lint":

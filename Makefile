@@ -61,11 +61,11 @@ NPM_FILES=\
   "lib" \
   "libevm-contract-call" \
   "libevm-contract-call.webpack.config.cjs" \
-  "lib$(_PROJECT_NPM)" \
-  "lib$(_PROJECT_NPM).webpack.config.cjs" \
+  "$(_PROJECT_NPM)" \
   "eslint.config.mjs" \
   "fs-worker.webpack.config.cjs" \
-  "package.json"
+  "package.json" \
+  "webpack.config.cjs"
 
 MAN_FILES=\
   evm-contract-bytecode-get \

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     libevm-contracts-tools.webpack.cjs
+ *     webpack.cjs
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -35,7 +35,7 @@ const
       __dirname);
 const
   _input_file_name =
-    `libevm-contracts-tools`;
+    `evm-contracts-tools`;
 const
   _input_file_path =
     `./${_input_file_name}`;
