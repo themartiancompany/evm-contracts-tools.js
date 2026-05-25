@@ -78,7 +78,7 @@
   },
   "dependencies": {
     "crash-js":
-      "^0.1.110",
+      "^0.1.111",
     "ethers":
       "^6.13.2",
     "evm-chains-info":
