@@ -167,12 +167,12 @@ function
         target_address =
           _value;
       }
-      if ( _value == "-v" ||
+      else if ( _value == "-v" ||
            _value == "--verbose" ) {
         quiet =
           "n";
       }
-      if ( _value == "-h" ||
+      else if ( _value == "-h" ||
            _value == "--help" ) {
         quiet =
           "n";
@@ -217,9 +217,11 @@ async function
         1);
     }
     else {
-      _msg =
-        `Address '${target_address}' is valid.'`;
-      throw _msg;
+      if ( ! _is_address ) {
+        _msg =
+          `Address '${target_address}' not is valid.'`;
+        throw _msg;
+      }
     }
   } catch (
       _error) {
