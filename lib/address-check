@@ -55,6 +55,11 @@ const
 const
   _msg_error =
     _libcrash._msg_error;
+/* global
+     _process_exit */
+const
+  _process_exit =
+    _libcrash._process_exit;
 const
   { ethers } =
     require(
@@ -179,7 +184,7 @@ function
   if ( target_address == "" ) {
     const
       _msg =
-        "No deployment transaction specified.";
+        "No target address specified.";
     _msg_error(
       _msg,
       0);
