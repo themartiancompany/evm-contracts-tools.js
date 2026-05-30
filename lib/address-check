@@ -36,6 +36,11 @@ const
   _argv_get =
     _libcrash._argv_get;
 /* global
+     _basename */
+const
+  _basename =
+    _libcrash._basename;
+/* global
      _cmdline_check */
 const
   _cmdline_check =
