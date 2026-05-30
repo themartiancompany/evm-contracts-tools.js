@@ -293,7 +293,8 @@ function
   if ( contract_address != "" ) {
     if ( contract_abi == "" ) {
       contract_abi =
-        _default_artifact_path_get();
+        _default_artifact_path_get(
+          "abi");
       _artifact_local_auto_detect(
         "bytecode");
       _artifact_local_auto_detect(
@@ -767,14 +768,14 @@ function
   }
 }
 
-function
+async function
   _evm_contract_call_cmdline(
     _app_opts) {
   let
     _result;
   const
     _results =
-      _evm_contract_call.apply(
+      await _evm_contract_call.apply(
         null,
         app_opts);
   for ( _result of _results ) {

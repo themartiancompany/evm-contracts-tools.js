@@ -298,8 +298,24 @@ function
 }
 
 function
-  _artifact_local_auto_detect() {
-  true;
+  _artifact_local_auto_detect(
+    _type) {
+  const
+    _artifact =
+      _default_artifact_path_get(
+        _type);
+  if ( _type == "abi" ) {
+    contract_abi =
+      _artifact;
+  }
+  else if ( _type == "bytecode" ) {
+    contract_bytecode =
+      _artifact;
+  }
+  else if ( _type == "compiler_output" ) {
+    contract_compiler_output =
+      _artifact;
+  }
 }
 
 module.exports = {
