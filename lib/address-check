@@ -133,6 +133,7 @@ function
       "usage:",
       `  ${_program}`,
       "    <target-address>",
+      "    [options]",
       "",
       "args:",
       "  <target-address>                 Address to check.",
