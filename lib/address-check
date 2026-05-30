@@ -97,9 +97,17 @@ function
   let
     _line;
   const
+    _argv =
+      _argv_get();
+  const
+    _program =
+      _basename(
+        _argv[
+          "$0"]);
+  const
     _text = [
-      "address-check configuration:",
-      `         Target address: {target_address}`,
+      `${_program} configuration:`,
+      `         Target address: ${target_address}`,
       ];
   for (_line of _text)  { 
     _msg_info(
@@ -225,7 +233,9 @@ async function
 }
 
 if ( _cmdline_check(
-       "bytecode-creation-get") ) {
+       "address-check") ||
+     _cmdline_check(
+       "ethereum-address-validate") ) {
   _global_variables();
   _cmdline_parse();
   _overrides_set();
