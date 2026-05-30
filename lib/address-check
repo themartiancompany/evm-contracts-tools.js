@@ -125,7 +125,7 @@ function
     "  <target-address>                 Address to check.",
     "",
     "  options:",
-    "    -v --verbose                   Extended output."
+    "    -v --verbose                   Extended output.",
     "    -h --help                      This help."
   ];
   for (_line of _text) {
@@ -239,5 +239,5 @@ if ( _cmdline_check(
 
 module.exports = {
   _address_check:
-    _is_address
+    _address_check
 };

@@ -119,6 +119,12 @@ _path_join =
      no-global-assign */
 _range =
   _libcrash_module._range;
+_evm_contracts_tools_module =
+  require("./evm-contracts-tools");
+/* global
+     _address_check */
+_address_check =
+  _evm_contracts_tools_module._address_check;
 
 const
   _ethereum_data_module =

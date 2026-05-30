@@ -142,10 +142,10 @@ const
   _artifact_local_auto_detect =
     _libevm_contract_call_module._artifact_local_auto_detect;
 /* global
-     _contract_address_check */
+     _address_check */
 const
-  _contract_address_check =
-    _libevm_contract_call_module._contract_address_check;
+  _address_check =
+    _libevm_contract_call_module._address_check;
 /* global
      _default_artifact_path_get */
 const

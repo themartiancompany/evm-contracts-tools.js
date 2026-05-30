@@ -37,6 +37,15 @@ const
     require(
       "crash-js");
 const
+  _address_check_module =
+    require(
+      "./lib/address-check");
+/* global
+     _address_check */
+const
+  _address_check =
+    _address_check_module._address_check;
+const
   _bytecode_creation_get_module =
     require(
       "./lib/bytecode-creation-get");
@@ -115,6 +124,8 @@ function
 }
 
 module.exports = {
+  _address_check:
+    _address_check,
   _artifact_local_auto_detect:
     _artifact_local_auto_detect,
   _bytecode_creation_get:
