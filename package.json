@@ -14,6 +14,7 @@
     "./man/evm-contract-bytecode-get.1",
     "./man/evm-contract-deployer-get.1",
     "./man/evm-contract-deployment-address.1",
+    "./man/evm-contract-deployments-dir.1",
     "./man/evm-contract-call.1",
     "./man/evm-contract-call-dynamic.1"
   ],
@@ -25,10 +26,14 @@
     "dist",
     "evm-contract-call",
     "evm-contract-call.webpack.config.js",
+    "evm-contract-deployments-dir",
+    "evm-contract-deployments-dir.webpack.config.js",
     "fs-worker.webpack.config.js",
     "index.html",
     "libevm-contract-call",
     "libevm-contract-call.webpack.config.js",
+    "libevm-contract-deployments-dir",
+    "libevm-contract-deployments-dir.webpack.config.js",
     "lib",
     "evm-contracts-tools",
     "package.json",
@@ -40,13 +45,15 @@
     "themartiancompany",
     "dogeos",
     "ethereum",
-    "evmfs"
+    "evmfs",
+    "libevm",
+    "evm-toolchain"
   ],
   "homepage":
     "https://github.com/themartiancompany/evm-contracts-tools",
   "bugs": {
     "url":
-      "https://github.com/themartiancompany/evm-contracts-tools/issues"
+      "https://github.com/themartiancompany/evm-contracts-tools.js/issues"
   },
   "repository": {
     "type":
@@ -118,15 +125,29 @@
         "evm-contract-call",
       "evm-contract-call-dynamic.js":
         "lib/evm-contract-call-dynamic",
+      "evm-contract-deployments-dir.js":
+        "evm-contract-deployments-dir",
+      "evm-contract-deployments-dir":
+        "evm-contract-deployments-dir",
       "evm-contract-call-static.js":
         "lib/evm-contract-call-static" },
   "scripts": {
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details && cp 'fs-worker.js' 'dist/'{'evm-contract-call','evm-contracts-tools','libevm-contract-call'}",
-    "build-lib":
+    "build-libevm-contract-call":
       "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
+    "build-libevm-contract-deployments-dir":
+      "npx webpack --mode 'production' --config 'libevm-contract-deployments-dir.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-deployments-dir.js' 'dist/libevm-contract-deployments-dir'",
+    "build-lib":
+      "npm run build-libevm-contract-call && npm run build-libevm-contract-deployments-dir",
+    "build-evm-contract-call":
+      "npx webpack --mode 'production' --config 'evm-contract-call.webpack.config.cjs' --stats-error-details && mv 'evm-contract-call.js' 'dist/evm-contract-call'",
+    "build-evm-contracts-tools":
+      "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
+    "build-evm-contract-deployments-dir":
+      "npx webpack --mode 'production' --config 'evm-contract-deployments-dir.webpack.config.cjs' --stats-error-details && mv 'evm-contract-deployments-dir.js' 'dist/evm-contract-deployments-dir' && npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
     "build-bin":
-      "npx webpack --mode 'production' --config 'evm-contract-call.webpack.config.cjs' --stats-error-details && mv 'evm-contract-call.js' 'dist/evm-contract-call' && npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
+      "npm run build-evm-contract-call && npm run build-evm-contract-deployments-dir && npm run build-evm-contracts-tools",
     "build-man":
       "make build-man",
     "build":

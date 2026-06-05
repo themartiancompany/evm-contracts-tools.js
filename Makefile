@@ -60,19 +60,18 @@ NPM_FILES=\
   "dist" \
   "evm-contract-call" \
   "evm-contract-call.webpack.config.cjs" \
+  "evm-contract-deployments-dir" \
+  "evm-contract-deployments-dir.webpack.config.cjs" \
   "lib" \
   "libevm-contract-call" \
   "libevm-contract-call.webpack.config.cjs" \
+  "libevm-contract-deployments-dir" \
+  "libevm-contract-deployments-dir.webpack.config.cjs" \
   "$(_PROJECT_NPM)" \
   "eslint.config.mjs" \
   "fs-worker.webpack.config.cjs" \
   "package.json" \
   "webpack.config.cjs"
-
-MAN_FILES=\
-  evm-contract-bytecode-get \
-  evm-contract-call \
-  evm-contract-deployer-get
 
 all: build-man build-npm build-scripts
 
@@ -101,13 +100,13 @@ install-scripts:
 	    -s \
             "$(PREFIX)/lib/$(_PROJECT_NPM)/nodejs/$${_file}" \
 	    "$(LIB_DIR)/$${_file}" || \
-	  true; \
-	done
-	# ln \
-	#   -s \
-	#   "$(PREFIX)/lib/$(_PROJECT_NPM)/node/lib$(_PROJECT_NPM)" \
-	#   "$(LIB_DIR)/$(_PROJECT_NPM)-js" || \
-	# true
+	    true; \
+	    done
+	  # ln \
+		  #   -s \
+		  #   "$(PREFIX)/lib/$(_PROJECT_NPM)/node/lib$(_PROJECT_NPM)" \
+		  #   "$(LIB_DIR)/$(_PROJECT_NPM)-js" || \
+		  # true
 
 build-man:
 

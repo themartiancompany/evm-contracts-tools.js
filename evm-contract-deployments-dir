@@ -1,0 +1,847 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     evm-contract-deployment-dir.js
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2024, 2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+
+/* Crash Javascript global variables */
+/* global
+     quiet:
+       writable */
+
+/* LibEVM global variables */
+/* global
+     call_auth:
+       writable */
+/* global
+     call_timeout:
+       writable */
+/* global
+     msg_value:
+       writable */
+/* global
+     target_network:
+       writable */
+/* global
+     target_networks:
+       writable */
+/* global
+     api_key:
+       writable */
+/* global
+     wallet_path:
+       writable */
+/* global
+     wallet_password:
+       writable */
+/* global
+     wallet_seed:
+       writable */
+
+const
+  _libcrash =
+  require(
+    "crash-js");
+/* global
+     _argv_get */
+const
+  _argv_get =
+    _libcrash._argv_get;
+/* global
+     _argv_url_get */
+const
+  _argv_url_get =
+    _libcrash._argv_url_get;
+/* global
+     _cmdline_check */
+const
+  _cmdline_check =
+    _libcrash._cmdline_check;
+/* global
+     _get_date_human */
+const
+  _get_date_human =
+    _libcrash._get_date_human;
+/* global
+     _msg_info */
+const
+  _msg_info =
+    _libcrash._msg_info;
+/* global
+     _msg_error */
+const
+  _msg_error =
+    _libcrash._msg_error;
+/* global
+     _printf */
+const
+_printf =
+  _libcrash._printf;
+/* global
+     _process_exit */
+const
+_process_exit =
+  _libcrash._process_exit;
+const
+  _libevm_module =
+    require(
+      "libevm");
+/* global
+     _libevm_cmdline_parse */
+const
+  _libevm_cmdline_parse =
+    _libevm_module._libevm_cmdline_parse;
+/* global
+     _libevm_global_variables */
+const
+  _libevm_global_variables =
+    _libevm_module._libevm_global_variables;
+/* global
+     _libevm_url_parse */
+const
+  _libevm_url_parse =
+    _libevm_module._libevm_url_parse;
+/* global
+     _wallet_overrides_set */
+const
+  _wallet_overrides_set =
+    _libevm_module._wallet_overrides_set;
+const
+  _libevm_contract_call_module =
+    require(
+      "./libevm-contract-call");
+/* global
+     _artifact_local_auto_detect */
+const
+  _artifact_local_auto_detect =
+    _libevm_contract_call_module._artifact_local_auto_detect;
+/* global
+     _address_check */
+const
+  _address_check =
+    _libevm_contract_call_module._address_check;
+/* global
+     _default_artifact_path_get */
+const
+  _default_artifact_path_get =
+    _libevm_contract_call_module._default_artifact_path_get;
+/* global
+     _contract_abi_auto_detect */
+const
+  _contract_abi_auto_detect =
+    _libevm_contract_call_module._contract_abi_auto_detect;
+/* global
+     _evm_contract_call */
+const
+  _evm_contract_call =
+    _libevm_contract_call_module._evm_contract_call;
+/* global
+     _call_auth_auto_detect */
+const
+  _call_auth_auto_detect =
+    _libevm_contract_call_module._call_auth_auto_detect;
+
+function
+  _global_variables() {
+  /* global
+       app_name:
+         writable */
+  app_name =
+    "evm-contract-call.js";
+  /* global
+       app_opts:
+         writable */
+  app_opts =
+    [];
+  /* global
+       runtime_environment:
+         writable */
+  runtime_environment =
+    "";
+  /* global
+       call_date:
+         writable */
+  call_date =
+    "";
+  /* global
+       wallet_name:
+         writable */
+  wallet_name =
+    "";
+  /* global
+       retries_max:
+         writable */
+  retries_max =
+    "";
+  /* global
+       rpc_selection:
+         writable */
+  rpc_selection =
+    "";
+  /* global
+       call_type:
+         writable */
+  call_type =
+    "";
+  /* global
+       index_retrieve:
+         writable */
+  index_retrieve =
+    "";
+  /* global
+       contract_address:
+         writable */
+  contract_address =
+    "";
+  /* global
+       contract_bytecode:
+         writable */
+  contract_bytecode =
+    "";
+  /* global
+       contract_compiler_output:
+         writable */
+  contract_compiler_output =
+    "";
+  /* global
+       contract_abi:
+         writable */
+  contract_abi =
+    "";
+  /* global
+       contract_method:
+         writable */
+  contract_method =
+    "";
+  /* global
+       method_args:
+         writable */
+  method_args =
+    [];
+  /* global
+       price_gas:
+         writable */
+  price_gas =
+    "";
+  /* global
+       measure_unit:
+         writable */
+  measure_unit =
+    "";
+  quiet =
+    "";
+  /* global
+       verbose:
+         writable */
+  verbose =
+    "";
+}
+
+async function 
+  _overrides_set() {
+  const
+    _address_valid =
+      _address_check(
+        contract_address);
+  if ( ! _address_valid ) {
+    const
+      _msg =
+        "Contract address " +
+        `'${contract_address}' is ` +
+        `invalid.`;
+    _msg_error(
+      _msg,
+      1);
+  }
+  if ( call_date == "" ||
+       typeof(
+         call_date) == "undefined" ) {
+    call_date =
+      _get_date_human();
+  }
+  if ( wallet_name == "" ) {
+    wallet_name =
+      "default";
+  }
+  if ( index_retrieve == "" ) {
+    index_retrieve =
+      "n";
+  }
+  if ( retries_max == "" ) {
+    retries_max =
+      "300";
+  }
+  if ( rpc_selection == "" ) {
+    rpc_selection =
+      "kirsh";
+  }
+  if ( call_type == "" ) {
+    call_type =
+      "static";
+  }
+  _call_auth_auto_detect();
+  if ( call_timeout == "" ) {
+    call_timeout =
+      "300000";
+  }
+  if ( measure_unit == "" ) {
+    measure_unit =
+      "ether";
+  }
+  if ( msg_value == "" ) {
+    msg_value =
+      "0";
+  }
+  // _api_key_auto_detect();
+  if ( contract_address != "" ) {
+    if ( contract_abi == "" ) {
+      contract_abi =
+        _default_artifact_path_get(
+          "abi");
+      _artifact_local_auto_detect(
+        "bytecode");
+      _artifact_local_auto_detect(
+        "compiler_output");
+      if ( contract_abi == "" ||
+           _default_artifact_path_get(
+             "abi") == contract_abi ) {
+        _contract_abi_auto_detect();
+      }
+    }
+  }
+  await _wallet_overrides_set(
+    "evm-wallet",
+    wallet_name,
+    call_auth);
+}
+
+function
+  _config_show() {
+  let
+    _line;
+  const
+    _text = [
+      `${app_name} configuration:`,
+      `                Call date:   ${call_date}`,
+      `      Runtime environment:   ${runtime_environment}`,
+      `                Call type:   ${call_type}`,
+      `      Call authentication:   ${call_auth}`,
+      `    Credentials options:`,
+      `              Wallet name:   ${wallet_name}`,
+      `           Wallet address:   ${api_key}`,
+      `              Wallet path:   ${wallet_path}`,
+      `          Wallet password:   ${wallet_password}`,
+      `              Wallet seed:   ${wallet_seed}`,
+      `        Network options:`,
+      `           Target network:   ${target_network}`,
+      `              Max retries:   ${retries_max}`,
+      `             Call timeout:   ${call_timeout}`,
+      `                  API key:   ${api_key}`,
+      `     RPC selection method:   ${rpc_selection}`,
+      `                Gas price:   ${price_gas}`,
+      `       Contract options:`,
+      `         Contract address:   ${contract_address}`,
+      `             Contract ABI:   ${contract_abi}`,
+      `        Contract bytecode:   ${contract_bytecode}`,
+      ` Contract compiler output:   ${contract_compiler_output}`,
+      `           Call options:`,
+      `            Message value:   ${msg_value}`,
+      `             Measure unit:   ${measure_unit}`,
+      `          Contract method:   ${contract_method}`,
+      `         Method arguments:   ${method_args}`,
+    ];
+  for ( _line of _text ) {
+    _msg_info(
+      _line);
+  }
+}
+
+function
+  _usage(
+    _exit_code) {
+  let
+    _line;
+  const
+    _text = [
+      "Runs a smart contract function.",
+      "",
+      "Usage:",
+      "",
+      "  evm-contract-call.js",
+      "    [options]",
+      "    <contract-address>",
+      "    <contract-method>",
+      "    ([method-args])",
+      "",
+      "  networks:",
+      "    all those supported by",
+      "    'evm-chains-info' as well",
+      "    as directly RPC addresses",
+      "",
+      "  options:",
+      "",
+      "     -t --call-type                  It can be 'static' or 'dynamic'.",
+      `       <call-type>                   Default: '${call_type}`,
+      "",
+      "  call options:",
+      `     -V --msg-value                  How much '${measure_unit} to attach to the`,
+      `       <msg-value>                   transaction.`,
+      `                                     Default: '${msg_value}'`,
+      "",
+      "     -u --measure-unit               Measure unit for the transacion.",
+      `       <measure-unit>                It can be 'ether' or 'wei'.`,
+      `                                     Default: '${measure_unit}'`,
+      "",
+      "     -P --price-gas                  I dont remember. It can be 'idontknow'.",
+      "       <price-gas>",
+      `                                     Default: '${price_gas}'`,
+      "",
+      "     -r --retries-max                Maximum number of retries before",
+      `       <retries-max>                 Declaring the call failed.`,
+      `                                     Default: '${retries_max}'`,
+      "",
+      "     -T --call-timeout               Maximum number of milliseconds before",
+      "       <call-timeout>                declaring the call failed.",
+      `                                     Default: '${call_timeout}'`,
+      "",
+      "  contract options:",
+      "",
+      "     -A --abi                        Contract ABI path.",
+      `       <contract-abi>                Default: '${contract_abi}'.`,
+      "",
+      "     -B --bytecode                   Contract bytecode path.",
+      `       <contract-bytecode>           Default: '${contract_bytecode}'.`,
+      "",
+      "     -C --compiler-output            Contract compiler output path",
+      `       <contract-bytecode>           (the hardhat artifact.`,
+      `                                     Default: '${contract_compiler_output}'.`,
+      "",
+      "     -I --index-retrieve             Enables retrieving contract's artifacts",
+      `                                     from the EVM Contracts Source Index.`,
+      `                                     Default: '${contract_compiler_output}'.`,
+      "",
+      "  credentials options:",
+      "",
+      "     -N --wallet-name                EVM Wallet name.",
+      `       <wallet-name>                 Default: '${wallet_name}'.`,
+      "",
+      "     -w --wallet-path                EVM Wallet path.",
+      `       <wallet-path>                 Default: '${wallet_path}'.`,
+      "",
+      "     -p --wallet-password            EVM Wallet password file.",
+      `       <wallet-password>             Default: '${wallet_password}'.`,
+      "",
+      "     -s --wallet-seed                EVM Wallet seed file.",
+      `       <wallet-seed>                 Default: '${wallet_seed}'.`,
+      "",
+      "     -k --api-key                    Etherscan-like service key file.",
+      `       <api-key>                     Default: '${api_key}'.`,
+      "",
+      "  libEVM options:",
+      "",
+      "     -a --auth                       Call authentication.",
+      `                                     Default: '${call_auth}'`,
+      "",
+      "     -n --network                    EVM network name. Accepted",
+      "       <network>                     values are all those supported by",
+      `                                     'evm-chains-info' and RPC addresses.`,
+      `                                     Default: '${target_network}'.`,
+      "",
+      "     -S --rpc-selection              RPC selection method. It can be",
+      "       <rpc-selection>               'kirsh', 'random' or 'all'.",
+      `                                     Default: '${rpc_selection}'.`,
+      "",
+      "     -h --help                       This message.",
+      "     -v --verbose                    Enable verbose output."
+    ];
+  for ( _line of _text ) {
+    console.log(
+      _line);
+  }
+  _process_exit(
+    _exit_code);
+}
+
+async function 
+  _cmdline_parse() {
+  let
+    _help_display,
+    _msg;
+  const
+    _argv_args = {
+      "booleans": [
+        "a",
+        "auth",
+        "h",
+        "help",
+        "I",
+        "index-retrieve",
+        "v",
+        "verbose"
+      ]
+    };
+  const
+    _argv =
+      _argv_get(
+        _argv_args);
+  const
+    _options =
+      _argv[
+        "_"];
+  quiet = 
+    "y";
+  runtime_environment =
+    "node";
+  if ( _argv["h"] == true ) {
+    _help_display =
+      true;
+  }
+  if ( _argv["help"] == true ) {
+    _help_display =
+      true;
+  }
+  if ( ( _options.indexOf(
+           "--help") > -1 ||
+         _options.indexOf(
+           "-h") > -1) ) {
+    _help_display =
+      true;
+  }
+  if ( _help_display ) {
+    quiet =
+      "n";
+    await _overrides_set();
+    _usage(
+      0);
+  }
+  if ( typeof(
+         _argv) == "undefined" ||
+       _argv[
+         "_"].length < 1 ) {
+    _msg =
+      "Contract address argument required.";
+    _msg_error(
+      _msg,
+      0);
+    _usage(
+      1);
+  }
+  contract_address =
+    _argv[
+      "_"][
+        0];
+  if ( typeof(
+         _argv) == "undefined" ||
+       _argv[
+         "_"].length < 2 ) {
+    _msg =
+      "Contract method argument required.";
+    _msg_error(
+      _msg,
+      0);
+    _usage(
+      1);
+  }
+  contract_method =
+    _argv[
+      "_"][
+        0];
+  const
+    method_args =
+      _argv[
+        "_"].slice(
+        2,
+        _argv[
+          "_"].length - 2);
+  if ( "t" in _argv ) {
+    call_type =
+      _argv[
+        "t"];
+  }
+  if ( "call-type" in _argv ) {
+    call_type =
+      _argv[
+        "call-type"];
+  }
+  if ( "T" in _argv ) {
+    call_timeout =
+      _argv[
+        "t"];
+  }
+  if ( "call-timeout" in _argv ) {
+    call_timeout =
+      _argv[
+        "call-timeout"];
+  }
+  if ( "I" in _argv ) {
+    index_retrieve =
+      _argv[
+        "I"];
+  }
+  if ( "index_retrieve" in _argv ) {
+    index_retrieve =
+      _argv[
+        "index-retrieve"];
+  }
+  if ( "P" in _argv ) {
+    price_gas =
+      _argv[
+        "P"];
+  }
+  if ( "price-gas" in _argv ) {
+    price_gas =
+      _argv[
+        "price-gas"];
+  }
+  if ( "u" in _argv ) {
+    measure_unit =
+      _argv[
+        "u"];
+  }
+  if ( "measure-unit" in _argv ) {
+    measure_unit =
+      _argv[
+        "measure-unit"];
+  }
+  if ( "V" in _argv ) {
+    msg_value =
+      _argv[
+        "V"];
+  }
+  if ( "msg-value" in _argv ) {
+    msg_value =
+      _argv[
+        "msg-value"];
+  }
+  if ( "r" in _argv ) {
+    retries_max =
+      _argv[
+        "r"];
+  }
+  if ( "retries-max" in _argv ) {
+    retries_max =
+      _argv[
+        "retries-max"];
+  }
+  if ( "S" in _argv ) {
+    rpc_selection =
+      _argv[
+        "S"];
+  }
+  if ( "rpc-selection" in _argv ) {
+    rpc_selection =
+      _argv[
+        "rpc-selection"];
+  }
+  if ( "A" in _argv ) {
+    contract_abi =
+      _argv[
+        "A"];
+  }
+  if ( "abi" in _argv ) {
+    contract_abi =
+      _argv[
+        "abi"];
+  }
+  if ( "B" in _argv ) {
+    contract_bytecode =
+      _argv[
+        "B"];
+  }
+  if ( "bytecode" in _argv ) {
+    contract_bytecode =
+      _argv[
+        "bytecode"];
+  }
+  if ( "C" in _argv ) {
+    contract_compiler_output =
+      _argv[
+        "C"];
+  }
+  if ( "compiler-output" in _argv ) {
+    contract_compiler_output =
+      _argv[
+        "compiler-output"];
+  }
+  if ( "a" in _argv ) {
+    call_auth =
+      "y";
+  }
+  if ( "auth" in _argv ) {
+    call_auth =
+      "y";
+  }
+  if ( "n" in _argv ) {
+    target_networks.push(
+      _argv[
+        "n"]);
+  }
+  if ( "network" in _argv ) {
+    target_networks.push(
+      _argv[
+        "network"]);
+  }
+  _libevm_cmdline_parse(
+    _argv);
+  if ( _argv[
+         "v"] ||
+       _argv[
+         "verbose"] ) {
+    quiet =
+      "n";
+  }
+}
+
+function
+  _url_parse() {
+  let
+    _method,
+    _network;
+  runtime_environment =
+    "browser";
+  call_type =
+    _argv_url_get(
+      "call_type")[
+        0];
+  call_timeout =
+    _argv_url_get(
+      "call_timeout")[
+        0];
+  index_retrieve =
+    _argv_url_get(
+      "index_retrieve")[
+        0];
+  price_gas =
+    _argv_url_get(
+      "price_gas")[
+        0];
+  measure_unit =
+    _argv_url_get(
+      "measure_unit")[
+        0];
+  msg_value =
+    _argv_url_get(
+      "msg_value")[
+        0];
+  retries_max =
+    _argv_url_get(
+      "retries_max")[
+        0];
+  rpc_selection =
+    _argv_url_get(
+      "rpc_selection")[
+        0];
+  contract_abi =
+    _argv_url_get(
+      "abi")[
+        0];
+  contract_bytecode =
+    _argv_url_get(
+      "bytecode")[
+        0];
+  contract_compiler_output =
+    _argv_url_get(
+      "compiler_output")[
+        0];
+  rpc_selection =
+    _argv_url_get(
+      "rpc_selection")[
+        0];
+  for ( _network of _argv_url_get(
+                     "network") ) {
+    target_networks.push(
+      _network);
+  }
+  for ( _method of _argv_url_get(
+                     "method_args") ) {
+    method_args.push(
+      _method);
+  }
+  quiet =
+    _argv_url_get(
+      "quiet");
+  if ( quiet.length === 0 ) {
+    quiet =
+      "n";
+  }
+}
+
+async function
+  _evm_contract_deployments_dir_cmdline(
+    _app_opts) {
+  let
+    _result;
+  const
+    _results =
+      await _evm_contract_deployments_dir.apply(
+        null,
+        app_opts);
+  const
+    _results_type =
+      typeof(
+        _results);
+  if ( _results_type == "object" ) {
+    for ( _result of _results ) {
+      console.log(
+        _result);
+    }
+  }
+  else if ( _results_type == "string" ) {
+    _printf(
+      _results);
+  }
+}
+
+async function
+  _main() {
+  const
+    _overrides_set_up =
+      await _overrides_set();
+  _config_show();
+  app_opts = [
+    target_app,
+    user_level
+  ];
+  await _evm_contract_deployments_dir(
+    app_opts);
+}
+
+_global_variables();
+_libevm_global_variables();
+if ( _cmdline_check(
+       "evm-contract-deployments-dir.js") == true ||
+     _cmdline_check(
+       "evm-contract-deployments-dir") == true ) {
+  _cmdline_parse();
+}
+else{
+  _url_parse();
+  _libevm_url_parse();
+}
+_main();

@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     libevm-contract-deployments-dir
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the
+ *     GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+/* eslint-disable
+     no-useless-assignment */
+
+/* EVM Contracts tools global variables */
+/* global
+     call_type */
+/* global
+     call_auth:
+       writable */
+
+/* libEVM global variables */
+/* global 
+     api_key */
+/* global
+     contract_abi:
+       writable */
+/* global
+     contract_address */
+/* global
+     contract_bytecode:
+       writable */
+/* global
+     contract_compiler_output:
+       writable */
+/* global
+     target_network:
+       writable */
+/* global
+     target_networks:
+       writable */
+
+const
+  _libcrash_module =
+    require(
+      "crash-js");
+/* global
+     _dirname */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _dirname =
+    _libcrash_module._dirname;
+/* global
+     _file_exists */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _file_exists =
+    _libcrash_module._file_exists;
+/* global
+     _homedir_get */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _homedir_get =
+    _libcrash_module._homedir_get;
+/* global
+     _json_read */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _json_read =
+    _libcrash_module._json_read;
+/* global
+     _lib_get */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _lib_get =
+    _libcrash_module._lib_get;
+/* global
+     _msg_info */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _msg_info =
+    _libcrash_module._msg_info;
+/* global
+     _msg_error */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _msg_error =
+    _libcrash_module._msg_error;
+/* global
+     _path_join */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _path_join =
+    _libcrash_module._path_join;
+/* global
+     _range */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _range =
+    _libcrash_module._range;
+const
+  _evm_contracts_tools_module =
+    require("./evm-contracts-tools");
+/* global
+     _address_check */
+const
+  _address_check =
+    _evm_contracts_tools_module._address_check;
+
+const
+  _ethereum_data_module =
+    require(
+      "ethereum-data");
+/* global
+     _data_get */
+const
+  _data_get =
+    _ethereum_data_module._data_get;
+
+function
+  _default_deployments_dir_get(
+    _app,
+    _type) {
+  true;
+}
+
+function
+  _evm_contract_deployments_dir(
+    _app,
+    _user_level) {
+  true;
+}
+
+module.exports = {
+  _default_deployments_dir_get:
+    _default_artifact_path_get,
+  _evm_contract_deployments_dir:
+    _evm_contract_deployments_dir,
+};
