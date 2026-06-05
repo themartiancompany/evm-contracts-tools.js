@@ -856,7 +856,6 @@ if ( _cmdline_check(
      _cmdline_check(
        "evm-contract-call") == true ) {
   _cmdline_parse();
-  console.log("quiet", quiet);
 }
 else{
   _url_parse();
