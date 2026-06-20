@@ -358,10 +358,9 @@ async function
     ];
   const
     _deployments =
-      await _evm_contract_deployments_dir(
+      await _evm_contract_deployments_dir.apply(
+        null,
         app_opts);
-  console.log(
-    _deployments);
 }
 
 _global_variables();
