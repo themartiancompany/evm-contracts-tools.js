@@ -185,27 +185,6 @@ async function
     msg_value =
       "0";
   }
-  // _api_key_auto_detect();
-  if ( contract_address != "" ) {
-    if ( contract_abi == "" ) {
-      contract_abi =
-        _default_artifact_path_get(
-          "abi");
-      _artifact_local_auto_detect(
-        "bytecode");
-      _artifact_local_auto_detect(
-        "compiler_output");
-      if ( contract_abi == "" ||
-           _default_artifact_path_get(
-             "abi") == contract_abi ) {
-        _contract_abi_auto_detect();
-      }
-    }
-  }
-  await _wallet_overrides_set(
-    "evm-wallet",
-    wallet_name,
-    call_auth);
 }
 
 function
