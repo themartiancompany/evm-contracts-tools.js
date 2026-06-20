@@ -36,10 +36,14 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/fs/fs'),
+      "node:fs":
+        _path.resolve(
+          __dirname,
+          'node_modules/opfs/opfs'),
       "opfs":
         _path.resolve(
           __dirname,
-          'node_modules/fs/fs'),
+          'node_modules/opfs/opfs'),
       "path":
         _path.resolve(
           __dirname,

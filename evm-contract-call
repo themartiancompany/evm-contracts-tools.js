@@ -264,7 +264,8 @@ function
 }
 
 async function 
-  _overrides_set() {
+  _overrides_set(
+    _help_display) {
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
        _help_display != "" ) {
