@@ -148,17 +148,94 @@ const
     _ethereum_data_module._data_get;
 
 function
+  _app_check(
+    _app) {
+  let
+    _error_flag,
+    _msg;
+  const
+    _app_type =
+      typeof(
+        _app);
+  if ( _app_type == "undefined" ||
+       _app == "" ) {
+    _msg =
+      "No application specified.";
+    _error_flag =
+      true;
+  }
+  if ( _app_type != "string" ) {
+    _msg =
+      "Application argument must be of " +
+      "type string.";
+    _error_flag =
+      true;
+  }
+  if ( _error_flag ) {
+    _msg_error(
+      _msg,
+      1);
+  }
+}
+
+function
   _default_deployments_dir_get(
     _app,
     _type) {
-  true;
+  _app_check(
+    _app);
+  if ( typeof(
+         _type) == "undefined" ||
+       _type == "" ) {
+    _type =
+      "system";
+  }
+  let
+    _conf_dir;
+  if ( _type == "system" ) {
+    _conf_dir =
+      _lib_get();
+  }
+  else if ( _type == "user" ) {
+    const
+      _homedir =
+        _homedir_get();
+    _conf_dir =
+      `${_homedir}/.config`;
+  }
+  return `${_conf_dir}/${_app}/deployments`;
 }
 
 function
   _evm_contract_deployments_dir(
     _app,
     _user_level) {
-  true;
+  let
+    _deployments,
+    _deployment_type;
+  _app_check(
+    _app);
+  if ( _user_level == "n" ) {
+    _deployment_type =
+      "system";
+  }
+  else if ( _user_level == "n" ) {
+    _deployment_type =
+      "system";
+  }
+  else {
+    _msg =
+      "User level argument must be " +
+      "can be 'y' or 'n'."
+    _msg_error(
+      _msg,
+      1);
+  }
+  _deployments =
+    _default_deployments_dir_get(
+      _app,
+      _deployment_type);
+  return _deployments;
 }
 
 module.exports = {

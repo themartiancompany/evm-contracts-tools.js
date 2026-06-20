@@ -426,12 +426,17 @@ async function
     _overrides_set_up =
       await _overrides_set();
   _config_show();
-  app_opts = [
-    target_app,
-    user_level
-  ];
-  await _evm_contract_deployments_dir(
-    app_opts);
+  const
+    app_opts = [
+      target_app,
+      user_level
+    ];
+  const
+    _deployments =
+      await _evm_contract_deployments_dir(
+        app_opts);
+  console.log(
+    _deployments);
 }
 
 _global_variables();
