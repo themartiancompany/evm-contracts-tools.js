@@ -240,7 +240,7 @@ function
 
 module.exports = {
   _default_deployments_dir_get:
-    _default_artifact_path_get,
+    _default_deployments_dir_get,
   _evm_contract_deployments_dir:
     _evm_contract_deployments_dir,
 };
