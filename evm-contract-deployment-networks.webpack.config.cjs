@@ -1,5 +1,5 @@
 /**    ----------------------------------------------------------------
- *     evm-contract-deployments-address.webpack.config.cjs
+ *     evm-contract-deployments-networks.webpack.config.cjs
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -33,7 +33,7 @@ const
       __dirname);
 const
   _input_file_name =
-    `evm-contract-deployment-address`;
+    `evm-contract-deployment-networks`;
 const
   _input_file_path =
     `./${_input_file_name}`;
