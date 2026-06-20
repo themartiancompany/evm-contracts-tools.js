@@ -1,0 +1,248 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     libevm-contract-deployments-dir
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the
+ *     GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+/* eslint-disable
+     no-useless-assignment */
+
+/* EVM Contracts tools global variables */
+/* global
+     call_type */
+/* global
+     call_auth:
+       writable */
+
+/* libEVM global variables */
+/* global 
+     api_key */
+/* global
+     contract_abi:
+       writable */
+/* global
+     contract_address */
+/* global
+     contract_bytecode:
+       writable */
+/* global
+     contract_compiler_output:
+       writable */
+/* global
+     target_network:
+       writable */
+/* global
+     target_networks:
+       writable */
+
+const
+  _libcrash_module =
+    require(
+      "crash-js");
+/* global
+     _dirname */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _dirname =
+    _libcrash_module._dirname;
+/* global
+     _file_exists */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _file_exists =
+    _libcrash_module._file_exists;
+/* global
+     _homedir_get */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _homedir_get =
+    _libcrash_module._homedir_get;
+/* global
+     _json_read */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _json_read =
+    _libcrash_module._json_read;
+/* global
+     _lib_get */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _lib_get =
+    _libcrash_module._lib_get;
+/* global
+     _msg_info */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _msg_info =
+    _libcrash_module._msg_info;
+/* global
+     _msg_error */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _msg_error =
+    _libcrash_module._msg_error;
+/* global
+     _path_join */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _path_join =
+    _libcrash_module._path_join;
+/* global
+     _range */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _range =
+    _libcrash_module._range;
+const
+  _libevm_contract_deployments_dir_module =
+    require(
+      "./libevm-contract-deployments-dir");
+/* global
+     _evm_contract_deployments_dir */
+const
+  _evm_contract_deployments_dir =
+    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+const
+  _evm_chains_info_module =
+    require(
+      "evm-chains-info");
+/* global
+     _evm_chains_info */
+const
+  _evm_chains_info =
+    _evm_chains_info_module._evm_chains_info;
+
+
+function
+  _app_check(
+    _app) {
+  let
+    _error_flag,
+    _msg;
+  const
+    _app_type =
+      typeof(
+        _app);
+  if ( _app_type == "undefined" ||
+       _app == "" ) {
+    _msg =
+      "No application specified.";
+    _error_flag =
+      true;
+  }
+  console.log(_app);
+  if ( _app_type != "string" ) {
+    _msg =
+      "Application argument must be of " +
+      "type string.";
+    _error_flag =
+      true;
+  }
+  if ( _error_flag ) {
+    _msg_error(
+      _msg,
+      1);
+  }
+}
+
+function
+  _default_deployments_dir_get(
+    _app,
+    _type) {
+  _app_check(
+    _app);
+  if ( typeof(
+         _type) == "undefined" ||
+       _type == "" ) {
+    _type =
+      "system";
+  }
+  let
+    _conf_dir;
+  if ( _type == "system" ) {
+    _conf_dir =
+      _lib_get();
+  }
+  else if ( _type == "user" ) {
+    const
+      _homedir =
+        _homedir_get();
+    _conf_dir =
+      `${_homedir}/.config`;
+  }
+  return `${_conf_dir}/${_app}/deployments`;
+}
+
+function
+  _evm_contract_deployments_dir(
+    _app,
+    _user_level) {
+  let
+    _deployments,
+    _deployment_type;
+  _app_check(
+    _app);
+  if ( _user_level == "n" ) {
+    _deployment_type =
+      "system";
+  }
+  else if ( _user_level == "n" ) {
+    _deployment_type =
+      "system";
+  }
+  else {
+    _msg =
+      "User level argument must be " +
+      "can be 'y' or 'n'."
+    _msg_error(
+      _msg,
+      1);
+  }
+  _deployments =
+    _default_deployments_dir_get(
+      _app,
+      _deployment_type);
+  return _deployments;
+}
+
+module.exports = {
+  _default_deployments_dir_get:
+    _default_deployments_dir_get,
+  _evm_contract_deployments_dir:
+    _evm_contract_deployments_dir,
+};

@@ -26,12 +26,16 @@
     "dist",
     "evm-contract-call",
     "evm-contract-call.webpack.config.js",
+    "evm-contract-deployment-address",
+    "evm-contract-deployment-address.webpack.config.js",
     "evm-contract-deployments-dir",
     "evm-contract-deployments-dir.webpack.config.js",
     "fs-worker.webpack.config.js",
     "index.html",
     "libevm-contract-call",
     "libevm-contract-call.webpack.config.js",
+    "libevm-contract-deployment-address",
+    "libevm-contract-deployment-address.webpack.config.js",
     "libevm-contract-deployments-dir",
     "libevm-contract-deployments-dir.webpack.config.js",
     "lib",
@@ -127,6 +131,10 @@
         "evm-contract-call",
       "evm-contract-call-dynamic.js":
         "lib/evm-contract-call-dynamic",
+      "evm-contract-deployment-address":
+        "evm-contract-deployment-address",
+      "evm-contract-deployment-address.js":
+        "evm-contract-deployment-address",
       "evm-contract-deployments-dir.js":
         "evm-contract-deployments-dir",
       "evm-contract-deployments-dir":
