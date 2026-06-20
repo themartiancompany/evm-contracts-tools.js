@@ -60,11 +60,23 @@ NPM_FILES=\
   "dist" \
   "evm-contract-call" \
   "evm-contract-call.webpack.config.cjs" \
+  "evm-contract-deployment-address" \
+  "evm-contract-deployment-address.webpack.config.cjs" \
+  "evm-contract-deployment-networks" \
+  "evm-contract-deployment-networks.webpack.config.cjs" \
+  "evm-contract-deployment-versions" \
+  "evm-contract-deployment-versions.webpack.config.cjs" \
   "evm-contract-deployments-dir" \
   "evm-contract-deployments-dir.webpack.config.cjs" \
   "lib" \
   "libevm-contract-call" \
   "libevm-contract-call.webpack.config.cjs" \
+  "libevm-contract-deployment-address" \
+  "libevm-contract-deployment-address.webpack.config.cjs" \
+  "libevm-contract-deployment-networks" \
+  "libevm-contract-deployment-networks.webpack.config.cjs" \
+  "libevm-contract-deployment-versions" \
+  "libevm-contract-deployment-versions.webpack.config.cjs" \
   "libevm-contract-deployments-dir" \
   "libevm-contract-deployments-dir.webpack.config.cjs" \
   "$(_PROJECT_NPM)" \
