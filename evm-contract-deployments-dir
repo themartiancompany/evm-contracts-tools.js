@@ -353,8 +353,6 @@ async function
     _argv[
       "_"][
         0];
-  }
-  }
   if ( "u" in _argv ) {
     user_level =
       _argv[
