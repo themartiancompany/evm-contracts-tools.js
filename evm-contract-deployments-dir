@@ -146,44 +146,15 @@ async function
         1);
     }
   }
-  if ( call_date == "" ||
+  if ( resolve_date == "" ||
        typeof(
-         call_date) == "undefined" ) {
-    call_date =
+         resolve_date) == "undefined" ) {
+    resolve_date =
       _get_date_human();
   }
-  if ( wallet_name == "" ) {
-    wallet_name =
-      "default";
-  }
-  if ( index_retrieve == "" ) {
-    index_retrieve =
+  if ( user_level == "" ) {
+    user_level =
       "n";
-  }
-  if ( retries_max == "" ) {
-    retries_max =
-      "300";
-  }
-  if ( rpc_selection == "" ) {
-    rpc_selection =
-      "kirsh";
-  }
-  if ( call_type == "" ) {
-    call_type =
-      "static";
-  }
-  _call_auth_auto_detect();
-  if ( call_timeout == "" ) {
-    call_timeout =
-      "300000";
-  }
-  if ( measure_unit == "" ) {
-    measure_unit =
-      "ether";
-  }
-  if ( msg_value == "" ) {
-    msg_value =
-      "0";
   }
 }
 
@@ -194,33 +165,10 @@ function
   const
     _text = [
       `${app_name} configuration:`,
-      `                Call date:   ${call_date}`,
+      `             Resolve date:   ${resolve_date}`,
       `      Runtime environment:   ${runtime_environment}`,
-      `                Call type:   ${call_type}`,
-      `      Call authentication:   ${call_auth}`,
-      `    Credentials options:`,
-      `              Wallet name:   ${wallet_name}`,
-      `           Wallet address:   ${api_key}`,
-      `              Wallet path:   ${wallet_path}`,
-      `          Wallet password:   ${wallet_password}`,
-      `              Wallet seed:   ${wallet_seed}`,
-      `        Network options:`,
-      `           Target network:   ${target_network}`,
-      `              Max retries:   ${retries_max}`,
-      `             Call timeout:   ${call_timeout}`,
-      `                  API key:   ${api_key}`,
-      `     RPC selection method:   ${rpc_selection}`,
-      `                Gas price:   ${price_gas}`,
-      `       Contract options:`,
-      `         Contract address:   ${contract_address}`,
-      `             Contract ABI:   ${contract_abi}`,
-      `        Contract bytecode:   ${contract_bytecode}`,
-      ` Contract compiler output:   ${contract_compiler_output}`,
-      `           Call options:`,
-      `            Message value:   ${msg_value}`,
-      `             Measure unit:   ${measure_unit}`,
-      `          Contract method:   ${contract_method}`,
-      `         Method arguments:   ${method_args}`,
+      `       Target application:   ${target_app}`,
+      `               User level:   ${user_level}`,
     ];
   for ( _line of _text ) {
     _msg_info(
@@ -417,7 +365,6 @@ async function
 }
 
 _global_variables();
-_libevm_global_variables();
 if ( _cmdline_check(
        "evm-contract-deployments-dir.js") == true ||
      _cmdline_check(
