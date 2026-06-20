@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.37",
+    "0.0.38",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -157,7 +157,7 @@
     "build-libevm-contract-deployment-networks":
       "_app='libevm-contract-deployment-networks'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-lib":
-      "npm run build lib-evm-contract-deployment-address; npm run build-libevm-contract-call && npm run build-libevm-contract-deployments-dir",
+      "npm run build libevm-contract-deployment-address; npm run build-libevm-contract-call && npm run build-libevm-contract-deployments-dir",
     "build-evm-contract-call":
       "_app='evm-contract-call'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployment-address":
