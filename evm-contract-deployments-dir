@@ -35,35 +35,6 @@
      quiet:
        writable */
 
-/* LibEVM global variables */
-/* global
-     call_auth:
-       writable */
-/* global
-     call_timeout:
-       writable */
-/* global
-     msg_value:
-       writable */
-/* global
-     target_network:
-       writable */
-/* global
-     target_networks:
-       writable */
-/* global
-     api_key:
-       writable */
-/* global
-     wallet_path:
-       writable */
-/* global
-     wallet_password:
-       writable */
-/* global
-     wallet_seed:
-       writable */
-
 const
   _libcrash =
   require(
@@ -109,63 +80,14 @@ const
 _process_exit =
   _libcrash._process_exit;
 const
-  _libevm_module =
+  _libevm_contract_deployments_dir_module =
     require(
-      "libevm");
+      "./libevm-contract-deployments-dir");
 /* global
-     _libevm_cmdline_parse */
+     _evm_contract_deployments_dir */
 const
-  _libevm_cmdline_parse =
-    _libevm_module._libevm_cmdline_parse;
-/* global
-     _libevm_global_variables */
-const
-  _libevm_global_variables =
-    _libevm_module._libevm_global_variables;
-/* global
-     _libevm_url_parse */
-const
-  _libevm_url_parse =
-    _libevm_module._libevm_url_parse;
-/* global
-     _wallet_overrides_set */
-const
-  _wallet_overrides_set =
-    _libevm_module._wallet_overrides_set;
-const
-  _libevm_contract_call_module =
-    require(
-      "./libevm-contract-call");
-/* global
-     _artifact_local_auto_detect */
-const
-  _artifact_local_auto_detect =
-    _libevm_contract_call_module._artifact_local_auto_detect;
-/* global
-     _address_check */
-const
-  _address_check =
-    _libevm_contract_call_module._address_check;
-/* global
-     _default_artifact_path_get */
-const
-  _default_artifact_path_get =
-    _libevm_contract_call_module._default_artifact_path_get;
-/* global
-     _contract_abi_auto_detect */
-const
-  _contract_abi_auto_detect =
-    _libevm_contract_call_module._contract_abi_auto_detect;
-/* global
-     _evm_contract_call */
-const
-  _evm_contract_call =
-    _libevm_contract_call_module._evm_contract_call;
-/* global
-     _call_auth_auto_detect */
-const
-  _call_auth_auto_detect =
-    _libevm_contract_call_module._call_auth_auto_detect;
+  _evm_contract_deployments_dir =
+    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 
 function
   _global_variables() {
@@ -185,74 +107,14 @@ function
   runtime_environment =
     "";
   /* global
-       call_date:
+       resolve_date:
          writable */
-  call_date =
+  resolve_date =
     "";
   /* global
-       wallet_name:
+       user_level:
          writable */
-  wallet_name =
-    "";
-  /* global
-       retries_max:
-         writable */
-  retries_max =
-    "";
-  /* global
-       rpc_selection:
-         writable */
-  rpc_selection =
-    "";
-  /* global
-       call_type:
-         writable */
-  call_type =
-    "";
-  /* global
-       index_retrieve:
-         writable */
-  index_retrieve =
-    "";
-  /* global
-       contract_address:
-         writable */
-  contract_address =
-    "";
-  /* global
-       contract_bytecode:
-         writable */
-  contract_bytecode =
-    "";
-  /* global
-       contract_compiler_output:
-         writable */
-  contract_compiler_output =
-    "";
-  /* global
-       contract_abi:
-         writable */
-  contract_abi =
-    "";
-  /* global
-       contract_method:
-         writable */
-  contract_method =
-    "";
-  /* global
-       method_args:
-         writable */
-  method_args =
-    [];
-  /* global
-       price_gas:
-         writable */
-  price_gas =
-    "";
-  /* global
-       measure_unit:
-         writable */
-  measure_unit =
+  user_level =
     "";
   quiet =
     "";
@@ -491,159 +353,18 @@ async function
     _argv[
       "_"][
         0];
-  if ( typeof(
-         _argv) == "undefined" ||
-       _argv[
-         "_"].length < 2 ) {
-    _msg =
-      "Contract method argument required.";
-    _msg_error(
-      _msg,
-      0);
-    _usage(
-      1);
   }
-  contract_method =
-    _argv[
-      "_"][
-        0];
-  const
-    method_args =
-      _argv[
-        "_"].slice(
-        2,
-        _argv[
-          "_"].length - 2);
-  if ( "t" in _argv ) {
-    call_type =
-      _argv[
-        "t"];
-  }
-  if ( "call-type" in _argv ) {
-    call_type =
-      _argv[
-        "call-type"];
-  }
-  if ( "T" in _argv ) {
-    call_timeout =
-      _argv[
-        "t"];
-  }
-  if ( "call-timeout" in _argv ) {
-    call_timeout =
-      _argv[
-        "call-timeout"];
-  }
-  if ( "I" in _argv ) {
-    index_retrieve =
-      _argv[
-        "I"];
-  }
-  if ( "index_retrieve" in _argv ) {
-    index_retrieve =
-      _argv[
-        "index-retrieve"];
-  }
-  if ( "P" in _argv ) {
-    price_gas =
-      _argv[
-        "P"];
-  }
-  if ( "price-gas" in _argv ) {
-    price_gas =
-      _argv[
-        "price-gas"];
   }
   if ( "u" in _argv ) {
-    measure_unit =
+    user_level =
       _argv[
         "u"];
   }
-  if ( "measure-unit" in _argv ) {
-    measure_unit =
+  if ( "user_level" in _argv ) {
+    user_level =
       _argv[
-        "measure-unit"];
+        "user_level"];
   }
-  if ( "V" in _argv ) {
-    msg_value =
-      _argv[
-        "V"];
-  }
-  if ( "msg-value" in _argv ) {
-    msg_value =
-      _argv[
-        "msg-value"];
-  }
-  if ( "r" in _argv ) {
-    retries_max =
-      _argv[
-        "r"];
-  }
-  if ( "retries-max" in _argv ) {
-    retries_max =
-      _argv[
-        "retries-max"];
-  }
-  if ( "S" in _argv ) {
-    rpc_selection =
-      _argv[
-        "S"];
-  }
-  if ( "rpc-selection" in _argv ) {
-    rpc_selection =
-      _argv[
-        "rpc-selection"];
-  }
-  if ( "A" in _argv ) {
-    contract_abi =
-      _argv[
-        "A"];
-  }
-  if ( "abi" in _argv ) {
-    contract_abi =
-      _argv[
-        "abi"];
-  }
-  if ( "B" in _argv ) {
-    contract_bytecode =
-      _argv[
-        "B"];
-  }
-  if ( "bytecode" in _argv ) {
-    contract_bytecode =
-      _argv[
-        "bytecode"];
-  }
-  if ( "C" in _argv ) {
-    contract_compiler_output =
-      _argv[
-        "C"];
-  }
-  if ( "compiler-output" in _argv ) {
-    contract_compiler_output =
-      _argv[
-        "compiler-output"];
-  }
-  if ( "a" in _argv ) {
-    call_auth =
-      "y";
-  }
-  if ( "auth" in _argv ) {
-    call_auth =
-      "y";
-  }
-  if ( "n" in _argv ) {
-    target_networks.push(
-      _argv[
-        "n"]);
-  }
-  if ( "network" in _argv ) {
-    target_networks.push(
-      _argv[
-        "network"]);
-  }
-  _libevm_cmdline_parse(
-    _argv);
   if ( _argv[
          "v"] ||
        _argv[
@@ -660,64 +381,10 @@ function
     _network;
   runtime_environment =
     "browser";
-  call_type =
+  user_level =
     _argv_url_get(
-      "call_type")[
+      "user_level")[
         0];
-  call_timeout =
-    _argv_url_get(
-      "call_timeout")[
-        0];
-  index_retrieve =
-    _argv_url_get(
-      "index_retrieve")[
-        0];
-  price_gas =
-    _argv_url_get(
-      "price_gas")[
-        0];
-  measure_unit =
-    _argv_url_get(
-      "measure_unit")[
-        0];
-  msg_value =
-    _argv_url_get(
-      "msg_value")[
-        0];
-  retries_max =
-    _argv_url_get(
-      "retries_max")[
-        0];
-  rpc_selection =
-    _argv_url_get(
-      "rpc_selection")[
-        0];
-  contract_abi =
-    _argv_url_get(
-      "abi")[
-        0];
-  contract_bytecode =
-    _argv_url_get(
-      "bytecode")[
-        0];
-  contract_compiler_output =
-    _argv_url_get(
-      "compiler_output")[
-        0];
-  rpc_selection =
-    _argv_url_get(
-      "rpc_selection")[
-        0];
-  for ( _network of _argv_url_get(
-                     "network") ) {
-    target_networks.push(
-      _network);
-  }
-  for ( _method of _argv_url_get(
-                     "method_args") ) {
-    method_args.push(
-      _method);
-  }
   quiet =
     _argv_url_get(
       "quiet");
@@ -777,6 +444,5 @@ if ( _cmdline_check(
 }
 else{
   _url_parse();
-  _libevm_url_parse();
 }
 _main();
