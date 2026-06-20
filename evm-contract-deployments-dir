@@ -173,7 +173,7 @@ function
        app_name:
          writable */
   app_name =
-    "evm-contract-call.js";
+    "evm-contract-deployments-dir.js";
   /* global
        app_opts:
          writable */
@@ -264,20 +264,23 @@ function
 }
 
 async function 
-  _overrides_set() {
-  const
-    _address_valid =
-      _address_check(
-        contract_address);
-  if ( ! _address_valid ) {
+  _overrides_set(
+    _help_display) {
+  if ( ! _help_display ) {
     const
-      _msg =
-        "Contract address " +
-        `'${contract_address}' is ` +
-        `invalid.`;
-    _msg_error(
-      _msg,
-      1);
+      _address_valid =
+        _address_check(
+          contract_address);
+    if ( ! _address_valid ) {
+      const
+        _msg =
+          "Contract address " +
+          `'${contract_address}' is ` +
+          `invalid.`;
+      _msg_error(
+        _msg,
+        1);
+    }
   }
   if ( call_date == "" ||
        typeof(
@@ -536,7 +539,8 @@ async function
   if ( _help_display ) {
     quiet =
       "n";
-    await _overrides_set();
+    await _overrides_set(
+      _help_display);
     _usage(
       0);
   }
