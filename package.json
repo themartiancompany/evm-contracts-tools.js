@@ -103,7 +103,7 @@
     "evm-transactions-tools":
       "^0.0.9",
     "evm-wallet.js":
-      "^0.0.50",
+      "^0.0.54",
     "libevm":
       "^0.0.27",
     "ws":
@@ -115,7 +115,7 @@
     "evm-contracts-tools":
       "^0.0.32",
     "evm-wallet.js":
-      "^0.0.50"
+      "^0.0.54"
   },
   "type":
     "commonjs",
@@ -175,7 +175,7 @@
     "publish-npm":
       "npm run build-man && npm run build && npm publish --access public",
     "start":
-      "npx safely-serve --help # index.html --port 3000 --https --no-cache",
+      "npx safely-serve dist/evm-contract-call",
     "test":
       "echo \"Error: no test specified\" && exit 1"
   }
