@@ -1,0 +1,407 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     evm-contract-deployment-address.js
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2024, 2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+
+/* Crash Javascript global variables */
+/* global
+     quiet:
+       writable */
+
+const
+  _libcrash =
+  require(
+    "crash-js");
+/* global
+     _argv_get */
+const
+  _argv_get =
+    _libcrash._argv_get;
+/* global
+     _argv_url_get */
+const
+  _argv_url_get =
+    _libcrash._argv_url_get;
+/* global
+     _cmdline_check */
+const
+  _cmdline_check =
+    _libcrash._cmdline_check;
+/* global
+     _get_date_human */
+const
+  _get_date_human =
+    _libcrash._get_date_human;
+/* global
+     _msg_info */
+const
+  _msg_info =
+    _libcrash._msg_info;
+/* global
+     _msg_error */
+const
+  _msg_error =
+    _libcrash._msg_error;
+/* global
+     _printf */
+const
+_printf =
+  _libcrash._printf;
+/* global
+     _process_exit */
+const
+_process_exit =
+  _libcrash._process_exit;
+
+function
+  _global_variables() {
+  /* global
+       app_name:
+         writable */
+  app_name =
+    "evm-contract-deployments-address.js";
+  /* global
+       app_opts:
+         writable */
+  app_opts =
+    [];
+  /* global
+       runtime_environment:
+         writable */
+  runtime_environment =
+    "";
+  /* global
+       resolve_date:
+         writable */
+  resolve_date =
+    "";
+  /* global
+       user_level:
+         writable */
+  user_level =
+    "";
+  /* global
+       target_networks:
+         writable */
+  target_networks =
+    [];
+  /* global
+       network_ids:
+         writable */
+  network_ids =
+    [];
+  /* global
+       networks_all:
+         writable */
+  networks_all =
+    "";
+  /* global
+       target_app:
+         writable */
+  target_app =
+    "";
+  /* global
+       target_contract:
+         writable */
+  target_contract =
+    "";
+  /* global
+       contract_version:
+         writable */
+  contract_version =
+    "";
+  /* global
+       user_defined:
+         writable */
+  user_defined =
+    "";
+  /* global
+       deployments_dir:
+         writable */
+  deployments_dir =
+    "";
+  quiet =
+    "";
+  /* global
+       verbose:
+         writable */
+  verbose =
+    "";
+}
+
+async function 
+  _overrides_set(
+    _help_display) {
+  if ( ! _help_display &&
+       typeof(_help_display) != "undefined" &&
+       _help_display != "" ) {
+    const
+      _address_valid =
+        _address_check(
+          contract_address);
+    if ( ! _address_valid ) {
+      const
+        _msg =
+          "Contract address " +
+          `'${contract_address}' is ` +
+          `invalid.`;
+      _msg_error(
+        _msg,
+        1);
+    }
+  }
+  if ( resolve_date == "" ||
+       typeof(
+         resolve_date) == "undefined" ) {
+    resolve_date =
+      _get_date_human();
+  }
+  if ( user_level == "" ) {
+    user_level =
+      "n";
+  }
+}
+
+function
+  _config_show() {
+  let
+    _line;
+  const
+    _text = [
+      `${app_name} configuration:`,
+      `             Resolve date:   ${resolve_date}`,
+      `      Runtime environment:   ${runtime_environment}`,
+      `       Target application:   ${target_app}`,
+      `               User level:   ${user_level}`,
+    ];
+  for ( _line of _text ) {
+    _msg_info(
+      _line);
+  }
+}
+
+function
+  _usage(
+    _exit_code) {
+  let
+    _line;
+  const
+    _text = [
+      "",
+      "Returns default deployments directory for an application",
+      "",
+      "Usage:",
+      "",
+      `  ${app_name}`,
+      "    [options]",
+      "    <target-app>",
+      "",
+      "  options:",
+      "",
+      "     -u --user-level                 Returns user-level location",
+      "                                     for an application deployments",
+      `                                     Default: '${user_level}`,
+      "",
+      "     -h --help                       This message.",
+      "     -v --verbose                    Enable verbose output.",
+      ""
+    ];
+  for ( _line of _text ) {
+    console.log(
+      _line);
+  }
+  _process_exit(
+    _exit_code);
+}
+
+async function 
+  _cmdline_parse() {
+  let
+    _help_display,
+    _msg;
+  const
+    _argv_args = {
+      "booleans": [
+        "u",
+        "user-level",
+        "h",
+        "help",
+        "v",
+        "verbose"
+      ]
+    };
+  const
+    _argv =
+      _argv_get(
+        _argv_args);
+  const
+    _options =
+      _argv[
+        "_"];
+  quiet = 
+    "y";
+  runtime_environment =
+    "node";
+  if ( _argv[
+         "h"] ) {
+    _help_display =
+      true;
+  }
+  if ( _argv[
+         "help"] ) {
+    _help_display =
+      true;
+  }
+  if ( ( _options.indexOf(
+           "--help") > -1 ||
+         _options.indexOf(
+           "-h") > -1) ) {
+    _help_display =
+      true;
+  }
+  if ( _help_display ) {
+    quiet =
+      "n";
+    await _overrides_set(
+      _help_display);
+    _usage(
+      0);
+  }
+  if ( typeof(
+         _argv) == "undefined" ||
+       _argv[
+         "_"].length < 1 ) {
+    _msg =
+      "Target application " +
+      "argument required.";
+    _msg_error(
+      _msg,
+      0);
+    _usage(
+      1);
+  }
+  target_app =
+    _argv[
+      "_"][
+        0];
+  if ( "u" in _argv ) {
+    user_level =
+      _argv[
+        "u"];
+  }
+  if ( "user_level" in _argv ) {
+    user_level =
+      _argv[
+        "user_level"];
+  }
+  if ( _argv[
+         "v"] ||
+       _argv[
+         "verbose"] ) {
+    quiet =
+      "n";
+  }
+}
+
+function
+  _url_parse() {
+  let
+    _method,
+    _network;
+  runtime_environment =
+    "browser";
+  user_level =
+    _argv_url_get(
+      "user_level")[
+        0];
+  quiet =
+    _argv_url_get(
+      "quiet");
+  if ( quiet.length === 0 ) {
+    quiet =
+      "n";
+  }
+}
+
+async function
+  _evm_contract_deployments_dir_cmdline(
+    _app_opts) {
+  let
+    _result;
+  const
+    _results =
+      await _evm_contract_deployments_dir.apply(
+        null,
+        app_opts);
+  const
+    _results_type =
+      typeof(
+        _results);
+  if ( _results_type == "object" ) {
+    for ( _result of _results ) {
+      console.log(
+        _result);
+    }
+  }
+  else if ( _results_type == "string" ) {
+    _printf(
+      _results);
+  }
+}
+
+async function
+  _main() {
+  const
+    _overrides_set_up =
+      await _overrides_set();
+  _config_show();
+  const
+    app_opts = [
+      target_app,
+      user_level
+    ];
+  const
+    _deployments =
+      await _evm_contract_deployments_dir.apply(
+        null,
+        app_opts);
+}
+
+_global_variables();
+if ( _cmdline_check(
+       "evm-contract-deployments-dir.js") == true ||
+     _cmdline_check(
+       "evm-contract-deployments-dir") == true ) {
+  _cmdline_parse();
+}
+else{
+  _url_parse();
+}
+_main();
