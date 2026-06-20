@@ -151,21 +151,21 @@
     "build-libevm-contract-call":
       "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
     "build-libevm-contract-deployment-address":
-      "_app='libevm-contract-deployment-address'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='libevm-contract-deployment-address'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-libevm-contract-deployments-dir":
-      "_app='libevm-contract-deployments-dir'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='libevm-contract-deployments-dir'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-libevm-contract-deployment-networks":
-      "_app='libevm-contract-deployment-networks'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='libevm-contract-deployment-networks'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-lib":
       "npm run build-libevm-contract-deployment-address; npm run build-libevm-contract-call && npm run build-libevm-contract-deployments-dir",
     "build-evm-contract-call":
-      "_app='evm-contract-call'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='evm-contract-call'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployment-address":
-      "_app='evm-contract-deployment-address'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='evm-contract-deployment-address'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployments-dir":
-      "_app='evm-contract-deployments-dir'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='evm-contract-deployments-dir'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployment-networks":
-      "_app='evm-contract-deployments-networks'; 'npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+      "_app='evm-contract-deployments-networks'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contracts-tools":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
     "build-bin":
