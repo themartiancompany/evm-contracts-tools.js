@@ -266,7 +266,9 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  if ( ! _help_display ) {
+  if ( ! _help_display &&
+       typeof(_help_display) != "undefined" &&
+       _help_display != "" ) {
     const
       _address_valid =
         _address_check(
@@ -392,96 +394,24 @@ function
     _line;
   const
     _text = [
-      "Runs a smart contract function.",
+      "",
+      "Returns default deployments directory for an application",
       "",
       "Usage:",
       "",
-      "  evm-contract-call.js",
+      `  ${app_name}`,
       "    [options]",
-      "    <contract-address>",
-      "    <contract-method>",
-      "    ([method-args])",
-      "",
-      "  networks:",
-      "    all those supported by",
-      "    'evm-chains-info' as well",
-      "    as directly RPC addresses",
+      "    <target-app>",
       "",
       "  options:",
       "",
-      "     -t --call-type                  It can be 'static' or 'dynamic'.",
-      `       <call-type>                   Default: '${call_type}`,
-      "",
-      "  call options:",
-      `     -V --msg-value                  How much '${measure_unit} to attach to the`,
-      `       <msg-value>                   transaction.`,
-      `                                     Default: '${msg_value}'`,
-      "",
-      "     -u --measure-unit               Measure unit for the transacion.",
-      `       <measure-unit>                It can be 'ether' or 'wei'.`,
-      `                                     Default: '${measure_unit}'`,
-      "",
-      "     -P --price-gas                  I dont remember. It can be 'idontknow'.",
-      "       <price-gas>",
-      `                                     Default: '${price_gas}'`,
-      "",
-      "     -r --retries-max                Maximum number of retries before",
-      `       <retries-max>                 Declaring the call failed.`,
-      `                                     Default: '${retries_max}'`,
-      "",
-      "     -T --call-timeout               Maximum number of milliseconds before",
-      "       <call-timeout>                declaring the call failed.",
-      `                                     Default: '${call_timeout}'`,
-      "",
-      "  contract options:",
-      "",
-      "     -A --abi                        Contract ABI path.",
-      `       <contract-abi>                Default: '${contract_abi}'.`,
-      "",
-      "     -B --bytecode                   Contract bytecode path.",
-      `       <contract-bytecode>           Default: '${contract_bytecode}'.`,
-      "",
-      "     -C --compiler-output            Contract compiler output path",
-      `       <contract-bytecode>           (the hardhat artifact.`,
-      `                                     Default: '${contract_compiler_output}'.`,
-      "",
-      "     -I --index-retrieve             Enables retrieving contract's artifacts",
-      `                                     from the EVM Contracts Source Index.`,
-      `                                     Default: '${contract_compiler_output}'.`,
-      "",
-      "  credentials options:",
-      "",
-      "     -N --wallet-name                EVM Wallet name.",
-      `       <wallet-name>                 Default: '${wallet_name}'.`,
-      "",
-      "     -w --wallet-path                EVM Wallet path.",
-      `       <wallet-path>                 Default: '${wallet_path}'.`,
-      "",
-      "     -p --wallet-password            EVM Wallet password file.",
-      `       <wallet-password>             Default: '${wallet_password}'.`,
-      "",
-      "     -s --wallet-seed                EVM Wallet seed file.",
-      `       <wallet-seed>                 Default: '${wallet_seed}'.`,
-      "",
-      "     -k --api-key                    Etherscan-like service key file.",
-      `       <api-key>                     Default: '${api_key}'.`,
-      "",
-      "  libEVM options:",
-      "",
-      "     -a --auth                       Call authentication.",
-      `                                     Default: '${call_auth}'`,
-      "",
-      "     -n --network                    EVM network name. Accepted",
-      "       <network>                     values are all those supported by",
-      `                                     'evm-chains-info' and RPC addresses.`,
-      `                                     Default: '${target_network}'.`,
-      "",
-      "     -S --rpc-selection              RPC selection method. It can be",
-      "       <rpc-selection>               'kirsh', 'random' or 'all'.",
-      `                                     Default: '${rpc_selection}'.`,
+      "     -u --user-level                 Returns user-level location",
+      "                                     for an application deployments",
+      `                                     Default: '${user_level}`,
       "",
       "     -h --help                       This message.",
-      "     -v --verbose                    Enable verbose output."
+      "     -v --verbose                    Enable verbose output.",
+      ""
     ];
   for ( _line of _text ) {
     console.log(
@@ -521,11 +451,11 @@ async function
     "y";
   runtime_environment =
     "node";
-  if ( _argv["h"] == true ) {
+  if ( _argv["h"] ) {
     _help_display =
       true;
   }
-  if ( _argv["help"] == true ) {
+  if ( _argv["help"] ) {
     _help_display =
       true;
   }
