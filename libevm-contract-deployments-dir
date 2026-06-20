@@ -33,52 +33,10 @@
 /* eslint-disable
      no-useless-assignment */
 
-/* EVM Contracts tools global variables */
-/* global
-     call_type */
-/* global
-     call_auth:
-       writable */
-
-/* libEVM global variables */
-/* global 
-     api_key */
-/* global
-     contract_abi:
-       writable */
-/* global
-     contract_address */
-/* global
-     contract_bytecode:
-       writable */
-/* global
-     contract_compiler_output:
-       writable */
-/* global
-     target_network:
-       writable */
-/* global
-     target_networks:
-       writable */
-
 const
   _libcrash_module =
     require(
       "crash-js");
-/* global
-     _dirname */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _dirname =
-    _libcrash_module._dirname;
-/* global
-     _file_exists */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _file_exists =
-    _libcrash_module._file_exists;
 /* global
      _homedir_get */
 /* eslint-disable-next-line
@@ -86,13 +44,6 @@ const
 const
   _homedir_get =
     _libcrash_module._homedir_get;
-/* global
-     _json_read */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _json_read =
-    _libcrash_module._json_read;
 /* global
      _lib_get */
 /* eslint-disable-next-line
@@ -114,38 +65,6 @@ const
 const
   _msg_error =
     _libcrash_module._msg_error;
-/* global
-     _path_join */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _path_join =
-    _libcrash_module._path_join;
-/* global
-     _range */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _range =
-    _libcrash_module._range;
-const
-  _evm_contracts_tools_module =
-    require("./evm-contracts-tools");
-/* global
-     _address_check */
-const
-  _address_check =
-    _evm_contracts_tools_module._address_check;
-
-const
-  _ethereum_data_module =
-    require(
-      "ethereum-data");
-/* global
-     _data_get */
-const
-  _data_get =
-    _ethereum_data_module._data_get;
 
 function
   _app_check(
