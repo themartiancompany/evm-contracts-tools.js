@@ -84,6 +84,15 @@ _process_exit =
 const
   _stat =
     _libcrash._stat;
+const
+  _libevm_contract_deployment_networks_module =
+  require(
+    "./libevm-contract-deployment-networks");
+/* global
+     _evm_contract_deployment_networks */
+const
+  _evm_contract_deployment_networks =
+    _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 
 function
   _global_variables() {
@@ -145,10 +154,6 @@ async function
     resolve_date =
       _get_date_human();
   }
-  if ( user_level == "" ) {
-    user_level =
-      "n";
-  }
   if ( display_all == "" ) {
     display_all =
       "y";
@@ -172,8 +177,10 @@ function
       `${app_name} configuration:`,
       `             Resolve date:   ${resolve_date}`,
       `      Runtime environment:   ${runtime_environment}`,
-      `       Target application:   ${target_app}`,
-      `               User level:   ${user_level}`,
+      `              Display all:   ${display_all}`,
+      `           Display safest:   ${display_safest}`,
+      `         Display cheapest:   ${display_cheapest}`,
+      `    Deployments directory:   ${deployments_dir}`,
     ];
   for ( _line of _text ) {
     _msg_info(
@@ -293,7 +300,7 @@ async function
     _usage(
       1);
   }
-  target_app =
+  deployments_dir =
     _argv[
       "_"][
         0];
@@ -361,9 +368,9 @@ function
     _argv_url_get(
       "display_cheapest")[
         0];
-  deployment_dir =
+  deployments_dir =
     _argv_url_get(
-      "deployment_dir")[
+      "deployments_dir")[
         0];
   quiet =
     _argv_url_get(
@@ -408,7 +415,7 @@ async function
   _config_show();
   const
     app_opts = [
-      deployment_dir,
+      deployments_dir,
       display_all,
       display_safest,
       display_cheapest

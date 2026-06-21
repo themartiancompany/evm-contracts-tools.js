@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     libevm-contract-deployments-dir
+ *     libevm-contract-deployments-networks
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -32,34 +32,6 @@
      no-unused-vars */
 /* eslint-disable
      no-useless-assignment */
-
-/* EVM Contracts tools global variables */
-/* global
-     call_type */
-/* global
-     call_auth:
-       writable */
-
-/* libEVM global variables */
-/* global 
-     api_key */
-/* global
-     contract_abi:
-       writable */
-/* global
-     contract_address */
-/* global
-     contract_bytecode:
-       writable */
-/* global
-     contract_compiler_output:
-       writable */
-/* global
-     target_network:
-       writable */
-/* global
-     target_networks:
-       writable */
 
 const
   _libcrash_module =
@@ -101,6 +73,13 @@ const
   _lib_get =
     _libcrash_module._lib_get;
 /* global
+     _ls */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _ls =
+    _libcrash_module._ls;
+/* global
      _msg_info */
 /* eslint-disable-next-line
      no-global-assign */
@@ -128,6 +107,13 @@ const
 const
   _range =
     _libcrash_module._range;
+/* global
+     _stat */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _stat =
+    _libcrash_module._stat;
 const
   _libevm_contract_deployments_dir_module =
     require(
@@ -248,40 +234,62 @@ function
 }
 
 function
-  _evm_contract_deployments_dir(
-    _app,
-    _user_level) {
+  _networks_find(
+    _deployment_dir) {
   let
-    _deployments,
-    _deployment_type;
-  _app_check(
-    _app);
-  if ( _user_level == "n" ) {
-    _deployment_type =
-      "system";
+    _file,
+    _file_is_dir,
+    _path;
+  const
+    _networks =
+      [];
+  const
+    _files =
+      _ls(
+        _deployment_dir);
+  for ( _file of _files ) {
+    _path =
+      `${_deployment_dir}/${_file}`;
+    _file_is_dir =
+      _is_dir(
+        _path);
+    if ( ! _file_is_dir ) {
+      const
+        _msg =
+          `there shouldn't be a file into ` +
+          `this directory.`;
+      _msg_warning(
+        _msg)
+      _stat(
+        _file_info);
+    }
+    else {
+      _networks.push(
+        _file);
+    }
   }
-  else if ( _user_level == "n" ) {
-    _deployment_type =
-      "system";
-  }
-  else {
-    _msg =
-      "User level argument must be " +
-      "can be 'y' or 'n'."
-    _msg_error(
-      _msg,
-      1);
-  }
-  _deployments =
-    _default_deployments_dir_get(
-      _app,
-      _deployment_type);
-  return _deployments;
+  return _networks;
+}
+
+function
+  _evm_contract_deployment_networks(
+    _deployment_dir,
+    _display_all,
+    _display_safest,
+    _display_cheapest) {
+  let
+    _networks;
+  console.log(
+    _deployment_dir);
+  _networks =
+    _networks_find(
+      _deployment_dir);
+  console.log(
+    _networks);
+  return _networks;
 }
 
 module.exports = {
-  _default_deployments_dir_get:
-    _default_deployments_dir_get,
-  _evm_contract_deployments_dir:
-    _evm_contract_deployments_dir,
+  _evm_contract_deployment_networks:
+    _evm_contract_deployment_networks
 };
