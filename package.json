@@ -11,12 +11,15 @@
   },
   "man": [
     "./man/ethereum-address-validate.1",
+    "./man/evm-contract-call.1",
+    "./man/evm-contract-call-dynamic.1",
+    "./man/evm-contract-call-static.1",
     "./man/evm-contract-bytecode-get.1",
     "./man/evm-contract-deployer-get.1",
     "./man/evm-contract-deployment-address.1",
-    "./man/evm-contract-deployments-dir.1",
-    "./man/evm-contract-call.1",
-    "./man/evm-contract-call-dynamic.1"
+    "./man/evm-contract-deployment-networks.1",
+    "./man/evm-contract-deployment-versions.1",
+    "./man/evm-contract-deployments-dir.1"
   ],
   "files": [
     "AUTHORS.rst",
@@ -30,6 +33,8 @@
     "evm-contract-deployment-address.webpack.config.js",
     "evm-contract-deployment-networks",
     "evm-contract-deployment-networks.webpack.config.js",
+    "evm-contract-deployment-versions",
+    "evm-contract-deployment-versions.webpack.config.js",
     "evm-contract-deployments-dir",
     "evm-contract-deployments-dir.webpack.config.js",
     "fs-worker.webpack.config.js",
@@ -40,6 +45,8 @@
     "libevm-contract-deployment-address.webpack.config.js",
     "libevm-contract-deployment-networks",
     "libevm-contract-deployment-networks.webpack.config.js",
+    "libevm-contract-deployment-versions",
+    "libevm-contract-deployment-versions.webpack.config.js",
     "libevm-contract-deployments-dir",
     "libevm-contract-deployments-dir.webpack.config.js",
     "lib",
