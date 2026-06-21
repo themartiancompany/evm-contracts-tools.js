@@ -1,5 +1,5 @@
 /**    ----------------------------------------------------------------
- *     libevm-contract-deployment-versions.webpack.config.cjs
+ *     evm-contract-deployments-versions.webpack.config.cjs
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -33,7 +33,7 @@ const
       __dirname);
 const
   _input_file_name =
-    `libevm-contract-deployment-versions`;
+    `evm-contract-deployment-versions`;
 const
   _input_file_path =
     `./${_input_file_name}`;
