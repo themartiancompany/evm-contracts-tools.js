@@ -173,7 +173,6 @@
       "_app='libevm-contract-deployments-dir'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-lib":
       "for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do npm run \"build-lib${_app}\"; done",
-      "npm run build-libevm-contract-deployment-address; npm run build-libevm-contract-call && npm run build-libevm-contract-deployments-dir",
     "build-evm-contract-call":
       "_app='evm-contract-call'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployment-address":
