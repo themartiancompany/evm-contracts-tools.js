@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     evm-contract-deployment-address.js
+ *     evm-contract-deployment-networks.js
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -79,6 +79,11 @@ _printf =
 const
 _process_exit =
   _libcrash._process_exit;
+/* global
+     _stat */
+const
+  _stat =
+    _libcrash._stat;
 
 function
   _global_variables() {
@@ -86,7 +91,7 @@ function
        app_name:
          writable */
   app_name =
-    "evm-contract-deployments-address.js";
+    "evm-contract-deployments-networks.js";
   /* global
        app_opts:
          writable */
@@ -103,49 +108,24 @@ function
   resolve_date =
     "";
   /* global
-       user_level:
-         writable */
-  user_level =
-    "";
-  /* global
-       target_networks:
-         writable */
-  target_networks =
-    [];
-  /* global
-       network_ids:
-         writable */
-  network_ids =
-    [];
-  /* global
-       networks_all:
-         writable */
-  networks_all =
-    "";
-  /* global
-       target_app:
-         writable */
-  target_app =
-    "";
-  /* global
-       target_contract:
-         writable */
-  target_contract =
-    "";
-  /* global
-       contract_version:
-         writable */
-  contract_version =
-    "";
-  /* global
-       user_defined:
-         writable */
-  user_defined =
-    "";
-  /* global
        deployments_dir:
          writable */
   deployments_dir =
+    "";
+  /* global
+       display_all:
+         writable */
+  display_all =
+    "";
+  /* global
+       display_safest:
+         writable */
+  display_safest =
+    "";
+  /* global
+       display_cheapest:
+         writable */
+  display_cheapest =
     "";
   quiet =
     "";
@@ -159,24 +139,6 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  if ( ! _help_display &&
-       typeof(_help_display) != "undefined" &&
-       _help_display != "" ) {
-    const
-      _address_valid =
-        _address_check(
-          contract_address);
-    if ( ! _address_valid ) {
-      const
-        _msg =
-          "Contract address " +
-          `'${contract_address}' is ` +
-          `invalid.`;
-      _msg_error(
-        _msg,
-        1);
-    }
-  }
   if ( resolve_date == "" ||
        typeof(
          resolve_date) == "undefined" ) {
@@ -185,6 +147,18 @@ async function
   }
   if ( user_level == "" ) {
     user_level =
+      "n";
+  }
+  if ( display_all == "" ) {
+    display_all =
+      "y";
+  }
+  if ( display_cheapest == "" ) {
+    display_cheapest =
+      "n";
+  }
+  if ( display_safest == "" ) {
+    display_safest =
       "n";
   }
 }
@@ -215,19 +189,27 @@ function
   const
     _text = [
       "",
-      "Returns default deployments directory for an application",
+      "Returns a contract's deployment available networks",
       "",
       "Usage:",
       "",
       `  ${app_name}`,
       "    [options]",
-      "    <target-app>",
+      "    <deployment-dir>",
       "",
       "  options:",
       "",
-      "     -u --user-level                 Returns user-level location",
-      "                                     for an application deployments",
-      `                                     Default: '${user_level}`,
+      "     -A --display-all                Display all available networks",
+      "                                     for the deployment.",
+      `                                     Default: '${display_all}`,
+      "",
+      "     -S --display-safest             Display safest network",
+      "                                     for the deployment.",
+      `                                     Default: '${display_safest}`,
+      "",
+      "     -C --display-cheapest           Display cheapest network",
+      "                                     for the deployment.",
+      `                                     Default: '${display_cheapest}`,
       "",
       "     -h --help                       This message.",
       "     -v --verbose                    Enable verbose output.",
@@ -249,8 +231,12 @@ async function
   const
     _argv_args = {
       "booleans": [
-        "u",
-        "user-level",
+        "A",
+        "display-all",
+        "S",
+        "display-safest",
+        "C",
+        "display-cheapest",
         "h",
         "help",
         "v",
@@ -299,8 +285,8 @@ async function
        _argv[
          "_"].length < 1 ) {
     _msg =
-      "Target application " +
-      "argument required.";
+      "A deployment directory " +
+      "must be specified.";
     _msg_error(
       _msg,
       0);
@@ -311,15 +297,41 @@ async function
     _argv[
       "_"][
         0];
-  if ( "u" in _argv ) {
-    user_level =
+  if ( _argv[
+         "A"] ) {
+    display_all =
       _argv[
-        "u"];
+        "A"];
   }
-  if ( "user_level" in _argv ) {
-    user_level =
+  if ( _argv[
+         "display-all"] ) {
+    display_all =
       _argv[
-        "user_level"];
+        "display-all"];
+  }
+  if ( _argv[
+         "S"] ) {
+    display_safest =
+      _argv[
+        "S"];
+  }
+  if ( _argv[
+         "display-safest"] ) {
+    display_safest =
+      _argv[
+        "display-safest"];
+  }
+  if ( _argv[
+         "C"] ) {
+    display_cheapest =
+      _argv[
+        "C"];
+  }
+  if ( _argv[
+         "display-cheapest"] ) {
+    display_cheapest =
+      _argv[
+        "display-cheapest"];
   }
   if ( _argv[
          "v"] ||
@@ -337,9 +349,21 @@ function
     _network;
   runtime_environment =
     "browser";
-  user_level =
+  display_all =
     _argv_url_get(
-      "user_level")[
+      "display_all")[
+        0];
+  display_safest =
+    _argv_url_get(
+      "display_safest")[
+        0];
+  display_cheapest =
+    _argv_url_get(
+      "display_cheapest")[
+        0];
+  deployment_dir =
+    _argv_url_get(
+      "deployment_dir")[
         0];
   quiet =
     _argv_url_get(
@@ -351,13 +375,13 @@ function
 }
 
 async function
-  _evm_contract_deployments_dir_cmdline(
+  _evm_contract_deployment_networks_cmdline(
     _app_opts) {
   let
     _result;
   const
     _results =
-      await _evm_contract_deployments_dir.apply(
+      await _evm_contract_deployment_networks.apply(
         null,
         app_opts);
   const
@@ -384,21 +408,23 @@ async function
   _config_show();
   const
     app_opts = [
-      target_app,
-      user_level
+      deployment_dir,
+      display_all,
+      display_safest,
+      display_cheapest
     ];
   const
-    _deployments =
-      await _evm_contract_deployments_dir.apply(
+    _networks =
+      await _evm_contract_deployment_networks.apply(
         null,
         app_opts);
 }
 
 _global_variables();
 if ( _cmdline_check(
-       "evm-contract-deployments-dir.js") == true ||
+       "evm-contract-deployment-networks.js") == true ||
      _cmdline_check(
-       "evm-contract-deployments-dir") == true ) {
+       "evm-contract-deployment-networks") == true ) {
   _cmdline_parse();
 }
 else{
