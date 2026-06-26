@@ -86,7 +86,7 @@ function
        app_name:
          writable */
   app_name =
-    "evm-contract-deployments-address.js";
+    "evm-contract-deployments-versions.js";
   /* global
        app_opts:
          writable */
@@ -103,49 +103,19 @@ function
   resolve_date =
     "";
   /* global
-       user_level:
+       config_file:
          writable */
-  user_level =
+  config_file =
     "";
   /* global
-       target_networks:
+       display_highest:
          writable */
-  target_networks =
-    [];
-  /* global
-       network_ids:
-         writable */
-  network_ids =
-    [];
-  /* global
-       networks_all:
-         writable */
-  networks_all =
+  display_highest =
     "";
   /* global
-       target_app:
+       display_lowest:
          writable */
-  target_app =
-    "";
-  /* global
-       target_contract:
-         writable */
-  target_contract =
-    "";
-  /* global
-       contract_version:
-         writable */
-  contract_version =
-    "";
-  /* global
-       user_defined:
-         writable */
-  user_defined =
-    "";
-  /* global
-       deployments_dir:
-         writable */
-  deployments_dir =
+  display_lowest =
     "";
   quiet =
     "";
@@ -159,32 +129,18 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  if ( ! _help_display &&
-       typeof(_help_display) != "undefined" &&
-       _help_display != "" ) {
-    const
-      _address_valid =
-        _address_check(
-          contract_address);
-    if ( ! _address_valid ) {
-      const
-        _msg =
-          "Contract address " +
-          `'${contract_address}' is ` +
-          `invalid.`;
-      _msg_error(
-        _msg,
-        1);
-    }
-  }
   if ( resolve_date == "" ||
        typeof(
          resolve_date) == "undefined" ) {
     resolve_date =
       _get_date_human();
   }
-  if ( user_level == "" ) {
-    user_level =
+  if ( display_highest == "" ) {
+    display_highest =
+      "n";
+  }
+  if ( display_lowest == "" ) {
+    display_lowest =
       "n";
   }
 }
@@ -197,9 +153,9 @@ function
     _text = [
       `${app_name} configuration:`,
       `             Resolve date:   ${resolve_date}`,
-      `      Runtime environment:   ${runtime_environment}`,
-      `       Target application:   ${target_app}`,
-      `               User level:   ${user_level}`,
+      `       Configuration file:   ${config_file}`,
+      `          Display highest:   ${display_highest}`,
+      `           Display lowest:   ${display_lowest}`,
     ];
   for ( _line of _text ) {
     _msg_info(
@@ -215,19 +171,21 @@ function
   const
     _text = [
       "",
-      "Returns default deployments directory for an application",
+      "Returns available versions for contract deployments on a network",
       "",
       "Usage:",
       "",
       `  ${app_name}`,
       "    [options]",
-      "    <target-app>",
+      "    <config-file>",
       "",
       "  options:",
       "",
-      "     -u --user-level                 Returns user-level location",
-      "                                     for an application deployments",
-      `                                     Default: '${user_level}`,
+      "     -H --display-highest            Display highest versions available.",
+      `                                     Default: '${display_highest}`,
+      "",
+      "     -L --display-lowest             Display lowest versions available.",
+      `                                     Default: '${display_lowest}`,
       "",
       "     -h --help                       This message.",
       "     -v --verbose                    Enable verbose output.",
@@ -249,8 +207,10 @@ async function
   const
     _argv_args = {
       "booleans": [
-        "u",
-        "user-level",
+        "H",
+        "display-highest",
+        "L",
+        "display-lowest",
         "h",
         "help",
         "v",
@@ -311,15 +271,25 @@ async function
     _argv[
       "_"][
         0];
-  if ( "u" in _argv ) {
-    user_level =
+  if ( "H" in _argv ) {
+    display_highest =
       _argv[
-        "u"];
+        "H"];
   }
-  if ( "user_level" in _argv ) {
-    user_level =
+  if ( "display-highest" in _argv ) {
+    display_highest =
       _argv[
-        "user_level"];
+        "display-highest"];
+  }
+  if ( "L" in _argv ) {
+    display_lowest =
+      _argv[
+        "L"];
+  }
+  if ( "display-lowest" in _argv ) {
+    display_lowest =
+      _argv[
+        "display-lowest"];
   }
   if ( _argv[
          "v"] ||
@@ -337,9 +307,17 @@ function
     _network;
   runtime_environment =
     "browser";
-  user_level =
+  config_file =
     _argv_url_get(
-      "user_level")[
+      "config_file")[
+        0];
+  display_highest =
+    _argv_url_get(
+      "display_highest")[
+        0];
+  display_lowest =
+    _argv_url_get(
+      "display_lowest")[
         0];
   quiet =
     _argv_url_get(
@@ -351,13 +329,13 @@ function
 }
 
 async function
-  _evm_contract_deployments_dir_cmdline(
+  _evm_contract_deployment_versions_cmdline(
     _app_opts) {
   let
     _result;
   const
     _results =
-      await _evm_contract_deployments_dir.apply(
+      await _evm_contract_deployment_versions.apply(
         null,
         app_opts);
   const
@@ -388,17 +366,17 @@ async function
       user_level
     ];
   const
-    _deployments =
-      await _evm_contract_deployments_dir.apply(
+    _versions =
+      await _evm_contract_deployment_versions.apply(
         null,
         app_opts);
 }
 
 _global_variables();
 if ( _cmdline_check(
-       "evm-contract-deployments-dir.js") == true ||
+       "evm-contract-deployments-versions.js") ||
      _cmdline_check(
-       "evm-contract-deployments-dir") == true ) {
+       "evm-contract-deployments-versions") ) {
   _cmdline_parse();
 }
 else{
