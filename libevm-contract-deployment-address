@@ -138,6 +138,15 @@ const
   _evm_contract_deployments_dir =
     _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
+  _libevm_contract_deployment_networks =
+    require(
+      "./libevm-contract-deployment-networks");
+/* global
+     _evm_contract_deployment_networks */
+const
+  _evm_contract_deployment_networks =
+    _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
+const
   _evm_chains_info_module =
     require(
       "evm-chains-info");
