@@ -173,7 +173,7 @@
   },
   "scripts": {
     "build-fs-worker":
-      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details && cp 'fs-worker.js' 'dist/'{'evm-contract-call','evm-contracts-tools','libevm-contract-call'}",
+      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details; for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do cp 'fs-worker.js' \"dist/${_app}\"; done",
     "build-libevm-contract-call":
       "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
     "build-libevm-contract-deployment-address":
