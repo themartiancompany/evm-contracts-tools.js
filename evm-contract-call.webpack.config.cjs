@@ -96,6 +96,10 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/opfs/opfs'),
+      "fs":
+        _path.resolve(
+          __dirname,
+          'node_modules/fs/fs'),
       "evm-contracts-tools":
         _path.resolve(
           __dirname,
@@ -108,10 +112,6 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/evm-wallet.js/libevm-wallet'),
-      "fs":
-        _path.resolve(
-          __dirname,
-          'node_modules/fs/fs'),
       "libevm":
         _path.resolve(
           __dirname,
