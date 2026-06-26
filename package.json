@@ -124,7 +124,7 @@
   },
   "overrides": {
     "evm-contracts-tools":
-      "^0.0.32",
+      "^0.0.38",
     "evm-wallet.js":
       "^0.0.57"
   },
