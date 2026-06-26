@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.39",
+    "0.0.42",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -114,9 +114,9 @@
     "evm-transactions-tools":
       "^0.0.10",
     "evm-wallet.js":
-      "^0.0.57",
+      "^0.0.62",
     "libevm":
-      "^0.0.28",
+      "^0.0.29",
     "ws":
       "^8.21.0",
     "yargs":
@@ -124,9 +124,9 @@
   },
   "overrides": {
     "evm-contracts-tools":
-      "^0.0.38",
+      "./evm-contracts-tools",
     "evm-wallet.js":
-      "^0.0.57"
+      "^0.0.62"
   },
   "type":
     "commonjs",
@@ -184,6 +184,8 @@
       "_app='libevm-contract-deployment-versions'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-libevm-contract-deployments-dir":
       "_app='libevm-contract-deployments-dir'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-libevm-contracts-tools":
+      "true",
     "build-lib":
       "for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do npm run \"build-lib${_app}\"; done",
     "build-evm-contract-call":
