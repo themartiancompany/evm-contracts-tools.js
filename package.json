@@ -201,7 +201,7 @@
     "build-evm-contracts-tools":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
     "build-bin":
-      "for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do npm run \"build-${_app}\"; done",
+      "for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do npm run \"build-${_app}\"; done",
     "build-man":
       "make build-man",
     "build":
