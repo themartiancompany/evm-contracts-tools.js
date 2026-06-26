@@ -248,35 +248,133 @@ function
 }
 
 function
-  _evm_contract_deployments_dir(
-    _app,
-    _user_level) {
+  _evm_contract_deployment_address(
+    _target_networks,
+    _network_ids,
+    _networks_all,
+    _target_app,
+    _contract_version,
+    _user_defined,
+    _deployments_dir) {
   let
-    _deployments,
-    _deployment_type;
-  _app_check(
-    _app);
-  if ( _user_level == "n" ) {
-    _deployment_type =
-      "system";
+    _args,
+    _contract_address,
+    _contract_address_get_args,
+    _contracts_addresses,
+    _network,
+    _network_check_args,
+    _target_network,
+    _target_network_id,
+    _user_deployments_dir,
+    _system_deployments_dir,
+    _msg;
+  if ( _user_defined == "n" ) {
+    if ( _target_app == "" ) {
+      _msg =
+        "A target application needs to " +
+        "be specified with option '-a' " +
+        "if not enabling user-defined " +
+        "deployments with '-u' and " +
+        "specifying a deployments directory " +
+        "path with '-d'.";
+      _msg_error(
+        _msg,
+        1)
+    }
+    _system_deployments_dir =
+      _evm_contract_deployments_dir(
+        target_app);
+    if ( _deployments_dir != system_deployments_dir ) {
+      _msg =
+        "To set a custom deployments directory path " +
+        "you need to enable the user-defined " +
+        "deployments switch with '-u'." +
+      _msg_error(
+        _msg,
+        1)
+    }
   }
-  else if ( _user_level == "n" ) {
-    _deployment_type =
-      "system";
+  else if ( _user_defined == "y" ) {
+    if ( _target_app != "" ) {
+      _user_deployments_dir =
+        _evm_contract_deployments_dir(
+	  _target_app,
+          _user_defined);
+    }
+    if ( _deployments_dir != _user_deployments_dir ) {
+      _msg =
+        "Using custom deployments directory " +
+        `path '${_deployments_dir}'.`;
+      _msg_info(
+        _msg);
+    }
+    else {
+      _user_deployments_check();
+    }
   }
   else {
     _msg =
-      "User level argument must be " +
+      "The 'user-defined' switch argument must be " +
       "can be 'y' or 'n'."
     _msg_error(
       _msg,
       1);
   }
-  _deployments =
-    _default_deployments_dir_get(
-      _app,
-      _deployment_type);
-  return _deployments;
+  if ( _networks_all == "y" ) {
+    _target_networks =
+      _evm_contract_deployment_networks(
+        `${_deployments_dir}/${_target_contract}`,
+        _networks_all);
+  }
+  for ( _network of _target_networks ) {
+    _target_network_id =
+      "";
+    _network_check_args = [
+      _deployments_dir,
+      _target_contract,
+      _network,
+      _target_network_id
+    ];
+    _network_check.apply(
+      null,
+      _network_check_args);
+    _contract_address_get_args.push( [
+      _deployments_dir,
+      _target_contract,
+      _target_network,
+      _target_network_id,
+      _contract_version
+    ] );
+  }
+  for ( _network of  _network_ids ) {
+    _target_network =
+      "";
+    _network_check_args = [
+      _deployments_dir,
+      _target_contract,
+      _target_network,
+      _network
+    ];
+    _network_check.apply(
+      null,
+      _network_check_args);
+    _contract_address_get_args.push( [
+      _deployments_dir,
+      _target_contract,
+      _target_network,
+      _target_network_id,
+      _contract_version
+    ] );
+  }
+  for ( _args of _contract_address_args ) {
+    _contract_address =
+      _contract_address_get.apply(
+        null,
+        _args);
+    _contract_addresses.push(
+      _contract_address);
+  }
+  return _contracts_addresses;
 }
 
 function
@@ -301,8 +399,8 @@ function
 module.exports = {
   _default_deployments_dir_get:
     _default_deployments_dir_get,
-  _evm_contract_deployments_dir:
-    _evm_contract_deployments_dir,
+  _evm_contract_deployment_address:
+    _evm_contract_deployment_address,
   _networks_all_auto_detect:
     _networks_all_auto_detect,
 };

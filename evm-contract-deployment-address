@@ -79,6 +79,15 @@ _printf =
 const
 _process_exit =
   _libcrash._process_exit;
+const
+  _libevm_contract_deployment_address_module =
+  require(
+    "./libevm-contract-deployment-address");
+/* global
+     _evm_contract_deployment_address */
+const
+  _evm_contract_deployment_address =
+    _libevm_contract_deployment_address_module._evm_contract_deployment_address;
 
 function
   _global_variables() {
