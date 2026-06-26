@@ -103,7 +103,7 @@ module.exports = {
       "evm-contracts-tools":
         _path.resolve(
           __dirname,
-          "libevm-contracts-tools"),
+          "evm-contracts-tools"),
       "fs":
         _path.resolve(
           __dirname,
