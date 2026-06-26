@@ -156,20 +156,43 @@ const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
 
-
 function
   _contract_address_get(
     _deployments,
     _contract,
     _network,
     _network_id,
-    _version) {
+    _version,
+    _configuration_format) {
   let
+    _config_file_ext,
     _config_path,
     _address,
     _found,
     _msg,
     _net;
+  if ( typeof(
+         _configuration_format) === "undefined" ||
+       _configuration_format == "" ) {
+    _configuration_format =
+      "bash";
+  }
+  if ( _configuration_format == "bash" ) {
+    _config_file_ext =
+      "sh";
+  }
+  if ( _configuration_format == "json" ) {
+    _config_file_ext =
+      "json"
+  }
+  else {
+    _msg =
+      "Unknown configuration format " +
+      `${_configuration_format}'.`;
+    _msg_error(
+      _msg,
+      1);
+  }
   const
     _networks = [
       _network,
@@ -179,7 +202,7 @@ function
     false;
   for ( _net of _networks ) {
     _config_path =
-      `${_deployments}/${_contract}/${_net}/config.sh`;
+      `${_deployments}/${_contract}/${_net}/config.${_config_file_ext}`;
     if ( _file_exists(
            _config_path) ) {
       _found =
@@ -190,7 +213,7 @@ function
   if ( ! _found ) {
     _msg =
       `No network '${_network}' deployment ` +
-      `configuration for '${_contract}' ` +
+      `configuration for contract '${_contract}' ` +
       `found at path '${_deployments}'.`;
     _msg_error(
       _msg,
@@ -216,6 +239,7 @@ function
       _msg,
       1);
   }
+  return _contract_address;
 }
 
 function
