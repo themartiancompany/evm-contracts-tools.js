@@ -52,6 +52,10 @@ const
       _output_file_name
 };
 const
+  _node_fs_ignore =
+  { resourceRegExp:
+      /^node:fs$/ };
+const
   _yargs_ignore =
   { resourceRegExp:
       /^yargs$/ };
