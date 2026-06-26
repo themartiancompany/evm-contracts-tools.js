@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ---------------------------------------------------------
- *     webpack.config.cjs
+ *     evm-contract-call.webpack.config.cjs
  *     ---------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
