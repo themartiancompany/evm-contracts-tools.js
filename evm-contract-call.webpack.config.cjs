@@ -83,11 +83,11 @@ module.exports = {
       "evm-contracts-tools":
         _path.resolve(
           __dirname,
-          "libevm-contracts-tools"),
+          "evm-contracts-tools"),
       "evm-transactions-tools":
         _path.resolve(
           __dirname,
-          "./libevm-transactions-tools"),
+          "node_modules/evm-transactions-tools/evm-transactions-tools"),
       "evm-wallet.js":
         _path.resolve(
           __dirname,
