@@ -99,7 +99,7 @@ module.exports = {
       "fs":
         _path.resolve(
           __dirname,
-          'node_modules/fs/fs'),
+          "node_modules/fs/fs"),
       "evm-contracts-tools":
         _path.resolve(
           __dirname,
