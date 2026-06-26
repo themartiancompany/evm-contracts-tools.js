@@ -249,8 +249,10 @@ async function
   const
     _argv_args = {
       "booleans": [
+        "A",
+        "networks-all",
         "u",
-        "user-level",
+        "user-defined",
         "h",
         "help",
         "v",
@@ -337,9 +339,35 @@ function
     _network;
   runtime_environment =
     "browser";
-  user_level =
+  target_networks =
     _argv_url_get(
-      "user_level")[
+      "network");
+  target_ids =
+    _argv_url_get(
+      "chain_id");
+  networks_all =
+    _argv_url_get(
+      "networks_all")[
+        0];
+  target_app =
+    _argv_url_get(
+      "target_app")[
+        0];
+  target_contract =
+    _argv_url_get(
+      "target_contract")[
+        0];
+  contract_version =
+    _argv_url_get(
+      "contract_version")[
+        0];
+  user_defined =
+    _argv_url_get(
+      "user_defined")[
+        0];
+  deployments_dir =
+    _argv_url_get(
+      "deployments_dir")[
         0];
   quiet =
     _argv_url_get(
@@ -351,13 +379,13 @@ function
 }
 
 async function
-  _evm_contract_deployments_dir_cmdline(
+  _evm_contract_deployment_address_cmdline(
     _app_opts) {
   let
     _result;
   const
     _results =
-      await _evm_contract_deployments_dir.apply(
+      await _evm_contract_deployment_address.apply(
         null,
         app_opts);
   const
@@ -389,16 +417,16 @@ async function
     ];
   const
     _deployments =
-      await _evm_contract_deployments_dir.apply(
+      await _evm_contract_deployment_address.apply(
         null,
         app_opts);
 }
 
 _global_variables();
 if ( _cmdline_check(
-       "evm-contract-deployments-dir.js") == true ||
+       "evm-contract-deployment-address.js") ||
      _cmdline_check(
-       "evm-contract-deployments-dir") == true ) {
+       "evm-contract-deployment-address") ) {
   _cmdline_parse();
 }
 else{

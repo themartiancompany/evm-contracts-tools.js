@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.38",
+    "0.0.39",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.30",
+      "^0.0.31",
     "flatted":
       "^3.2.9",
     "eslint":
@@ -112,11 +112,11 @@
     "evm-chains-info":
       "^0.0.22",
     "evm-transactions-tools":
-      "^0.0.9",
+      "^0.0.10",
     "evm-wallet.js":
-      "^0.0.54",
+      "^0.0.57",
     "libevm":
-      "^0.0.27",
+      "^0.0.28",
     "ws":
       "^8.21.0",
     "yargs":
@@ -126,7 +126,7 @@
     "evm-contracts-tools":
       "^0.0.32",
     "evm-wallet.js":
-      "^0.0.54"
+      "^0.0.57"
   },
   "type":
     "commonjs",
@@ -165,6 +165,12 @@
       "evm-contract-deployments-dir.js":
         "evm-contract-deployments-dir"
     },
+  "yargs": {
+    "parse-numbers":
+      false,
+    "parse-positional-numbers":
+      false
+  },
   "scripts": {
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details && cp 'fs-worker.js' 'dist/'{'evm-contract-call','evm-contracts-tools','libevm-contract-call'}",
@@ -203,7 +209,7 @@
     "publish-npm":
       "npm run build-man && npm run build && npm publish --access public",
     "start":
-      "npx safely-serve dist/evm-contract-call",
+      "npx safely-serve 'dist/evm-contract-call'",
     "test":
       "echo \"Error: no test specified\" && exit 1"
   }
