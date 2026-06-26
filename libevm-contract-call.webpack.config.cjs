@@ -92,6 +92,10 @@ module.exports = {
   },
   resolve: {
     alias: {
+      "node:fs":
+        _path.resolve(
+          __dirname,
+          'node_modules/opfs/opfs'),
       "fs":
         _path.resolve(
           __dirname,
