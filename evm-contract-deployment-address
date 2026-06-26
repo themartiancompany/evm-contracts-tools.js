@@ -159,30 +159,13 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  if ( ! _help_display &&
-       typeof(_help_display) != "undefined" &&
-       _help_display != "" ) {
-    const
-      _address_valid =
-        _address_check(
-          contract_address);
-    if ( ! _address_valid ) {
-      const
-        _msg =
-          "Contract address " +
-          `'${contract_address}' is ` +
-          `invalid.`;
-      _msg_error(
-        _msg,
-        1);
-    }
-  }
   if ( resolve_date == "" ||
        typeof(
          resolve_date) == "undefined" ) {
     resolve_date =
       _get_date_human();
   }
+  _networks_all_auto_detect();
   if ( user_level == "" ) {
     user_level =
       "n";
@@ -198,8 +181,12 @@ function
       `${app_name} configuration:`,
       `             Resolve date:   ${resolve_date}`,
       `      Runtime environment:   ${runtime_environment}`,
+      `          Target networks:   ${target_networks}`,
+      `    Network ID (chain ID):   ${network_ids}`,
+      `             All networks:   ${networks_all}`,
       `       Target application:   ${target_app}`,
-      `               User level:   ${user_level}`,
+      `     User-defined address:   ${user_defined}`,
+      `         Deployments path:   ${deployments_dir}`,
     ];
   for ( _line of _text ) {
     _msg_info(
@@ -215,19 +202,35 @@ function
   const
     _text = [
       "",
-      "Returns default deployments directory for an application",
+      "Returns an EVM network's contract deployment address",
       "",
       "Usage:",
       "",
       `  ${app_name}`,
       "    [options]",
-      "    <target-app>",
+      "    <target-contract>",
+      "",
+      "  networks:",
+      "    All those supported",
+      "    by 'evm-chains-info'.",
       "",
       "  options:",
       "",
-      "     -u --user-level                 Returns user-level location",
-      "                                     for an application deployments",
-      `                                     Default: '${user_level}`,
+      "     -n, --network <network>            EVM network name.",
+      "     -i, --chain-id <number>            EVM network id (chain ID).",
+      "     -A, --networks-all                 Returns address for all",
+      "                                        available networks.",
+      `                                        Default: '${networks_all}`,
+      "     -V, --contract-version <version>   Contract version.",
+      `                                        Default: '${contract_version}`,
+      "                                        Returns contract address for",
+      "                                        user-defined file system",
+      "                                        deployment instead of the system",
+      "                                        one.",
+      `                                        Default: '${user_defined}`,
+      "     -d, --deployments-dir <dir>        Specify contract deployments",
+      "                                        directory path.",
+      `                                        Default: '${deployments_dir}`,
       "",
       "     -h --help                       This message.",
       "     -v --verbose                    Enable verbose output.",
@@ -301,7 +304,7 @@ async function
        _argv[
          "_"].length < 1 ) {
     _msg =
-      "Target application " +
+      "Target contract " +
       "argument required.";
     _msg_error(
       _msg,
@@ -309,7 +312,7 @@ async function
     _usage(
       1);
   }
-  target_app =
+  target_contract =
     _argv[
       "_"][
         0];
@@ -412,11 +415,17 @@ async function
   _config_show();
   const
     app_opts = [
+      target_networks,
+      network_ids,
+      networks_all,
       target_app,
-      user_level
+      target_contract,
+      contract_version,
+      user_defined,
+      deployments_dir,
     ];
   const
-    _deployments =
+    _address =
       await _evm_contract_deployment_address.apply(
         null,
         app_opts);

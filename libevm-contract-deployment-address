@@ -279,9 +279,30 @@ function
   return _deployments;
 }
 
+function
+  _networks_all_auto_detect() {
+  let
+    _networks_all;
+  _networks_all =
+    "n";
+  if ( target_networks.length < 1 &&
+       network_ids.length < 1 ) {
+    _networks_all =
+      "y";
+  }
+  if ( typeof(
+         networks_all) === "undefined" ||
+       networks_all == "" ) {
+    networks_all =
+      _networks_all;
+  }
+}
+
 module.exports = {
   _default_deployments_dir_get:
     _default_deployments_dir_get,
   _evm_contract_deployments_dir:
     _evm_contract_deployments_dir,
+  _networks_all_auto_detect:
+    _networks_all_auto_detect,
 };
