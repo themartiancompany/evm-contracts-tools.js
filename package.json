@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.42",
+    "0.0.43",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -114,7 +114,7 @@
     "evm-transactions-tools":
       "^0.0.10",
     "evm-wallet.js":
-      "^0.0.62",
+      "^0.0.63",
     "libevm":
       "^0.0.29",
     "ws":
@@ -126,7 +126,7 @@
     "evm-contracts-tools":
       "./evm-contracts-tools",
     "evm-wallet.js":
-      "^0.0.62"
+      "^0.0.63"
   },
   "type":
     "commonjs",
@@ -173,7 +173,7 @@
   },
   "scripts": {
     "build-fs-worker":
-      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details; for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do cp 'fs-worker.js' \"dist/${_app}\"; cp 'fs-worker.js' \"dist/lib${_app}\"; done",
+      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details; for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do cp 'fs-worker.js' \"dist/${_app}\"; cp 'fs-worker.js' \"dist/lib${_app}\" || true; done",
     "build-libevm-contract-call":
       "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
     "build-libevm-contract-deployment-address":

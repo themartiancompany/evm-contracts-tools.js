@@ -103,7 +103,7 @@ module.exports = {
       "evm-contracts-tools":
         _path.resolve(
           __dirname,
-          "evm-contract-tools"),
+          "evm-contracts-tools"),
       "evm-transactions-tools":
         _path.resolve(
           __dirname,
