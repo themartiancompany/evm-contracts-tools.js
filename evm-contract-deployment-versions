@@ -79,6 +79,15 @@ _printf =
 const
 _process_exit =
   _libcrash._process_exit;
+const
+  _libevm_contract_deployment_versions_module =
+  require(
+    "./libevm-contract-deployment-versions");
+/* global
+     _evm_contract_deployment_versions */
+const
+  _evm_contract_deployment_versions =
+    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
 
 function
   _global_variables() {
@@ -259,7 +268,7 @@ async function
        _argv[
          "_"].length < 1 ) {
     _msg =
-      "Target application " +
+      "Configuration file " +
       "argument required.";
     _msg_error(
       _msg,
@@ -267,7 +276,7 @@ async function
     _usage(
       1);
   }
-  target_app =
+  config_file =
     _argv[
       "_"][
         0];
@@ -337,7 +346,7 @@ async function
     _results =
       await _evm_contract_deployment_versions.apply(
         null,
-        app_opts);
+        _app_opts);
   const
     _results_type =
       typeof(
@@ -362,21 +371,19 @@ async function
   _config_show();
   const
     app_opts = [
-      target_app,
-      user_level
+      config_file,
+      display_highest,
+      display_lowest
     ];
-  const
-    _versions =
-      await _evm_contract_deployment_versions.apply(
-        null,
-        app_opts);
+  _evm_contract_deployment_versions_cmdline(
+    app_opts);
 }
 
 _global_variables();
 if ( _cmdline_check(
-       "evm-contract-deployments-versions.js") ||
+       "evm-contract-deployment-versions.js") ||
      _cmdline_check(
-       "evm-contract-deployments-versions") ) {
+       "evm-contract-deployment-versions") ) {
   _cmdline_parse();
 }
 else{

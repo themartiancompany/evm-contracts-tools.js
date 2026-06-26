@@ -97,8 +97,13 @@ function
       _json_read(
         _config_file);
   const
+    _contract_addresses =
+      _config[
+        "contract-address"];
+  const
     _versions =
-      _config.keys();
+      Object.keys(
+        _contract_addresses);
   return _versions;
 }
 
