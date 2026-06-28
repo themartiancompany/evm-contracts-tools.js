@@ -89,6 +89,16 @@ const
   _evm_contract_deployment_address =
     _libevm_contract_deployment_address_module._evm_contract_deployment_address;
 /* global
+     _contract_version_auto_detect */
+const
+  _contract_version_auto_detect =
+    _libevm_contract_deployment_address_module._contract_version_auto_detect;
+/* global
+     _deployments_dir_auto_detect */
+const
+  _deployments_dir_auto_detect =
+    _libevm_contract_deployment_address_module._deployments_dir_auto_detect;
+/* global
      _networks_all_auto_detect */
 const
   _networks_all_auto_detect =
@@ -115,11 +125,6 @@ function
        resolve_date:
          writable */
   resolve_date =
-    "";
-  /* global
-       user_level:
-         writable */
-  user_level =
     "";
   /* global
        target_networks:
@@ -157,6 +162,11 @@ function
   user_defined =
     "";
   /* global
+       configuration_format:
+         writable */
+  configuration_format =
+    "";
+  /* global
        deployments_dir:
          writable */
   deployments_dir =
@@ -180,10 +190,12 @@ async function
       _get_date_human();
   }
   _networks_all_auto_detect();
-  if ( user_level == "" ) {
-    user_level =
+  if ( user_defined == "" ) {
+    user_defined =
       "n";
   }
+  _deployments_dir_auto_detect();
+  _contract_version_auto_detect();
 }
 
 function
@@ -337,14 +349,24 @@ async function
       "_"][
         0];
   if ( "u" in _argv ) {
-    user_level =
+    user_defined =
       _argv[
         "u"];
   }
-  if ( "user_level" in _argv ) {
-    user_level =
+  if ( "user_defined" in _argv ) {
+    user_defined =
       _argv[
-        "user_level"];
+        "user_defined"];
+  }
+  if ( "f" in _argv ) {
+    configuration_format =
+      _argv[
+        "f"];
+  }
+  if ( "configuration_format" in _argv ) {
+    configuration_format =
+      _argv[
+        "configuration_Format"];
   }
   if ( _argv[
          "v"] ||
@@ -387,6 +409,10 @@ function
   user_defined =
     _argv_url_get(
       "user_defined")[
+        0];
+  configuration_format =
+    _argv_url_get(
+      "configuration_format")[
         0];
   deployments_dir =
     _argv_url_get(
@@ -442,6 +468,7 @@ async function
       target_contract,
       contract_version,
       user_defined,
+      configuration_format,
       deployments_dir,
     ];
   const
