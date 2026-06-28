@@ -98,7 +98,7 @@ function
   }
 }
 
-function
+async function
   _default_deployments_dir_get(
     _app,
     _type) {
@@ -114,7 +114,7 @@ function
     _conf_dir;
   if ( _type == "system" ) {
     _conf_dir =
-      _lib_get();
+      await _lib_get();
   }
   else if ( _type == "user" ) {
     const
@@ -126,7 +126,7 @@ function
   return `${_conf_dir}/${_app}/deployments`;
 }
 
-function
+async function
   _evm_contract_deployments_dir(
     _app,
     _user_level) {
@@ -152,7 +152,7 @@ function
       1);
   }
   _deployments =
-    _default_deployments_dir_get(
+    await _default_deployments_dir_get(
       _app,
       _deployment_type);
   return _deployments;

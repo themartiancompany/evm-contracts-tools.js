@@ -279,6 +279,19 @@ async function
     _display_cheapest) {
   let
     _networks;
+  const
+    _deployment_dir_type =
+      typeof(
+        _deployment_dir);
+  if ( _deployment_dir_type == "object" ) {
+    const
+      _msg =
+        "Deployment directory argument " +
+        "must be of type 'string'.";
+    _msg_error(
+      _msg,
+      1);
+  }
   _networks =
     await _networks_find(
       _deployment_dir);
