@@ -136,6 +136,15 @@ const
   _path_join =
     _libcrash_module._path_join;
 const
+  _evm_chains_info_module =
+    require(
+      "evm-chains-info");
+/* global
+     _evm_chains_info */
+const
+  _evm_chains_info =
+    _evm_chains_info_module._evm_chains_info;
+const
   _libevm_contract_deployments_dir_module =
     require(
       "./libevm-contract-deployments-dir");
@@ -154,14 +163,14 @@ const
   _evm_contract_deployment_networks =
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 const
-  _evm_chains_info_module =
+  _libevm_contract_deployment_versions_module =
     require(
-      "evm-chains-info");
+      "./libevm-contract-deployment-versions");
 /* global
-     _evm_chains_info */
+     _evm_contract_deployment_versions */
 const
-  _evm_chains_info =
-    _evm_chains_info_module._evm_chains_info;
+  _evm_contract_deployment_versions =
+    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
 
 function
   _contract_address_get(
@@ -188,7 +197,7 @@ function
     _config_file_ext =
       "sh";
   }
-  if ( _configuration_format == "json" ) {
+  else if ( _configuration_format == "json" ) {
     _config_file_ext =
       "json"
   }
@@ -402,7 +411,7 @@ async function
     _app,
     _deployments_dir) {
   if ( ! _file_exists(
-           _deployments_dir ) {
+           _deployments_dir) ) {
     const
       _user_deployments_init_args = [
         _app,
@@ -430,7 +439,6 @@ async function
   let
     _args,
     _contract_address,
-    _contract_address_get_args,
     _contracts_addresses,
     _network,
     _network_check_args,
@@ -439,6 +447,9 @@ async function
     _user_deployments_dir,
     _system_deployments_dir,
     _msg;
+  const
+    _contract_address_get_args =
+      [];
   if ( _user_defined == "n" ) {
     if ( _target_app == "" ) {
       _msg =
@@ -481,7 +492,9 @@ async function
         _msg);
     }
     else {
-      _user_deployments_check();
+      _user_deployments_check(
+        _target_app,
+        _deployments_dir);
     }
   }
   else {
@@ -538,7 +551,9 @@ async function
       _contract_version
     ] );
   }
-  for ( _args of _contract_address_args ) {
+  for ( _args of _contract_address_get_args ) {
+    console.log(
+      _args);
     _contract_address =
       _contract_address_get.apply(
         null,
@@ -673,7 +688,34 @@ async function
             _net,
             `config.${_config_ext}`
             ]);
+        if ( _file_exists(
+               _config) ) {
+          _found =
+            true;
+          break;
+	}
       }
+      if ( ! _found ) {
+        _msg =
+          "No deployment configuration " +
+          "file found for network " +
+          `'${_network}' with ID ` +
+          `'${_network_id}'.`;
+        _msg_error(
+	  _msg,
+          1);
+      }
+      const
+        _evm_contract_deployment_versions_args = [
+          _config,
+          "y",           // display highest
+          "n"            // display lowest
+	];
+      _version =
+        await _evm_contract_deployment_versions.apply(
+	  null,
+          _evm_contract_deployment_versions_args);
+      console.log(_version)
     }
     else if ( _deployments_dir_type == "undefined" ||
               deployments_dir == "" ) {
@@ -689,6 +731,16 @@ async function
         1);
     }
   }
+  const
+    _contract_version_type =
+      typeof(
+        contract_version);
+  if ( _contract_version_type == "undefined" ||
+       contract_version == "" ) {
+    contract_version =
+      _version;
+  }
+  return true;
 }
 
 function
@@ -718,9 +770,5 @@ module.exports = {
   _evm_contract_deployment_address:
     _evm_contract_deployment_address,
   _networks_all_auto_detect:
-    _networks_all_auto_detect,
-  _user_deployments_check:
-    _user_deployments_check,
-  _user_deployments_init:
-    _user_deployments_init
+    _networks_all_auto_detect
 };
