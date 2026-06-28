@@ -284,8 +284,6 @@ async function
   const
     _argv_args = {
       "booleans": [
-        "A",
-        "networks-all",
         "u",
         "user-defined",
         "h",
@@ -348,6 +346,16 @@ async function
     _argv[
       "_"][
         0];
+  if ( "a" in _argv ) {
+    target_app =
+      _argv[
+        "a"];
+  }
+  if ( "target_app" in _argv ) {
+    target_app =
+      _argv[
+        "target_app"];
+  }
   if ( "u" in _argv ) {
     user_defined =
       _argv[
@@ -366,7 +374,7 @@ async function
   if ( "configuration_format" in _argv ) {
     configuration_format =
       _argv[
-        "configuration_Format"];
+        "configuration_format"];
   }
   if ( _argv[
          "v"] ||

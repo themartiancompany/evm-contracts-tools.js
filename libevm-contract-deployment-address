@@ -271,7 +271,7 @@ function
   return `${_conf_dir}/${_app}/deployments`;
 }
 
-function
+async function
   _evm_contract_deployment_address(
     _target_networks,
     _network_ids,
@@ -306,7 +306,7 @@ function
         1)
     }
     _system_deployments_dir =
-      _evm_contract_deployments_dir(
+      await _evm_contract_deployments_dir(
         target_app);
     if ( _deployments_dir != system_deployments_dir ) {
       _msg =
@@ -321,7 +321,7 @@ function
   else if ( _user_defined == "y" ) {
     if ( _target_app != "" ) {
       _user_deployments_dir =
-        _evm_contract_deployments_dir(
+        await _evm_contract_deployments_dir(
 	  _target_app,
           _user_defined);
     }
@@ -444,6 +444,7 @@ function
   _contract_version_auto_detect() {
   let
     _config,
+    _config_ext,
     _deployments,
     _found,
     _net,
@@ -459,57 +460,85 @@ function
       target_contract;
   _found =
     false;
+  if ( configuration_format == "bash" ) {
+    _config_ext =
+      "sh";
+  }
+  else if ( configuration_format == "bash" ) {
+    _config_ext =
+      "json";
+  }
   const
     _contract_type =
       typeof(
         _contract);
   if ( _contract != "" &&
        _contract_type != "undefined" ) {
-    _deployments =
-      deployments_dir;
-    if ( 0 < target_networks.length ) {
-      _network =
-        _target_networks[
-          0];
-    }
-    if ( 0 < network_ids.length ) {
-      _network_id =
-        _network_ids[
-          0];
-    }
     const
-      _deployments_path =
-        _path_join( [
-          _deployments,
-          _contract ] );
-    if ( networks_all == "n" ) {
-      _networks.push(
-        _network,
-        _network_id);
-    }
-    else if ( networks_all == "y" ) {
+      _deployments_dir_type =
+        typeof(
+          deployments_dir);
+    if ( _deployments_dir_type != "undefined" &&
+         deployments_dir != "" ) {
+      _deployments =
+        deployments_dir;
+      if ( 0 < target_networks.length ) {
+        _network =
+          _target_networks[
+            0];
+      }
+      if ( 0 < network_ids.length ) {
+        _network_id =
+          _network_ids[
+            0];
+      }
       const
-        _evm_contract_deployment_networks_args = [
-          _deployments_path,
-          "y",                  // Display all
-          "n",                  // Display safest
-          "n"                   // Display cheapest
-        ];
-      _networks_new =
-        _evm_contract_deployment_networks.apply(
-          null,
-	  _evm_contract_deployment_networks_args);
-      _networks =
-        _networks.concat(
-	  _networks_new);
+        _deployments_path =
+          _path_join( [
+            _deployments,
+            _contract ] );
+      if ( networks_all == "n" ) {
+        _networks.push(
+          _network,
+          _network_id);
+      }
+      else if ( networks_all == "y" ) {
+        const
+          _evm_contract_deployment_networks_args = [
+            _deployments_path,
+            "y",                  // Display all
+            "n",                  // Display safest
+            "n"                   // Display cheapest
+          ];
+        _networks_new =
+          _evm_contract_deployment_networks.apply(
+            null,
+            _evm_contract_deployment_networks_args);
+        _networks =
+          _networks.concat(
+            _networks_new);
+      }
+      for ( _net of _networks ) {
+        config =
+          _path_join( [
+            _deployments_path,
+            _net,
+            `config.${_config_ext}`
+            ]);
+      }
     }
-    for ( _net of _networks ) {
-      config =
-        _path_join( [
-          _deployments_path,
-          _net,
-          `config.${configuration_format}`
-	  ]);
+    else if ( _deployments_dir_type == "undefined" ||
+              deployments_dir == "" ) {
+      const
+        _msg =
+          "If no target application is specified " +
+          "then the user-defined deployments " +
+          "switch must be enabled with '-u' and " +
+          "a deployments directory must be specified " +
+          "with '-d'.";
+      _msg_error(
+        _msg,
+        1);
     }
   }
 }

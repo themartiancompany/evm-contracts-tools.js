@@ -195,7 +195,7 @@ function
   }
 }
 
-function
+async function
   _network_check(
     _deployments,
     _contract,
@@ -221,7 +221,7 @@ function
     _conf_dir;
   if ( _type == "system" ) {
     _conf_dir =
-      _lib_get();
+      await _lib_get();
   }
   else if ( _type == "user" ) {
     const
@@ -233,7 +233,7 @@ function
   return `${_conf_dir}/${_app}/deployments`;
 }
 
-function
+async function
   _networks_find(
     _deployment_dir) {
   let
@@ -245,7 +245,7 @@ function
       [];
   const
     _files =
-      _ls(
+      await _ls(
         _deployment_dir);
   for ( _file of _files ) {
     _path =
@@ -271,7 +271,7 @@ function
   return _networks;
 }
 
-function
+await function
   _evm_contract_deployment_networks(
     _deployment_dir,
     _display_all,
@@ -280,7 +280,7 @@ function
   let
     _networks;
   _networks =
-    _networks_find(
+    await _networks_find(
       _deployment_dir);
   return _networks;
 }
