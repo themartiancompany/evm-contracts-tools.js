@@ -487,7 +487,7 @@ function
         _network,
         _network_id);
     }
-    else if ( network_all == "y" ) {
+    else if ( networks_all == "y" ) {
       const
         _evm_contract_deployment_networks_args = [
           _deployments_path,
