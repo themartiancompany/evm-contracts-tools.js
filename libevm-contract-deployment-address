@@ -66,6 +66,20 @@ const
     require(
       "crash-js");
 /* global
+     _chmod */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _chmod =
+    _libcrash_module._chmod;
+/* global
+     _cp */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _cp =
+    _libcrash_module._cp;
+/* global
      _file_exists */
 /* eslint-disable-next-line
      no-global-assign */
@@ -93,6 +107,13 @@ const
 const
   _lib_get =
     _libcrash_module._lib_get;
+/* global
+     _mkdir */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _mkdir =
+    _libcrash_module._mkdir;
 /* global
      _msg_info */
 /* eslint-disable-next-line
@@ -233,42 +254,166 @@ function
   return _contract_address;
 }
 
-function
+async function
   _network_check(
     _deployments,
     _contract,
     _target_network,
     _target_network_id) {
   let
+    _error_flag,
     _msg,
-    _network_id,
-    _networks;
-  _networks = [
-    // I need to write that first apparently
-    _evm_contract_deployment_networks
-  ];
-  _app_check(
-    _app);
-  if ( typeof(
-         _type) == "undefined" ||
-       _type == "" ) {
-    _type =
-      "system";
+    _network_id;
+  _error_flag =
+    false;
+  _deployments_path =
+    _path_join( [
+      _deployments,
+      _contract ]);
+  const
+    _evm_contract_deployment_networks_args = [
+      _deployments_path,
+      "y",                  // Display all
+      "n",                  // Display safest
+      "n"                   // Display cheapest
+    ];
+  const
+    _networks =
+      await _evm_contract_deployment_networks.apply(
+        null,
+        _evm_contract_deployment_networks_args);
+  if ( _target_network_id != "" ) {
+    if ( ! _networks.includes(
+             _target_network_id) ) {
+      _msg =
+        "The contract does not result deployed on " +
+        `network with id '${_target_network_id}'.`;
+      _error_flag =
+        true;
+    }
   }
-  let
-    _conf_dir;
-  if ( _type == "system" ) {
-    _conf_dir =
-      _lib_get();
+  else if ( _target_network != "" ) {
+    if ( ! _networks.includes(
+             _target_network) ) {
+      _msg =
+        "The contract does not result deployed on " +
+        `network '${_target_network}'.`;
+      _error_flag =
+        true;
+    }
   }
-  else if ( _type == "user" ) {
+  else {
+    _msg =
+      "Provide one between a target network name " +
+      "or ID.";
+    _error_flag =
+      true;
+  }
+  if ( _error_flag ) {
+    _msg_error(
+      _msg,
+      1);
+  }
+  if ( _target_network_id == "" ) {
+    _evm_chains_info_args = [
+      "get",             // target command
+      "name",            // input type
+      "id",              // output type
+      "offline",
+      [ "node",
+        "system" ],      // db types
+      "kirsh",           // selection method, first
+      "n",               // api keys
+      "n",               // query all networks
+      _target_network,
+      []                 // database paths
+    ];
+    _network_id =
+      await _evm_chains_info.apply(
+        null,
+        _evm_chains_info_args);
+  }
+  else if ( _target_network == "" ) {
+    _evm_chains_info_args = [
+      "get",             // target command
+      "id"  ,            // input type
+      "name",              // output type
+      "offline",
+      [ "node",
+        "system" ],      // db types
+      "kirsh",           // selection method, first
+      "n",               // api keys
+      "n",               // query all networks
+      _target_network_id,
+      []                 // database paths
+    ];
+    _target_network =
+      await _evm_chains_info(
+        _evm_chains_info_args);
+  }
+  if ( _target_network_id != "" ) {
+    if ( _target_network_id != _network_id ) {
+      _msg =
+        "Requested target network ID " +
+        `'${_target_network_id}' does ` +
+        `not correspond to '${_target_network}' ` +
+        `known ID '${_network_id}'.`;
+      _msg_error(
+        _msg,
+        1);
+    }
+  }
+}
+
+async function
+  _user_deployments_init(
+    _app,
+    _deployments_dir) {
+  const
+    _user_defined =
+      "y";
+  const
+    _evm_contract_deployments_dir_args = [
+      _app,
+      _user_defined
+    ];
+  const
+    _system_deployments =
+      await _evm_contract_deployments_dir.apply(
+        null,
+        _evm_contract_deployments_dir_args);
+  _chmod(
+    _deployments_dir,
+    "0700");
+  const
+    _files =
+      await _ls(
+        _system_deployments);
+  for ( _file of _files ) {
+    _cp(
+      _file,
+      _deployments_dir);
+  }
+  return true;
+}
+
+async function
+  _user_deployments_check(
+    _app,
+    _deployments_dir) {
+  if ( ! _file_exists(
+           _deployments_dir ) {
     const
-      _homedir =
-        _homedir_get();
-    _conf_dir =
-      `${_homedir}/.config`;
+      _user_deployments_init_args = [
+        _app,
+        _deployments_dir
+      ];
+    const
+      _initialized =
+        await _user_deployments_init.apply(
+          null,
+          _user_deployments_init_args);
   }
-  return `${_conf_dir}/${_app}/deployments`;
 }
 
 async function
@@ -349,7 +494,7 @@ async function
   }
   if ( _networks_all == "y" ) {
     _target_networks =
-      _evm_contract_deployment_networks(
+      await _evm_contract_deployment_networks(
         `${_deployments_dir}/${_target_contract}`,
         _networks_all);
   }
@@ -573,5 +718,9 @@ module.exports = {
   _evm_contract_deployment_address:
     _evm_contract_deployment_address,
   _networks_all_auto_detect:
-    _networks_all_auto_detect
+    _networks_all_auto_detect,
+  _user_deployments_check:
+    _user_deployments_check,
+  _user_deployments_init:
+    _user_deployments_init
 };
