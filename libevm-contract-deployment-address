@@ -311,7 +311,7 @@ async function
       await _evm_contract_deployments_dir(
         _target_app,
         _user_defined);
-    if ( _deployments_dir != system_deployments_dir ) {
+    if ( _deployments_dir != _system_deployments_dir ) {
       _msg =
         "To set a custom deployments directory path " +
         "you need to enable the user-defined " +
