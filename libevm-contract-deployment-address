@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     libevm-contract-deployments-dir
+ *     libevm-contract-deployment-address
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -402,6 +402,83 @@ function
 }
 
 function
+  _deployments_dir_auto_detect() {
+  let
+    _deployments;
+  _deployments =
+    "";
+  const
+    _app =
+      target_app;
+  const
+    _app_type =
+      typeof(
+        _app);
+  if ( _app_type != "undefined" ) {
+    const
+      _user_defined =
+        user_defined;
+    const
+      _evm_contract_deployments_dir_args = [
+        _app,
+        _user_defined
+      ];
+    _deployments =
+      _evm_contract_deployments_dir.apply(
+        null,
+        _evm_contract_deployments_dir_args);
+  }
+  const
+    _deployments_dir_type =
+      typeof(
+        deployments_dir);
+  if ( _deployments_dir_type === "undefined" ||
+       deployments_dir == "" ) {
+    deployments_dir =
+      _deployments;
+  }
+}
+
+function
+  _contract_version_auto_detect() {
+  let
+    _config,
+    _contract,
+    _deployments,
+    _found,
+    _net,
+    _network,
+    _network_id,
+    _networks,
+    _version,
+    _msg;
+  const
+    _contract =
+      target_contract;
+  _found =
+    false;
+  const
+    _contract_type =
+      typeof(
+        _contract);
+  if ( _contract != "" &&
+       _contract_type != "undefined" ) {
+    _deployments =
+      deployments_dir;
+    if ( 0 < target_networks.length ) {
+      _network =
+        _target_networks[
+          0];
+    }
+    if ( 0 < network_ids.length ) {
+      _network_id =
+        _target_networks[
+          0];
+    }
+  }
+}
+
+function
   _networks_all_auto_detect() {
   let
     _networks_all;
@@ -421,6 +498,8 @@ function
 }
 
 module.exports = {
+  _deployments_dir_auto_detect:
+    _deployments_dir_auto_detect,
   _evm_contract_deployment_address:
     _evm_contract_deployment_address,
   _networks_all_auto_detect:
