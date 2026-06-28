@@ -66,13 +66,6 @@ const
     require(
       "crash-js");
 /* global
-     _dirname */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _dirname =
-    _libcrash_module._dirname;
-/* global
      _file_exists */
 /* eslint-disable-next-line
      no-global-assign */
@@ -121,13 +114,6 @@ const
 const
   _path_join =
     _libcrash_module._path_join;
-/* global
-     _range */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _range =
-    _libcrash_module._range;
 const
   _libevm_contract_deployments_dir_module =
     require(
@@ -138,7 +124,7 @@ const
   _evm_contract_deployments_dir =
     _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
-  _libevm_contract_deployment_networks =
+  _libevm_contract_deployment_networks_module =
     require(
       "./libevm-contract-deployment-networks");
 /* global
@@ -201,8 +187,13 @@ function
   _found =
     false;
   for ( _net of _networks ) {
+    _path_join_args =
     _config_path =
-      `${_deployments}/${_contract}/${_net}/config.${_config_file_ext}`;
+      _path_join( [
+        _deployments,
+        _contract,
+        _net,
+        `config.${_config_file_ext}` ]);
     if ( _file_exists(
            _config_path) ) {
       _found =
@@ -430,10 +421,8 @@ function
 }
 
 module.exports = {
-  _default_deployments_dir_get:
-    _default_deployments_dir_get,
   _evm_contract_deployment_address:
     _evm_contract_deployment_address,
   _networks_all_auto_detect:
-    _networks_all_auto_detect,
+    _networks_all_auto_detect
 };

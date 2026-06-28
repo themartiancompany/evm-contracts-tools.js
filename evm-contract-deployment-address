@@ -88,6 +88,11 @@ const
 const
   _evm_contract_deployment_address =
     _libevm_contract_deployment_address_module._evm_contract_deployment_address;
+/* global
+     _networks_all_auto_detect */
+const
+  _evm_contract_deployment_address =
+    _libevm_contract_deployment_address_module._networks_all_auto_detect;
 
 function
   _global_variables() {
