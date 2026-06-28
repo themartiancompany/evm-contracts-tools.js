@@ -91,7 +91,7 @@ const
 /* global
      _networks_all_auto_detect */
 const
-  _evm_contract_deployment_address =
+  _networks_all_auto_detect =
     _libevm_contract_deployment_address_module._networks_all_auto_detect;
 
 function
