@@ -279,7 +279,9 @@ async function
     _target_app,
     _contract_version,
     _user_defined,
+    _configuration_format,
     _deployments_dir) {
+  console.log(_user_defined);
   let
     _args,
     _contract_address,
@@ -322,7 +324,7 @@ async function
     if ( _target_app != "" ) {
       _user_deployments_dir =
         await _evm_contract_deployments_dir(
-	  _target_app,
+          _target_app,
           _user_defined);
     }
     if ( _deployments_dir != _user_deployments_dir ) {
@@ -339,7 +341,7 @@ async function
   else {
     _msg =
       "The 'user-defined' switch argument must be " +
-      "can be 'y' or 'n'."
+      `can be 'y' or 'n', current value '${_user_defined}'.`;
     _msg_error(
       _msg,
       1);

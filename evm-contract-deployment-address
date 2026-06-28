@@ -189,8 +189,16 @@ async function
     resolve_date =
       _get_date_human();
   }
+  if ( typeof(
+         configuration_format) == "undefined" ||
+       configuration_format == "" ) {
+    configuration_format =
+      "bash";
+  }
   _networks_all_auto_detect();
-  if ( user_defined == "" ) {
+  if ( typeof(
+         user_defined) == "undefined" ||
+       user_defined == "" ) {
     user_defined =
       "n";
   }
@@ -356,12 +364,14 @@ async function
       _argv[
         "target_app"];
   }
-  if ( "u" in _argv ) {
+  if ( _argv[
+         "u"] ) {
     user_defined =
       _argv[
         "u"];
   }
-  if ( "user_defined" in _argv ) {
+  if ( _argv[
+         "user_defined"] ) {
     user_defined =
       _argv[
         "user_defined"];
@@ -444,7 +454,7 @@ async function
     _results =
       await _evm_contract_deployment_address.apply(
         null,
-        app_opts);
+        _app_opts);
   const
     _results_type =
       typeof(
@@ -481,8 +491,7 @@ async function
     ];
   const
     _address =
-      await _evm_contract_deployment_address.apply(
-        null,
+      await _evm_contract_deployment_address_cmdline(
         app_opts);
 }
 

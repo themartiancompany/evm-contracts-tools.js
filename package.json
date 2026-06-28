@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.31",
+      "^0.0.33",
     "flatted":
       "^3.2.9",
     "eslint":
@@ -106,7 +106,7 @@
   },
   "dependencies": {
     "crash-js":
-      "^0.11.1",
+      "^0.11.11",
     "ethers":
       "^6.13.2",
     "evm-chains-info":
