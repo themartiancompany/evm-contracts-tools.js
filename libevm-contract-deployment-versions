@@ -92,6 +92,8 @@ function
     _config_file,
     _display_highest,
     _display_lowest) {
+  let
+    _versions;
   const
     _config =
       _json_read(
@@ -100,10 +102,21 @@ function
     _contract_addresses =
       _config[
         "contract-address"];
-  const
+  _versions =
+    Object.keys(
+      _contract_addresses);
+  if ( _display_highest == "y" ) {
     _versions =
-      Object.keys(
-        _contract_addresses);
+      Math.max.apply(
+        null,
+        _versions);
+  }
+  if ( _display_lowest == "y" ) {
+    _versions =
+      Math.min.apply(
+        null,
+        _versions);
+  }
   return _versions;
 }
 
