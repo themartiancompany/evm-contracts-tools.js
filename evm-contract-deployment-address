@@ -194,7 +194,7 @@ async function
     user_defined =
       "n";
   }
-  _deployments_dir_auto_detect();
+  await _deployments_dir_auto_detect();
   _contract_version_auto_detect();
 }
 

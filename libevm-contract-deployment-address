@@ -401,7 +401,7 @@ async function
   return _contracts_addresses;
 }
 
-function
+async function
   _deployments_dir_auto_detect() {
   let
     _deployments;
@@ -425,7 +425,7 @@ function
         _user_defined
       ];
     _deployments =
-      _evm_contract_deployments_dir.apply(
+      await _evm_contract_deployments_dir.apply(
         null,
         _evm_contract_deployments_dir_args);
   }
