@@ -271,7 +271,7 @@ async function
   return _networks;
 }
 
-await function
+async function
   _evm_contract_deployment_networks(
     _deployment_dir,
     _display_all,
