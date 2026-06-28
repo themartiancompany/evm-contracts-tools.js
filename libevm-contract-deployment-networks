@@ -38,12 +38,12 @@ const
     require(
       "crash-js");
 /* global
-     _dirname */
+     _dir_exists */
 /* eslint-disable-next-line
      no-global-assign */
 const
-  _dirname =
-    _libcrash_module._dirname;
+  _dir_exists =
+    _libcrash_module._dir_exists;
 /* global
      _file_exists */
 /* eslint-disable-next-line
@@ -100,13 +100,6 @@ const
 const
   _path_join =
     _libcrash_module._path_join;
-/* global
-     _range */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _range =
-    _libcrash_module._range;
 /* global
      _stat */
 /* eslint-disable-next-line
@@ -251,12 +244,12 @@ async function
     _path =
       `${_deployment_dir}/${_file}`;
     _file_is_dir =
-      _is_dir(
+      _dir_exists(
         _path);
     if ( ! _file_is_dir ) {
       const
         _msg =
-          `there shouldn't be a file into ` +
+          `There shouldn't be a file into ` +
           `this directory.`;
       _msg_warning(
         _msg)

@@ -83,7 +83,6 @@ function
     _error_flag =
       true;
   }
-  console.log(_app);
   if ( _app_type != "string" ) {
     _msg =
       "Application argument must be of " +

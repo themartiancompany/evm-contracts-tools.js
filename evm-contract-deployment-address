@@ -195,7 +195,7 @@ async function
       "n";
   }
   await _deployments_dir_auto_detect();
-  _contract_version_auto_detect();
+  await _contract_version_auto_detect();
 }
 
 function
