@@ -279,13 +279,9 @@ function
     _display_cheapest) {
   let
     _networks;
-  console.log(
-    _deployment_dir);
   _networks =
     _networks_find(
       _deployment_dir);
-  console.log(
-    _networks);
   return _networks;
 }
 

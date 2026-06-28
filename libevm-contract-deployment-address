@@ -449,9 +449,11 @@ function
     _net,
     _network,
     _network_id,
-    _networks,
     _version,
     _msg;
+  const
+    _networks =
+      [];
   const
     _contract =
       target_contract;
@@ -472,8 +474,42 @@ function
     }
     if ( 0 < network_ids.length ) {
       _network_id =
-        _target_networks[
+        _network_ids[
           0];
+    }
+    if ( network_all == "n" ) {
+      _networks.push(
+        _network,
+        _network_id);
+    }
+    const
+      _deployments_path =
+        _path_join( [
+          _deployments,
+          _contract ] );
+    else if ( network_all == "y" ) {
+      const
+        _evm_contract_deployment_networks_args = [
+          _deployments_path,
+          "y",                  // Display all
+          "n",                  // Display safest
+          "n"                   // Display cheapest
+        ];
+      _networks_new =
+        _evm_contract_deployment_networks.apply(
+          null,
+	  _evm_contract_deployment_networks_args);
+      _networks =
+        _networks.concat(
+	  _networks_new);
+    }
+    for ( _net of _networks ) {
+      config =
+        _path_join( [
+          _deployments_path,
+          _net,
+          `config.${configuration_format}`
+	  ]);
     }
   }
 }
@@ -498,6 +534,8 @@ function
 }
 
 module.exports = {
+  _contract_version_auto_detect:
+    _contract_version_auto_detect,
   _deployments_dir_auto_detect:
     _deployments_dir_auto_detect,
   _evm_contract_deployment_address:
