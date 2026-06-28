@@ -414,7 +414,8 @@ function
     _app_type =
       typeof(
         _app);
-  if ( _app_type != "undefined" ) {
+  if ( _app_type != "undefined" &&
+       _app != "" ) {
     const
       _user_defined =
         user_defined;
@@ -443,7 +444,6 @@ function
   _contract_version_auto_detect() {
   let
     _config,
-    _contract,
     _deployments,
     _found,
     _net,
@@ -477,16 +477,16 @@ function
         _network_ids[
           0];
     }
-    if ( network_all == "n" ) {
-      _networks.push(
-        _network,
-        _network_id);
-    }
     const
       _deployments_path =
         _path_join( [
           _deployments,
           _contract ] );
+    if ( networks_all == "n" ) {
+      _networks.push(
+        _network,
+        _network_id);
+    }
     else if ( network_all == "y" ) {
       const
         _evm_contract_deployment_networks_args = [
