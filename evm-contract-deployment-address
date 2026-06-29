@@ -292,6 +292,8 @@ async function
   const
     _argv_args = {
       "booleans": [
+        "A",
+        "networks-all",
         "u",
         "user-defined",
         "h",
@@ -364,6 +366,16 @@ async function
       _argv[
         "network"].toString());
   }
+  if ( "i" in _argv ) {
+    network_ids.push(
+      _argv[
+        "i"].toString());
+  }
+  if ( "network-id" in _argv ) {
+    network_ids.push(
+      _argv[
+        "network-id"].toString());
+  }
   if ( "a" in _argv ) {
     target_app =
       _argv[
@@ -375,16 +387,18 @@ async function
         "target-app"];
   }
   if ( _argv[
-         "u"] ) {
-    user_defined =
-      _argv[
-        "u"];
+         "A"] ||
+       _argv[
+         "networks-all"] ) {
+    networks_all =
+      "y";
   }
   if ( _argv[
+         "u"] ||
+       _argv[
          "user-defined"] ) {
     user_defined =
-      _argv[
-        "user-defined"];
+      "y";
   }
   if ( "f" in _argv ) {
     configuration_format =
@@ -415,6 +429,9 @@ function
   target_networks =
     _argv_url_get(
       "network");
+  network_ids =
+    _argv_url_get(
+      "network_id");
   target_ids =
     _argv_url_get(
       "chain_id");

@@ -368,7 +368,6 @@ async function
       await _evm_chains_info.apply(
         null,
         _evm_chains_info_args);
-    console.log(_network_id);
   }
   else if ( _target_network == "" ) {
     _evm_chains_info_args = [
@@ -559,7 +558,7 @@ async function
       _network,
       _target_network_id
     ];
-    _network_check.apply(
+    await _network_check.apply(
       null,
       _network_check_args);
     _contract_address_get_args.push( [
@@ -580,7 +579,7 @@ async function
       _target_network,
       _network
     ];
-    _network_check.apply(
+    await _network_check.apply(
       null,
       _network_check_args);
     _contract_address_get_args.push( [
@@ -593,9 +592,6 @@ async function
     ] );
   }
   for ( _args of _contract_address_get_args ) {
-    console.log(
-      "contract address get args",
-      _args);
     _contract_address =
       _contract_address_get.apply(
         null,
@@ -730,8 +726,6 @@ async function
             _net,
             `config.${_config_ext}`
             ]);
-        console.log(
-          _config);
         if ( _file_exists(
                _config) ) {
           _found =
@@ -765,7 +759,6 @@ async function
         await _evm_contract_deployment_versions.apply(
           null,
           _evm_contract_deployment_versions_args);
-      console.log(_version)
     }
     else if ( _deployments_dir_type == "undefined" ||
               deployments_dir == "" ) {
