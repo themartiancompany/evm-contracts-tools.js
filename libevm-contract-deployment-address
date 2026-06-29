@@ -87,6 +87,13 @@ const
   _file_exists =
     _libcrash_module._file_exists;
 /* global
+     _file_read */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _file_read =
+    _libcrash_module._file_read;
+/* global
      _from_bash_ass_array */
 /* eslint-disable-next-line
      no-global-assign */
@@ -256,7 +263,7 @@ function
     _key_name =
       "contract-address";
   }
-  else if ( _configuration_format == "json" ) {
+  else if ( _configuration_format == "bash" ) {
     _config =
       _from_bash_ass_array(
         _file_read(
@@ -558,7 +565,8 @@ async function
       _target_contract,
       _network,
       _target_network_id,
-      _contract_version
+      _contract_version,
+      _configuration_format
     ] );
   }
   for ( _network of  _network_ids ) {
@@ -578,7 +586,8 @@ async function
       _target_contract,
       _target_network,
       _target_network_id,
-      _contract_version
+      _contract_version,
+      _configuration_format
     ] );
   }
   for ( _args of _contract_address_get_args ) {
@@ -589,7 +598,7 @@ async function
       _contract_address_get.apply(
         null,
         _args);
-    _contract_addresses.push(
+    _contracts_addresses.push(
       _contract_address);
   }
   return _contracts_addresses;

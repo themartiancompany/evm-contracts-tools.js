@@ -183,15 +183,13 @@ function
       _contract_addresses);
   if ( _display_highest == "y" ) {
     _versions =
-      Math.max.apply(
-        null,
-        _versions);
+      _versions.reverse()[
+        0];
   }
   if ( _display_lowest == "y" ) {
     _versions =
-      Math.min.apply(
-        null,
-        _versions);
+      _versions.sort()[
+        0];
   }
   return _versions;
 }
