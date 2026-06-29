@@ -716,8 +716,9 @@ async function
       const
         _evm_contract_deployment_versions_args = [
           _config,
-          "y",           // display highest
-          "n"            // display lowest
+          "y",                  // display highest
+          "n",                  // display lowest
+          configuration_format
 	];
       _version =
         await _evm_contract_deployment_versions.apply(

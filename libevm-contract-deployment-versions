@@ -142,6 +142,7 @@ function
     _display_lowest,
     _configuration_format) {
   let
+    _config,
     _versions;
   if ( typeof(
          _configuration_format) == "undefined" ||
@@ -150,17 +151,15 @@ function
       "json";
   }
   if ( _configuration_format == "json" ) {
-    const
-      _config =
-        _json_read(
-          _config_file);
+    _config =
+      _json_read(
+        _config_file);
   }
   else if ( _configuration_format == "bash" ) {
-    const
-      _config =
-        _from_bash_ass_array(
-	  _file_read(
-            config));
+    _config =
+      _from_bash_ass_array(
+        _file_read(
+          _config_file));
   }
   else {
     _msg =
