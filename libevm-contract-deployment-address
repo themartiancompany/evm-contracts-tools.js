@@ -467,7 +467,6 @@ async function
   let
     _args,
     _contract_address,
-    _contracts_addresses,
     _network,
     _network_check_args,
     _target_network,
@@ -475,6 +474,9 @@ async function
     _user_deployments_dir,
     _system_deployments_dir,
     _msg;
+  const
+    _contracts_addresses =
+      [];
   const
     _contract_address_get_args =
       [];
