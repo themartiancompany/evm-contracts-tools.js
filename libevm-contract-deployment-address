@@ -341,6 +341,7 @@ async function
       await _evm_chains_info.apply(
         null,
         _evm_chains_info_args);
+    console.log(_network_id);
   }
   else if ( _target_network == "" ) {
     _evm_chains_info_args = [
@@ -682,18 +683,25 @@ async function
             _networks_new);
       }
       for ( _net of _networks ) {
-        config =
+        _config =
           _path_join( [
             _deployments_path,
             _net,
             `config.${_config_ext}`
             ]);
+        console.log(
+          _config);
         if ( _file_exists(
                _config) ) {
           _found =
             true;
+          _msg =
+            `Found deployment configuration ` +
+            `at location '${_config}'.`;
+          _msg_info(
+            _msg);
           break;
-	}
+        }
       }
       if ( ! _found ) {
         _msg =
@@ -713,7 +721,7 @@ async function
 	];
       _version =
         await _evm_contract_deployment_versions.apply(
-	  null,
+          null,
           _evm_contract_deployment_versions_args);
       console.log(_version)
     }

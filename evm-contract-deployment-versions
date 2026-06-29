@@ -84,6 +84,11 @@ const
   require(
     "./libevm-contract-deployment-versions");
 /* global
+     _configuration_format_auto_detect */
+const
+  _configuration_format_auto_detect =
+    _libevm_contract_deployment_versions_module._configuration_format_auto_detect;
+/* global
      _evm_contract_deployment_versions */
 const
   _evm_contract_deployment_versions =
@@ -126,6 +131,11 @@ function
          writable */
   display_lowest =
     "";
+  /* global
+       configuration_format:
+         writable */
+  configuration_format =
+    "";
   quiet =
     "";
   /* global
@@ -152,6 +162,7 @@ async function
     display_lowest =
       "n";
   }
+  _configuration_format_auto_detect();
 }
 
 function
@@ -165,6 +176,7 @@ function
       `       Configuration file:   ${config_file}`,
       `          Display highest:   ${display_highest}`,
       `           Display lowest:   ${display_lowest}`,
+      `     Configuration format:   ${configuration_format}`,
     ];
   for ( _line of _text ) {
     _msg_info(
@@ -195,6 +207,9 @@ function
       "",
       "     -L --display-lowest             Display lowest versions available.",
       `                                     Default: '${display_lowest}`,
+      "",
+      "     -f --configuration-format       It can be 'bash' or 'json'.",
+      `                                     Default: '${configuration_format}`,
       "",
       "     -h --help                       This message.",
       "     -v --verbose                    Enable verbose output.",
@@ -280,25 +295,31 @@ async function
     _argv[
       "_"][
         0];
-  if ( "H" in _argv ) {
+  if ( "f" in _argv ) {
+    configuration_format =
+      _argv[
+        "f"];
+  }
+  if ( "configuration-format" in _argv ) {
+    configuration_format =
+      _argv[
+        "configuration-format"];
+  }
+  if ( _argv[
+         "H"] ||
+       _argv[
+         "display-highest"] ) {
     display_highest =
       _argv[
         "H"];
   }
-  if ( "display-highest" in _argv ) {
-    display_highest =
-      _argv[
-        "display-highest"];
-  }
-  if ( "L" in _argv ) {
+  if ( _argv[
+         "L"] ||
+       _argv[
+         "display-lowest"] ) {
     display_lowest =
       _argv[
         "L"];
-  }
-  if ( "display-lowest" in _argv ) {
-    display_lowest =
-      _argv[
-        "display-lowest"];
   }
   if ( _argv[
          "v"] ||
@@ -327,6 +348,10 @@ function
   display_lowest =
     _argv_url_get(
       "display_lowest")[
+        0];
+  configuration_format =
+    _argv_url_get(
+      "configuration_format")[
         0];
   quiet =
     _argv_url_get(
@@ -373,7 +398,8 @@ async function
     app_opts = [
       config_file,
       display_highest,
-      display_lowest
+      display_lowest,
+      configuration_format
     ];
   _evm_contract_deployment_versions_cmdline(
     app_opts);

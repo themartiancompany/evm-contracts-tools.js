@@ -66,6 +66,20 @@ const
     require(
       "crash-js");
 /* global
+     _file_read */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _file_read =
+    _libcrash_module._file_read;
+/* global
+     _from_bash_ass_array */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _from_bash_ass_array =
+    _libcrash_module._from_bash_ass_array;
+/* global
      _json_read */
 /* eslint-disable-next-line
      no-global-assign */
@@ -88,16 +102,74 @@ const
     _libcrash_module._msg_error;
 
 function
+  _configuration_format_auto_detect() {
+  let
+    _configuration_format;
+  if ( typeof(
+         configuration_format) === "undefined" ||
+       configuration_format == "" ) {
+    _configuration_format =
+      "json";
+    if ( config_file.endsWith(
+           ".sh") ) {
+      _configuration_format =
+        "bash";
+    }
+    else if ( config_file.endsWith(
+           ".json") ) {
+      _configuration_format =
+        "json";
+    }
+    else {
+      const
+        _msg =
+          "Impossible determining " +
+          "configuration format from file " +
+          "extension, defaulting to 'json'.";
+      _msg_info(
+        _msg,
+        1);
+    }
+    configuration_format =
+      _configuration_format;
+  }
+}
+
+function
   _evm_contract_deployment_versions(
     _config_file,
     _display_highest,
-    _display_lowest) {
+    _display_lowest,
+    _configuration_format) {
   let
     _versions;
-  const
-    _config =
-      _json_read(
-        _config_file);
+  if ( typeof(
+         _configuration_format) == "undefined" ||
+       _configuration_format == "" ) {
+    _configuration_format =
+      "json";
+  }
+  if ( _configuration_format == "json" ) {
+    const
+      _config =
+        _json_read(
+          _config_file);
+  }
+  else if ( _configuration_format == "bash" ) {
+    const
+      _config =
+        _from_bash_ass_array(
+	  _file_read(
+            config));
+  }
+  else {
+    _msg =
+      "Unknown configuration format " +
+      `'${_configuration_format}'.`;
+    _msg_error(
+      _msg,
+      1);
+  }
   const
     _contract_addresses =
       _config[
@@ -121,6 +193,8 @@ function
 }
 
 module.exports = {
+  _configuration_format_auto_detect:
+    _configuration_format_auto_detect,
   _evm_contract_deployment_versions:
     _evm_contract_deployment_versions,
 };
