@@ -143,6 +143,7 @@ function
     _configuration_format) {
   let
     _config,
+    _key_name,
     _versions;
   if ( typeof(
          _configuration_format) == "undefined" ||
@@ -154,12 +155,16 @@ function
     _config =
       _json_read(
         _config_file);
+    _key_name =
+      "contract-address";
   }
   else if ( _configuration_format == "bash" ) {
     _config =
       _from_bash_ass_array(
         _file_read(
           _config_file));
+    _key_name =
+      "contract_address";
   }
   else {
     _msg =
@@ -172,7 +177,7 @@ function
   const
     _contract_addresses =
       _config[
-        "contract-address"];
+        _key_name];
   _versions =
     Object.keys(
       _contract_addresses);

@@ -648,7 +648,7 @@ async function
         deployments_dir;
       if ( 0 < target_networks.length ) {
         _network =
-          _target_networks[
+          target_networks[
             0];
       }
       if ( 0 < network_ids.length ) {

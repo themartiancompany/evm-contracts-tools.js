@@ -354,15 +354,25 @@ async function
     _argv[
       "_"][
         0];
+  if ( "n" in _argv ) {
+    target_networks.push(
+      _argv[
+        "n"]);
+  }
+  if ( "network" in _argv ) {
+    target_networks.push(
+      _argv[
+        "network"]);
+  }
   if ( "a" in _argv ) {
     target_app =
       _argv[
         "a"];
   }
-  if ( "target_app" in _argv ) {
+  if ( "target-app" in _argv ) {
     target_app =
       _argv[
-        "target_app"];
+        "target-app"];
   }
   if ( _argv[
          "u"] ) {
@@ -371,20 +381,20 @@ async function
         "u"];
   }
   if ( _argv[
-         "user_defined"] ) {
+         "user-defined"] ) {
     user_defined =
       _argv[
-        "user_defined"];
+        "user-defined"];
   }
   if ( "f" in _argv ) {
     configuration_format =
       _argv[
         "f"];
   }
-  if ( "configuration_format" in _argv ) {
+  if ( "configuration-format" in _argv ) {
     configuration_format =
       _argv[
-        "configuration_format"];
+        "configuration-format"];
   }
   if ( _argv[
          "v"] ||
