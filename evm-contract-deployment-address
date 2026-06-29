@@ -357,12 +357,12 @@ async function
   if ( "n" in _argv ) {
     target_networks.push(
       _argv[
-        "n"]);
+        "n"].toString());
   }
   if ( "network" in _argv ) {
     target_networks.push(
       _argv[
-        "network"]);
+        "network"].toString());
   }
   if ( "a" in _argv ) {
     target_app =

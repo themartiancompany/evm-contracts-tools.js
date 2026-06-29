@@ -87,6 +87,13 @@ const
   _file_exists =
     _libcrash_module._file_exists;
 /* global
+     _from_bash_ass_array */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _from_bash_ass_array =
+    _libcrash_module._from_bash_ass_array;
+/* global
      _homedir_get */
 /* eslint-disable-next-line
      no-global-assign */
@@ -181,10 +188,12 @@ function
     _version,
     _configuration_format) {
   let
+    _config,
     _config_file_ext,
     _config_path,
     _address,
     _found,
+    _key_name,
     _msg,
     _net;
   if ( typeof(
@@ -240,14 +249,25 @@ function
       _msg,
       1);
   }
-  const
+  if ( _configuration_format == "json" ) {
     _config =
       _json_read(
-        _config);
+        _config_path);
+    _key_name =
+      "contract-address";
+  }
+  else if ( _configuration_format == "json" ) {
+    _config =
+      _from_bash_ass_array(
+        _file_read(
+          _config_path));
+    _key_name =
+      "contract_address";
+  }
   const
     _contract_address =
       _config[
-        "contract-address"][
+        _key_name][
           _version];
   if ( _contract_address == "" ||
        _contract_address == null ) {
@@ -507,12 +527,21 @@ async function
       1);
   }
   if ( _networks_all == "y" ) {
+    _msg =
+      "Selecting all networks."
+    _msg_info(
+      _msg);
     _target_networks =
       await _evm_contract_deployment_networks(
         `${_deployments_dir}/${_target_contract}`,
         _networks_all);
   }
   for ( _network of _target_networks ) {
+    // _msg =
+    //   "Info arguments for " +
+    //   `network '${_network}'.`;
+    // _msg_info(
+    //   _msg);
     _target_network_id =
       "";
     _network_check_args = [
@@ -527,7 +556,7 @@ async function
     _contract_address_get_args.push( [
       _deployments_dir,
       _target_contract,
-      _target_network,
+      _network,
       _target_network_id,
       _contract_version
     ] );
@@ -554,6 +583,7 @@ async function
   }
   for ( _args of _contract_address_get_args ) {
     console.log(
+      "contract address get args",
       _args);
     _contract_address =
       _contract_address_get.apply(
