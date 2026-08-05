@@ -1,0 +1,465 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+/**    ----------------------------------------------------------------
+ *     libevm-contract-deployment-abi
+ *     ----------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the
+ *     GNU General Public License
+ *     along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* eslint-disable
+     no-unused-vars */
+/* eslint-disable
+     no-useless-assignment */
+
+/* EVM Contracts tools global variables */
+/* global
+     call_type */
+/* global
+     call_auth:
+       writable */
+
+/* libEVM global variables */
+/* global 
+     api_key */
+/* global
+     contract_abi:
+       writable */
+/* global
+     contract_address */
+/* global
+     contract_bytecode:
+       writable */
+/* global
+     contract_compiler_output:
+       writable */
+/* global
+     target_network:
+       writable */
+/* global
+     target_networks:
+       writable */
+
+const
+  _libcrash_module =
+    require(
+      "crash-js");
+/* global
+     _basename */
+const
+  _basename =
+    _libcrash_module._basename;
+/* global
+     _chmod */
+const
+  _chmod =
+    _libcrash_module._chmod;
+/* global
+     _cp */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _cp =
+    _libcrash_module._cp;
+/* global
+     _dir_exists */
+const
+  _dir_exists =
+    _libcrash_module._dir_exists;
+/* global
+     _file_exists */
+const
+  _file_exists =
+    _libcrash_module._file_exists;
+/* global
+     _file_read */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _file_read =
+    _libcrash_module._file_read;
+/* global
+     _from_bash_ass_array */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _from_bash_ass_array =
+    _libcrash_module._from_bash_ass_array;
+/* global
+     _homedir_get */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _homedir_get =
+    _libcrash_module._homedir_get;
+/* global
+     _json_read */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _json_read =
+    _libcrash_module._json_read;
+/* global
+     _lib_get */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _lib_get =
+    _libcrash_module._lib_get;
+/* global
+     _mkdir */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _mkdir =
+    _libcrash_module._mkdir;
+/* global
+     _msg_info */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _msg_info =
+    _libcrash_module._msg_info;
+/* global
+     _msg_error */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _msg_error =
+    _libcrash_module._msg_error;
+/* global
+     _override_set */
+const
+  _override_set =
+    _libcrash_module._override_set;
+/* global
+     _path_join */
+/* eslint-disable-next-line
+     no-global-assign */
+const
+  _path_join =
+    _libcrash_module._path_join;
+/* global
+     _pwd */
+const
+  _pwd =
+    _libcrash_module._pwd;
+const
+  _evm_chains_info_module =
+    require(
+      "evm-chains-info");
+/* global
+     _evm_chains_info */
+const
+  _evm_chains_info =
+    _evm_chains_info_module._evm_chains_info;
+const
+  _libevm_contract_deployments_dir_module =
+    require(
+      "./libevm-contract-deployments-dir");
+/* global
+     _evm_contract_deployments_dir */
+const
+  _evm_contract_deployments_dir =
+    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+const
+  _libevm_contract_deployment_module =
+    require(
+      "./libevm-contract-deployment");
+/* global
+     _contract_version_auto_detect */
+const
+  _contract_version_auto_detect =
+    _libevm_contract_deployment._contract_version_auto_detect;
+/* global
+     _deployments_dir_auto_detect */
+const
+  _deployments_dir_auto_detect =
+    _libevm_contract_deployment._deployments_dir_auto_detect;
+/* global
+     _network_check */
+const
+  _network_check =
+    _libevm_contract_deployment._network_check;
+/* global
+     _networks_all_auto_detect */
+const
+  _networks_all_auto_detect =
+    _libevm_contract_deployment._networks_all_auto_detect;
+/* global
+     _target_app_auto_detect */
+const
+  _target_app_auto_detect =
+    _libevm_contract_deployment._target_app_auto_detect;
+/* global
+     _user_deployments_check */
+const
+  _user_deployments_check =
+    _libevm_contract_deployment._user_deployments_check;
+const
+  _libevm_contract_deployment_networks_module =
+    require(
+      "./libevm-contract-deployment-networks");
+/* global
+     _evm_contract_deployment_networks */
+const
+  _evm_contract_deployment_networks =
+    _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
+const
+  _libevm_contract_deployment_versions_module =
+    require(
+      "./libevm-contract-deployment-versions");
+/* global
+     _evm_contract_deployment_versions */
+const
+  _evm_contract_deployment_versions =
+    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+
+function
+  _contract_abi_get(
+    _deployments,
+    _contract,
+    _network,
+    _network_id,
+    _version) {
+  let
+    _abi_path,
+    _address,
+    _found,
+    _key_name,
+    _msg,
+    _net;
+  const
+    _networks = [
+      _network,
+      _network_id
+    ];
+  _found =
+    false;
+  for ( _net of _networks ) {
+    _abi_path =
+      _path_join( [
+        _deployments,
+        _contract,
+        _net,
+        _version,
+        `${_contract}.abi.json` ]);
+    if ( _file_exists(
+           _abi_path) ) {
+      _found =
+        true;
+      break;
+    }
+  }
+  if ( ! _found ) {
+    _msg =
+      `No ABI file for '${_network}' deployment ` +
+      `of contract '${_contract}' ` +
+      `found at path '${_deployments}'.`;
+    _msg_error(
+      _msg,
+      1);
+  }
+  const
+    _contract_abi =
+      _abi_path;
+  if ( _contract_abi == "" ||
+       typeof(
+         _contract_abi) == "undefined" ||
+       _contract_abi == null ) {
+    _msg =
+      `No '${_contract}' version '${_version}' ` +
+      `contract deployment specified for network ` +
+      `'${_network}' for directory at path `+
+      `'${_deployments}'.`;
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  return _contract_abi;
+}
+
+async function
+  _evm_contract_deployment_abi(
+    _target_networks,
+    _network_ids,
+    _networks_all,
+    _target_app,
+    _target_contract,
+    _contract_version,
+    _user_defined,
+    _configuration_format,
+    _deployments_dir) {
+  let
+    _args,
+    _contract_abi,
+    _network,
+    _network_check_args,
+    _target_network,
+    _target_network_id,
+    _user_deployments_dir,
+    _system_deployments_dir,
+    _msg;
+  const
+    _contracts_abis =
+      [];
+  const
+    _contract_abi_get_args =
+      [];
+  if ( _user_defined == "n" ) {
+    if ( _target_app == "" ) {
+      _msg =
+        "A target application needs to " +
+        "be specified with option '-a' " +
+        "if not enabling user-defined " +
+        "deployments with '-u' and " +
+        "specifying a deployments directory " +
+        "path with '-d'.";
+      _msg_error(
+        _msg,
+        1)
+    }
+    _system_deployments_dir =
+      await _evm_contract_deployments_dir(
+        _target_app,
+        _user_defined);
+    if ( _deployments_dir != _system_deployments_dir ) {
+      _msg =
+        "To set a custom deployments directory path " +
+        "you need to enable the user-defined " +
+        "deployments switch with '-u'." +
+      _msg_error(
+        _msg,
+        1)
+    }
+  }
+  else if ( _user_defined == "y" ) {
+    if ( _target_app != "" ) {
+      _user_deployments_dir =
+        await _evm_contract_deployments_dir(
+          _target_app,
+          _user_defined);
+    }
+    if ( _deployments_dir != _user_deployments_dir ) {
+      _msg =
+        "Using custom deployments directory " +
+        `path '${_deployments_dir}'.`;
+      _msg_info(
+        _msg);
+    }
+    else {
+      _user_deployments_check(
+        _target_app,
+        _deployments_dir);
+    }
+  }
+  else {
+    _msg =
+      "The 'user-defined' switch argument " +
+      `can be 'y' or 'n', current value '${_user_defined}'.`;
+    _msg_error(
+      _msg,
+      1);
+  }
+  if ( _networks_all == "y" ) {
+    _msg =
+      "Selecting all networks."
+    _msg_info(
+      _msg);
+    _target_networks =
+      await _evm_contract_deployment_networks(
+        `${_deployments_dir}/${_target_contract}`,
+        _networks_all);
+  }
+  for ( _network of _target_networks ) {
+    // _msg =
+    //   "Info arguments for " +
+    //   `network '${_network}'.`;
+    // _msg_info(
+    //   _msg);
+    _target_network_id =
+      "";
+    _network_check_args = [
+      _deployments_dir,
+      _target_contract,
+      _network,
+      _target_network_id
+    ];
+    await _network_check.apply(
+      null,
+      _network_check_args);
+    _contract_abi_get_args.push( [
+      _deployments_dir,
+      _target_contract,
+      _network,
+      _target_network_id,
+      _contract_version,
+      _configuration_format
+    ] );
+  }
+  for ( _network of  _network_ids ) {
+    _target_network =
+      "";
+    _network_check_args = [
+      _deployments_dir,
+      _target_contract,
+      _target_network,
+      _network
+    ];
+    await _network_check.apply(
+      null,
+      _network_check_args);
+    _contract_abi_get_args.push( [
+      _deployments_dir,
+      _target_contract,
+      _target_network,
+      _target_network_id,
+      _contract_version,
+      _configuration_format
+    ] );
+  }
+  for ( _args of _contract_abi_get_args ) {
+    _contract_abi =
+      _contract_abi_get.apply(
+        null,
+        _args);
+    _contracts_abis.push(
+      _contract_abi);
+  }
+  return _contracts_abis;
+}
+
+module.exports = {
+  _contract_version_auto_detect:
+    _contract_version_auto_detect,
+  _deployments_dir_auto_detect:
+    _deployments_dir_auto_detect,
+  _evm_contract_deployment_abi:
+    _evm_contract_deployment_abi,
+  _networks_all_auto_detect:
+    _networks_all_auto_detect,
+  _target_app_auto_detect:
+    _target_app_auto_detect
+};
