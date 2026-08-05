@@ -681,11 +681,22 @@ async function
   } catch (
       _error) {
     if ( "code" in _error ) {
-      if ( _error[
-             "code"] == -32010 ) {
-      _msg_info(
+      const
+        _code =
+          _error[
+            "code"];
+      _msg =
         _error[
-          "message"]);
+          "message"];
+      if ( _code == -32010 ) {
+      _msg_info(
+        _msg);
+      }
+      else if ( _code == -32000 ) {
+        _msg =
+          _error[
+      _msg_info(
+        _msg);
       }
       else {
         _msg =
@@ -732,6 +743,7 @@ async function
   let
     _msg,
     _receipt,
+    _receipt_type,
     _tx,
     _tx_cost,
     _contract_call_dynamic_opts,
@@ -850,16 +862,17 @@ async function
         await _contract_call_dynamic.apply(
           null,
           _contract_call_dynamic_opts);
-      if ( typeof(
-             _receipt) == "undefined" ) {
+      _receipt_type =
+        typeof(
+          _receipt);
+      if ( _receipt_type == "undefined" ) {
         _msg_error_transaction_undefined(
           _attempt);
         _msg =
           "No receipt, transaction may have failed.";
         throw _msg;
       }
-      else if ( typeof(
-                  _receipt) != "undefined" ) {
+      else if ( _receipt_type != "undefined" ) {
         _msg =
           `Transaction no. '${_tx.nonce}'.`;
         _msg_info(

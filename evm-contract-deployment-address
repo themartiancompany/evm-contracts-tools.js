@@ -70,6 +70,11 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _printf */
 const
 _printf =
@@ -103,6 +108,11 @@ const
 const
   _networks_all_auto_detect =
     _libevm_contract_deployment_address_module._networks_all_auto_detect;
+/* global
+     _target_app_auto_detect */
+const
+  _target_app_auto_detect =
+    _libevm_contract_deployment_address_module._target_app_auto_detect;
 
 function
   _global_variables() {
@@ -183,25 +193,20 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  if ( resolve_date == "" ||
-       typeof(
-         resolve_date) == "undefined" ) {
-    resolve_date =
-      _get_date_human();
-  }
-  if ( typeof(
-         configuration_format) == "undefined" ||
-       configuration_format == "" ) {
-    configuration_format =
-      "bash";
-  }
+  _override_set(
+    "resolve",
+    "date",
+    _get_date_human());
+  _override_set(
+    "configuration",
+    "format",
+    "bash");
   _networks_all_auto_detect();
-  if ( typeof(
-         user_defined) == "undefined" ||
-       user_defined == "" ) {
-    user_defined =
-      "n";
-  }
+  _override_set(
+    "user",
+    "defined",
+    "n");
+  await _target_app_auto_detect();
   await _deployments_dir_auto_detect();
   await _contract_version_auto_detect();
 }

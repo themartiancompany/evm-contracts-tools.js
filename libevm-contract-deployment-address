@@ -66,9 +66,12 @@ const
     require(
       "crash-js");
 /* global
+     _basename */
+const
+  _chmod =
+    _libcrash_module._basename;
+/* global
      _chmod */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _chmod =
     _libcrash_module._chmod;
@@ -80,9 +83,12 @@ const
   _cp =
     _libcrash_module._cp;
 /* global
+     _dir_exists */
+const
+  _dir_exists =
+    _libcrash_module._dir_exists;
+/* global
      _file_exists */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _file_exists =
     _libcrash_module._file_exists;
@@ -143,12 +149,22 @@ const
   _msg_error =
     _libcrash_module._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash_module._override_set;
+/* global
      _path_join */
 /* eslint-disable-next-line
      no-global-assign */
 const
   _path_join =
     _libcrash_module._path_join;
+/* global
+     _pwd */
+const
+  _pwd =
+    _libcrash_module._pwd;
 const
   _evm_chains_info_module =
     require(
@@ -630,15 +646,10 @@ async function
         null,
         _evm_contract_deployments_dir_args);
   }
-  const
-    _deployments_dir_type =
-      typeof(
-        deployments_dir);
-  if ( _deployments_dir_type === "undefined" ||
-       deployments_dir == "" ) {
-    deployments_dir =
-      _deployments;
-  }
+  _override_set(
+    "deployments",
+    "dir",
+    _deployments);
 }
 
 async function
@@ -745,7 +756,7 @@ async function
           `'${_network}' with ID ` +
           `'${_network_id}'.`;
         _msg_error(
-	  _msg,
+          _msg,
           1);
       }
       const
@@ -754,7 +765,7 @@ async function
           "y",                  // display highest
           "n",                  // display lowest
           configuration_format
-	];
+        ];
       _version =
         await _evm_contract_deployment_versions.apply(
           null,
@@ -774,15 +785,10 @@ async function
         1);
     }
   }
-  const
-    _contract_version_type =
-      typeof(
-        contract_version);
-  if ( _contract_version_type == "undefined" ||
-       contract_version == "" ) {
-    contract_version =
-      _version;
-  }
+  _override_set(
+    "contract",
+    "version",
+    _version);
   return true;
 }
 
@@ -797,12 +803,42 @@ function
     _networks_all =
       "y";
   }
-  if ( typeof(
-         networks_all) === "undefined" ||
-       networks_all == "" ) {
-    networks_all =
-      _networks_all;
+  _override_set(
+    "networks",
+    "all",
+    _networks_all);
+}
+
+async function
+  _target_app_auto_detect() {
+  let
+    _app;
+  const
+    _dir_current_name =
+      _basename(
+        _pwd());
+  const
+    _user_defined =
+      user_defined;
+  const
+    _evm_contract_deployments_dir_args = [
+      _dir_current_name,
+      _user_defined
+    ];
+  const
+    _target_dir =
+      await _evm_contract_deployments_dir.apply(
+        null,
+        _evm_contract_deployments_dir_args);
+  if ( _dir_exists(
+         _target_dir) ) {
+    _app =
+      _dir_current_name;
   }
+  _override_set(
+    "target",
+    "app",
+    _app);
 }
 
 module.exports = {
@@ -813,5 +849,7 @@ module.exports = {
   _evm_contract_deployment_address:
     _evm_contract_deployment_address,
   _networks_all_auto_detect:
-    _networks_all_auto_detect
+    _networks_all_auto_detect,
+  _target_app_auto_detect:
+    _target_app_auto_detect
 };
