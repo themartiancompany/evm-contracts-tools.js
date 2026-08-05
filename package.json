@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.46",
+    "0.0.47",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -31,6 +31,12 @@
     "evm-contract-call.webpack.config.js",
     "evm-contract-deployment-address",
     "evm-contract-deployment-address.webpack.config.js",
+    "evm-contract-deployment-abi",
+    "evm-contract-deployment-abi.webpack.config.js",
+    "evm-contract-deployment-bytecode",
+    "evm-contract-deployment-bytecode.webpack.config.js",
+    "evm-contract-deployment-compiler-output",
+    "evm-contract-deployment-compiler-output.webpack.config.js",
     "evm-contract-deployment-networks",
     "evm-contract-deployment-networks.webpack.config.js",
     "evm-contract-deployment-versions",
@@ -43,6 +49,12 @@
     "libevm-contract-call.webpack.config.js",
     "libevm-contract-deployment-address",
     "libevm-contract-deployment-address.webpack.config.js",
+    "libevm-contract-deployment-abi",
+    "libevm-contract-deployment-abi.webpack.config.js",
+    "libevm-contract-deployment-bytecode",
+    "libevm-contract-deployment-bytecode.webpack.config.js",
+    "libevm-contract-deployment-compiler-output",
+    "libevm-contract-deployment-compiler-output.webpack.config.js",
     "libevm-contract-deployment-networks",
     "libevm-contract-deployment-networks.webpack.config.js",
     "libevm-contract-deployment-versions",
@@ -154,6 +166,18 @@
         "evm-contract-deployment-address",
       "evm-contract-deployment-address.js":
         "evm-contract-deployment-address",
+      "evm-contract-deployment-abi":
+        "evm-contract-deployment-abi",
+      "evm-contract-deployment-abi.js":
+        "evm-contract-deployment-abi",
+      "evm-contract-deployment-bytecode":
+        "evm-contract-deployment-bytecode",
+      "evm-contract-deployment-bytecode.js":
+        "evm-contract-deployment-bytecode",
+      "evm-contract-deployment-compiler-output":
+        "evm-contract-deployment-compiler-output",
+      "evm-contract-deployment-compiler-output.js":
+        "evm-contract-deployment-compiler-output",
       "evm-contract-deployment-networks":
         "evm-contract-deployment-networks",
       "evm-contract-deployment-networks.js":
@@ -175,11 +199,17 @@
   },
   "scripts": {
     "build-fs-worker":
-      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details; for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do cp 'fs-worker.js' \"dist/${_app}\"; cp 'fs-worker.js' \"dist/lib${_app}\" || true; done",
+      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details; for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-abi evm-contract-deployment-bytecode evm-contract-deployment-compiler-output evm-contract-deployment-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do cp 'fs-worker.js' \"dist/${_app}\"; cp 'fs-worker.js' \"dist/lib${_app}\" || true; done",
     "build-libevm-contract-call":
       "npx webpack --mode 'production' --config 'libevm-contract-call.webpack.config.cjs' --stats-error-details && mv 'libevm-contract-call.js' 'dist/libevm-contract-call'",
     "build-libevm-contract-deployment-address":
       "_app='libevm-contract-deployment-address'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-libevm-contract-deployment-abi":
+      "_app='libevm-contract-deployment-abi'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-libevm-contract-deployment-bytecode":
+      "_app='libevm-contract-deployment-bytecode'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-libevm-contract-deployment-compiler-output":
+      "_app='libevm-contract-deployment-compiler-output'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
         "build-libevm-contract-deployment-networks":
       "_app='libevm-contract-deployment-networks'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-libevm-contract-deployment-versions":
@@ -194,6 +224,12 @@
       "_app='evm-contract-call'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployment-address":
       "_app='evm-contract-deployment-address'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-evm-contract-deployment-abi":
+      "_app='evm-contract-deployment-abi'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-evm-contract-deployment-bytecode":
+      "_app='evm-contract-deployment-bytecode'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
+    "build-evm-contract-deployment-compiler-output":
+      "_app='evm-contract-deployment-compiler-output'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployments-dir":
       "_app='evm-contract-deployments-dir'; npx webpack --mode 'production' --config \"${_app}.webpack.config.cjs\" --stats-error-details && mv \"${_app}.js\" \"dist/${_app}\"",
     "build-evm-contract-deployment-networks":
@@ -203,7 +239,7 @@
     "build-evm-contracts-tools":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && mv 'evm-contracts-tools.js' 'dist/evm-contracts-tools'",
     "build-bin":
-      "for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do npm run \"build-${_app}\"; done",
+      "for _app in evm-contract-call evm-contract-deployment-address evm-contract-deployment-abi evm-contract-deployment-bytecode evm-contract-deployment-compiler-output evm-contract-deployment-networks evm-contract-deployment-versions evm-contract-deployments-dir evm-contracts-tools; do npm run \"build-${_app}\"; done",
     "build-man":
       "make build-man",
     "build":
