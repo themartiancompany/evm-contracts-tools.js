@@ -47,6 +47,7 @@
     "index.html",
     "libevm-contract-call",
     "libevm-contract-call.webpack.config.js",
+    "libevm-contract-deployment",
     "libevm-contract-deployment-address",
     "libevm-contract-deployment-address.webpack.config.js",
     "libevm-contract-deployment-abi",

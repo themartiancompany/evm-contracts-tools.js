@@ -248,7 +248,6 @@ function
     _config,
     _config_file_ext,
     _config_path,
-    _contract_address,
     _found,
     _key_name,
     _msg,
