@@ -280,28 +280,13 @@ function
       _msg,
       1);
   }
-  if ( _configuration_format == "json" ) {
-    _config =
-      _json_read(
-        _config_path);
-    _key_name =
-      "contract-address";
-  }
-  else if ( _configuration_format == "bash" ) {
-    _config =
-      _from_bash_ass_array(
-        _file_read(
-          _config_path));
-    _key_name =
-      "contract_address";
-  }
   const
-    _contract_address =
-      _config[
-        _key_name][
-          _version];
-  if ( _contract_address == "" ||
-       _contract_address == null ) {
+    _contract_compiler_output =
+      _compiler_output_path;
+  if ( _contract_compiler_output == "" ||
+       _contract_compiler_output == null ||
+       typeof(
+         _contract_compiler_output) == "undefined" ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
       `contract deployment specified for network ` +
@@ -309,7 +294,8 @@ function
       `'${_deployments}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   return _contract_address;
 }

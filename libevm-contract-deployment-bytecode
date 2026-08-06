@@ -245,7 +245,6 @@ function
     _version) {
   let
     _bytecode_path,
-    _contract_bytecode,
     _found,
     _key_name,
     _msg,
