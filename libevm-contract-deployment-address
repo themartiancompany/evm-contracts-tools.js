@@ -30,8 +30,6 @@
 
 /* eslint-disable
      no-unused-vars */
-/* eslint-disable
-     no-useless-assignment */
 
 /* EVM Contracts tools global variables */
 /* global
@@ -408,7 +406,7 @@ async function
   }
   if ( _networks_all == "y" ) {
     _msg =
-      "Selecting all networks."
+      "Selecting all networks.";
     _msg_info(
       _msg);
     _target_networks =

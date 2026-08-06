@@ -77,8 +77,6 @@ const
     _libcrash_module._chmod;
 /* global
      _cp */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _cp =
     _libcrash_module._cp;
@@ -94,57 +92,41 @@ const
     _libcrash_module._file_exists;
 /* global
      _file_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _file_read =
     _libcrash_module._file_read;
 /* global
      _from_bash_ass_array */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _from_bash_ass_array =
     _libcrash_module._from_bash_ass_array;
 /* global
      _homedir_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _homedir_get =
     _libcrash_module._homedir_get;
 /* global
      _json_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _json_read =
     _libcrash_module._json_read;
 /* global
      _lib_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _lib_get =
     _libcrash_module._lib_get;
 /* global
      _mkdir */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _mkdir =
     _libcrash_module._mkdir;
 /* global
      _msg_info */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_info =
     _libcrash_module._msg_info;
 /* global
      _msg_error */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_error =
     _libcrash_module._msg_error;
@@ -155,8 +137,6 @@ const
     _libcrash_module._override_set;
 /* global
      _path_join */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _path_join =
     _libcrash_module._path_join;
@@ -263,7 +243,8 @@ function
         _deployments,
         _contract,
         _net,
-        `config.${_config_file_ext}` ]);
+        _version,
+        `${_contract}.json` ]);
     if ( _file_exists(
            _config_path) ) {
       _found =
@@ -289,19 +270,19 @@ function
          _contract_compiler_output) == "undefined" ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
-      `contract deployment specified for network ` +
-      `'${_network}' for directory at path `+
+      `contract deployment compiler output for network ` +
+      `'${_network}' found at directory with path `+
       `'${_deployments}'.`;
     _msg_error(
       _msg,
       0);
     throw _msg;
   }
-  return _contract_address;
+  return _contract_compiler_output;
 }
 
 async function
-  _evm_contract_deployment_address(
+  _evm_contract_deployment_compiler_output(
     _target_networks,
     _network_ids,
     _networks_all,
@@ -313,7 +294,7 @@ async function
     _deployments_dir) {
   let
     _args,
-    _contract_address,
+    _contract_compiler_output,
     _network,
     _network_check_args,
     _target_network,
@@ -322,10 +303,10 @@ async function
     _system_deployments_dir,
     _msg;
   const
-    _contracts_addresses =
+    _contracts_compiler_outputs =
       [];
   const
-    _contract_address_get_args =
+    _contract_compiler_output_get_args =
       [];
   if ( _user_defined == "n" ) {
     if ( _target_app == "" ) {
@@ -338,7 +319,8 @@ async function
         "path with '-d'.";
       _msg_error(
         _msg,
-        1)
+        0);
+      throw _msg;
     }
     _system_deployments_dir =
       await _evm_contract_deployments_dir(
@@ -380,7 +362,8 @@ async function
       `can be 'y' or 'n', current value '${_user_defined}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   if ( _networks_all == "y" ) {
     _msg =
@@ -409,7 +392,7 @@ async function
     await _network_check.apply(
       null,
       _network_check_args);
-    _contract_address_get_args.push( [
+    _contract_compiler_output_get_args.push( [
       _deployments_dir,
       _target_contract,
       _network,
@@ -430,7 +413,7 @@ async function
     await _network_check.apply(
       null,
       _network_check_args);
-    _contract_address_get_args.push( [
+    _contract_compiler_output_get_args.push( [
       _deployments_dir,
       _target_contract,
       _target_network,
@@ -439,15 +422,15 @@ async function
       _configuration_format
     ] );
   }
-  for ( _args of _contract_address_get_args ) {
-    _contract_address =
-      _contract_address_get.apply(
+  for ( _args of _contract_compiler_output_get_args ) {
+    _contract_compiler_output =
+      _contract_compiler_output_get.apply(
         null,
         _args);
-    _contracts_addresses.push(
-      _contract_address);
+    _contracts_compiler_outputs.push(
+      _contract_compiler_output);
   }
-  return _contracts_addresses;
+  return _contracts_compiler_outputs;
 }
 
 module.exports = {

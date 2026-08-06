@@ -320,7 +320,8 @@ async function
         "path with '-d'.";
       _msg_error(
         _msg,
-        1)
+        0);
+      throw _msg
     }
     _system_deployments_dir =
       await _evm_contract_deployments_dir(
@@ -333,7 +334,8 @@ async function
         "deployments switch with '-u'." +
       _msg_error(
         _msg,
-        1)
+        0);
+      throw _msg;
     }
   }
   else if ( _user_defined == "y" ) {
@@ -366,7 +368,7 @@ async function
   }
   if ( _networks_all == "y" ) {
     _msg =
-      "Selecting all networks."
+      "Selecting all networks.";
     _msg_info(
       _msg);
     _target_networks =
