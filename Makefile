@@ -60,8 +60,14 @@ NPM_FILES=\
   "dist" \
   "evm-contract-call" \
   "evm-contract-call.webpack.config.cjs" \
+  "evm-contract-deployment-abi" \
+  "evm-contract-deployment-abi.webpack.config.cjs" \
   "evm-contract-deployment-address" \
   "evm-contract-deployment-address.webpack.config.cjs" \
+  "evm-contract-deployment-bytecode" \
+  "evm-contract-deployment-bytecode.webpack.config.cjs" \
+  "evm-contract-deployment-compiler-output" \
+  "evm-contract-deployment-compiler-output.webpack.config.cjs" \
   "evm-contract-deployment-networks" \
   "evm-contract-deployment-networks.webpack.config.cjs" \
   "evm-contract-deployment-versions" \
@@ -71,8 +77,15 @@ NPM_FILES=\
   "lib" \
   "libevm-contract-call" \
   "libevm-contract-call.webpack.config.cjs" \
+  "libevm-contract-deployment" \
   "libevm-contract-deployment-address" \
   "libevm-contract-deployment-address.webpack.config.cjs" \
+  "libevm-contract-deployment-abi" \
+  "libevm-contract-deployment-abi.webpack.config.cjs" \
+  "libevm-contract-deployment-bytecode" \
+  "libevm-contract-deployment-bytecode.webpack.config.cjs" \
+  "libevm-contract-deployment-compiler-output" \
+  "libevm-contract-deployment-compiler-output.webpack.config.cjs" \
   "libevm-contract-deployment-networks" \
   "libevm-contract-deployment-networks.webpack.config.cjs" \
   "libevm-contract-deployment-versions" \
