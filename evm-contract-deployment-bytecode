@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     evm-contract-deployment-address.js
+ *     evm-contract-deployment-bytecode.js
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -85,34 +85,34 @@ const
 _process_exit =
   _libcrash._process_exit;
 const
-  _libevm_contract_deployment_address_module =
+  _libevm_contract_deployment_bytecode_module =
   require(
-    "./libevm-contract-deployment-address");
+    "./libevm-contract-deployment-bytecode");
 /* global
-     _evm_contract_deployment_address */
+     _evm_contract_deployment_bytecode */
 const
-  _evm_contract_deployment_address =
-    _libevm_contract_deployment_address_module._evm_contract_deployment_address;
+  _evm_contract_deployment_bytecode =
+    _libevm_contract_deployment_bytecode_module._evm_contract_deployment_bytecode;
 /* global
      _contract_version_auto_detect */
 const
   _contract_version_auto_detect =
-    _libevm_contract_deployment_address_module._contract_version_auto_detect;
+    _libevm_contract_deployment_bytecode_module._contract_version_auto_detect;
 /* global
      _deployments_dir_auto_detect */
 const
   _deployments_dir_auto_detect =
-    _libevm_contract_deployment_address_module._deployments_dir_auto_detect;
+    _libevm_contract_deployment_bytecode_module._deployments_dir_auto_detect;
 /* global
      _networks_all_auto_detect */
 const
   _networks_all_auto_detect =
-    _libevm_contract_deployment_address_module._networks_all_auto_detect;
+    _libevm_contract_deployment_bytecode_module._networks_all_auto_detect;
 /* global
      _target_app_auto_detect */
 const
   _target_app_auto_detect =
-    _libevm_contract_deployment_address_module._target_app_auto_detect;
+    _libevm_contract_deployment_bytecode_module._target_app_auto_detect;
 
 function
   _global_variables() {
@@ -120,7 +120,7 @@ function
        app_name:
          writable */
   app_name =
-    "evm-contract-deployments-address.js";
+    "evm-contract-deployments-bytecode.js";
   /* global
        app_opts:
          writable */
@@ -437,9 +437,6 @@ function
   network_ids =
     _argv_url_get(
       "network_id");
-  target_ids =
-    _argv_url_get(
-      "chain_id");
   networks_all =
     _argv_url_get(
       "networks_all")[
@@ -478,13 +475,13 @@ function
 }
 
 async function
-  _evm_contract_deployment_address_cmdline(
+  _evm_contract_deployment_bytecode_cmdline(
     _app_opts) {
   let
     _result;
   const
     _results =
-      await _evm_contract_deployment_address.apply(
+      await _evm_contract_deployment_bytecode.apply(
         null,
         _app_opts);
   const
@@ -522,16 +519,17 @@ async function
       deployments_dir,
     ];
   const
-    _address =
-      await _evm_contract_deployment_address_cmdline(
+    _bytecode =
+      await _evm_contract_deployment_bytecode_cmdline(
         app_opts);
+  return _bytecode;
 }
 
 _global_variables();
 if ( _cmdline_check(
-       "evm-contract-deployment-address.js") ||
+       "evm-contract-deployment-bytecode.js") ||
      _cmdline_check(
-       "evm-contract-deployment-address") ) {
+       "evm-contract-deployment-bytecode") ) {
   _cmdline_parse();
 }
 else{

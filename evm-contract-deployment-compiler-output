@@ -80,39 +80,39 @@ const
 _printf =
   _libcrash._printf;
 /* global
-     _process_exit */
+     _exit */
 const
-_process_exit =
-  _libcrash._process_exit;
+_exit =
+  _libcrash._exit;
 const
-  _libevm_contract_deployment_address_module =
+  _libevm_contract_deployment_compiler_output_module =
   require(
-    "./libevm-contract-deployment-address");
+    "./libevm-contract-deployment-compiler-output");
 /* global
-     _evm_contract_deployment_address */
+     _evm_contract_deployment_compiler_output */
 const
-  _evm_contract_deployment_address =
-    _libevm_contract_deployment_address_module._evm_contract_deployment_address;
+  _evm_contract_deployment_compiler_output =
+    _libevm_contract_deployment_compiler_output_module._evm_contract_deployment_compiler_output;
 /* global
      _contract_version_auto_detect */
 const
   _contract_version_auto_detect =
-    _libevm_contract_deployment_address_module._contract_version_auto_detect;
+    _libevm_contract_deployment_compiler_output_module._contract_version_auto_detect;
 /* global
      _deployments_dir_auto_detect */
 const
   _deployments_dir_auto_detect =
-    _libevm_contract_deployment_address_module._deployments_dir_auto_detect;
+    _libevm_contract_deployment_compiler_output_module._deployments_dir_auto_detect;
 /* global
      _networks_all_auto_detect */
 const
   _networks_all_auto_detect =
-    _libevm_contract_deployment_address_module._networks_all_auto_detect;
+    _libevm_contract_deployment_compiler_output_module._networks_all_auto_detect;
 /* global
      _target_app_auto_detect */
 const
   _target_app_auto_detect =
-    _libevm_contract_deployment_address_module._target_app_auto_detect;
+    _libevm_contract_deployment_compiler_output_module._target_app_auto_detect;
 
 function
   _global_variables() {
@@ -120,7 +120,7 @@ function
        app_name:
          writable */
   app_name =
-    "evm-contract-deployments-address.js";
+    "evm-contract-deployments-compiler-output.js";
   /* global
        app_opts:
          writable */
@@ -285,7 +285,7 @@ function
     console.log(
       _line);
   }
-  _process_exit(
+  _exit(
     _exit_code);
 }
 
@@ -475,13 +475,13 @@ function
 }
 
 async function
-  _evm_contract_deployment_address_cmdline(
+  _evm_contract_deployment_compiler_output_cmdline(
     _app_opts) {
   let
     _result;
   const
     _results =
-      await _evm_contract_deployment_address.apply(
+      await _evm_contract_deployment_compiler_output.apply(
         null,
         _app_opts);
   const
@@ -520,15 +520,15 @@ async function
     ];
   const
     _address =
-      await _evm_contract_deployment_address_cmdline(
+      await _evm_contract_deployment_compiler_output_cmdline(
         app_opts);
 }
 
 _global_variables();
 if ( _cmdline_check(
-       "evm-contract-deployment-address.js") ||
+       "evm-contract-deployment-compiler-output.js") ||
      _cmdline_check(
-       "evm-contract-deployment-address") ) {
+       "evm-contract-deployment-compiler-output") ) {
   _cmdline_parse();
 }
 else{
