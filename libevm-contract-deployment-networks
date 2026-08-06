@@ -39,71 +39,56 @@ const
       "crash-js");
 /* global
      _dir_exists */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _dir_exists =
     _libcrash_module._dir_exists;
 /* global
      _file_exists */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _file_exists =
     _libcrash_module._file_exists;
 /* global
      _homedir_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _homedir_get =
     _libcrash_module._homedir_get;
 /* global
      _json_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _json_read =
     _libcrash_module._json_read;
 /* global
      _lib_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _lib_get =
     _libcrash_module._lib_get;
 /* global
      _ls */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _ls =
     _libcrash_module._ls;
 /* global
-     _msg_info */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _msg_info =
-    _libcrash_module._msg_info;
-/* global
      _msg_error */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_error =
     _libcrash_module._msg_error;
 /* global
+     _msg_info */
+const
+  _msg_info =
+    _libcrash_module._msg_info;
+/* global
+     _msg_warning */
+const
+  _msg_warning =
+    _libcrash_module._msg_warning;
+/* global
      _path_join */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _path_join =
     _libcrash_module._path_join;
 /* global
      _stat */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _stat =
     _libcrash_module._stat;
@@ -220,12 +205,13 @@ async function
     if ( ! _file_is_dir ) {
       const
         _msg =
-          `There shouldn't be a file into ` +
+          `There shouldn't be the file ` +
+          `'${_file}' into ` +
           `this directory.`;
       _msg_warning(
-        _msg)
+        _msg);
       _stat(
-        _file_info);
+        _path);
     }
     else {
       _networks.push(
@@ -241,8 +227,6 @@ async function
     _display_all,
     _display_safest,
     _display_cheapest) {
-  let
-    _networks;
   const
     _deployment_dir_type =
       typeof(
@@ -256,9 +240,10 @@ async function
       _msg,
       1);
   }
-  _networks =
-    await _networks_find(
-      _deployment_dir);
+  const
+    _networks =
+      await _networks_find(
+        _deployment_dir);
   return _networks;
 }
 

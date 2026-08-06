@@ -71,36 +71,26 @@ const
       "crash-js");
 /* global
      _file_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _file_read =
     _libcrash_module._file_read;
 /* global
      _from_bash_ass_array */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _from_bash_ass_array =
     _libcrash_module._from_bash_ass_array;
 /* global
      _json_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _json_read =
     _libcrash_module._json_read;
 /* global
      _msg_info */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_info =
     _libcrash_module._msg_info;
 /* global
      _msg_error */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_error =
     _libcrash_module._msg_error;

@@ -440,9 +440,6 @@ function
   network_ids =
     _argv_url_get(
       "network_id");
-  target_ids =
-    _argv_url_get(
-      "chain_id");
   networks_all =
     _argv_url_get(
       "networks_all")[

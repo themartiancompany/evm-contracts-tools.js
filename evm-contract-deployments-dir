@@ -72,13 +72,18 @@ const
 /* global
      _printf */
 const
-_printf =
-  _libcrash._printf;
+  _printf =
+    _libcrash._printf;
 /* global
-     _process_exit */
+     _exit */
 const
-_process_exit =
-  _libcrash._process_exit;
+  _exit =
+    _libcrash._exit;
+/* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
 const
   _libevm_contract_deployments_dir_module =
     require(
@@ -112,6 +117,11 @@ function
   resolve_date =
     "";
   /* global
+       target_app:
+         writable */
+  target_app =
+    "";
+  /* global
        user_level:
          writable */
   user_level =
@@ -128,34 +138,14 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  if ( ! _help_display &&
-       typeof(_help_display) != "undefined" &&
-       _help_display != "" ) {
-    const
-      _address_valid =
-        _address_check(
-          contract_address);
-    if ( ! _address_valid ) {
-      const
-        _msg =
-          "Contract address " +
-          `'${contract_address}' is ` +
-          `invalid.`;
-      _msg_error(
-        _msg,
-        1);
-    }
-  }
-  if ( resolve_date == "" ||
-       typeof(
-         resolve_date) == "undefined" ) {
-    resolve_date =
-      _get_date_human();
-  }
-  if ( user_level == "" ) {
-    user_level =
-      "n";
-  }
+  _override_set(
+    "resolve",
+    "date",
+    _get_date_human());
+  _override_set(
+    "user",
+    "level",
+    "n");
 }
 
 function
@@ -206,7 +196,7 @@ function
     console.log(
       _line);
   }
-  _process_exit(
+  _exit(
     _exit_code);
 }
 

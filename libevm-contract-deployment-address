@@ -77,8 +77,6 @@ const
     _libcrash_module._chmod;
 /* global
      _cp */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _cp =
     _libcrash_module._cp;
@@ -94,57 +92,41 @@ const
     _libcrash_module._file_exists;
 /* global
      _file_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _file_read =
     _libcrash_module._file_read;
 /* global
      _from_bash_ass_array */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _from_bash_ass_array =
     _libcrash_module._from_bash_ass_array;
 /* global
      _homedir_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _homedir_get =
     _libcrash_module._homedir_get;
 /* global
      _json_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _json_read =
     _libcrash_module._json_read;
 /* global
      _lib_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _lib_get =
     _libcrash_module._lib_get;
 /* global
      _mkdir */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _mkdir =
     _libcrash_module._mkdir;
 /* global
      _msg_info */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_info =
     _libcrash_module._msg_info;
 /* global
      _msg_error */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_error =
     _libcrash_module._msg_error;
@@ -155,8 +137,6 @@ const
     _libcrash_module._override_set;
 /* global
      _path_join */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _path_join =
     _libcrash_module._path_join;
@@ -264,7 +244,7 @@ function
   }
   else if ( _configuration_format == "json" ) {
     _config_file_ext =
-      "json"
+      "json";
   }
   else {
     _msg =
@@ -272,7 +252,8 @@ function
       `${_configuration_format}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   const
     _networks = [
@@ -302,7 +283,8 @@ function
       `found at path '${_deployments}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   if ( _configuration_format == "json" ) {
     _config =
@@ -333,7 +315,8 @@ function
       `'${_deployments}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   return _contract_address;
 }
@@ -376,7 +359,8 @@ async function
         "path with '-d'.";
       _msg_error(
         _msg,
-        1)
+        0);
+      throw _msg;
     }
     _system_deployments_dir =
       await _evm_contract_deployments_dir(
@@ -389,7 +373,8 @@ async function
         "deployments switch with '-u'." +
       _msg_error(
         _msg,
-        1)
+        0);
+      throw _msg;
     }
   }
   else if ( _user_defined == "y" ) {
@@ -418,7 +403,8 @@ async function
       `can be 'y' or 'n', current value '${_user_defined}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   if ( _networks_all == "y" ) {
     _msg =
