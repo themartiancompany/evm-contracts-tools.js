@@ -61,6 +61,10 @@
      target_networks:
        writable */
 
+/* global
+     config_file:
+       writable */
+
 const
   _libcrash_module =
     require(
@@ -100,40 +104,20 @@ const
 const
   _msg_error =
     _libcrash_module._msg_error;
-
-function
-  _configuration_format_auto_detect() {
-  let
-    _configuration_format;
-  if ( typeof(
-         configuration_format) === "undefined" ||
-       configuration_format == "" ) {
-    _configuration_format =
-      "json";
-    if ( config_file.endsWith(
-           ".sh") ) {
-      _configuration_format =
-        "bash";
-    }
-    else if ( config_file.endsWith(
-           ".json") ) {
-      _configuration_format =
-        "json";
-    }
-    else {
-      const
-        _msg =
-          "Impossible determining " +
-          "configuration format from file " +
-          "extension, defaulting to 'json'.";
-      _msg_info(
-        _msg,
-        1);
-    }
-    configuration_format =
-      _configuration_format;
-  }
-}
+const
+  _libevm_contract_deployment_module =
+    require(
+      "./libevm-contract-deployment");
+/* global
+     _configuration_format_auto_detect */
+const
+  _configuration_format_auto_detect =
+    _libevm_contract_deployment_module._configuration_format_auto_detect;
+/* global
+     _configuration_format_get */
+const
+  _configuration_format_get =
+    _libevm_contract_deployment_module._configuration_format_get;
 
 function
   _evm_contract_deployment_versions(
@@ -197,6 +181,8 @@ function
 module.exports = {
   _configuration_format_auto_detect:
     _configuration_format_auto_detect,
+  _configuration_format_get:
+    _configuration_format_get,
   _evm_contract_deployment_versions:
     _evm_contract_deployment_versions,
 };

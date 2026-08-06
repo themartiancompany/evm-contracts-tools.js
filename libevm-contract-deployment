@@ -589,7 +589,52 @@ async function
     _app);
 }
 
+function
+  _configuration_format_get(
+    _config_file) {
+  let
+    _configuration_format;
+  if ( _config_file.endsWith(
+         ".sh") ) {
+    _configuration_format =
+      "bash";
+  }
+  else if ( _config_file.endsWith(
+         ".json") ) {
+    _configuration_format =
+      "json";
+  }
+  else {
+    const
+      _msg =
+        "Impossible determining " +
+        "configuration format from file " +
+        "extension, defaulting to 'json'.";
+    _msg_info(
+      _msg,
+      0);
+    throw _msg;
+  }
+  return _configuration_format;
+}
+
+function
+  _configuration_format_auto_detect() {
+  const
+    _configuration_format =
+      _configuration_format_get(
+        config_file);
+  _override_set(
+    "configuration",
+    "format",
+    _configuration_format);
+}
+
 module.exports = {
+  _configuration_format_auto_detect:
+    _configuration_format_auto_detect,
+  _configuration_format_get:
+    _configuration_format_get,
   _contract_version_auto_detect:
     _contract_version_auto_detect,
   _deployments_dir_auto_detect:
