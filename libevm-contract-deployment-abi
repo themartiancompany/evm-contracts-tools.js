@@ -30,8 +30,6 @@
 
 /* eslint-disable
      no-unused-vars */
-/* eslint-disable
-     no-useless-assignment */
 
 /* EVM Contracts tools global variables */
 /* global
@@ -321,7 +319,7 @@ async function
       _msg_error(
         _msg,
         0);
-      throw _msg
+      throw _msg;
     }
     _system_deployments_dir =
       await _evm_contract_deployments_dir(

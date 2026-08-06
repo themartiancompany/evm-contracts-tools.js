@@ -246,7 +246,7 @@ function
         _version,
         `${_contract}.json` ]);
     if ( _file_exists(
-           _config_path) ) {
+           _compiler_output_path) ) {
       _found =
         true;
       break;
@@ -333,7 +333,8 @@ async function
         "deployments switch with '-u'." +
       _msg_error(
         _msg,
-        1)
+        0);
+      throw _msg;
     }
   }
   else if ( _user_defined == "y" ) {
@@ -367,7 +368,7 @@ async function
   }
   if ( _networks_all == "y" ) {
     _msg =
-      "Selecting all networks."
+      "Selecting all networks.";
     _msg_info(
       _msg);
     _target_networks =
@@ -438,8 +439,8 @@ module.exports = {
     _contract_version_auto_detect,
   _deployments_dir_auto_detect:
     _deployments_dir_auto_detect,
-  _evm_contract_deployment_address:
-    _evm_contract_deployment_address,
+  _evm_contract_deployment_compiler_output:
+    _evm_contract_deployment_compiler_output,
   _networks_all_auto_detect:
     _networks_all_auto_detect,
   _target_app_auto_detect:

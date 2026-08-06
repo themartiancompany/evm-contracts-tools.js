@@ -30,8 +30,6 @@
 
 /* eslint-disable
      no-unused-vars */
-/* eslint-disable
-     no-useless-assignment */
 
 /* EVM Contracts tools global variables */
 /* global
