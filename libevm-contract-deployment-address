@@ -191,32 +191,32 @@ const
      _contract_version_auto_detect */
 const
   _contract_version_auto_detect =
-    _libevm_contract_deployment._contract_version_auto_detect;
+    _libevm_contract_deployment_module._contract_version_auto_detect;
 /* global
      _deployments_dir_auto_detect */
 const
   _deployments_dir_auto_detect =
-    _libevm_contract_deployment._deployments_dir_auto_detect;
+    _libevm_contract_deployment_module._deployments_dir_auto_detect;
 /* global
      _network_check */
 const
   _network_check =
-    _libevm_contract_deployment._network_check;
+    _libevm_contract_deployment_module._network_check;
 /* global
      _networks_all_auto_detect */
 const
   _networks_all_auto_detect =
-    _libevm_contract_deployment._networks_all_auto_detect;
+    _libevm_contract_deployment_module._networks_all_auto_detect;
 /* global
      _target_app_auto_detect */
 const
   _target_app_auto_detect =
-    _libevm_contract_deployment._target_app_auto_detect;
+    _libevm_contract_deployment_module._target_app_auto_detect;
 /* global
      _user_deployments_check */
 const
   _user_deployments_check =
-    _libevm_contract_deployment._user_deployments_check;
+    _libevm_contract_deployment_module._user_deployments_check;
 const
   _libevm_contract_deployment_networks_module =
     require(
