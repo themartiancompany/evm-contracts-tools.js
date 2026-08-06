@@ -261,8 +261,8 @@ async function
       "name",            // input type
       "id",              // output type
       "offline",
-      [ "node",
-        "system" ],      // db types
+      [ "system",        // db types
+        "node" ],
       "kirsh",           // selection method, first
       "n",               // api keys
       "n",               // query all networks
@@ -278,10 +278,10 @@ async function
     _evm_chains_info_args = [
       "get",             // target command
       "id"  ,            // input type
-      "name",              // output type
+      "name",            // output type
       "offline",
-      [ "node",
-        "system" ],      // db types
+      [ "system",        // db types
+        "node" ],
       "kirsh",           // selection method, first
       "n",               // api keys
       "n",               // query all networks
@@ -583,12 +583,10 @@ async function
     _msg_info(
       _msg);
   }
-  console.log(target_app);
   _override_set(
     "target",
     "app",
     _app);
-  console.log("app", target_app);
 }
 
 module.exports = {
