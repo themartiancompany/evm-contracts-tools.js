@@ -108,6 +108,15 @@ const
   _stat =
     _libcrash_module._stat;
 const
+  _libevm_contract_deployment_module =
+    require(
+      "./libevm-contract-deployment");
+/* global
+     _network_check */
+const
+  _network_check =
+    _libevm_contract_deployment_module._network_check;
+const
   _libevm_contract_deployments_dir_module =
     require(
       "./libevm-contract-deployments-dir");
@@ -189,44 +198,6 @@ function
 }
 
 async function
-  _network_check(
-    _deployments,
-    _contract,
-    _target_network,
-    _target_network_id) {
-  let
-    _msg,
-    _network_id,
-    _networks;
-  _networks = [
-    // I need to write that first apparently
-    _evm_contract_deployment_networks
-  ];
-  _app_check(
-    _app);
-  if ( typeof(
-         _type) == "undefined" ||
-       _type == "" ) {
-    _type =
-      "system";
-  }
-  let
-    _conf_dir;
-  if ( _type == "system" ) {
-    _conf_dir =
-      await _lib_get();
-  }
-  else if ( _type == "user" ) {
-    const
-      _homedir =
-        _homedir_get();
-    _conf_dir =
-      `${_homedir}/.config`;
-  }
-  return `${_conf_dir}/${_app}/deployments`;
-}
-
-async function
   _networks_find(
     _deployment_dir) {
   let
@@ -293,5 +264,7 @@ async function
 
 module.exports = {
   _evm_contract_deployment_networks:
-    _evm_contract_deployment_networks
+    _evm_contract_deployment_networks,
+  _network_check:
+    _network_check
 };
