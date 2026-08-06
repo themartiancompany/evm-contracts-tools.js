@@ -121,13 +121,6 @@ const
   _json_read =
     _libcrash_module._json_read;
 /* global
-     _lib_get */
-/* eslint-disable-next-line
-     no-global-assign */
-const
-  _lib_get =
-    _libcrash_module._lib_get;
-/* global
      _mkdir */
 /* eslint-disable-next-line
      no-global-assign */
@@ -559,6 +552,8 @@ async function
   _target_app_auto_detect() {
   let
     _app;
+  _app =
+    "";
   const
     _dir_current_name =
       _basename(
@@ -581,10 +576,19 @@ async function
     _app =
       _dir_current_name;
   }
+  else {
+    _msg =
+      `Directory '${_target_dir}' ` +
+      "not found.";
+    _msg_info(
+      _msg);
+  }
+  console.log(target_app);
   _override_set(
     "target",
     "app",
     _app);
+  console.log("app", target_app);
 }
 
 module.exports = {

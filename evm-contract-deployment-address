@@ -37,8 +37,8 @@
 
 const
   _libcrash =
-  require(
-    "crash-js");
+    require(
+      "crash-js");
 /* global
      _argv_get */
 const
@@ -206,8 +206,11 @@ async function
     "user",
     "defined",
     "n");
+  console.log(
+    user_defined);
   await _target_app_auto_detect();
   await _deployments_dir_auto_detect();
+  console.log(deployments_dir);
   await _contract_version_auto_detect();
 }
 
@@ -259,23 +262,23 @@ function
       "     -i, --chain-id <number>              EVM network id (chain ID).",
       "     -a, --target-app <app>               Application whose target",
       "                                          contract is part of.",
-      `                                          Default: '${target_app}`,
+      `                                          Default: '${target_app}'`,
       "     -A, --networks-all                   Returns address for all",
       "                                          available networks.",
-      `                                          Default: '${networks_all}`,
+      `                                          Default: '${networks_all}'`,
       "     -V, --contract-version <version>     Contract version.",
-      `                                          Default: '${contract_version}`,
+      `                                          Default: '${contract_version}'`,
       "     -u, --user-defined                   Returns contract address for",
       "                                          user-defined file system",
       "                                          deployment instead of the system",
       "                                          one.",
-      `                                          Default: '${user_defined}`,
+      `                                          Default: '${user_defined}'`,
       "     -d, --deployments-dir <dir>          Specify contract deployments",
       "                                          directory path.",
-      `                                          Default: '${deployments_dir}`,
+      `                                          Default: '${deployments_dir}'`,
       "     -f, --configuration-format <format>  Specify contract deployments",
       "                                          directory path.",
-      `                                          Default: '${configuration_format}`,
+      `                                          Default: '${configuration_format}'`,
       "",
       "     -h --help                            This message.",
       "     -v --verbose                         Enable verbose output.",
