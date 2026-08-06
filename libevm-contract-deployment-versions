@@ -151,12 +151,14 @@ function
       "contract_address";
   }
   else {
-    _msg =
-      "Unknown configuration format " +
-      `'${_configuration_format}'.`;
+    const
+      _msg =
+        "Unknown configuration format " +
+        `'${_configuration_format}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   const
     _contract_addresses =
