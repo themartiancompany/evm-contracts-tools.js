@@ -101,6 +101,11 @@ const
   _msg_error =
     _libcrash_module._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash_module._override_set;
+/* global
      _path_join */
 const
   _path_join =
@@ -140,11 +145,12 @@ function
       "1"
     ];
   }
-  if ( target_network == "" ) {
-    // to be auto-detected
-    target_network =
-      "1";
-  }
+  // to be auto-detected
+  _override_set(
+    "target",
+    "network",
+    "1"
+  )
 }
 
 function
