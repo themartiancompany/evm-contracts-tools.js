@@ -28,7 +28,6 @@
     "README.md",
     "dist",
     "eslint.config.mjs",
-    "index.html",
     "evm-contract-call",
     "evm-contract-call.webpack.config.cjs",
     "evm-contract-deployment-address",
@@ -46,7 +45,6 @@
     "evm-contract-deployments-dir",
     "evm-contract-deployments-dir.webpack.config.cjs",
     "fs-worker.webpack.config.cjs",
-    "index.html",
     "libevm-contract-call",
     "libevm-contract-call.webpack.config.cjs",
     "libevm-contract-deployment",
@@ -67,7 +65,6 @@
     "lib",
     "evm-contracts-tools",
     "package.json",
-    "serve.json",
     "webpack.config.cjs"
   ],
   "keywords": [
@@ -115,7 +112,7 @@
     "globals":
       "^17.3.0",
     "safely-serve":
-      "^0.0.10",
+      "^0.0.11",
     "webpack":
       "^5.109.2",
     "webpack-cli":
