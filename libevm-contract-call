@@ -149,8 +149,7 @@ function
   _override_set(
     "target",
     "network",
-    "1"
-  )
+    "1");
 }
 
 function

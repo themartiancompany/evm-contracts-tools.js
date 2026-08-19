@@ -145,7 +145,7 @@
     "evm-wallet.js":
       "npm:evm-wallet.js@^0.0.75",
     "libevm":
-      "^0.0.32"
+      "^0.0.33"
   },
   "type":
     "commonjs",
