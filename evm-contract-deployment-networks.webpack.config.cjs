@@ -108,10 +108,10 @@ module.exports = {
         _path.resolve(
           __dirname,
           "node_modules/evm-transactions-tools/evm-transactions-tools"),
-      "evm-wallet.js":
+      "evm-wallet":
         _path.resolve(
           __dirname,
-          'node_modules/evm-wallet.js/libevm-wallet'),
+          'node_modules/evm-wallet/libevm-wallet'),
       "libevm":
         _path.resolve(
           __dirname,
