@@ -84,6 +84,11 @@ const
   _cmdline_check =
     _libcrash._cmdline_check;
 /* global
+     _exit */
+const
+_exit =
+  _libcrash._exit;
+/* global
      _get_date_human */
 const
   _get_date_human =
@@ -109,13 +114,13 @@ const
 _printf =
   _libcrash._printf;
 /* global
-     _process_exit */
+     _require */
 const
-_process_exit =
-  _libcrash._process_exit;
+_require =
+  _libcrash._require;
 const
   _libevm_module =
-    require(
+    await _require(
       "libevm");
 /* global
      _libevm_cmdline_parse */
@@ -493,7 +498,7 @@ function
     console.log(
       _line);
   }
-  _process_exit(
+  _exit(
     _exit_code);
 }
 
