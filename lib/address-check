@@ -46,6 +46,11 @@ const
   _cmdline_check =
     _libcrash._cmdline_check;
 /* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -56,17 +61,17 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
-     _process_exit */
+     _require */
 const
-  _process_exit =
-    _libcrash._process_exit;
+  _require =
+    _libcrash._require;
 const
-  { ethers } =
-    require(
+  _ethers_module =
+    await _require(
       "ethers");
 const
   _ethers =
-    ethers;
+    _ethers_module.ethers;
 /* global
      _address_check */
 const
@@ -114,7 +119,7 @@ function
 
 function
   _usage(
-    _exit) {
+    _exit_code) {
   let
     _display_fun,
     _line;
@@ -146,8 +151,8 @@ function
     _msg_info(
       _line);
   }
-  _process_exit(
-    _exit);
+  _exit(
+    _exit_code);
 }
 
 function
@@ -237,8 +242,8 @@ if ( _cmdline_check(
      _cmdline_check(
        "ethereum-address-validate") ) {
   _global_variables();
-  _cmdline_parse();
-  _overrides_set();
+  await _cmdline_parse();
+  await _overrides_set();
   _config_show();
   app_opts = [
     target_address,

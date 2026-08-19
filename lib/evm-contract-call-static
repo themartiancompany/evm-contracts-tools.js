@@ -24,72 +24,143 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/* Crash Javascript global variables */
+
+/* global
+     app_name:
+       writable */
+/* global
+     app_opts:
+       writable */
+/* global
+     quiet:
+       writable */
+
 const
   _libcrash =
     require(
       "crash-js");
-_cmdline_check =
-  _libcrash._cmdline_check;
-_error_display =
-  _libcrash._error_display;
-_msg_info =
-  _libcrash._msg_info;
-_msg_error =
-  _libcrash._msg_error;
-_printf =
-  _libcrash._printf;
-_sleep =
-  _libcrash._sleep;
+/* global
+     _cmdline_check */
+const
+  _cmdline_check =
+    _libcrash._cmdline_check;
+/* global
+     _error_display */
+const
+  _error_display =
+    _libcrash._error_display;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
+     _msg_info */
+const
+  _msg_info =
+    _libcrash._msg_info;
+/* global
+     _msg_error */
+const
+  _msg_error =
+    _libcrash._msg_error;
+/* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
+     _printf */
+const
+  _printf =
+    _libcrash._printf;
+/* global
+     _sleep */
+const
+  _sleep =
+    _libcrash._sleep;
 const
   _contract_get_module =
     require(
       './contract-get');
-_contract_get =
-  _contract_get_module._contract_get
-
+/* global
+     _contract_get */
+const
+  _contract_get =
+    _contract_get_module._contract_get
 
 function
   _global_variables() {
   app_name =
     "evm-contract-call-static";
+  app_opts =
+    [];
+  /* global
+       wallet_seed:
+         writable */
   wallet_seed =
-    '';
+    "";
+  /* global
+       retries_max:
+         writable */
   retries_max =
-    '';
+    "";
+  /* global
+       api_key_path:
+         writable */
   api_key_path =
-    '';
+    "";
+  /* global
+       target_network:
+         writable */
   target_network =
-    '';
+    "";
+  /* global
+       contract_address:
+         writable */
   contract_address =
-    '';
+    "";
+  /* global
+       contract_abi_path:
+         writable */
   contract_abi_path =
-    '';
+    "";
+  /* global
+       contract_bytecode_path:
+         writable */
   contract_bytecode_path =
-    '';
+    "";
+  /* global
+       contract_compiler_output_path:
+         writable */
   contract_compiler_output_path =
-    '';
+    "";
+  /* global
+       method_object:
+         writable */
   method_object =
-    '';
+    "";
+  /* global
+       contract_method:
+         writable */
   contract_method =
-    '';
+    "";
+  /* global
+       method_args:
+         writable */
   method_args =
     [];
   quiet =
-    '';
+    "";
 }
 
 function
   _msg_info_contract_obtained(
     _contract) {
-  let
-    _msg,
-    _template;
-  _template =
-    "Contract '{_contract}' obtained.";
-  _msg =
-    _template.replaceAll(
-      "{_contract}",
-      _contract);
+  const
+    _msg =
+      `Contract '${_contract}' obtained.`;
   _msg_info(
     _msg);
 }
@@ -97,10 +168,9 @@ function
 function
   _msg_info_method_obtained(
     _method) {
-  let
-    _msg;
-  _msg =
-    "Method obtained.";
+  const
+    _msg =
+      "Method obtained.";
   _msg_info(
     _msg);
 }
@@ -124,16 +194,16 @@ async function
     _method,
     _msg,
     _passed,
-    _value,
-    _wallet_password;
+    _value;
   if ( _method_object == undefined ) {
     _method_object =
       "";
   }
   _retry =
     1;
-  _wallet_password =
-    "";
+  const
+    _wallet_password =
+      "";
   _contract_get_opts = [
     _wallet_seed,
     _wallet_password,
@@ -149,8 +219,9 @@ async function
   while ( _retry <= _retries_max &&
           _passed == false ) {
     try {
-      if ( _method_object == "" ||
-           _method_object == undefined ) {
+      if ( _method_object === "" ||
+           typeof(
+             _method_object) === "undefined" ) {
         _contract =
           await _contract_get.apply(
             null,
@@ -166,13 +237,14 @@ async function
 	}
         catch(
           _error) {
-          _msg =
-            "no matching fragment";
+          const
+            _msg_no_fragment =
+              "no matching fragment";
           const
             _msg_short =
               _error[
                 "shortMessage"];
-          if ( _msg == _msg_short ) {
+          if ( _msg_no_fragment == _msg_short ) {
             _msg =
               `Found no '${_contract_method}' method ` +
               `nor contract ABI '${_contract_abi_path}' ` +
@@ -234,58 +306,25 @@ async function
 function
   _config_show() {
   let
-    _line,
-    _method_args,
-    _text;
-  _text =
-    [];
-  _text.push(
-    "Static call configuration:");
-  _text.push(
-    "  evm-contract-call-static configuration:");
-  _text.push(
-    "             Wallet seed: {wallet_seed}".replace(
-      "{wallet_seed}",
-      wallet_seed));
-  _text.push(
-    "             Max retries: {retries_max}".replace(
-      "{retries_max}",
-      retries_max));
-  _text.push(
-    "            API Key path: {api_key_path}".replace(
-      "{api_key_path}",
-      api_key_path));
-  _text.push(
-    "          Target network: {target_network}".replace(
-      "{target_network}",
-      target_network));
-  _text.push(
-    "            Contract ABI: {contract_abi_path}".replace(
-      "{contract_abi_path}",
-      contract_abi_path));
-  _text.push(
-    "       Contract bytecode: {contract_bytecode_path}".replace(
-      "{contract_bytecode_path}",
-      contract_bytecode_path));
-  _text.push(
-    "Contract compiler output: {contract_compiler_output_path}".replace(
-      "{contract_compiler_output_path}",
-      contract_compiler_output_path));
-  _text.push(
-    "        Contract address: {contract_address}".replace(
-      "{contract_address}",
-      contract_address));
-  _text.push(
-    "         Contract method: {contract_method}".replace(
-      "{contract_method}",
-      contract_method));
-  _method_args =
-    method_args.join(
-    " ");
-  _text.push(
-    "             Method args: {method_args}".replace(
-      "{method_args}",
-      _method_args));
+    _line;
+  const
+    _method_args =
+      method_args.join(
+      " ");
+  const
+    _text = [
+      `  ${app_name} configuration:`,
+      `             Wallet seed: ${wallet_seed}`,
+      `             Max retries: ${retries_max}`,
+      `            API Key path: ${api_key_path}`,
+      `          Target network: ${target_network}`,
+      `            Contract ABI: ${contract_abi_path}`,
+      `       Contract bytecode: ${contract_bytecode_path}`,
+      `Contract compiler output: ${contract_compiler_output_path}`,
+      `        Contract address: ${contract_address}`,
+      `         Contract method: ${contract_method}`,
+      `             Method args: ${_method_args}`
+    ];
   for (_line of _text)  { 
     _msg_info(
       _line);
@@ -294,63 +333,63 @@ function
 
 function
   _usage(
-    _exit) {
+    _exit_code) {
   let
-    _line,
-    _text;
-  _text = [
-    "Execute a static call to an EVM network's contract method",
-    "",
-    "Usage:",
-    "  evm-contract-call-static",
-    "    <quiet>",
-    "    <wallet_seed>",
-    "    <retries_max>",
-    "    <api_key_path>",
-    "    <target_network>",
-    "    <contract_abi_path>",
-    "    <contract_bytecode_path>",
-    "    <contract_compiler_output_path>",
-    "    <contract_address>",
-    "    <contract_method>",
-    "    <method_args>",
-    "",
-    "Args:",
-    "  <quiet>                          Can be 'y' or 'n'",
-    "                                   Default: y",
-    "  <wallet_seed>                    Path of the file containing",
-    "                                   the seed phrase.",
-    "  <retries_max>                    Maximum number of retries before",
-    "                                   failing.",
-    "  <api_key_path>                   Path of the API key for the",
-    "                                   contract ABI provider service",
-    "  <target_network>                 Network on which the contract",
-    "                                   resides.",
-    "  <contract_abi_path>              Path of the contract ABI",
-    "  <contract_bytecode_path>         Path for the contract bytecode",
-    "  <contract_compiler_output_path>  Path for the contract compiler",
-    "                                   output path (the hardhat artifact).",
-    "  <contract_address>               Address of the contract",
-    "  <contract_method>                Contract method to execute",
-    "  [method_args]                    Arguments to pass to the method",
-    "",
-    "  Options:",
-    "    -h                             This help."
-  ];
+    _line;
+  const
+    _text = [
+      "Execute a static call to an EVM network's contract method",
+      "",
+      "Usage:",
+      "  evm-contract-call-static",
+      "    <quiet>",
+      "    <wallet-seed>",
+      "    <retries-max>",
+      "    <api-key-path>",
+      "    <target-network>",
+      "    <contract-abi-path>",
+      "    <contract-bytecode-path>",
+      "    <contract-compiler-output-path>",
+      "    <contract-address>",
+      "    <contract-method>",
+      "    <method-args>",
+      "",
+      "Args:",
+      "  <quiet>                          Can be 'y' or 'n'",
+      "                                   Default: y",
+      "  <wallet-seed>                    Path of the file containing",
+      "                                   the seed phrase.",
+      "  <retries-max>                    Maximum number of retries before",
+      "                                   failing.",
+      "  <api-key-path>                   Path of the API key for the",
+      "                                   contract ABI provider service",
+      "  <target-network>                 Network on which the contract",
+      "                                   resides.",
+      "  <contract-abi-path>              Path of the contract ABI",
+      "  <contract-bytecode-path>         Path for the contract bytecode",
+      "  <contract-compiler-output-path>  Path for the contract compiler",
+      "                                   output path (the hardhat artifact).",
+      "  <contract-address>               Address of the contract",
+      "  <contract-method>                Contract method to execute",
+      "  [method-args]                    Arguments to pass to the method",
+      "",
+      "  Options:",
+      "    -h                             This help."
+    ];
   for (_line of _text) {
     _msg_info(
       _line);
   }
-  process.exit(
-    _exit);
+  _exit(
+    _exit_code);
 }
 
 function
   _overrides_set() {
-  if ( retries_max == "" ) {
-    retries_max =
-      100;
-  }
+  _override_set(
+    "retries",
+    "max",
+    100);
 }
 
 function
@@ -424,6 +463,7 @@ async function
     _app_opts) {
   let
     _method_object,
+    _msg,
     _value;
   try {
     [_value,
@@ -436,16 +476,20 @@ async function
         _value.toString());
     }
     else {
+      _msg =
+        "Static contract call returned undefined value.";
       throw { "error": {
                 "message":
-                  "Static contract call returned undefined value." } };
+                  _msg } };
     }
   } catch (
       _error) {
       _error_display(
         _error);
+      _msg =
+        "Error while running static call.";
       _msg_error(
-        "Error while running static call.",
+        _msg,
         1);
   }
 }

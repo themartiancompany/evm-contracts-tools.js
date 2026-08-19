@@ -24,42 +24,82 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/* Crash Javascript global variables */
+
+/* global
+     app_name:
+       writable */
+/* global
+     app_opts:
+       writable */
+  /* global
+       quiet:
+         writable */
+
 const
   _libcrash =
     require(
       "crash-js");
+/* global
+     _cmdline_check */
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/* global
+     _error_display */
 const
   _error_display =
     _libcrash._error_display;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
+     _msg_info */
 const
   _msg_info =
     _libcrash._msg_info;
+/* global
+     _msg_error */
 const
   _msg_error =
     _libcrash._msg_error;
+/* global
+     _printf */
 const
   _printf =
     _libcrash._printf;
+/* global
+     _require */
 const
-  { ethers } =
-    require(
+  _require =
+    _libcrash._require;
+const
+  _ethers_module =
+    await _require(
       "ethers");
+/* global
+     _ethers */
 const
   _ethers =
-    ethers;
+    _ethers_module.ethers;
+/* global
+     _wei_to_ethers */
 const
   _wei_to_ether =
     _ethers.formatEther;
 const
   _evm_transactions_tools_module =
-    require(
+    await _require(
       "evm-transactions-tools");
+/* global
+     _transaction_get */
 const
   _transaction_get =
     _evm_transactions_tools_module._transaction_get;
+/* global
+     _transaction_receipt_get */
 const
   _transaction_receipt_get =
     _evm_transactions_tools_module._transaction_receipt_get;
@@ -108,9 +148,6 @@ function
          writable */
   transaction_deployment =
     "";
-  /* global
-       quiet:
-         writable */
   quiet =
     "";
 }
@@ -294,7 +331,7 @@ function
 
 function
   _usage(
-    _exit) {
+    _exit_code) {
   let
     _display_fun,
     _line,
@@ -337,8 +374,8 @@ function
     _msg_info(
       _line);
   }
-  process.exit(
-    _exit);
+  _exit(
+    _exit_code);
 }
 
 function

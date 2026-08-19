@@ -25,19 +25,6 @@
  */
 
 const
-  { ethers } =
-    require(
-      "ethers");
-const
-  _ethers =
-    ethers;
-const
-  _contract_factory =
-    _ethers.ContractFactory;
-const
-  _base_contract =
-    _ethers.BaseContract;
-const
   _libcrash =
     require(
       "crash-js");
@@ -51,6 +38,11 @@ const
 const
   _dirname =
     _libcrash._dirname;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
 /* global
      _file_exists */
 const
@@ -81,10 +73,34 @@ const
 const
   _msg_error =
     _libcrash._msg_error;
+/* global
+     _require */
+const
+  _require =
+    _libcrash._require;
+const
+  _ethers_module =
+    await _require(
+      "ethers");
+/* global
+     _ethers */
+const
+  _ethers =
+    _ethers_module.ethers;
+/* global
+     _contract_factory */
+const
+  _contract_factory =
+    _ethers.ContractFactory;
+/* global
+     _base_contract */
+const
+  _base_contract =
+    _ethers.BaseContract;
 const
   _evm_wallet_module =
-    require(
-      "evm-wallet.js");
+    await _require(
+      "evm-wallet");
 /* global
      _wallet_get */
 const
@@ -437,7 +453,8 @@ function
 }
 
 function
-  _usage() {
+  _usage(
+    _exit_code) {
   let
     _line,
     _text;
@@ -477,7 +494,8 @@ function
     _msg_info(
       _line);
   }
-  process.exit();
+  _exit(
+    _exit_code);
 }
 
 function _cmdline_parse() {

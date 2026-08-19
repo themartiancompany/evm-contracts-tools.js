@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     fs-utils
+ *     evm-contract-call-dynamic
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -42,6 +42,11 @@ const
   _dirname =
     _libcrash._dirname;
 /* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
      _error_display */
 const
   _error_display =
@@ -57,22 +62,34 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _path_join */
 const
   _path_join =
     _libcrash._path_join;
+/* global
+     _require */
+const
+  _require =
+    _libcrash._require;
 /* global
      _sleep */
 const
   _sleep =
     _libcrash._sleep;
 const
-  { ethers } =
-    require(
+  _ethers_module =
+    await _require(
       "ethers");
+/* global
+     _ethers */
 const
   _ethers =
-    ethers;
+    _ethers_module.ethers;
 /* global
      _wei_to_ether */
 const
@@ -85,8 +102,8 @@ const
     _ethers.parseUnits;
 const
   _evm_wallet_module =
-    require(
-      "evm-wallet.js");
+    await _require(
+      "evm-wallet");
 /* global
      _price_gas_transaction_get */
 const
@@ -968,22 +985,22 @@ async function
 
 function
   _overrides_set() {
-  if ( retries_max == "" ) {
-    retries_max =
-      100;
-  }
-  if ( call_timeout == "" ) {
-    call_timeout =
-      300000;
-  }
-  if ( msg_value == "" ) {
-    msg_value =
-      0;
-  }
-  if ( measure_unit == "" ) {
-    measure_unit =
-      "wei";
-  }
+  _override_set(
+    "retries",
+    "max",
+    "100");
+  _override_set(
+    "call",
+    "timeout",
+    "300000");
+  _override_set(
+    "msg",
+    "value",
+    0);
+  _override_set(
+    "measure",
+    "unit",
+    "wei");
 }
 
 function
@@ -1070,7 +1087,7 @@ function
       _msgs[
         _line]);
   }
-  process.exit(
+  _exit(
     _exit_code);
 }
 

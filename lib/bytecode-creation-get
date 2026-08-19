@@ -39,6 +39,11 @@ const
   _error_display =
     _libcrash._error_display;
 /* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -49,22 +54,27 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _printf */
 const
   _printf =
     _libcrash._printf;
 /* global
-     _process_exit */
+     _require */
 const
-  _process_exit =
-    _libcrash._process_exit;
+  _require =
+    _libcrash._require;
 const
-  { ethers } =
-    require(
+  _ethers_module =
+    await _require(
       "ethers");
 const
   _ethers =
-    ethers;
+    _ethers_module.ethers;
 /* global
      _wei_to_ether */
 const
@@ -72,7 +82,7 @@ const
     _ethers.formatEther;
 const
   _evm_transactions_tools_module =
-    require(
+    await _require(
       "evm-transactions-tools");
 /* global
      _transaction_get */
@@ -305,7 +315,7 @@ function
 
 function
   _usage(
-    _exit) {
+    _exit_code) {
   let
     _display_fun,
     _line,
@@ -350,16 +360,16 @@ function
     _msg_info(
       _line);
   }
-  _process_exit(
-    _exit);
+  _exit(
+    _exit_code);
 }
 
 function
   _overrides_set() {
-  if ( retries_max == "" ) {
-    retries_max =
-      10;
-  }
+  _override_set(
+    "retries",
+    "max",
+    10);
 }
 
 function

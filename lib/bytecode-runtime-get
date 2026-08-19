@@ -39,6 +39,11 @@ const
   _error_display =
     _libcrash._error_display;
 /* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
      _file_read */
 const
   _file_read =
@@ -64,10 +69,19 @@ const
   _printf =
     _libcrash._printf;
 /* global
-     _process_exit */
+     _require */
 const
-  _process_exit =
-    _libcrash._process_exit;
+  _require =
+    _libcrash._require;
+const
+  _evm_wallet_module =
+    await _require(
+      "evm-wallet");
+/* global
+     _provider_get */
+const
+  _provider_get =
+    _evm_wallet_module._provider_get;
 const
   _contract_get_module =
     require(
@@ -77,15 +91,6 @@ const
 const
   _contract_get =
     _contract_get_module._contract_get;
-const
-  _evm_wallet_module =
-    require(
-      "evm-wallet.js");
-/* global
-     _provider_get */
-const
-  _provider_get =
-    _evm_wallet_module._provider_get;
 
 function
   _global_variables() {
@@ -273,7 +278,7 @@ function
 
 function
   _usage(
-    _exit) {
+    _exit_code) {
   let
     _line,
     _text;
@@ -313,8 +318,8 @@ function
     _msg_info(
       _line);
   }
-  process.exit(
-    _exit);
+  _exit(
+    _exit_code);
 }
 
 function
