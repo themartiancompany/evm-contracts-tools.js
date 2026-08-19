@@ -260,7 +260,7 @@ async function
       else if ( _method_object != "" ||
                 _method_object != undefined ) {
         _msg =
-          "Re-using contract method.");
+          "Re-using contract method.";
         _msg_info(
           _msg);
         _method =
