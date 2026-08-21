@@ -66,8 +66,8 @@
 
 const
   _libcrash =
-  require(
-    "crash-js");
+    require(
+      "crash-js");
 /* global
      _argv_get */
 const
@@ -86,8 +86,8 @@ const
 /* global
      _exit */
 const
-_exit =
-  _libcrash._exit;
+  _exit =
+    _libcrash._exit;
 /* global
      _get_date_human */
 const
@@ -111,16 +111,16 @@ const
 /* global
      _printf */
 const
-_printf =
-  _libcrash._printf;
+  _printf =
+    _libcrash._printf;
 /* global
      _require */
 const
-_require =
-  _libcrash._require;
+  _require =
+    _libcrash._require;
 const
   _libevm_module =
-    await _require(
+    _require(
       "libevm");
 /* global
      _libevm_cmdline_parse */
@@ -867,9 +867,11 @@ async function
 _global_variables();
 _libevm_global_variables();
 if ( _cmdline_check(
-       "evm-contract-call.js") == true ||
+       "evm-contract-call.js") ||
      _cmdline_check(
-       "evm-contract-call") == true ) {
+       "evm-contract-call") ||
+     _cmdline_check(
+       "./evm-contract-call") ) {
   _cmdline_parse();
 }
 else{
