@@ -63,8 +63,8 @@
 
 const
   _libcrash_module =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _dirname */
 const
@@ -75,6 +75,11 @@ const
 const
   _file_exists =
     _libcrash_module._file_exists;
+/* global
+     _get */
+const
+  _get =
+    _libcrash_module._get;
 /* global
      _homedir_get */
 const
@@ -115,18 +120,23 @@ const
 const
   _range =
     _libcrash_module._range;
+/* global
+     _require */
+const
+  _require =
+    _libcrash_module._require;
 const
   _evm_contracts_tools_module =
-    require("./evm-contracts-tools");
+    await import(
+      "./evm-contracts-tools");
 /* global
      _address_check */
 const
   _address_check =
     _evm_contracts_tools_module._address_check;
-
 const
   _ethereum_data_module =
-    require(
+    await _require(
       "ethereum-data");
 /* global
      _data_get */
@@ -135,21 +145,55 @@ const
     _ethereum_data_module._data_get;
 
 function
+  _target_networks_get(
+    _target_networks) {
+  // TODO:
+  //   _evm_wallet_module._balance_discovery
+  const
+    _target_networks_type =
+      typeof(
+        _target_networks);
+  if ( _target_networks_type == "undefined" ) {
+    _target_networks =
+      _get(
+        "target",
+        "networks");
+  }
+  if ( _target_networks == "" ||
+       _target_networks == [] ) {
+    // to be auto-detected
+    _target_networks = [
+        "1"
+      ];
+  }
+  return [ _target_networks,
+           _target_network ];
+}
+
+function
   _target_networks_auto_detect() {
   // TODO:
-  //   _evm_wallet_module.balance-discovery
-  if ( target_networks == "" ||
-       target_networks == [] ) {
-    // to be auto-detected
-    target_networks = [
-      "1"
-    ];
+  //   _evm_wallet_module._balance_discovery
+  let
+    _target_network;
+    _target_networks;
+  _target_networks =
+    _get(
+      "target",
+      "networks");
+  [ _target_networks,
+    _target_network ] =
+    _target_networks_auto_detect(
+      _target_networks);
+  _set(
+    "target",
+    "networks",
+    _target_networks);
   }
-  // to be auto-detected
   _override_set(
     "target",
     "network",
-    "1");
+    _target_network);
 }
 
 function
@@ -202,26 +246,66 @@ function
 }
 
 function
-  _contract_abi_auto_detect() {
+  _contract_abi_get(
+    _network,
+    _address,
+    _api_key,
+    _compiler_output,
+    _abi) {
   let
-    _abi,
     _abi_target;
   const
+    _abi_type =
+      typeof(
+        _abi);
+  if ( _abi_type == "undefined" ) {
+    _abi =
+      _get(
+        "contract",
+        "abi");
+  }
+  const
+    _network_type =
+      typeof(
+        _network);
+  if ( _network_type == "undefined" ) {
     _network =
-      target_network;
+      _get(
+        "target",
+        "network");
+  }
   const
+    _address_type =
+      typeof(
+        _address);
+  if ( _address_type == "undefined" ) {
     _address =
-      contract_address;
+      _get(
+        "contract",
+        "address");
+  }
   const
+    _key_type =
+      typeof(
+        _key);
+  if ( _key_type == "undefined" ) {
     _key =
-      api_key;
+      _get(
+        "api",
+        "key");
+  }
   const
+    _compiler_output_type =
+      typeof(
+        _compiler_output);
+  if ( _compiler_output_type == "undefined" ) {
     _compiler_output =
-      contract_compiler_output;
-  _abi =
-    contract_abi;
-    _abi_target =
-      _abi;
+      _get(
+        "contract",
+        "compiler_output");
+  }
+  _abi_target =
+    _abi;
   if ( typeof(
          _abi_target) == "undefined" ||
        _abi_target == "" ) {
@@ -247,11 +331,87 @@ function
         _abi_dir);
     }
   }
+  return _abi;
+}
+
+function
+  _contract_abi_auto_detect() {
+  let
+    _abi;
+  const
+    _network =
+      _get(
+        "target",
+        "network");
+  const
+    _address =
+      _get(
+        "contract",
+        "address");
+  const
+    _key =
+      _get(
+        "api",
+        "key");
+  const
+    _compiler_output =
+      _get(
+        "contract",
+        "compiler_output");
+  _abi =
+    _get(
+      "contract",
+      "abi");
+  _abi =
+    _contract_abi_get(
+      _network,
+      _address,
+      _api_key,
+      _compiler_output,
+      _abi);
+  _override_set(
+    "contract",
+    "abi",
+    _abi);
+}
+
+function
+  _call_auth_get(
+    _call_type) {
+  let
+    _call_auth;
+  const
+    _call_type_type =
+      typeof(
+        _call_type);
+  if ( _call_type_type == "undefined" ) {
+    _call_type =
+      _get(
+        "call",
+        "type");
+  }
+  if ( _call_type == "static" ) {
+    _call_auth =
+      "n";
+  }
+  else if ( call_type == "dynamic" ) {
+    _call_auth =
+      "y";
+  }
+  return _call_auth;
 }
 
 function
   _call_auth_auto_detect() {
-  if ( call_type == "static" ) {
+  const
+    _call_type =
+      _get(
+        "call",
+        "type");
+  const
+    _call_auth =
+      _call_auth_get(
+        _call_type);
     call_auth =
       "n";
   }
@@ -269,7 +429,7 @@ function
   }
 }
 
-function
+async function
   _evm_contract_call(
     _call_type,
     _call_timeout,
@@ -321,38 +481,67 @@ function
 
 function
   _artifact_local_auto_detect(
-    _type) {
+    _artifact_type) {
   const
     _artifact =
       _default_artifact_path_get(
-        _type);
-  if ( _type == "abi" ) {
-    contract_abi =
-      _artifact;
+        _artifact_type);
+  if ( _artifact_type == "abi" ) {
+    _override_set(
+      "contract",
+      "abi",
+      _artifact);
   }
-  else if ( _type == "bytecode" ) {
-    contract_bytecode =
-      _artifact;
+  else if ( _artifact_type == "bytecode" ) {
+    _override_set(
+      "contract",
+      "bytecode",
+      _artifact);
   }
-  else if ( _type == "compiler_output" ) {
-    contract_compiler_output =
-      _artifact;
+  else if ( _artifact_type == "compiler_output" ) {
+    _override_set(
+      "contract",
+      "compiler_output",
+      _artifact);
   }
 }
 
-module.exports = {
-  _address_check:
-    _address_check,
-  _artifact_local_auto_detect:
-    _artifact_local_auto_detect,
-  _call_auth_auto_detect:
-    _call_auth_auto_detect,
-  _contract_abi_auto_detect:
-    _contract_abi_auto_detect,
-  _default_artifact_path_get:
-    _default_artifact_path_get,
-  _evm_contract_call:
-    _evm_contract_call,
-  _target_networks_auto_detect:
-    _target_networks_auto_detect
+// ES6 module exports
+
+export {
+  _address_check,
+  _artifact_local_auto_detect,
+  _call_auth_auto_detect,
+  _call_auth_get,
+  _contract_abi_auto_detect,
+  _contract_abi_get,
+  _default_artifact_path_get,
+  _evm_contract_call,
+  _target_networks_auto_detect,
+  _target_networks_get
 };
+
+// Common Javascript exports
+
+// module.exports = {
+//   _address_check:
+//     _address_check,
+//   _artifact_local_auto_detect:
+//     _artifact_local_auto_detect,
+//   _call_auth_auto_detect:
+//     _call_auth_auto_detect,
+//   _call_auth_get:
+//     _call_auth_get,
+//   _contract_abi_auto_detect:
+//     _contract_abi_auto_detect,
+//   _contract_abi_get:
+//     _contract_abi_get,
+//   _default_artifact_path_get:
+//     _default_artifact_path_get,
+//   _evm_contract_call:
+//     _evm_contract_call,
+//   _target_networks_auto_detect:
+//     _target_networks_auto_detect,
+//   _target_networks_get:
+//     _target_networks_get
+// };

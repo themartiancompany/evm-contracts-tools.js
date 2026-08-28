@@ -66,8 +66,8 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _argv_get */
 const
@@ -94,6 +94,11 @@ const
   _get_date_human =
     _libcrash._get_date_human;
 /* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -118,9 +123,14 @@ const
 const
   _require =
     _libcrash._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _libevm_module =
-    _require(
+    await _require(
       "libevm");
 /* global
      _libevm_cmdline_parse */
@@ -144,7 +154,7 @@ const
     _libevm_module._wallet_overrides_set;
 const
   _libevm_contract_call_module =
-    require(
+    await import(
       "./libevm-contract-call");
 /* global
      _artifact_local_auto_detect */
@@ -182,94 +192,133 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "evm-contract-call.js";
+  _set(
+    "app",
+    "name",
+    "evm-contract-call.js");
   /* global
        app_opts:
          writable */
-  app_opts =
-    [];
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        runtime_environment:
          writable */
-  runtime_environment =
-    "";
+  _set(
+    "runtime",
+    "environment",
+    "");
   /* global
        call_date:
          writable */
-  call_date =
-    "";
+  _set(
+    "call",
+    "date",
+    "");
   /* global
        wallet_name:
          writable */
-  wallet_name =
-    "";
+  _set(
+    "wallet",
+    "name",
+    "");
   /* global
        retries_max:
          writable */
-  retries_max =
-    "";
+  _set(
+    "retries",
+    "max",
+    "");
   /* global
        rpc_selection:
          writable */
-  rpc_selection =
-    "";
+  _set(
+    "rpc",
+    "selection",
+    "");
   /* global
        call_type:
          writable */
-  call_type =
-    "";
+  _set(
+    "call",
+    "type",
+    "");
   /* global
        index_retrieve:
          writable */
-  index_retrieve =
-    "";
+  _set(
+    "index",
+    "retrieve",
+    "");
   /* global
        contract_address:
          writable */
-  contract_address =
-    "";
+  _set(
+    "contract",
+    "address",
+    "");
   /* global
        contract_bytecode:
          writable */
-  contract_bytecode =
-    "";
+  _set(
+    "contract",
+    "bytecode",
+    "");
   /* global
        contract_compiler_output:
          writable */
-  contract_compiler_output =
-    "";
+  _set(
+    "contract",
+    "compiler_output",
+    "");
   /* global
        contract_abi:
          writable */
-  contract_abi =
-    "";
+  _set(
+    "contract",
+    "abi",
+    "");
   /* global
        contract_method:
          writable */
-  contract_method =
-    "";
+  _set(
+    "contract",
+    "method",
+    "");
   /* global
        method_args:
          writable */
-  method_args =
-    [];
+  _set(
+    "method",
+    "args",
+    []);
   /* global
        price_gas:
          writable */
-  price_gas =
-    "";
+  _set(
+    "price",
+    "gas",
+    "");
   /* global
        measure_unit:
          writable */
-  measure_unit =
-    "";
-  quiet =
+  _set(
+    "measure",
+    "unit",
+    "");
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "";
   /* global
        verbose:
          writable */
-  verbose =
+  _global[
+    "verbose"] =
     "";
 }
 
@@ -359,8 +408,13 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
-      `${app_name} configuration:`,
+      `${_app_name} configuration:`,
       `                Call date:   ${call_date}`,
       `      Runtime environment:   ${runtime_environment}`,
       `                Call type:   ${call_type}`,
@@ -402,12 +456,18 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
+      "",
       "Runs a smart contract function.",
       "",
       "Usage:",
       "",
-      `  ${app_name}`,
+      `  ${_app_name}`,
       "    [options]",
       "    <contract-address>",
       "    <contract-method>",
@@ -492,7 +552,8 @@ function
       `                                     Default: '${rpc_selection}'.`,
       "",
       "     -h --help                       This message.",
-      "     -v --verbose                    Enable verbose output."
+      "     -v --verbose                    Enable verbose output.",
+      ""
     ];
   for ( _line of _text ) {
     console.log(
@@ -522,16 +583,22 @@ async function
     };
   const
     _argv =
-      _argv_get(
+      await _argv_get(
         _argv_args);
   const
     _options =
       _argv[
         "_"];
-  quiet = 
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] = 
     "y";
-  runtime_environment =
-    "node";
+  _set(
+    "runtime",
+    "environment",
+    "node");
   if ( _argv["h"] == true ) {
     _help_display =
       true;
@@ -548,7 +615,8 @@ async function
       true;
   }
   if ( _help_display ) {
-    quiet =
+    _global[
+      "quiet"] = 
       "n";
     await _overrides_set(
       _help_display);
@@ -567,10 +635,12 @@ async function
     _usage(
       1);
   }
-  contract_address =
+  _set(
+    "contract",
+    "address",
     _argv[
       "_"][
-        0];
+        0]);
   if ( typeof(
          _argv) == "undefined" ||
        _argv[
@@ -583,152 +653,213 @@ async function
     _usage(
       1);
   }
-  contract_method =
+  _set(
+    "contract",
+    "method",
     _argv[
       "_"][
-        0];
-  const
-    method_args =
+        0]);
+  _set(
+    "method",
+    "args",
+    _argv[
+      "_"].slice(
+      2,
       _argv[
-        "_"].slice(
-        2,
-        _argv[
-          "_"].length - 2);
+        "_"].length - 2));
   if ( "t" in _argv ) {
-    call_type =
+    _set(
+      "call",
+      "type",
       _argv[
-        "t"];
+        "t"]);
   }
   if ( "call-type" in _argv ) {
-    call_type =
+    _set(
+      "call",
+      "type",
       _argv[
-        "call-type"];
+        "call-type"]);
   }
   if ( "T" in _argv ) {
-    call_timeout =
+    _set(
+      "call",
+      "timeout",
       _argv[
-        "t"];
+        "t"]);
   }
   if ( "call-timeout" in _argv ) {
-    call_timeout =
+    _set(
+      "call",
+      "timeout",
       _argv[
-        "call-timeout"];
+        "call-timeout"]);
   }
   if ( "I" in _argv ) {
-    index_retrieve =
+    _set(
+      "index",
+      "retrieve",
       _argv[
-        "I"];
+        "I"]);
   }
   if ( "index_retrieve" in _argv ) {
-    index_retrieve =
+    _set(
+      "index",
+      "retrieve",
       _argv[
-        "index-retrieve"];
+        "index-retrieve"]);
   }
   if ( "P" in _argv ) {
-    price_gas =
+    _set(
+      "price",
+      "gas",
       _argv[
-        "P"];
+        "P"]);
   }
   if ( "price-gas" in _argv ) {
-    price_gas =
+    _set(
+      "price",
+      "gas",
       _argv[
-        "price-gas"];
+        "price-gas"]);
   }
   if ( "u" in _argv ) {
-    measure_unit =
+    _set(
+      "measure",
+      "unit",
       _argv[
-        "u"];
+        "u"]);
   }
   if ( "measure-unit" in _argv ) {
-    measure_unit =
+    _set(
+      "measure",
+      "unit",
       _argv[
-        "measure-unit"];
+        "measure-unit"]);
   }
   if ( "V" in _argv ) {
-    msg_value =
+    _set(
+      "msg",
+      "value",
       _argv[
-        "V"];
+        "V"]);
   }
   if ( "msg-value" in _argv ) {
-    msg_value =
+    _set(
+      "msg",
+      "value",
       _argv[
-        "msg-value"];
+        "msg-value"]);
   }
   if ( "r" in _argv ) {
-    retries_max =
+    _set(
+      "retries",
+      "max",
       _argv[
-        "r"];
+        "r"]);
   }
   if ( "retries-max" in _argv ) {
-    retries_max =
+    _set(
+      "retries",
+      "max",
       _argv[
-        "retries-max"];
+        "retries-max"]);
   }
   if ( "S" in _argv ) {
-    rpc_selection =
+    _set(
+      "rpc",
+      "selection",
       _argv[
-        "S"];
+        "S"]);
   }
   if ( "rpc-selection" in _argv ) {
-    rpc_selection =
+    _set(
+      "rpc",
+      "selection",
       _argv[
-        "rpc-selection"];
+        "rpc-selection"]);
   }
   if ( "A" in _argv ) {
-    contract_abi =
+    _set(
+      "contract",
+      "abi",
       _argv[
-        "A"];
+        "A"]);
   }
   if ( "abi" in _argv ) {
-    contract_abi =
+    _set(
+      "contract",
+      "abi",
       _argv[
-        "abi"];
+        "abi"]);
   }
   if ( "B" in _argv ) {
-    contract_bytecode =
+    _set(
+      "contract",
+      "bytecode",
       _argv[
-        "B"];
+        "B"]);
   }
   if ( "bytecode" in _argv ) {
-    contract_bytecode =
+    _set(
+      "contract",
+      "bytecode",
       _argv[
-        "bytecode"];
+        "bytecode"]);
   }
   if ( "C" in _argv ) {
-    contract_compiler_output =
+    _set(
+      "contract",
+      "compiler_output",
       _argv[
-        "C"];
+        "C"]);
   }
   if ( "compiler-output" in _argv ) {
-    contract_compiler_output =
+    _set(
+      "contract",
+      "compiler_output",
       _argv[
-        "compiler-output"];
+        "compiler-output"]);
   }
   if ( "a" in _argv ) {
-    call_auth =
-      "y";
+    _set(
+      "call",
+      "auth",
+      "y");
   }
   if ( "auth" in _argv ) {
-    call_auth =
-      "y";
+    _set(
+      "call",
+      "auth",
+      "y");
   }
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
   if ( "n" in _argv ) {
-    target_networks.push(
+    _target_networks.push(
       _argv[
         "n"]);
   }
   if ( "network" in _argv ) {
-    target_networks.push(
+    _target_networks.push(
       _argv[
         "network"]);
   }
+  _set(
+    "target",
+    "networks",
+    _target_networks);
   _libevm_cmdline_parse(
     _argv);
   if ( _argv[
          "v"] ||
        _argv[
          "verbose"] ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -738,71 +869,121 @@ function
   let
     _method,
     _network;
-  runtime_environment =
-    "browser";
-  call_type =
+  _set(
+    "runtime",
+    "environment",
+    "browser");
+  _set(
+    "call",
+    "type",
     _argv_url_get(
       "call_type")[
-        0];
-  call_timeout =
+        0]);
+  _set(
+    "call",
+    "timeout",
     _argv_url_get(
       "call_timeout")[
-        0];
-  index_retrieve =
+        0]);
+  _set(
+    "index",
+    "retrieve",
     _argv_url_get(
       "index_retrieve")[
-        0];
-  price_gas =
+        0]);
+  _set(
+    "price",
+    "gas",
     _argv_url_get(
       "price_gas")[
-        0];
-  measure_unit =
+        0]);
+  _set(
+    "measure",
+    "unit",
     _argv_url_get(
       "measure_unit")[
-        0];
-  msg_value =
+        0]);
+  _set(
+    "msg",
+    "value",
     _argv_url_get(
       "msg_value")[
-        0];
-  retries_max =
+        0]);
+  _set(
+    "retries",
+    "max",
     _argv_url_get(
       "retries_max")[
-        0];
-  rpc_selection =
+        0]);
+  _set(
+    "rpc",
+    "selection",
     _argv_url_get(
       "rpc_selection")[
-        0];
-  contract_abi =
+        0]);
+  _set(
+    "contract",
+    "abi",
     _argv_url_get(
       "abi")[
-        0];
-  contract_bytecode =
+        0]);
+  _set(
+    "contract",
+    "bytecode",
     _argv_url_get(
       "bytecode")[
-        0];
-  contract_compiler_output =
+        0]);
+  _set(
+    "contract",
+    "compiler_output",
     _argv_url_get(
       "compiler_output")[
-        0];
-  rpc_selection =
+        0]);
+  _set(
+    "rpc",
+    "selection",
     _argv_url_get(
       "rpc_selection")[
-        0];
+        0]);
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
   for ( _network of _argv_url_get(
                      "network") ) {
-    target_networks.push(
+    _target_networks.push(
       _network);
   }
+  _set(
+    "target",
+    "networks",
+    _target_networks);
+  const
+    _method_args =
+     _get(
+       "method",
+       "args");
   for ( _method of _argv_url_get(
                      "method_args") ) {
-    method_args.push(
+    _method_args.push(
       _method);
   }
-  quiet =
+  _set(
+    "method",
+    "args",
+    _method_args);
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     _argv_url_get(
       "quiet");
-  if ( quiet.length === 0 ) {
-    quiet =
+  if ( _global[
+         "quiet"].length === 0 ) {
+    _global[
+      "quiet" =
       "n";
   }
 }
@@ -866,13 +1047,13 @@ async function
 
 _global_variables();
 _libevm_global_variables();
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "evm-contract-call.js") ||
-     _cmdline_check(
+     await _cmdline_check(
        "evm-contract-call") ||
-     _cmdline_check(
+     await _cmdline_check(
        "./evm-contract-call") ) {
-  _cmdline_parse();
+  await _cmdline_parse();
 }
 else{
   _url_parse();
