@@ -1,5 +1,5 @@
 /**    ---------------------------------------------------------
- *     libevm-contract-deployment-address.webpack.config.cjs
+ *     libevm-contract-deployment-compiler-output.webpack.config.cjs
  *     ---------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -35,7 +35,7 @@ const
       __dirname);
 const
   _input_file_name =
-    `libevm-contract-deployment-address`;
+    `libevm-contract-deployment-compiler-output`;
 const
   _input_file_path =
     `./${_input_file_name}`;
