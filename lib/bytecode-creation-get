@@ -26,8 +26,18 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
+/* global
+     _argv */
+const
+  _argv =
+    _libcrash._argv;
+/* global
+     _basename */
+const
+  _basename =
+    _libcrash._basename;
 /* global
      _cmdline_check */
 const
@@ -38,6 +48,11 @@ const
 const
   _error_display =
     _libcrash._error_display;
+/* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
 /* global
      _exit */
 const
@@ -268,45 +283,24 @@ async function
 function
   _config_show() {
   let
-    _line,
-    _method_args,
-    _text;
-  _text =
-    [];
-  _text.push(
-    "bytecode-creation-get configuration:");
-  _text.push(
-    "             Wallet seed: {wallet_seed}".replace(
-      "{wallet_seed}",
-      wallet_seed));
-  _text.push(
-    "             Max retries: {retries_max}".replace(
-      "{retries_max}",
-      retries_max));
-  _text.push(
-    "            API Key path: {api_key_path}".replace(
-      "{api_key_path}",
-      api_key_path));
-  _text.push(
-    "                Chain ID: {chain_id}".replace(
-      "{chain_id}",
-      chain_id));
-  _text.push(
-    "              Chain Name: {chain_name}".replace(
-      "{chain_name}",
-      chain_name));
-  _text.push(
-    "          Target network: {target_network}".replace(
-      "{target_network}",
-      target_network));
-  _text.push(
-    "        Contract address: {contract_address}".replace(
-      "{contract_address}",
-      contract_address));
-  _text.push(
-    "  Deployment transaction: {transaction_deployment}".replace(
-      "{transaction_deployment}",
-      transaction_deployment));
+    _line;
+  const
+    _program =
+      _basename(
+        _argv[
+          "1"]);
+  const
+    _text = [
+      `${_program} configuration:`,
+      `             Wallet seed: ${wallet_seed}`,
+      `             Max retries: ${retries_max}`,
+      `            API Key path: ${api_key_path}`,
+      `                Chain ID: ${chain_id}`,
+      `              Chain Name: ${chain_name}`,
+      `          Target network: ${target_network}`,
+      `        Contract address: ${contract_address}`,
+      `  Deployment transaction: ${transaction_deployment}`,
+    ];
   for (_line of _text)  { 
     _msg_info(
       _line);
@@ -320,44 +314,47 @@ function
     _display_fun,
     _line,
     _text;
-  _text = [
-    "Returns the creation bytecode for a contract given its deployment transaction hash.",
-    "",
-    "Usage:",
-    "  bytecode-creation-get",
-    "    <quiet>",
-    "    <wallet_seed>",
-    "    <retries_max>",
-    "    <api_key_path>",
-    "    <chain_id>",
-    "    <chain_name>",
-    "    <target_network>",
-    "    <contract_address>",
-    "    <transaction_deployment>",
-    "    <contract_bytecode_path>",
-    "",
-    "Args:",
-    "  <quiet>                          Can be 'y' or 'n'",
-    "                                   Default: y",
-    "  <wallet_seed>                    Path of the file containing",
-    "                                   the seed phrase.",
-    "  <retries_max>                    Maximum number of retries before",
-    "                                   failing.",
-    "  <api_key_path>                   Path of the API key for the",
-    "                                   contract ABI provider service",
-    "  <chain_id>                       Chain ID for the network.",
-    "  <chain_name>                     Name for the network.",
-    "  <target_network>                 Network on which the contract",
-    "                                   resides.",
-    "  <contract_address>               Address of the contract",
-    "  <transaction_deployment>         Contract deployment transaction.",
-    "  <contract_bytecode_path>         Where to save contract bytecode.",
-    "",
-    "  Options:",
-    "    -h                             This help."
-  ];
+  const
+    _text = [
+      "",
+      "Returns the creation bytecode for a contract given its deployment transaction hash.",
+      "",
+      "Usage:",
+      `  ${_program}`,
+      "    <quiet>",
+      "    <wallet-seed>",
+      "    <retries-max>",
+      "    <api-key-path>",
+      "    <chain-id>",
+      "    <chain-name>",
+      "    <target-network>",
+      "    <contract-address>",
+      "    <transaction-deployment>",
+      "    <contract-bytecode-path>",
+      "",
+      "Args:",
+      "  <quiet>                          Can be 'y' or 'n'",
+      "                                   Default: y",
+      "  <wallet-seed>                    Path of the file containing",
+      "                                   the seed phrase.",
+      "  <retries-max>                    Maximum number of retries before",
+      "                                   failing.",
+      "  <api-key-path>                   Path of the API key for the",
+      "                                   contract ABI provider service",
+      "  <chain-id>                       Chain ID for the network.",
+      "  <chain-name>                     Name for the network.",
+      "  <target-network>                 Network on which the contract",
+      "                                   resides.",
+      "  <contract-address>               Address of the contract",
+      "  <transaction-deployment>         Contract deployment transaction.",
+      "  <contract-bytecode-path>         Where to save contract bytecode.",
+      "",
+      "  Options:",
+      "    -h                             This help.",
+      ""
+    ];
   for (_line of _text) {
-    _msg_info(
+    _echo(
       _line);
   }
   _exit(
@@ -377,56 +374,79 @@ function
   let
     _error,
     _msg;
-  quiet =
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "y";
-  process.argv.forEach(
+  _argv.forEach(
     function (
       _value,
-      _index,
-      _array) {
+      _index) {
       if ( _index == 2 ) {
-        quiet =
+        _global[
+          "quiet"] =
           _value;
       }
       if ( _index == 3 ) {
-        wallet_seed =
-          _value;
+        _set(
+          "wallet",
+          "seed",
+          _value);
       }
       if ( _index == 4 ) {
-        retries_max =
-          _value;
+        _set(
+          "retries",
+          "max",
+          _value);
       }
       if ( _index == 5 ) {
-        api_key_path =
-          _value;
+        _set(
+          "api_key",
+          "path",
+          _value);
       }
       if ( _index == 6 ) {
-        chain_id =
-          _value;
+        _set(
+          "chain",
+          "id",
+          _value);
       }
       if ( _index == 7 ) {
-        chain_name =
-          _value;
+        _set(
+          "chain",
+          "name",
+          _value);
       }
       if ( _index == 8 ) {
-        target_network =
-          _value;
+        _set(
+          "target",
+          "network",
+          _value);
       }
       if ( _index == 9 ) {
-        contract_address =
-          _value;
+        _set(
+          "contract",
+          "address",
+          _value);
       }
       if ( _index == 10 ) {
-        transaction_deployment =
-          _value;
+        _set(
+          "transaction",
+          "deployment",
+          _value);
       }
       if ( _index == 11 ) {
-        contract_bytecode_path =
-          _value;
+        _set(
+          "contract_bytecode",
+          "path",
+          _value);
       }
       if ( _value == "-h" ||
            _value == "--help" ) {
-        quiet =
+        _global[
+          "quiet"] =
           "n";
         _usage(
           0);
@@ -451,7 +471,8 @@ function
     _msg_error(
       _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _usage(
       1);
@@ -469,8 +490,10 @@ async function
         null,
         _app_opts);
     if ( _bytecode != undefined ) {
+      _msg =
+        `Bytecode has length '${_bytecode.length}'`;
       _msg_info(
-        `Bytecode has length '${_bytecode.length}'`);
+        _msg);
       // _printf(
       //   _bytecode.toString());
     }
@@ -509,7 +532,11 @@ if ( _cmdline_check(
     app_opts);
 }
 
-module.exports = {
-  _bytecode_creation_get:
-    _bytecode_creation_get
+export {
+  _bytecode_creation_get
 };
+
+// module.exports = {
+//   _bytecode_creation_get:
+//     _bytecode_creation_get
+// };
