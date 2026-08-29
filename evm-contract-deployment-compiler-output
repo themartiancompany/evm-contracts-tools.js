@@ -227,6 +227,9 @@ function
     "deployments",
     "dir",
     "");
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] =
     "";

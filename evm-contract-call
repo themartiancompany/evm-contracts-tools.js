@@ -89,6 +89,11 @@ const
   _exit =
     _libcrash._exit;
 /* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
      _get_date_human */
 const
   _get_date_human =

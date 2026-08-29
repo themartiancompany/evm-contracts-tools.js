@@ -399,6 +399,9 @@ async function
     _help_display =
       true;
   }
+  const
+    _global =
+      _global_get();
   if ( _help_display ) {
     _global[
       'quiet'] =
@@ -428,7 +431,7 @@ async function
       "_"][
         0]);
   const
-    _target_network =
+    _target_networks =
       _get(
         "target",
         "networks");
@@ -462,9 +465,9 @@ async function
         "network-id"].toString());
   }
   _set(
-    "networks",
+    "network",
     "ids",
-    _networks_ids);
+    _network_ids);
   if ( "a" in _argv ) {
     _set(
       "target",
@@ -582,6 +585,9 @@ function
     _argv_url_get(
       "deployments_dir")[
         0]);
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] =
     _argv_url_get(

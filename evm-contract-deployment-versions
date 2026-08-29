@@ -65,6 +65,11 @@ const
   _exit =
     _libcrash._exit;
 /* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
      _get_date_human */
 const
   _get_date_human =
@@ -94,6 +99,11 @@ const
 const
   _printf =
     _libcrash._printf;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _libevm_contract_deployment_versions_module =
     await import(
@@ -167,6 +177,9 @@ function
     "configuration",
     "format",
     "");
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] =
     "";
@@ -185,7 +198,6 @@ async function
     "resolve",
     "date",
     _get_date_human());
-  }
   _override_set(
     "display",
     "highest",

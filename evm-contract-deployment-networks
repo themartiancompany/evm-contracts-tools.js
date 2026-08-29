@@ -100,6 +100,11 @@ const
   _printf =
     _libcrash._printf;
 /* global
+     _set */
+const
+  _set =
+    _libcrash._set;
+/* global
      _stat */
 const
   _stat =
@@ -214,7 +219,7 @@ function
   let
     _line;
   const
-    _app =
+    _app_name =
       _get(
         "app",
         "name");
@@ -240,7 +245,7 @@ function
   let
     _line;
   const
-    _app =
+    _app_name =
       _get(
         "app",
         "name");
@@ -309,6 +314,9 @@ async function
     _options =
       _argv[
         "_"];
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] = 
     "y";
@@ -451,6 +459,9 @@ function
     _argv_url_get(
       "deployments_dir")[
         0]);
+  const
+    _global =
+      _global_get();
   _global[
     'quiet'] =
     _argv_url_get(
@@ -510,9 +521,9 @@ async function
 
 _global_variables();
 if ( await _cmdline_check(
-       "evm-contract-deployment-networks.js") == true ||
+       "evm-contract-deployment-networks.js") ||
      await _cmdline_check(
-       "evm-contract-deployment-networks") == true ) {
+       "evm-contract-deployment-networks") ) {
   await _cmdline_parse();
 }
 else{

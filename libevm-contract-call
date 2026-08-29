@@ -125,6 +125,11 @@ const
 const
   _require =
     _libcrash_module._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash_module._set;
 const
   _evm_contracts_tools_module =
     await import(
@@ -166,6 +171,9 @@ function
         "1"
       ];
   }
+  const
+    _target_network =   
+      _target_network[0];
   return [ _target_networks,
            _target_network ];
 }
@@ -175,13 +183,15 @@ function
   // TODO:
   //   _evm_wallet_module._balance_discovery
   let
-    _target_network;
+    _target_network,
     _target_networks;
   _target_networks =
     _get(
       "target",
       "networks");
   [ _target_networks,
+    /* eslint-disable-next-line
+         prefer-const */  
     _target_network ] =
     _target_networks_auto_detect(
       _target_networks);
@@ -284,11 +294,11 @@ function
         "address");
   }
   const
-    _key_type =
+    _api_key_type =
       typeof(
-        _key);
-  if ( _key_type == "undefined" ) {
-    _key =
+        _api_key);
+  if ( _api_key_type == "undefined" ) {
+    _api_key =
       _get(
         "api",
         "key");
@@ -348,7 +358,7 @@ function
         "contract",
         "address");
   const
-    _key =
+    _api_key =
       _get(
         "api",
         "key");

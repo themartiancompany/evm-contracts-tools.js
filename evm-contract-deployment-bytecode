@@ -410,9 +410,9 @@ async function
     "networks",
     _target_networks);
   const
-    _networks_ids =
+    _network_ids =
       _get(
-        "networks",
+        "network",
         "ids");
   if ( "i" in _argv ) {
     _network_ids.push(
@@ -545,13 +545,16 @@ function
     _argv_url_get(
       "deployments_dir")[
         0]);
+  const
+    _global =
+      _global_get();
   _global[
-    "quiet"} =
+    "quiet"] =
     _argv_url_get(
       "quiet");
   if ( quiet.length === 0 ) {
     _global[
-      "quiet"} =
+      "quiet"] =
       "n";
   }
 }
