@@ -65,6 +65,11 @@ const
   _exit =
     _libcrash._exit;
 /* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
      _get_date_human */
 const
   _get_date_human =
@@ -94,6 +99,11 @@ const
 const
   _override_set =
     _libcrash._override_set;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _libevm_contract_deployments_dir_module =
     await import(
@@ -148,6 +158,9 @@ function
     "user",
     "level",
     "");
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] =
     "";
@@ -258,6 +271,9 @@ async function
     _options =
       _argv[
         "_"];
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] = 
     "y";
@@ -348,6 +364,9 @@ function
     _argv_url_get(
       "user_level")[
         0]);
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] =
     _argv_url_get(
@@ -410,7 +429,7 @@ if ( await _cmdline_check(
        "evm-contract-deployments-dir") == true ) {
   await _cmdline_parse();
 }
-else{
+else {
   _url_parse();
 }
 _main();

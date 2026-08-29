@@ -123,26 +123,7 @@ export default defineConfig([
        "prefer-const":
          "error" },
    files: [
-    "**/*.js",
-    `**/evm-contract-call`,
-    `**/evm-contract-deployment-abi`,
-    `**/evm-contract-deployment-address`,
-    `**/evm-contract-deployment-bytecode`,
-    `**/evm-contract-deployment-compiler-output`,
-    `**/evm-contract-deployment-networks`,
-    `**/evm-contract-deployment-networks`,
-    `**/evm-contract-deployment-versions`,
-    `**/evm-contract-deployments-dir`,
-    `**/lib/*`,
-    `**/libevm-contract-call`,
-    `**/libevm-contract-deployment-abi`,
-    `**/libevm-contract-deployment-address`,
-    `**/libevm-contract-deployment-bytecode`,
-    `**/libevm-contract-deployment-compiler-output`,
-    `**/libevm-contract-deployment-networks`,
-    `**/libevm-contract-deployment-versions`,
-    `**/libevm-contract-deployments-dir`,
-    `**/lib${_project}`
+    "**/*.{cjs,js}",
    ],
    languageOptions:
      { sourceType:

@@ -227,6 +227,9 @@ function
     "deployments",
     "dir",
     "");
+  const
+    _global =
+      _global_get();
   _global[
     'quiet'] =
     "";
@@ -371,6 +374,9 @@ async function
     _options =
       _argv[
         "_"];
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] = 
     "y";
@@ -577,6 +583,9 @@ function
     _argv_url_get(
       "deployments_dir")[
         0]);
+  const
+    _global =
+      _global_get();
   _global[
     "quiet"] =
     _argv_url_get(

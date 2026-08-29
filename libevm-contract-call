@@ -189,7 +189,6 @@ function
     "target",
     "networks",
     _target_networks);
-  }
   _override_set(
     "target",
     "network",
@@ -398,6 +397,15 @@ function
     _call_auth =
       "y";
   }
+  else {
+    const
+      _msg =
+        `Unknown call type '${call_type}'.`;
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
   return _call_auth;
 }
 
@@ -412,21 +420,10 @@ function
     _call_auth =
       _call_auth_get(
         _call_type);
-    call_auth =
-      "n";
-  }
-  else if ( call_type == "dynamic" ) {
-    call_auth =
-      "y";
-  }
-  else {
-    const
-      _msg =
-        `Unknown call type '${call_type}'.`;
-    _msg_error(
-      _msg,
-      1);
-  }
+  _override_set(
+    "call",
+    "type",
+    _call_type);
 }
 
 async function
@@ -461,7 +458,6 @@ async function
         [];
     _out =
       "";
-
   }
   else if ( _call_type == "dynamic" ) {
     _out =
@@ -474,7 +470,8 @@ async function
         `'${_call_type}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   return _out;
 }

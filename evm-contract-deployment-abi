@@ -370,7 +370,7 @@ async function
     };
   const
     _argv =
-      const _argv_get(
+      await _argv_get(
         _argv_args);
   const
     _options =

@@ -426,7 +426,7 @@ function
   _set(
     "runtime",
     "environment",
-    "browser";
+    "browser");
   _set(
     "display",
     "all",
