@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 /**    ----------------------------------------------------------------
- *     evm-contract-deployment-address.js
+ *     evm-contract-deployment-versions.js
  *     ----------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
@@ -37,8 +37,8 @@
 
 const
   _libcrash =
-  require(
-    "crash-js");
+  await import(
+    "libcrash-js");
 /* global
      _argv_get */
 const
@@ -55,10 +55,25 @@ const
   _cmdline_check =
     _libcrash._cmdline_check;
 /* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
      _get_date_human */
 const
   _get_date_human =
     _libcrash._get_date_human;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _msg_info */
 const
@@ -70,19 +85,19 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _printf */
 const
-_printf =
-  _libcrash._printf;
-/* global
-     _process_exit */
-const
-_process_exit =
-  _libcrash._process_exit;
+  _printf =
+    _libcrash._printf;
 const
   _libevm_contract_deployment_versions_module =
-  require(
-    "./libevm-contract-deployment-versions");
+    await import(
+      "./libevm-contract-deployment-versions");
 /* global
      _configuration_format_auto_detect */
 const
@@ -99,69 +114,86 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "evm-contract-deployments-versions.js";
+  _set(
+    "app",
+    "name",
+    "evm-contract-deployments-versions.js");
   /* global
        app_opts:
          writable */
-  app_opts =
-    [];
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        runtime_environment:
          writable */
-  runtime_environment =
-    "";
+  _set(
+    "runtime",
+    "enviroment",
+    "");
   /* global
        resolve_date:
          writable */
-  resolve_date =
-    "";
+  _set(
+    "resolve",
+    "date",
+    "");
   /* global
        config_file:
          writable */
-  config_file =
-    "";
+  _set(
+    "config",
+    "file",
+    "");
   /* global
        display_highest:
          writable */
-  display_highest =
-    "";
+  _set(
+    "display",
+    "highest",
+    "");
   /* global
        display_lowest:
          writable */
-  display_lowest =
-    "";
+  _set(
+    "display",
+    "lowest",
+    "");
   /* global
        configuration_format:
          writable */
-  configuration_format =
-    "";
-  quiet =
+  _set(
+    "configuration",
+    "format",
+    "");
+  _global[
+    "quiet"] =
     "";
   /* global
        verbose:
          writable */
-  verbose =
+  _global[
+    "verbose"] =
     "";
 }
 
 async function 
   _overrides_set(
     _help_display) {
-  if ( resolve_date == "" ||
-       typeof(
-         resolve_date) == "undefined" ) {
-    resolve_date =
-      _get_date_human();
+  _override_set(
+    "resolve",
+    "date",
+    _get_date_human());
   }
-  if ( display_highest == "" ) {
-    display_highest =
-      "n";
-  }
-  if ( display_lowest == "" ) {
-    display_lowest =
-      "n";
-  }
+  _override_set(
+    "display",
+    "highest",
+    "n");
+  _override_set(
+    "display",
+    "lowest",
+    "n");
   _configuration_format_auto_detect();
 }
 
@@ -170,8 +202,13 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
-      `${app_name} configuration:`,
+      `${_app_name} configuration:`,
       `             Resolve date:   ${resolve_date}`,
       `       Configuration file:   ${config_file}`,
       `          Display highest:   ${display_highest}`,
@@ -190,13 +227,18 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
       "",
       "Returns available versions for contract deployments on a network",
       "",
       "Usage:",
       "",
-      `  ${app_name}`,
+      `  ${_app_name}`,
       "    [options]",
       "    <config-file>",
       "",
@@ -216,10 +258,10 @@ function
       ""
     ];
   for ( _line of _text ) {
-    console.log(
+    _echo(
       _line);
   }
-  _process_exit(
+  _exit(
     _exit_code);
 }
 
@@ -243,16 +285,22 @@ async function
     };
   const
     _argv =
-      _argv_get(
+      await _argv_get(
         _argv_args);
   const
     _options =
       _argv[
         "_"];
-  quiet = 
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] = 
     "y";
-  runtime_environment =
-    "node";
+  _set(
+    "runtime",
+    "environment",
+    "node");
   if ( _argv[
          "h"] ) {
     _help_display =
@@ -271,7 +319,8 @@ async function
       true;
   }
   if ( _help_display ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     await _overrides_set(
       _help_display);
@@ -291,41 +340,52 @@ async function
     _usage(
       1);
   }
-  config_file =
+  _set(
+    "config",
+    "file",
     _argv[
       "_"][
-        0];
+        0]);
   if ( "f" in _argv ) {
-    configuration_format =
+    _set(
+      "configuration",
+      "format",
       _argv[
-        "f"];
+        "f"]);
   }
   if ( "configuration-format" in _argv ) {
-    configuration_format =
+    _set(
+      "configuration",
+      "format",
       _argv[
-        "configuration-format"];
+        "configuration-format"]);
   }
   if ( _argv[
          "H"] ||
        _argv[
          "display-highest"] ) {
-    display_highest =
+    _set(
+      "display",
+      "highest",
       _argv[
-        "H"];
+        "H"]);
   }
   if ( _argv[
          "L"] ||
        _argv[
          "display-lowest"] ) {
-    display_lowest =
+    _set(
+      "display",
+      "lowest",
       _argv[
-        "L"];
+        "L"]);
   }
   if ( _argv[
          "v"] ||
        _argv[
          "verbose"] ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -378,7 +438,7 @@ async function
         _results);
   if ( _results_type == "object" ) {
     for ( _result of _results ) {
-      console.log(
+      _echo(
         _result);
     }
   }
@@ -406,11 +466,11 @@ async function
 }
 
 _global_variables();
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "evm-contract-deployment-versions.js") ||
-     _cmdline_check(
+     await _cmdline_check(
        "evm-contract-deployment-versions") ) {
-  _cmdline_parse();
+  await _cmdline_parse();
 }
 else{
   _url_parse();

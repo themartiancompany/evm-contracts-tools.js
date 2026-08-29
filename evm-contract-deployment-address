@@ -37,8 +37,8 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _argv_get */
 const
@@ -54,6 +54,26 @@ const
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _get_date_human */
 const
@@ -77,17 +97,17 @@ const
 /* global
      _printf */
 const
-_printf =
-  _libcrash._printf;
+  _printf =
+    _libcrash._printf;
 /* global
-     _process_exit */
+     _set */
 const
-_process_exit =
-  _libcrash._process_exit;
+  _set =
+    _libcrash._set;
 const
   _libevm_contract_deployment_address_module =
-  require(
-    "./libevm-contract-deployment-address");
+    await import(
+      "./libevm-contract-deployment-address");
 /* global
      _evm_contract_deployment_address */
 const
@@ -119,74 +139,102 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "evm-contract-deployments-address.js";
+  _set(
+    "app",
+    "name",
+    "evm-contract-deployments-address.js");
   /* global
        app_opts:
          writable */
-  app_opts =
-    [];
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        runtime_environment:
          writable */
-  runtime_environment =
-    "";
+  _set(
+    "runtime",
+    "environment",
+    "");
   /* global
        resolve_date:
          writable */
-  resolve_date =
-    "";
+  _set(
+    "resolve",
+    "date",
+    "");
   /* global
        target_networks:
          writable */
-  target_networks =
-    [];
+  _set(
+    "target",
+    "networks",
+    []);
   /* global
        network_ids:
          writable */
-  network_ids =
-    [];
+  _set(
+    "networks",
+    "ids",
+    []);
   /* global
        networks_all:
          writable */
-  networks_all =
-    "";
+  _set(
+    "networks",
+    "all",
+    []);
   /* global
        target_app:
          writable */
-  target_app =
-    "";
+  _set(
+    "target",
+    "app",
+    "");
   /* global
        target_contract:
          writable */
-  target_contract =
-    "";
+  _set(
+    "target",
+    "contract",
+    "");
   /* global
        contract_version:
          writable */
-  contract_version =
-    "";
+  _set(
+    "contract",
+    "version",
+    "");
   /* global
        user_defined:
          writable */
-  user_defined =
-    "";
+  _set(
+    "user",
+    "defined",
+    "");
   /* global
        configuration_format:
          writable */
-  configuration_format =
-    "";
+  _set(
+    "configuration",
+    "format",
+    "");
   /* global
        deployments_dir:
          writable */
-  deployments_dir =
-    "";
-  quiet =
+  _set(
+    "deployments",
+    "dir",
+    "");
+  _global[
+    'quiet'] =
     "";
   /* global
        verbose:
          writable */
-  verbose =
+  _global[
+    'verbose'] =
     "";
 }
 
@@ -219,8 +267,13 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
-      `${app_name} configuration:`,
+      `${_app_name} configuration:`,
       `             Resolve date:   ${resolve_date}`,
       `      Runtime environment:   ${runtime_environment}`,
       `          Target networks:   ${target_networks}`,
@@ -285,10 +338,10 @@ function
       ""
     ];
   for ( _line of _text ) {
-    console.log(
+    _echo(
       _line);
   }
-  _process_exit(
+  _exit(
     _exit_code);
 }
 
@@ -312,16 +365,19 @@ async function
     };
   const
     _argv =
-      _argv_get(
+      await _argv_get(
         _argv_args);
   const
     _options =
       _argv[
         "_"];
-  quiet = 
+  _global[
+    "quiet"] = 
     "y";
-  runtime_environment =
-    "node";
+  _set(
+    "runtime",
+    "environment",
+    "node");
   if ( _argv[
          "h"] ) {
     _help_display =
@@ -360,69 +416,102 @@ async function
     _usage(
       1);
   }
-  target_contract =
+  _set(
+    "target",
+    "contract",
     _argv[
       "_"][
-        0];
+        0]);
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
   if ( "n" in _argv ) {
-    target_networks.push(
+    _target_networks.push(
       _argv[
         "n"].toString());
   }
   if ( "network" in _argv ) {
-    target_networks.push(
+    _target_networks.push(
       _argv[
         "network"].toString());
   }
+  _set(
+    "target",
+    "networks",
+    _target_networks);
+  const
+    _network_ids =
+      _get(
+        "network",
+        "ids");
   if ( "i" in _argv ) {
-    network_ids.push(
+    _network_ids.push(
       _argv[
         "i"].toString());
   }
   if ( "network-id" in _argv ) {
-    network_ids.push(
+    _network_ids.push(
       _argv[
         "network-id"].toString());
   }
+  _set(
+    "network",
+    "ids",
+    _network_ids);
   if ( "a" in _argv ) {
-    target_app =
+    _set(
+      "target",
+      "app",
       _argv[
-        "a"];
+        "a"]);
   }
   if ( "target-app" in _argv ) {
-    target_app =
+    _set(
+      "target",
+      "app",
       _argv[
-        "target-app"];
+        "target-app"]);
   }
   if ( _argv[
          "A"] ||
        _argv[
          "networks-all"] ) {
-    networks_all =
-      "y";
+    _set(
+      "networks",
+      "all",
+      "y");
   }
   if ( _argv[
          "u"] ||
        _argv[
          "user-defined"] ) {
-    user_defined =
-      "y";
+    _set(
+      "user",
+      "defined",
+      "y");
   }
   if ( "f" in _argv ) {
-    configuration_format =
+    _set(
+      "configuration",
+      "format",
       _argv[
-        "f"];
+        "f"]);
   }
   if ( "configuration-format" in _argv ) {
-    configuration_format =
+    _set(
+      "configuration",
+      "format",
       _argv[
-        "configuration-format"];
+        "configuration-format"]);
   }
   if ( _argv[
          "v"] ||
        _argv[
          "verbose"] ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -432,47 +521,69 @@ function
   let
     _method,
     _network;
-  runtime_environment =
-    "browser";
-  target_networks =
+  _set(
+    "runtime",
+    "environment",
+    "browser");
+  _set(
+    "target",
+    "networks",
     _argv_url_get(
-      "network");
-  network_ids =
+      "network"));
+  _set(
+    "networks",
+    "ids",
     _argv_url_get(
-      "network_id");
-  networks_all =
+      "network_id"));
+  _set(
+    "networks",
+    "all",
     _argv_url_get(
       "networks_all")[
-        0];
-  target_app =
+        0]);
+  _set(
+    "target",
+    "app",
     _argv_url_get(
       "target_app")[
-        0];
-  target_contract =
+        0]);
+  _set(
+    "target",
+    "contract",
     _argv_url_get(
       "target_contract")[
-        0];
-  contract_version =
+        0]);
+  _set(
+    "contract",
+    "version",
     _argv_url_get(
       "contract_version")[
-        0];
-  user_defined =
+        0]);
+  _set(
+    "user",
+    "defined",
     _argv_url_get(
       "user_defined")[
-        0];
-  configuration_format =
+        0]);
+  _set(
+    "configuration",
+    "format",
     _argv_url_get(
       "configuration_format")[
-        0];
-  deployments_dir =
+        0]);
+  _set(
+    "deployments",
+    "dir",
     _argv_url_get(
       "deployments_dir")[
-        0];
-  quiet =
+        0]);
+  _global[
+    "quiet"] =
     _argv_url_get(
       "quiet");
   if ( quiet.length === 0 ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -493,7 +604,7 @@ async function
         _results);
   if ( _results_type == "object" ) {
     for ( _result of _results ) {
-      console.log(
+      _echo(
         _result);
     }
   }
@@ -528,11 +639,11 @@ async function
 }
 
 _global_variables();
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "evm-contract-deployment-address.js") ||
-     _cmdline_check(
+     await _cmdline_check(
        "evm-contract-deployment-address") ) {
-  _cmdline_parse();
+  await _cmdline_parse();
 }
 else{
   _url_parse();

@@ -37,8 +37,8 @@
 
 const
   _libcrash =
-  require(
-    "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _argv_get */
 const
