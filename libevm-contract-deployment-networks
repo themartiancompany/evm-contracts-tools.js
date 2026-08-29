@@ -33,8 +33,8 @@
 
 const
   _libcrash_module =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _dir_exists */
 const
@@ -86,13 +86,18 @@ const
   _path_join =
     _libcrash_module._path_join;
 /* global
+     _require */
+const
+  _require =
+    _libcrash_module._require;
+/* global
      _stat */
 const
   _stat =
     _libcrash_module._stat;
 const
   _libevm_contract_deployment_module =
-    require(
+    await import(
       "./libevm-contract-deployment");
 /* global
      _network_check */
@@ -101,7 +106,7 @@ const
     _libevm_contract_deployment_module._network_check;
 const
   _libevm_contract_deployments_dir_module =
-    require(
+    await import(
       "./libevm-contract-deployments-dir");
 /* global
      _evm_contract_deployments_dir */
@@ -110,14 +115,13 @@ const
     _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _evm_chains_info_module =
-    require(
+    await _require(
       "evm-chains-info");
 /* global
      _evm_chains_info */
 const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
-
 
 function
   _contract_address_get(
@@ -245,9 +249,14 @@ async function
   return _networks;
 }
 
-module.exports = {
-  _evm_contract_deployment_networks:
-    _evm_contract_deployment_networks,
-  _network_check:
-    _network_check
+export {
+  _evm_contract_deployment_networks,
+  _network_check
 };
+
+// module.exports = {
+//   _evm_contract_deployment_networks:
+//     _evm_contract_deployment_networks,
+//   _network_check:
+//     _network_check
+// };

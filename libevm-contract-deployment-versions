@@ -65,8 +65,8 @@
 
 const
   _libcrash_module =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _file_read */
 const
@@ -94,7 +94,7 @@ const
     _libcrash_module._msg_error;
 const
   _libevm_contract_deployment_module =
-    require(
+    await import(
       "./libevm-contract-deployment");
 /* global
      _configuration_format_auto_detect */
@@ -168,11 +168,17 @@ function
   return _versions;
 }
 
-module.exports = {
-  _configuration_format_auto_detect:
-    _configuration_format_auto_detect,
-  _configuration_format_get:
-    _configuration_format_get,
-  _evm_contract_deployment_versions:
-    _evm_contract_deployment_versions,
+export {
+  _configuration_format_auto_detect,
+  _configuration_format_get,
+  _evm_contract_deployment_versions,
 };
+
+// module.exports = {
+//   _configuration_format_auto_detect:
+//     _configuration_format_auto_detect,
+//   _configuration_format_get:
+//     _configuration_format_get,
+//   _evm_contract_deployment_versions:
+//     _evm_contract_deployment_versions,
+// };

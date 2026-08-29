@@ -55,10 +55,25 @@ const
   _cmdline_check =
     _libcrash._cmdline_check;
 /* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
      _get_date_human */
 const
   _get_date_human =
     _libcrash._get_date_human;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _msg_info */
 const
@@ -75,18 +90,13 @@ const
   _printf =
     _libcrash._printf;
 /* global
-     _exit */
-const
-  _exit =
-    _libcrash._exit;
-/* global
      _override_set */
 const
   _override_set =
     _libcrash._override_set;
 const
   _libevm_contract_deployments_dir_module =
-    require(
+    await import(
       "./libevm-contract-deployments-dir");
 /* global
      _evm_contract_deployments_dir */
@@ -99,39 +109,53 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "evm-contract-deployments-dir.js";
+  _set(
+    "app",
+    "name",
+    "evm-contract-deployments-dir.js");
   /* global
        app_opts:
          writable */
-  app_opts =
-    [];
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        runtime_environment:
          writable */
-  runtime_environment =
-    "";
+  _set(
+    "runtime",
+    "environment",
+    "");
   /* global
        resolve_date:
          writable */
-  resolve_date =
-    "";
+  _set(
+    "resolve",
+    "date",
+    "");
   /* global
        target_app:
          writable */
-  target_app =
-    "";
+  _set(
+    "target",
+    "app",
+    "");
   /* global
        user_level:
          writable */
-  user_level =
-    "";
-  quiet =
+  _set(
+    "user",
+    "level",
+    "");
+  _global[
+    "quiet"] =
     "";
   /* global
        verbose:
          writable */
-  verbose =
+  _global[
+    "verbose"] =
     "";
 }
 
@@ -153,8 +177,13 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
-      `${app_name} configuration:`,
+      `${_app_name} configuration:`,
       `             Resolve date:   ${resolve_date}`,
       `      Runtime environment:   ${runtime_environment}`,
       `       Target application:   ${target_app}`,
@@ -172,13 +201,18 @@ function
   let
     _line;
   const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
     _text = [
       "",
       "Returns default deployments directory for an application",
       "",
       "Usage:",
       "",
-      `  ${app_name}`,
+      `  ${_app_name}`,
       "    [options]",
       "    <target-app>",
       "",
@@ -193,7 +227,7 @@ function
       ""
     ];
   for ( _line of _text ) {
-    console.log(
+    _echo(
       _line);
   }
   _exit(
@@ -218,16 +252,19 @@ async function
     };
   const
     _argv =
-      _argv_get(
+      await _argv_get(
         _argv_args);
   const
     _options =
       _argv[
         "_"];
-  quiet = 
+  _global[
+    "quiet"] = 
     "y";
-  runtime_environment =
-    "node";
+  _set(
+    "runtime",
+    "environment",
+    "node");
   if ( _argv[
          "h"] ) {
     _help_display =
@@ -266,25 +303,32 @@ async function
     _usage(
       1);
   }
-  target_app =
+  _set(
+    "target",
+    "app",
     _argv[
       "_"][
-        0];
+        0]);
   if ( "u" in _argv ) {
-    user_level =
+    _set(
+      "user",
+      "level",
       _argv[
-        "u"];
+        "u"]);
   }
   if ( "user_level" in _argv ) {
-    user_level =
+    _set(
+      "user",
+      "level",
       _argv[
-        "user_level"];
+        "user_level"]);
   }
   if ( _argv[
          "v"] ||
        _argv[
          "verbose"] ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -294,17 +338,23 @@ function
   let
     _method,
     _network;
-  runtime_environment =
-    "browser";
-  user_level =
+  _set(
+    "runtime",
+    "environment",
+    "browser");
+  _set(
+    "user",
+    "level",
     _argv_url_get(
       "user_level")[
-        0];
-  quiet =
+        0]);
+  _global[
+    "quiet"] =
     _argv_url_get(
       "quiet");
   if ( quiet.length === 0 ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -325,7 +375,7 @@ async function
         _results);
   if ( _results_type == "object" ) {
     for ( _result of _results ) {
-      console.log(
+      _echo(
         _result);
     }
   }
@@ -354,11 +404,11 @@ async function
 }
 
 _global_variables();
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "evm-contract-deployments-dir.js") == true ||
-     _cmdline_check(
+     await _cmdline_check(
        "evm-contract-deployments-dir") == true ) {
-  _cmdline_parse();
+  await _cmdline_parse();
 }
 else{
   _url_parse();

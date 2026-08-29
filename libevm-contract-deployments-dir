@@ -33,8 +33,8 @@
 
 const
   _libcrash_module =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _homedir_get */
 const
@@ -149,9 +149,14 @@ async function
   return _deployments;
 }
 
-module.exports = {
-  _default_deployments_dir_get:
-    _default_deployments_dir_get,
-  _evm_contract_deployments_dir:
-    _evm_contract_deployments_dir,
+export {
+  _default_deployments_dir_get,
+  _evm_contract_deployments_dir,
 };
+
+// module.exports = {
+//   _default_deployments_dir_get:
+//     _default_deployments_dir_get,
+//   _evm_contract_deployments_dir:
+//     _evm_contract_deployments_dir,
+// };

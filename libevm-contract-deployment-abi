@@ -61,8 +61,8 @@
 
 const
   _libcrash_module =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _basename */
 const
@@ -143,9 +143,14 @@ const
 const
   _pwd =
     _libcrash_module._pwd;
+/* global
+     _require */
+const
+  _require =
+    _libcrash_module._require;
 const
   _evm_chains_info_module =
-    require(
+    await _require(
       "evm-chains-info");
 /* global
      _evm_chains_info */
@@ -154,7 +159,7 @@ const
     _evm_chains_info_module._evm_chains_info;
 const
   _libevm_contract_deployments_dir_module =
-    require(
+    await import(
       "./libevm-contract-deployments-dir");
 /* global
      _evm_contract_deployments_dir */
@@ -163,7 +168,7 @@ const
     _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _libevm_contract_deployment_module =
-    require(
+    await import(
       "./libevm-contract-deployment");
 /* global
      _contract_version_auto_detect */
@@ -197,7 +202,7 @@ const
     _libevm_contract_deployment_module._user_deployments_check;
 const
   _libevm_contract_deployment_networks_module =
-    require(
+    await import(
       "./libevm-contract-deployment-networks");
 /* global
      _evm_contract_deployment_networks */
@@ -206,7 +211,7 @@ const
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 const
   _libevm_contract_deployment_versions_module =
-    require(
+    await import(
       "./libevm-contract-deployment-versions");
 /* global
      _evm_contract_deployment_versions */
@@ -432,15 +437,23 @@ async function
   return _contracts_abis;
 }
 
-module.exports = {
-  _contract_version_auto_detect:
-    _contract_version_auto_detect,
-  _deployments_dir_auto_detect:
-    _deployments_dir_auto_detect,
-  _evm_contract_deployment_abi:
-    _evm_contract_deployment_abi,
-  _networks_all_auto_detect:
-    _networks_all_auto_detect,
-  _target_app_auto_detect:
-    _target_app_auto_detect
+export {
+  _contract_version_auto_detect,
+  _deployments_dir_auto_detect,
+  _evm_contract_deployment_abi,
+  _networks_all_auto_detect,
+  _target_app_auto_detect
 };
+
+// module.exports = {
+//   _contract_version_auto_detect:
+//     _contract_version_auto_detect,
+//   _deployments_dir_auto_detect:
+//     _deployments_dir_auto_detect,
+//   _evm_contract_deployment_abi:
+//     _evm_contract_deployment_abi,
+//   _networks_all_auto_detect:
+//     _networks_all_auto_detect,
+//   _target_app_auto_detect:
+//     _target_app_auto_detect
+// };

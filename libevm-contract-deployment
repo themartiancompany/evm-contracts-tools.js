@@ -77,8 +77,6 @@ const
     _libcrash_module._chmod;
 /* global
      _cp */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _cp =
     _libcrash_module._cp;
@@ -94,50 +92,36 @@ const
     _libcrash_module._file_exists;
 /* global
      _file_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _file_read =
     _libcrash_module._file_read;
 /* global
      _from_bash_ass_array */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _from_bash_ass_array =
     _libcrash_module._from_bash_ass_array;
 /* global
      _homedir_get */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _homedir_get =
     _libcrash_module._homedir_get;
 /* global
      _json_read */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _json_read =
     _libcrash_module._json_read;
 /* global
      _mkdir */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _mkdir =
     _libcrash_module._mkdir;
 /* global
      _msg_info */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_info =
     _libcrash_module._msg_info;
 /* global
      _msg_error */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _msg_error =
     _libcrash_module._msg_error;
@@ -148,8 +132,6 @@ const
     _libcrash_module._override_set;
 /* global
      _path_join */
-/* eslint-disable-next-line
-     no-global-assign */
 const
   _path_join =
     _libcrash_module._path_join;
@@ -158,9 +140,14 @@ const
 const
   _pwd =
     _libcrash_module._pwd;
+/* global
+     _require */
+const
+  _require =
+    _libcrash_module._require;
 const
   _evm_chains_info_module =
-    require(
+    await _require(
       "evm-chains-info");
 /* global
      _evm_chains_info */
@@ -169,7 +156,7 @@ const
     _evm_chains_info_module._evm_chains_info;
 const
   _libevm_contract_deployments_dir_module =
-    require(
+    await _require(
       "./libevm-contract-deployments-dir");
 /* global
      _evm_contract_deployments_dir */
@@ -178,7 +165,7 @@ const
     _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _libevm_contract_deployment_networks_module =
-    require(
+    await _require(
       "./libevm-contract-deployment-networks");
 /* global
      _evm_contract_deployment_networks */
@@ -187,7 +174,7 @@ const
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 const
   _libevm_contract_deployment_versions_module =
-    require(
+    await _require(
       "./libevm-contract-deployment-versions");
 /* global
      _evm_contract_deployment_versions */
@@ -630,21 +617,32 @@ function
     _configuration_format);
 }
 
-module.exports = {
-  _configuration_format_auto_detect:
-    _configuration_format_auto_detect,
-  _configuration_format_get:
-    _configuration_format_get,
-  _contract_version_auto_detect:
-    _contract_version_auto_detect,
-  _deployments_dir_auto_detect:
-    _deployments_dir_auto_detect,
-  _network_check:
-    _network_check,
-  _networks_all_auto_detect:
-    _networks_all_auto_detect,
-  _target_app_auto_detect:
-    _target_app_auto_detect,
-  _user_deployments_check:
-    _user_deployments_check,
+export {
+  _configuration_format_auto_detect,
+  _configuration_format_get,
+  _contract_version_auto_detect,
+  _deployments_dir_auto_detect,
+  _network_check,
+  _networks_all_auto_detect,
+  _target_app_auto_detect,
+  _user_deployments_check,
 };
+
+// module.exports = {
+//   _configuration_format_auto_detect:
+//     _configuration_format_auto_detect,
+//   _configuration_format_get:
+//     _configuration_format_get,
+//   _contract_version_auto_detect:
+//     _contract_version_auto_detect,
+//   _deployments_dir_auto_detect:
+//     _deployments_dir_auto_detect,
+//   _network_check:
+//     _network_check,
+//   _networks_all_auto_detect:
+//     _networks_all_auto_detect,
+//   _target_app_auto_detect:
+//     _target_app_auto_detect,
+//   _user_deployments_check:
+//     _user_deployments_check,
+// };
