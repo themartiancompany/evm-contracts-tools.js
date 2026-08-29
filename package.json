@@ -126,7 +126,7 @@
     "evm-chains-info":
       "^0.0.34",
     "evm-transactions-tools":
-      "^0.0.1111",
+      "^0.0.11111",
     "evm-wallet":
       "npm:evm-wallet.js@^0.0.82",
     "libevm":
