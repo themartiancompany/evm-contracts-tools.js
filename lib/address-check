@@ -28,8 +28,8 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
 /* global
      _argv_get */
 const
@@ -46,6 +46,11 @@ const
   _cmdline_check =
     _libcrash._cmdline_check;
 /* global
+     _globals */
+const
+  _globals =
+    _libcrash._globals;
+/* global
      _exit */
 const
   _exit =
@@ -61,10 +66,20 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _require */
 const
   _require =
     _libcrash._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._override_set;
 const
   _ethers_module =
     await _require(
@@ -80,18 +95,17 @@ const
 
 function
   _global_variables() {
-  app_name =
-    "address-check";
+  _set(
+    "app",
+    "name",
+    "address-check");
   /* global
        target_address:
          writable */
-  target_address =
-    "";
-  /* global
-       quiet:
-         writable */
-  quiet =
-    "";
+  _set(
+    "target",
+    "address",
+    "");
 }
 
 function
@@ -241,6 +255,7 @@ if ( _cmdline_check(
        "address-check") ||
      _cmdline_check(
        "ethereum-address-validate") ) {
+  _globals();
   _global_variables();
   await _cmdline_parse();
   await _overrides_set();
