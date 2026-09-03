@@ -261,7 +261,11 @@ if ( _cmdline_check(
     app_opts);
 }
 
-module.exports = {
-  _address_check:
-    _address_check
+export {
+  _address_check
 };
+
+// module.exports = {
+//   _address_check:
+//     _address_check
+// };

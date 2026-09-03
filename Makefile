@@ -58,27 +58,29 @@ DOC_FILES=\
       *.rst) \
   $(wildcard \
       *.md)
+_PROGRAMS=\
+  "evm-contract-call" \
+  "evm-contract-deployment-abi" \
+  "evm-contract-deployment-address" \
+  "evm-contract-deployment-bytecode" \
+  "evm-contract-deployment-compiler-output" \
+  "evm-contract-deployment-networks" \
+  "evm-contract-deployment-versions" \
+  "evm-contract-deployments-dir"
 NPM_FILES=\
   "README.md" \
   "COPYING" \
   "AUTHORS.rst" \
   "Makefile" \
   "dist" \
-  "evm-contract-call" \
+  $(_PROGRAMS) \
   "evm-contract-call.webpack.config.cjs" \
-  "evm-contract-deployment-abi" \
   "evm-contract-deployment-abi.webpack.config.cjs" \
-  "evm-contract-deployment-address" \
   "evm-contract-deployment-address.webpack.config.cjs" \
-  "evm-contract-deployment-bytecode" \
   "evm-contract-deployment-bytecode.webpack.config.cjs" \
-  "evm-contract-deployment-compiler-output" \
   "evm-contract-deployment-compiler-output.webpack.config.cjs" \
-  "evm-contract-deployment-networks" \
   "evm-contract-deployment-networks.webpack.config.cjs" \
-  "evm-contract-deployment-versions" \
   "evm-contract-deployment-versions.webpack.config.cjs" \
-  "evm-contract-deployments-dir" \
   "evm-contract-deployments-dir.webpack.config.cjs" \
   "lib" \
   "libevm-contract-call" \
@@ -144,12 +146,15 @@ install-scripts:
 	      "$(PREFIX)/lib/$(_PROJECT_NPM)/nodejs/$(_PROJECT_NPM)" \
 	      "$(BIN_DIR)/$(_PROJECT)"; \
 	  fi; \
-	  if [[ ! -s "$(BIN_DIR)/$(_PROJECT_NPM)" && \
-	        ! -e "$(BIN_DIR)/$(_PROJECT_NPM)" ]]; then \
-	    $(_MAKE_LINK) \
-	      "$(PREFIX)/lib/$(_PROJECT_NPM)/nodejs/$(_PROJECT_NPM)" \
-	      "$(BIN_DIR)/$(_PROJECT_NPM)"; \
-	  fi; \
+	  for _program in \
+	    $(_PROGRAMS); do \
+	    if [[ ! -s "$(BIN_DIR)/$${_program}" && \
+	          ! -e "$(BIN_DIR)/$${_program} ]]; then \
+	      $(_MAKE_LINK) \
+	        "$(PREFIX)/lib/$(_PROJECT_NPM)/nodejs/$${_program}" \
+	        "$(BIN_DIR)/$${_program}"; \
+	    fi; \
+	  done; \
 	  rm \
 	    "$(LIB_DIR)/node_modules" || \
 	    true; \
@@ -304,5 +309,36 @@ install-man:
 	$(_INSTALL_FILE) \
 	  "build/man/$(_PROJECT_NPM).1" \
 	  "$(MAN_DIR)/man1/$(_PROJECT_NPM).1"
+
+uninstall-scripts:
+
+	for _program in \
+	  $(_PROGRAMS); do \
+	  rm \
+	    -vrf \
+	    "$(BIN_DIR)/$${_program}"; \
+	done; \
+	rm  \
+	  "$(LIB_DIR") \
+	  "$(NODE_DIR)" \
+	
+	rm \
+	  "evm-contract-call" \
+	  "evm-contract-deployment-abi" \
+	  "evm-contract-deployment-address" \
+	  "evm-contract-deployment-bytecode" \
+	  "evm-contract-deployment-compiler-output" \
+	  "evm-contract-deployment-networks" \
+	  "evm-contract-deployment-versions" \
+	  "evm-contract-deployments-dir" \
+	  "lib" \
+	  "$(_PROJECT_NPM)" \
+	  "eslint.config.mjs" \
+	  "fs-worker.webpack.config.cjs" \
+	  "package.json" \
+	  "webpack.config.cjs"
+
+
+
 
 .PHONY: check build-man build-npm build-scripts install install-doc install-man install-npm install-scripts shellcheck
