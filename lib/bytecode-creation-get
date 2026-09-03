@@ -311,9 +311,7 @@ function
   _usage(
     _exit_code) {
   let
-    _display_fun,
-    _line,
-    _text;
+    _line;
   const
     _text = [
       "",
