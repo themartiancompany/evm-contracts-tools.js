@@ -171,6 +171,8 @@ const
 const
   _artifact_local_auto_detect =
     _libevm_contract_call_module._artifact_local_auto_detect;
+echo(
+  "chromi");
 /* global
      _address_check */
 const

@@ -126,7 +126,7 @@
     "evm-chains-info":
       "^0.0.34",
     "evm-transactions-tools":
-      "^0.0.11111",
+      "^0.0.111111",
     "evm-wallet":
       "npm:evm-wallet.js@^0.0.83",
     "libevm":
@@ -152,10 +152,10 @@
     "evm-contracts-tools",
   "bin":
     { 
-      "ethereum-address-validate":
-        "lib/address-check",
       "evm-contract-call":
         "evm-contract-call",
+      "ethereum-address-validate":
+        "lib/address-check",
       "evm-contract-call.js":
         "evm-contract-call",
       "evm-contract-call-dynamic.js":

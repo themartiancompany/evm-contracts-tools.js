@@ -193,30 +193,41 @@ function
   _cmdline_parse() {
   quiet =
     "y";
-  process.argv.forEach(
+  _argv.forEach(
     function (
       _value,
-      _index,
-      _array) {
+      _index) {
+      const
+        _global =
+          _global_get();
       if ( _index == 2 ) {
-        target_address =
-          _value;
+        _set(
+          "target",
+          "address",
+          _value);
       }
       else if ( _value == "-v" ||
            _value == "--verbose" ) {
-        quiet =
+        _global[
+          "quiet"] =
           "n";
       }
       else if ( _value == "-h" ||
            _value == "--help" ) {
-        quiet =
+        _global[
+          "quiet"] =
           "n";
         _usage(
           0);
       }
     }
   );
-  if ( target_address == "" ) {
+  const
+    _target_address =
+      _get(
+        "target",
+        "address");
+  if ( _target_address == "" ) {
     const
       _msg =
         "No target address specified.";
@@ -266,13 +277,10 @@ async function
   }
 }
 
-_global_variables();
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "address-check") ||
-     _cmdline_check(
+     await _cmdline_check(
        "ethereum-address-validate") ) {
-  _echo(
-    app_name);
   _global_variables();
   await _cmdline_parse();
   await _overrides_set();
