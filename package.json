@@ -112,7 +112,7 @@
     "globals":
       "^17.3.0",
     "safely-serve":
-      "^0.0.11",
+      "^0.0.19",
     "webpack":
       "^5.109.2",
     "webpack-cli":
