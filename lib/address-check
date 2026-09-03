@@ -46,15 +46,20 @@ const
   _cmdline_check =
     _libcrash._cmdline_check;
 /* global
-     _globals */
+     _echo */
 const
-  _globals =
-    _libcrash._globals;
+  _echo =
+    _libcrash._echo;
 /* global
      _exit */
 const
   _exit =
     _libcrash._exit;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _msg_info */
 const
@@ -106,6 +111,12 @@ function
     "target",
     "address",
     "");
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
+    "";
 }
 
 function
@@ -156,7 +167,7 @@ function
       "    -h --help                      This help."
     ];
   for (_line of _text) {
-    _msg_info(
+    _echo(
       _line);
   }
   _exit(
@@ -249,7 +260,6 @@ if ( _cmdline_check(
        "address-check") ||
      _cmdline_check(
        "ethereum-address-validate") ) {
-  _globals();
   _global_variables();
   await _cmdline_parse();
   await _overrides_set();
@@ -259,6 +269,10 @@ if ( _cmdline_check(
   ];
   _address_check_cmdline(
     app_opts);
+}
+else {
+  _echo(
+    "chromi");
 }
 
 export {
