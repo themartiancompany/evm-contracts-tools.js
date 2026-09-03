@@ -100,10 +100,20 @@ const
 
 function
   _global_variables() {
+  /* global
+       app_name:
+         writable */
   _set(
     "app",
     "name",
     "address-check");
+  /* global
+       app_opts:
+         writable */
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        target_address:
          writable */
@@ -256,10 +266,13 @@ async function
   }
 }
 
+_global_variables();
 if ( _cmdline_check(
        "address-check") ||
      _cmdline_check(
        "ethereum-address-validate") ) {
+  _echo(
+    app_name);
   _global_variables();
   await _cmdline_parse();
   await _overrides_set();

@@ -138,18 +138,10 @@ install-scripts:
 	    "$(LIB_DIR)/nodejs"; \
 	  $(_MAKE_EXE) \
 	    "$(LIB_DIR)/nodejs/$(_PROJECT_NPM)"; \
-	  rm \
-	    -vf \
-	    "$(BIN_DIR)/$(_PROJECT)"; \
-	  if [[ ! -s "$(BIN_DIR)/$(_PROJECT)" ]]; then \
-	    $(_MAKE_LINK) \
-	      "$(PREFIX)/lib/$(_PROJECT_NPM)/nodejs/$(_PROJECT_NPM)" \
-	      "$(BIN_DIR)/$(_PROJECT)"; \
-	  fi; \
 	  for _program in \
 	    $(_PROGRAMS); do \
 	    if [[ ! -s "$(BIN_DIR)/$${_program}" && \
-	          ! -e "$(BIN_DIR)/$${_program} ]]; then \
+	          ! -e "$(BIN_DIR)/$${_program}" ]]; then \
 	      $(_MAKE_LINK) \
 	        "$(PREFIX)/lib/$(_PROJECT_NPM)/nodejs/$${_program}" \
 	        "$(BIN_DIR)/$${_program}"; \
@@ -320,25 +312,6 @@ uninstall-scripts:
 	done; \
 	rm  \
 	  "$(LIB_DIR") \
-	  "$(NODE_DIR)" \
-	
-	rm \
-	  "evm-contract-call" \
-	  "evm-contract-deployment-abi" \
-	  "evm-contract-deployment-address" \
-	  "evm-contract-deployment-bytecode" \
-	  "evm-contract-deployment-compiler-output" \
-	  "evm-contract-deployment-networks" \
-	  "evm-contract-deployment-versions" \
-	  "evm-contract-deployments-dir" \
-	  "lib" \
-	  "$(_PROJECT_NPM)" \
-	  "eslint.config.mjs" \
-	  "fs-worker.webpack.config.cjs" \
-	  "package.json" \
-	  "webpack.config.cjs"
-
-
-
+	  "$(NODE_DIR)"
 
 .PHONY: check build-man build-npm build-scripts install install-doc install-man install-npm install-scripts shellcheck
