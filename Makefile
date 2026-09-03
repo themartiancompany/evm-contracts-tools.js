@@ -37,6 +37,12 @@ MAN_DIR?=$(DESTDIR)$(PREFIX)/share/man
 NODE_DIR=$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)
 BUILD_NPM_DIR=build
 
+_MAKE_LINK=\
+  ln \
+    -sv
+_MAKE_EXE=\
+  chmod \
+    755
 _INSTALL_FILE=\
   install \
     -vDm644
