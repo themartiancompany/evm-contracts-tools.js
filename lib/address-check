@@ -291,10 +291,6 @@ if ( await _cmdline_check(
   _address_check_cmdline(
     app_opts);
 }
-else {
-  _echo(
-    "chromi");
-}
 
 export {
   _address_check
