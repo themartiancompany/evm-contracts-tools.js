@@ -2,26 +2,29 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/**    ----------------------------------------------------------------------
+/**    ---------------------------------------------------------------
+ *     deployer-get
+ *     ---------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
  *         2024, 2025, 2026
  * 
  *     All rights reserved
- *     ----------------------------------------------------------------------
+ *     ---------------------------------------------------------------
  * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
  * 
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
  * 
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public
+ *     License along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
  */
 
 /* Crash Javascript global variables */
@@ -38,13 +41,23 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
+/* global
+     _argv */
+const
+  _argv =
+    _libcrash._argv;
 /* global
      _cmdline_check */
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
 /* global
      _error_display */
 const
@@ -56,6 +69,11 @@ const
   _exit =
     _libcrash._exit;
 /* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -66,6 +84,11 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _printf */
 const
   _printf =
@@ -75,6 +98,11 @@ const
 const
   _require =
     _libcrash._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _ethers_module =
     await _require(
@@ -106,49 +134,71 @@ const
 
 function
   _global_variables() {
-  app_name =
-    "deployer-get";
+  _set(
+    "app",
+    "name",
+    "deployer-get");
   /* global
        wallet_seed:
          writable */
-  wallet_seed =
-    "";
+  _set(
+    "wallet",
+    "seed",
+    "");
   /* global
        retries_max:
          writable */
-  retries_max =
-    "";
+  _set(
+    "retries",
+    "max",
+    "");
   /* global
        api_key_path:
          writable */
-  api_key_path =
-    "";
+  _set(
+    "api_key",
+    "path",
+    "");
   /* global
        chain_id:
          writable */
-  chain_id =
-    "";
+  _set(
+    "chain",
+    "id",
+    "");
   /* global
        chain_name:
          writable */
-  chain_name =
-    "";
+  _set(
+    "chain",
+    "name",
+    "");
   /* global
        target_network:
          writable */
-  target_network =
-    "";
+  _set(
+    "target",
+    "network",
+    "");
   /* global
        contract_address:
          writable */
-  contract_address =
-    "";
+  _set(
+    "contract",
+    "address",
+    "");
   /* global
        transaction_deployment:
          writable */
-  transaction_deployment =
-    "";
-  quiet =
+  _set(
+    "transaction",
+    "deployment",
+    "");
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "";
 }
 
@@ -380,60 +430,84 @@ function
 
 function
   _overrides_set() {
-  if ( retries_max == "" ) {
-    retries_max =
-      10;
-  }
+  _override_set(
+    "retries",
+    "max",
+    10);
 }
 
 function
   _cmdline_parse() {
-  quiet =
+  let
+    _msg;
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "y";
-  process.argv.forEach(
+  _argv.forEach(
     function (
       _value,
       _index,
       _array) {
       if ( _index == 2 ) {
-        quiet =
+        _global[
+          "quiet"] =
           _value;
       }
       if ( _index == 3 ) {
-        wallet_seed =
-          _value;
+        _set(
+          "wallet",
+          "seed",
+          _value);
       }
       if ( _index == 4 ) {
-        retries_max =
-          _value;
+        _set(
+          "retries",
+          "max",
+          _value);
       }
       if ( _index == 5 ) {
-        api_key_path =
-          _value;
+        _set(
+          "api_key",
+          "path",
+          _value);
       }
       if ( _index == 6 ) {
-        chain_id =
-          _value;
+        _set(
+          "chain",
+          "id",
+          _value);
       }
       if ( _index == 7 ) {
-        chain_name =
-          _value;
+        _set(
+          "chain",
+          "name",
+          _value);
       }
       if ( _index == 8 ) {
-        target_network =
-          _value;
+        _set(
+          "target",
+          "network",
+          _value);
       }
       if ( _index == 9 ) {
-        contract_address =
-          _value;
+        _set(
+          "contract",
+          "address",
+          _value);
       }
       if ( _index == 10 ) {
-        transaction_deployment =
-          _value;
+        _set(
+          "transaction",
+          "deployment",
+          _value);
       }
       if ( _value == "-h" ||
            _value == "--help" ) {
-        quiet =
+        _global[
+          "quiet"] =
           "n";
         _usage(
           0);
@@ -441,19 +515,25 @@ function
     }
   );
   if ( contract_address == "" ) {
+    _msg =
+      "No contract address specified.";
     _msg_error(
-      "No contract address specified.",
+      _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _usage(
       1);
   }
   if ( transaction_deployment == "" ) {
-    _msg_error(
+    _msg =
       "No deployment transaction specified.",
+    _msg_error(
+      _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _usage(
       1);
@@ -489,7 +569,7 @@ async function
   }
 }
 
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "deployer-get") ) {
   _global_variables();
   _cmdline_parse();
@@ -509,7 +589,11 @@ if ( _cmdline_check(
     app_opts);
 }
 
-module.exports = {
-  _deployer_get:
-    _deployer_get
+export {
+  _deployer_get
 };
+
+// module.exports = {
+//   _deployer_get:
+//     _deployer_get
+// };
