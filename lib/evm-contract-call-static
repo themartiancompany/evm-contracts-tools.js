@@ -2,26 +2,29 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/**    ----------------------------------------------------------------------
+/**    ---------------------------------------------------------------
+ *     evmt-contract-call-static
+ *     ---------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
  *         2024, 2025, 2026
  * 
  *     All rights reserved
- *     ----------------------------------------------------------------------
+ *     ---------------------------------------------------------------
  * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
  * 
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
  * 
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public
+ *     License along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
  */
 
 /* Crash Javascript global variables */
@@ -38,13 +41,28 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
+/* global
+     _argv */
+const
+  _argv =
+    _libcrash._argv;
+/* global
+     _basename */
+const
+  _basename =
+    _libcrash._basename;
 /* global
      _cmdline_check */
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
 /* global
      _error_display */
 const
@@ -55,6 +73,16 @@ const
 const
   _exit =
     _libcrash._exit;
+/* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _msg_info */
 const
@@ -76,13 +104,18 @@ const
   _printf =
     _libcrash._printf;
 /* global
+     _set */
+const
+  _set =
+    _libcrash._set;
+/* global
      _sleep */
 const
   _sleep =
     _libcrash._sleep;
 const
   _contract_get_module =
-    require(
+    await import(
       './contract-get');
 /* global
      _contract_get */
@@ -92,66 +125,96 @@ const
 
 function
   _global_variables() {
-  app_name =
-    "evm-contract-call-static";
-  app_opts =
-    [];
+  _set(
+    "app",
+    "name",
+    "evm-contract-call-static");
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        wallet_seed:
          writable */
-  wallet_seed =
-    "";
+  _set(
+    "wallet",
+    "seed",
+    "");
   /* global
        retries_max:
          writable */
-  retries_max =
-    "";
+  _set(
+    "retries",
+    "max",
+    "");
   /* global
        api_key_path:
          writable */
-  api_key_path =
-    "";
+  _set(
+    "api_key",
+    "path",
+    "");
   /* global
        target_network:
          writable */
-  target_network =
-    "";
+  _set(
+    "target",
+    "network",
+    "");
   /* global
        contract_address:
          writable */
-  contract_address =
-    "";
+  _set(
+    "contract",
+    "address",
+    "");
   /* global
        contract_abi_path:
          writable */
-  contract_abi_path =
-    "";
+  _set(
+    "contract_abi",
+    "path",
+    "");
   /* global
        contract_bytecode_path:
          writable */
-  contract_bytecode_path =
-    "";
+  _set(
+    "contract_bytecode",
+    "path",
+    "");
   /* global
        contract_compiler_output_path:
          writable */
-  contract_compiler_output_path =
-    "";
+  _set(
+    "contract_compiler_output",
+    "path",
+    "");
   /* global
        method_object:
          writable */
-  method_object =
-    "";
+  _set(
+    "method",
+    "object",
+    "");
   /* global
        contract_method:
          writable */
-  contract_method =
-    "";
+  _set(
+    "contract",
+    "method",
+    "");
   /* global
        method_args:
          writable */
-  method_args =
-    [];
-  quiet =
+  _set(
+    "method",
+    "args",
+    []);
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "";
 }
 
@@ -312,8 +375,13 @@ function
       method_args.join(
       " ");
   const
+    _program =
+      _basename(
+        _argv[
+          0]);
+  const
     _text = [
-      `  ${app_name} configuration:`,
+      `  ${_program} configuration:`,
       `             Wallet seed: ${wallet_seed}`,
       `             Max retries: ${retries_max}`,
       `            API Key path: ${api_key_path}`,
@@ -337,11 +405,16 @@ function
   let
     _line;
   const
+    _program =
+      _basename(
+        _argv[
+          0]);
+  const
     _text = [
       "Execute a static call to an EVM network's contract method",
       "",
       "Usage:",
-      "  evm-contract-call-static",
+      `  ${_program}`,
       "    <quiet>",
       "    <wallet-seed>",
       "    <retries-max>",
@@ -495,7 +568,7 @@ async function
 }
 
 
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "evm-contract-call-static") ) {
   _global_variables();
   _cmdline_parse();
@@ -518,8 +591,12 @@ if ( _cmdline_check(
     app_opts);
 }
 
-module.exports = {
-  _contract_call_static:
-    _contract_call_static
+export {
+  _contract_call_static
 };
+
+// module.exports = {
+//   _contract_call_static:
+//     _contract_call_static
+// };
 

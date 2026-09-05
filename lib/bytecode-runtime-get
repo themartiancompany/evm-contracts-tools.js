@@ -307,8 +307,13 @@ function
     _line,
     _method_args;
   const
+    _program =
+      _basename(
+        _argv[
+          0]);
+  const
     _text = [
-    "  bytecode-runtime-get configuration:",
+    `  ${_program} configuration:`,
     `        Contract address: ${contract_address}`,
     `       Contract bytecode: ${contract_bytecode_path}`,
     `             Max retries: ${retries_max}`,
@@ -330,11 +335,16 @@ function
   let
     _line,
     _text;
+  const
+    _program =
+      _basename(
+        _argv[
+          0]);
   _text = [
     "Retrieves the runtime bytecode for an address.",
     "",
     "Usage:",
-    "  bytecode-runtime-get",
+    `  ${_program}`,
     "    <quiet>",
     "    <wallet-seed>",
     "    <retries-max>",

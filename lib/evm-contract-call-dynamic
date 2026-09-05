@@ -37,6 +37,11 @@ const
   _argv =
     _libcrash._argv;
 /* global
+     _basename */
+const
+  _basename =
+    _libcrash._basename;
+/* global
      _cmdline_check */
 const
   _cmdline_check =
@@ -1077,11 +1082,16 @@ function
   let
     _line;
   const
+    _program =
+      _basename(
+        _argv[
+          0]);
+  const
     _text = [
       "Execute a dynamic call to an EVM network's contract method.",
       "",
       "Usage:",
-      "  evm-contract-call-dynamic",
+      `  ${_program}`,
       "    <quiet>",
       "    <retries-max>",
       "    <call-timeout>",
@@ -1173,8 +1183,13 @@ function
         _chars_max);
   }
   const
+    _program =
+      _basename(
+        _argv[
+          0]);
+  const
     _text = [
-      "Dynamic call configuration:",
+      `${_program} configuration:`,
       `            Measure unit: ${measure_unit}`,
       `             Max retries: ${retries_max}`,
       `      Network settings:`,
