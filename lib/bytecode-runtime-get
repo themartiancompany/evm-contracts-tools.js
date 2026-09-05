@@ -386,7 +386,7 @@ function
     _global =
       _global_get();
   _global[
-    "quiet"} =
+    "quiet"] =
     "y";
   _argv.forEach(
     function (
@@ -452,7 +452,7 @@ function
       _msg,
       0);
     _global[
-      "quiet"} =
+      "quiet"] =
       "n";
     _overrides_set();
     _usage(
