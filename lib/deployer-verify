@@ -57,6 +57,16 @@ const
   _exit =
     _libcrash._exit;
 /* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -67,13 +77,23 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
-     _msg_error */
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
+     _printf */
 const
   _printf =
     _libcrash._printf;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _deployer_get_module =
-    require(
+    await import(
       './deployer-get');
 /* global
      _deployer_get */
@@ -86,57 +106,81 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "deployer-verify";
+  _set(
+    "app",
+    "name",
+    "deployer-verify");
   /* global
        wallet_seed:
          writable */
-  wallet_seed =
-    "";
+  _set(
+    "wallet",
+    "seed",
+    "");
   /* global
        retries_max:
          writable */
-  retries_max =
-    "";
+  _set(
+    "retries",
+    "max",
+    "");
   /* global
        api_key_path:
          writable */
-  api_key_path =
-    "";
+  _set(
+    "api_key",
+    "path",
+    "");
   /* global
        chain_id:
          writable */
-  chain_id =
-    "";
+  _set(
+    "chain",
+    "id",
+    "");
   /* global
        chain_name:
          writable */
-  chain_name =
-    "";
+  _set(
+    "chain",
+    "name",
+    "");
   /* global
        target_network:
          writable */
-  target_network =
-    "";
+  _set(
+    "target",
+    "network",
+    "");
   /* global
        contract_address:
          writable */
-  contract_address =
-    "";
+  _set(
+    "contract",
+    "address",
+    "");
   /* global
        contract_deployer:
          writable */
-  contract_deployer =
-    "";
+  _set(
+    "contract",
+    "deployer",
+    "");
   /* global
        transaction_deployment:
          writable */
-  transaction_deployment =
-    "";
+  _set(
+    "transaction",
+    "deployment",
+    "");
+  const
+    _global =
+      _global_get();
   /* global
        quiet:
          writable */
-  quiet =
+  _global[
+    "quiet"] =
     "";
 }
 
@@ -220,47 +264,47 @@ function
   _usage(
     _exit_code) {
   let
-    _line,
-    _text;
-  _text = [
-    "Given a deployment transaction hash",
-    "and a contract address, determines",
-    "if an input address is the",
-    "contract deployer.",
-    "",
-    "Usage:",
-    "  deployer-verify",
-    "    <quiet>",
-    "    <wallet-seed>",
-    "    <retries-max>",
-    "    <api-key-path>",
-    "    <chain-id>",
-    "    <chain-name>",
-    "    <target-network>",
-    "    <contract-address>",
-    "    <contract-deployer>",
-    "    <transaction-deployment>",
-    "",
-    "Args:",
-    "  <quiet>                          Can be 'y' or 'n'",
-    "                                   Default: y",
-    "  <wallet-seed>                    Path of the file containing",
-    "                                   the seed phrase.",
-    "  <retries-max>                    Maximum number of retries before",
-    "                                   failing.",
-    "  <api-key-path>                   Path of the API key for the",
-    "                                   contract ABI provider service",
-    "  <target-network>                 Network on which the contract",
-    "                                   resides.",
-    "  <contract-address>               Address of the contract.",
-    "  <contract-deployer>              Address of the supposed deployer.",
-    "  <transaction-deployment>         Contract deployment transaction.",
-    "",
-    "  Options:",
-    "    -h                             This help."
-  ];
+    _line;
+  const
+    _text = [
+      "Given a deployment transaction hash",
+      "and a contract address, determines",
+      "if an input address is the",
+      "contract deployer.",
+      "",
+      "Usage:",
+      "  deployer-verify",
+      "    <quiet>",
+      "    <wallet-seed>",
+      "    <retries-max>",
+      "    <api-key-path>",
+      "    <chain-id>",
+      "    <chain-name>",
+      "    <target-network>",
+      "    <contract-address>",
+      "    <contract-deployer>",
+      "    <transaction-deployment>",
+      "",
+      "Args:",
+      "  <quiet>                          Can be 'y' or 'n'",
+      "                                   Default: y",
+      "  <wallet-seed>                    Path of the file containing",
+      "                                   the seed phrase.",
+      "  <retries-max>                    Maximum number of retries before",
+      "                                   failing.",
+      "  <api-key-path>                   Path of the API key for the",
+      "                                   contract ABI provider service",
+      "  <target-network>                 Network on which the contract",
+      "                                   resides.",
+      "  <contract-address>               Address of the contract.",
+      "  <contract-deployer>              Address of the supposed deployer.",
+      "  <transaction-deployment>         Contract deployment transaction.",
+      "",
+      "  Options:",
+      "    -h                             This help."
+    ];
   for (_line of _text) {
-    _msg_info(
+    _echo(
       _line);
   }
   _exit(
@@ -269,62 +313,84 @@ function
 
 function
   _overrides_set() {
-  if ( retries_max == "" ) {
-    retries_max =
-      10;
-  }
+  _override_set(
+    "retries",
+    "max",
+    10);
 }
 
 function
   _cmdline_parse() {
   let
     _msg;
-  quiet =
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "y";
-  process.argv.forEach(
+  _argv.forEach(
     function (
       _value,
-      _index,
-      _array) {
+      _index) {
       if ( _index == 2 ) {
-        quiet =
+        _global[
+          "quiet"] =
           _value;
       }
       if ( _index == 3 ) {
-        wallet_seed =
-          _value;
+        _set(
+          "wallet",
+          "seed",
+          _value);
       }
       if ( _index == 4 ) {
-        retries_max =
-          _value;
+        _set(
+          "retries",
+          "max",
+          _value);
       }
       if ( _index == 5 ) {
-        api_key_path =
-          _value;
+        _set(
+          "api_key",
+          "path",
+          _value);
       }
       if ( _index == 6 ) {
-        chain_id =
-          _value;
+        _set(
+          "chain",
+          "id",
+          _value);
       }
       if ( _index == 7 ) {
-        chain_name =
-          _value;
+        _set(
+          "chain",
+          "name",
+          _value);
       }
       if ( _index == 8 ) {
-        target_network =
-          _value;
+        _set(
+          "target",
+          "network",
+          _value);
       }
       if ( _index == 9 ) {
-        contract_address =
-          _value;
+        _set(
+          "contract",
+          "address",
+          _value);
       }
       if ( _index == 10 ) {
-        contract_deployer =
-          _value;
+        _set(
+          "contract",
+          "deployer",
+          _value);
       }
       if ( _index == 11 ) {
-        transaction_deployment =
-          _value;
+        _set(
+          "transaction",
+          "deployment",
+          _value);
       }
       if ( _value == "-h" ||
            _value == "--help" ) {
@@ -333,37 +399,55 @@ function
       }
     }
   );
-  if ( contract_address == "" ) {
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  if ( _contract_address == "" ) {
     _msg =
       "No contract address specified.";
     _msg_error(
       _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _overrides_set();
     _usage(
       1);
   }
-  if ( contract_deployer == "" ) {
+  const
+    _contract_deployer =
+      _get(
+        "contract",
+        "deployer");
+  if ( _contract_deployer == "" ) {
     _msg =
       "No contract deployer specified.";
     _msg_error(
       _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _overrides_set();
     _usage(
       1);
   }
-  if ( transaction_deployment == "" ) {
+  const
+    _transaction_deployment =
+      _get(
+        "transaction",
+        "deployment");
+  if ( _transaction_deployment == "" ) {
     _msg =
       "No deployement transaction specified.";
     _msg_error(
       _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _overrides_set();
     _usage(
@@ -401,7 +485,7 @@ async function
   }
 }
 
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "deployer-verify") ) {
   _global_variables();
   _cmdline_parse();
@@ -422,7 +506,11 @@ if ( _cmdline_check(
     app_opts);
 }
 
-module.exports = {
-  _deployer_verify:
-    _deployer_verify
+export {
+  _deployer_verify
 };
+
+// module.exports = {
+//   _deployer_verify:
+//     _deployer_verify
+// };
