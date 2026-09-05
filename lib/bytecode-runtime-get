@@ -2,32 +2,45 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/**    ----------------------------------------------------------------------
+/**    ---------------------------------------------------------------
+ *     bytecode-runtime-get
+ *     ---------------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
  *         2024, 2025, 2026
  * 
  *     All rights reserved
- *     ----------------------------------------------------------------------
+ *     ---------------------------------------------------------------
  * 
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ *     This program is free software: you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation, either version 3 of
+ *     the License, or (at your option) any later version.
  * 
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
  * 
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     You should have received a copy of the GNU General Public
+ *     License along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>.
  */
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
+/* global
+     _argv */
+const
+  _argv =
+    _libcrash._argv;
+/* global
+     _basename */
+const
+  _basename =
+    _libcrash._basename;
 /* global
      _cmdline_check */
 const
@@ -54,6 +67,11 @@ const
   _file_write =
     _libcrash._file_write;
 /* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -64,6 +82,11 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _printf */
 const
   _printf =
@@ -73,6 +96,11 @@ const
 const
   _require =
     _libcrash._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _evm_wallet_module =
     await _require(
@@ -84,7 +112,7 @@ const
     _evm_wallet_module._provider_get;
 const
   _contract_get_module =
-    require(
+    await import(
       './contract-get');
 /* global
      _contract_get */
@@ -97,43 +125,59 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "bytecode-runtime-get";
+  _set(
+    "app",
+    "name",
+    "bytecode-runtime-get");
   /* global
        wallet_seed:
          writable */
-  wallet_seed =
-    "";
+  _set(
+    "wallet",
+    "seed",
+    "");
   /* global
        retries_max:
          writable */
-  retries_max =
-    "";
+  _set(
+    "retries",
+    "max",
+    "");
   /* global
        api_key_path:
          writable */
-  api_key_path =
-    "";
+  _set(
+    "api_key",
+    "path",
+    "");
   /* global
        target_network:
          writable */
-  target_network =
-    "";
+  _set(
+    "target",
+    "network",
+    "");
   /* global
        contract_address:
          writable */
-  contract_address =
-    "";
+  _set(
+    "contract",
+    "address",
+    "");
   /* global
        contract_abi_path:
          writable */
-  contract_abi_path =
-    "";
+  _set(
+    "contract_abi",
+    "path",
+    "");
   /* global
        contract_bytecode_path:
          writable */
-  contract_bytecode_path =
-    "";
+  _set(
+    "contract_bytecode",
+    "path",
+    "");
   // contract_compiler_output_path =
   //   "";
   // contract_method =
@@ -143,7 +187,11 @@ function
   /* global
        quiet:
          writable */
-  quiet =
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "";
 }
 
@@ -324,48 +372,66 @@ function
 
 function
   _overrides_set() {
-  if ( retries_max == "" ) {
-    retries_max =
-      100;
-  }
+  _override_set(
+    "retries",
+    "max",
+    100);
 }
 
 function
   _cmdline_parse() {
-  quiet =
+  let
+   _msg;
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"} =
     "y";
-  process.argv.forEach(
+  _argv.forEach(
     function (
       _value,
-      _index,
-      _array) {
+      _index) {
       if ( _index == 2 ) {
-        quiet =
+        _global[
+          "quiet"] =
           _value;
       }
       if ( _index == 3 ) {
-        wallet_seed =
-          _value;
+        _set(
+          "wallet",
+          "seed",
+          _value);
       }
       if ( _index == 4 ) {
-        retries_max =
-          _value;
+        _set(
+          "retries",
+          "max",
+          _value);
       }
       if ( _index == 5 ) {
-        api_key_path =
-          _value;
+        _set(
+          "api_key",
+          "path",
+          _value);
       }
       if ( _index == 6 ) {
-        target_network =
-          _value;
+        _set(
+          "target",
+          "network",
+          _value);
       }
       if ( _index == 7 ) {
-        contract_address =
-          _value;
+        _set(
+          "contract",
+          "address",
+          _value);
       }
       if ( _index == 8 ) {
-        contract_bytecode_path =
-          _value;
+        _set(
+          "contract_bytecode",
+          "path",
+          _value);
       }
       if ( _value == "-h" ||
            _value == "--help" ) {
@@ -374,33 +440,55 @@ function
       }
     }
   );
-  if ( contract_address == "" ) {
-    const
-      _msg =
-        "It is required to set a contract address.";
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  if ( _contract_address == "" ) {
+    _msg =
+      "It is required to set a contract address.";
     _msg_error(
       _msg,
       0);
-    quiet =
+    _global[
+      "quiet"} =
       "n";
     _overrides_set();
     _usage(
       1);
   }
-  if ( target_network == "" ) {
+  const
+    _target_network =
+      _get(
+        "target",
+        "network");
+  if ( _target_network == "" ) {
+    _msg =
+      "It is required to set a network.";
     _msg_error(
-      "It is required to set a network.",
+      _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _usage(
       1);
   }
-  if ( contract_bytecode_path == "" ) {
+  const
+    _contract_bytecode_path =
+      _get(
+        "contract_bytecode",
+        "path");
+  if ( _contract_bytecode_path == "" ) {
+    _msg =
+      "It is required to set a path " +
+      "in which to save the bytecode.";
     _msg_error(
-      "It is required to set a path in which to save the bytecode.",
+      _msg,
       0);
-    quiet =
+    _global[
+      "quiet"] =
       "n";
     _usage(
       1);
@@ -410,15 +498,15 @@ function
 async function
   _bytecode_runtime_get_cmdline(
     _app_opts) {
-    let
-      _code;
+  let
+    _code;
   try {
     _code = 
       await _bytecode_runtime_get.apply(
         null,
         _app_opts);
     if ( _code != undefined ) {
-      _printf(
+      await _printf(
         typeof(
           _code));
       // _printf(
@@ -434,7 +522,7 @@ async function
   }
 }
 
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "bytecode-runtime-get") ) {
   _global_variables();
   _cmdline_parse();
@@ -452,8 +540,12 @@ if ( _cmdline_check(
     app_opts);
 }
 
-module.exports = {
-  _bytecode_runtime_get:
-    _bytecode_runtime_get
+export {
+  _bytecode_runtime_get
 };
+
+// module.exports = {
+//   _bytecode_runtime_get:
+//     _bytecode_runtime_get
+// };
 
