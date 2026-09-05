@@ -88,6 +88,11 @@ const
 const
   _require =
     _libcrash._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash._set;
 const
   _ethers_module =
     await _require(
