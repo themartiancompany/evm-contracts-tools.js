@@ -59,6 +59,11 @@ const
   _exit =
     _libcrash._exit;
 /* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -111,7 +116,7 @@ const
     _evm_transactions_tools_module._transaction_receipt_get;
 const
   _deployer_get_module =
-    require(
+    await import(
       './deployer-get');
 /* global
      _deployer_get */
@@ -121,57 +126,81 @@ const
 
 function
   _global_variables() {
-  app_name =
-    "bytecode-creation-get";
+  _set(
+    "app",
+    "name",
+    "bytecode-creation-get");
   /* global
        wallet_seed:
          writable */
-  wallet_seed =
-    "";
+  _set(
+    "wallet",
+    "seed",
+    "");
   /* global
        retries_max:
          writable */
-  retries_max =
-    "";
+  _set(
+    "retries",
+    "max",
+    "");
   /* global
        api_key_path:
          writable */
-  api_key_path =
-    "";
+  _set(
+    "api_key",
+    "path",
+    "");
   /* global
        chain_id:
          writable */
-  chain_id =
-    "";
+  _set(
+    "chain",
+    "id",
+    "");
   /* global
        chain_name:
          writable */
-  chain_name =
-    "";
+  _set(
+    "chain",
+    "name",
+    "");
   /* global
        target_network:
          writable */
-  target_network =
-    "";
+  _set(
+    "target",
+    "network",
+    "");
   /* global
        contract_address:
          writable */
-  contract_address =
-    "";
+  _set(
+    "contract",
+    "address",
+    "");
   /* global
        transaction_deployment:
          writable */
-  transaction_deployment =
-    "";
+  _set(
+    "transaction",
+    "deployment",
+    "");
   /* global
        contract_bytecode_path:
          writable */
-  contract_bytecode_path =
-    "";
+  _set(
+    "contract_bytecode",
+    "path",
+    "");
   /* global
        quiet:
          writable */
-  quiet =
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "";
 }
 
@@ -498,7 +527,7 @@ async function
     else {
       _msg =
         "It has not been possible to retrieve " +
-	"the bytecode from the transaction.";
+        "the bytecode from the transaction.";
       throw _msg;
     }
   } catch (
