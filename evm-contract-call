@@ -458,6 +458,9 @@ function
       `      Runtime environment:   ${runtime_environment}`,
       `                Call type:   ${call_type}`,
       `      Call authentication:   ${call_auth}`,
+      `    Application options:`,
+      `          Cache directory:   ${cache_dir}`,
+      `           Data directory:   ${data_dir}`,
       `    Credentials options:`,
       `              Wallet name:   ${wallet_name}`,
       `           Wallet address:   ${api_key}`,
@@ -595,7 +598,15 @@ function
       "       <rpc-selection>               'kirsh', 'random' or 'all'.",
       `                                     Default: '${rpc_selection}'.`,
       "",
+      "  Application options:",
+      "",
+      "     -W --cache-dir                  Cache directory.",
+      `                                     Default: '${cache_dir}'`,
+      "",
+      "     -D --data-dir                   Data directory.",
+      `                                     Default: '${data_dir}'`,
       "     -h --help                       This message.",
+      "",
       "     -v --verbose                    Enable verbose output.",
       ""
     ];
@@ -1157,8 +1168,8 @@ else{
   _url_parse();
   _libevm_url_parse();
 }
-_echo(
-  contract_address);
+// _echo(
+//   contract_address);
 _main();
 
 export {
