@@ -145,8 +145,9 @@ const
       './contract-get');
 /* global
      _contract_get */
-_contract_get =
-  _contract_get_module._contract_get;
+const
+  _contract_get =
+    _contract_get_module._contract_get;
 
 function
   _global_variables() {
