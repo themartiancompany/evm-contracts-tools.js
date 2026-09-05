@@ -513,6 +513,11 @@ function
   }
 }
 
+function
+  _target_app_auto_detect() {
+  true;
+}
+
 // ES6 module exports
 
 export {
@@ -524,6 +529,7 @@ export {
   _contract_abi_get,
   _default_artifact_path_get,
   _evm_contract_call,
+  _target_app_auto_detect,
   _target_networks_auto_detect,
   _target_networks_get
 };
@@ -547,6 +553,8 @@ export {
 //     _default_artifact_path_get,
 //   _evm_contract_call:
 //     _evm_contract_call,
+//   _target_app_auto_detect:
+//     _target_app_auto_detect,
 //   _target_networks_auto_detect:
 //     _target_networks_auto_detect,
 //   _target_networks_get:

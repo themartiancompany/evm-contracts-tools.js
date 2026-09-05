@@ -228,6 +228,20 @@ function
     "date",
     "");
   /* global
+       cache_dir:
+         writable */
+  _set(
+    "cache",
+    "dir",
+    "");
+  /* global
+       data_dir:
+         writable */
+  _set(
+    "data",
+    "dir",
+    "");
+  /* global
        wallet_name:
          writable */
   _set(
@@ -261,6 +275,20 @@ function
   _set(
     "index",
     "retrieve",
+    "");
+  /* global
+       target_app:
+         writable */
+  _set(
+    "target",
+    "app",
+    "");
+  /* global
+       target_contract:
+         writable */
+  _set(
+    "target",
+    "contract",
     "");
   /* global
        contract_address:
@@ -335,6 +363,7 @@ function
 async function 
   _overrides_set(
     _help_display) {
+  _target_app_auto_detect();
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
        _help_display != "" ) {
@@ -443,6 +472,8 @@ function
       `     RPC selection method:   ${rpc_selection}`,
       `                Gas price:   ${price_gas}`,
       `       Contract options:`,
+      `       Target application:   ${target_app}`,
+      `          Target contract:   ${target_contract}`,
       `         Contract address:   ${contract_address}`,
       `             Contract ABI:   ${contract_abi}`,
       `        Contract bytecode:   ${contract_bytecode}`,
@@ -548,6 +579,9 @@ function
       `       <api-key>                     Default: '${api_key}'.`,
       "",
       "  libEVM options:",
+      "",
+      "     -K --app                        Target application.",
+      `                                     Default: '${target_app}'`,
       "",
       "     -a --auth                       Call authentication.",
       `                                     Default: '${call_auth}'`,
@@ -718,6 +752,48 @@ async function
       "retrieve",
       _argv[
         "index-retrieve"]);
+  }
+  if ( "app" in _argv ) {
+    _set(
+      "target",
+      "app",
+      _argv[
+        "app"]);
+  }
+  if ( "K" in _argv ) {
+    _set(
+      "target",
+      "app",
+      _argv[
+        "K"]);
+  }
+  if ( "cache-dir" in _argv ) {
+    _set(
+      "cache",
+      "dir",
+      _argv[
+        "cache-dir"]);
+  }
+  if ( "W" in _argv ) {
+    _set(
+      "cache",
+      "dir",
+      _argv[
+        "W"]);
+  }
+  if ( "data-dir" in _argv ) {
+    _set(
+      "data",
+      "dir",
+      _argv[
+        "data-dir"]);
+  }
+  if ( "D" in _argv ) {
+    _set(
+      "data",
+      "dir",
+      _argv[
+        "D"]);
   }
   if ( "P" in _argv ) {
     _set(
@@ -900,6 +976,18 @@ function
     "retrieve",
     _argv_url_get(
       "index_retrieve")[
+        0]);
+  _set(
+    "data",
+    "dir",
+    _argv_url_get(
+      "data_dir")[
+        0]);
+  _set(
+    "cache",
+    "dir",
+    _argv_url_get(
+      "cache_dir")[
         0]);
   _set(
     "price",
