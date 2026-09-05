@@ -551,7 +551,7 @@ async function
   }
 }
 
-if ( _cmdline_check(
+if ( await _cmdline_check(
        "bytecode-creation-get") ) {
   _global_variables();
   _cmdline_parse();
