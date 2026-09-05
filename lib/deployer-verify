@@ -29,13 +29,28 @@
 
 const
   _libcrash =
-    require(
-      "crash-js");
+    await import(
+      "libcrash-js");
+/* global
+     _argv */
+const
+  _argv =
+    _libcrash._argv;
+/* global
+     _basename */
+const
+  _basename =
+    _libcrash._basename;
 /* global
      _cmdline_check */
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
 /* global
      _exit */
 const

@@ -77,6 +77,11 @@ const
   _global_get =
     _libcrash._global_get;
 /* global
+     _get */
+const
+  _get =
+    _libcrash._get;
+/* global
      _json_read */
 const
   _json_read =
@@ -506,42 +511,42 @@ function
   _usage(
     _exit_code) {
   let
-    _line,
-    _text;
-  _text = [
-    "Usage:",
-    "  contract-get",
-    "    <quiet>",
-    "    <wallet_seed>",
-    "    <wallet_password_path>",
-    "    <contract_address>",
-    "    <contract_abi_path>",
-    "    <contract_bytecode_path>",
-    "    <contract_compiler_output_path>",
-    "    <target_network>",
-    "    (<api_key_path>)",
-    "",
-    "Args:",
-    "  <quiet>                          Can be 'y' or 'n'",
-    "                                   Default: y",
-    "  <wallet_seed>                    Path of the seed phrase.",
-    "  <wallet_password_path>           Wallet password path.",
-    "  <contract_address>               Contract of the address one is",
-    "                                   getting the contract of.",
-    "  <contract_abi_path>              Path of the contract ABI.",
-    "  <contract_bytecode_path>         Path for the contract bytecode.",
-    "  <contract_compiler_output_path>  Path for the contract compiler",
-    "                                   output path (the hardhat artifact).",
-    "  <target_network>                 Network on which the contract",
-    "                                   resides.",
-    "  <api_key_path>                   Path of the API key for the",
-    "                                   contract ABI provider service.",
-    "",
-    "  Options:",
-    "    -h                             This help."
-  ];
+    _line;
+  const
+    _text = [
+      "Usage:",
+      "  contract-get",
+      "    <quiet>",
+      "    <wallet-seed>",
+      "    <wallet-password-path>",
+      "    <contract-address>",
+      "    <contract-abi-path>",
+      "    <contract-bytecode-path>",
+      "    <contract-compiler-output-path>",
+      "    <target-network>",
+      "    (<api-key-path>)",
+      "",
+      "Args:",
+      "  <quiet>                          Can be 'y' or 'n'",
+      "                                   Default: y",
+      "  <wallet-seed>                    Path of the seed phrase.",
+      "  <wallet-password-path>           Wallet password path.",
+      "  <contract-address>               Contract of the address one is",
+      "                                   getting the contract of.",
+      "  <contract-abi-path>              Path of the contract ABI.",
+      "  <contract-bytecode-path>         Path for the contract bytecode.",
+      "  <contract-compiler-output-path>  Path for the contract compiler",
+      "                                   output path (the hardhat artifact).",
+      "  <target-network>                 Network on which the contract",
+      "                                   resides.",
+      "  <api-key-path>                   Path of the API key for the",
+      "                                   contract ABI provider service.",
+      "",
+      "  Options:",
+      "    -h                             This help."
+    ];
   for ( _line of _text ) {
-    _msg_info(
+    _echo(
       _line);
   }
   _exit(
@@ -562,7 +567,7 @@ function
       _index) {
       if ( _index == 2 ) {
         _global[
-          "quiet"} =
+          "quiet"] =
           _value;
       }
       if ( _index == 3 ) {
