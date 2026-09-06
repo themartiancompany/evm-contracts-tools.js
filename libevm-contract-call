@@ -582,11 +582,22 @@ async function
         ]);
     for ( _network in _contract_networks ) {
       _evm_contract_deployment_address_args = [
+        [ _target_network ],       // target networks
+        [ _target_network ],       // target chain ids
+        "n",                       // all networks
+        _target_app,
+        _contract,
+        "",                        // contract version
+        "n",                       // user-level
+        "",                        // configuration format
+        _deployments_dir
       ];
       _contract_address =
         await _evm_contract_deployment_address.apply(
           null,
           _evm_contract_deployment_address_args);
+      if () {
+      }
     }
   }
 }
