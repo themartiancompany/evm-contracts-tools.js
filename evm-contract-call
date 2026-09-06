@@ -196,6 +196,11 @@ const
 const
   _call_auth_auto_detect =
     _libevm_contract_call_module._call_auth_auto_detect;
+/* global
+     _target_app_auto_detect */
+const
+  _target_app_auto_detect =
+    _libevm_contract_call_module._target_app_auto_detect;
 
 function
   _global_variables() {
