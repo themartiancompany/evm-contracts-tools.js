@@ -140,6 +140,15 @@ const
   _address_check =
     _evm_contracts_tools_module._address_check;
 const
+  _evm_contract_deployment_address_module =
+    await import(
+      "./libevm-contracts-deployment-address");
+/* global
+     _evm_contract_deployment_address */
+const
+  _evm_contract_deployment_address =
+    _evm_contract_deployment_address_module._evm_contract_deployment_address;
+const
   _ethereum_data_module =
     await _require(
       "ethereum-data");
@@ -546,6 +555,7 @@ async function
     _target_network) {
   let
     _contract,
+    _contract_address,
     _contract_networks,
     _evm_contract_deployment_address_args,
     _network;
@@ -573,6 +583,10 @@ async function
     for ( _network in _contract_networks ) {
       _evm_contract_deployment_address_args = [
       ];
+      _contract_address =
+        await _evm_contract_deployment_address.apply(
+          null,
+          _evm_contract_deployment_address_args);
     }
   }
 }
