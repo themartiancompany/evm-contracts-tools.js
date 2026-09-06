@@ -514,8 +514,165 @@ function
 }
 
 function
+  _target_app_get(
+    _contract_address) {
+  let
+    _target_app;
+  _target_app =
+    ""
+  const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type != "undefined" &&
+       _contract_address != "" ) {
+    const
+      _address_valid =
+        _address_check(
+          _contract_address);
+    if ( ! _address_valid ) {
+      _target_app =
+        _app_lookup_contract(
+          _contract_address);
+    }
+  }
+  return _target_app;
+}
+
+async function
+  _contract_lookup_address(
+    _target_app,
+    _address,
+    _target_network) {
+  let
+    _contract,
+    _contract_networks,
+    _network;
+  const
+    _lib =
+      _lib_get();
+  const
+    _deployments_dir =
+      _path_join([
+        _lib,
+        _target_app,
+        "deployments"
+      ]);
+  const
+    _contracts =
+      await _ls(
+        _deployments_dir);
+  for ( _contract of _contracts ) {
+    _contract_networks =
+      ls(
+        _path_join([
+          _deployments_dir,
+          _contract
+        ]);
+    for ( _network in _contract_networks ) {
+       
+    }
+  }
+}
+
+async function
+  _app_lookup_contract(
+    _contract_name) {
+  let
+    _app,
+    _contract_dir,
+    _msg;
+  const
+    _lib =
+      await _lib_get();
+  const
+    _target_apps =
+      {};
+  const
+    _apps =
+      await _ls(
+      _lib);
+  for ( _app of _apps ) {
+    _contract_dir =
+      _path_join([
+        _lib,
+        _app,
+        "deployments",
+        _contract_name
+      ]);
+    if ( _dir_exists(
+           _contract_dir) ) {
+      _target_apps[
+        _app] =
+        1;
+    }
+  }
+  const
+    _target_apps_set =
+      Object.keys(
+        _target_apps);
+  const
+    _target_apps_amount =
+      _target_apps_set.length;
+  if ( _target_apps_amount < 1 ) {
+    _msg =
+      "No apps found for " +
+      `contract '${_contract_name}' ` +
+      `in '${_lib}'.`;
+    _msg_error(
+      _msg,
+      0);
+    const
+      _exception = {
+        "msg":
+          _msg
+      };
+    throw _exception;
+  }
+  else if ( 1 < _target_apps_amount ) {
+    _msg =
+      "Found more than one app for " +
+      `contract '${_contract_name}' ` +
+      `in '${_lib}': '${_target_apps_set}'.`;
+    _msg_error(
+      _msg,
+      0);
+    const
+      _exception = {
+        "msg":
+          _msg
+      };
+    throw _exception;
+  }
+  return _target_apps_set[
+    0];
+}
+
+function
   _target_app_auto_detect() {
-  true;
+  let
+    _target_app;
+  _target_app =
+    "";
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type != "undefined" &&
+       _contract_address != "" ) {
+    _target_app =
+      _target_app_get(
+        _contract_address);
+  }
+  _override_set(
+    "target",
+    "app",
+    _target_app);
 }
 
 // ES6 module exports
