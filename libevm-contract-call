@@ -522,7 +522,7 @@ function
   }
 }
 
-function
+async function
   _target_app_get(
     _contract_address) {
   let
@@ -541,7 +541,7 @@ function
           _contract_address);
     if ( ! _address_valid ) {
       _target_app =
-        _app_lookup_contract(
+        await _app_lookup_contract(
           _contract_address);
     }
   }
@@ -761,18 +761,103 @@ function
     _target_app);
 }
 
+async function
+  _contract_address_get(
+    _target_app,
+    _target_contract,
+    _target_network) {
+  await 
+}
+
+async function
+  _contract_address_auto_detect() {
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");
+  const
+    _target_network =
+      _get(
+        "target",
+        "network");
+  const
+    _target_contract =
+      _get(
+        "target",
+        "contract");
+  if ( _contract_address != "" ) {
+    const
+      _address_valid =
+        await _address_check(
+          _contract_address);
+    if ( ! _address_valid ) {
+      if ( _target_app != "" &&
+           _target_network != "" &&
+           _target_contract != "" ) {
+        _msg =
+          "Looking for address " +
+          "corresponding to contract " +
+          `'${_target_contract}' for the ` +
+          `'${_target_app}' ` +
+          "libEVM application on network " +
+          `'${_target_network}'.`;
+        _msg_info(
+          _msg);
+        _evm_contract_deployment_address_args = [
+          [ _target_network ],       // target networks
+          [ _target_network ],       // target chain ids
+          "n",                       // all networks
+          _target_app,
+          _contract,
+          "",                        // contract version
+          "n",                       // user-level
+          "",                        // configuration format
+          _deployments_dir
+        ];
+        _contract_address =
+          await _evm_contract_deployment_address.apply(
+            null,
+            _evm_contract_deployment_address_args);
+      }
+      else {
+        _msg =
+          "One between the " +
+          `application '${_target_app}', ` +
+          `the network '${_target_network}' ` +
+          `or the contract '${_target_contract}' ` +
+          `has not been specified.`;
+        _msg_info(
+          _msg);
+      }
+    }
+  }
+  _set(
+    "contract",
+    "address",
+    _contract_address);
+}
+
 // ES6 module exports
 
 export {
   _address_check,
+  _app_lookup_contract,
   _artifact_local_auto_detect,
   _call_auth_auto_detect,
   _call_auth_get,
   _contract_abi_auto_detect,
   _contract_abi_get,
+  _contract_address_auto_detect,
   _default_artifact_path_get,
   _evm_contract_call,
   _target_app_auto_detect,
+  _target_contract_auto_detect,
   _target_networks_auto_detect,
   _target_networks_get
 };
@@ -782,6 +867,8 @@ export {
 // module.exports = {
 //   _address_check:
 //     _address_check,
+//   _app_lookup_contract:
+//     _app_lookup_contract,
 //   _artifact_local_auto_detect:
 //     _artifact_local_auto_detect,
 //   _call_auth_auto_detect:
