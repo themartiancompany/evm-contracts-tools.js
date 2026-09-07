@@ -843,17 +843,66 @@ async function
     _contract_address);
 }
 
+function
+  _data_dir_auto_detect() {
+  const
+    _homedir =
+      _homedir_get();
+  const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
+    _data_dir =
+      _path_join([
+        _homedir,
+        ".local",
+        "share",
+        _app_name
+      ]);
+  _override_set(
+    "data",
+    "dir",
+    _data_dir);
+}
+
+function
+  _cache_dir_auto_detect() {
+  const
+    _homedir =
+      _homedir_get();
+  const
+    _app_name =
+      _get(
+        "app",
+        "name");
+  const
+    _cache_dir =
+      _path_join([
+        _homedir,
+        ".cache",
+        _app_name
+      ]);
+  _override_set(
+    "cache",
+    "dir",
+    _cache_dir);
+}
+
 // ES6 module exports
 
 export {
   _address_check,
   _app_lookup_contract,
   _artifact_local_auto_detect,
+  _cache_dir_auto_detect,
   _call_auth_auto_detect,
   _call_auth_get,
   _contract_abi_auto_detect,
   _contract_abi_get,
   _contract_address_auto_detect,
+  _data_dir_auto_detect,
   _default_artifact_path_get,
   _evm_contract_call,
   _target_app_auto_detect,
@@ -871,6 +920,8 @@ export {
 //     _app_lookup_contract,
 //   _artifact_local_auto_detect:
 //     _artifact_local_auto_detect,
+//   _cache_dir_auto_detect:
+//     _cache_dir_auto_detect,
 //   _call_auth_auto_detect:
 //     _call_auth_auto_detect,
 //   _call_auth_get:
@@ -879,6 +930,8 @@ export {
 //     _contract_abi_auto_detect,
 //   _contract_abi_get:
 //     _contract_abi_get,
+//   _data_dir_auto_detect:
+//     _data_dir_auto_detect,
 //   _default_artifact_path_get:
 //     _default_artifact_path_get,
 //   _evm_contract_call:

@@ -109,6 +109,11 @@ const
   _global_get =
     _libcrash._global_get;
 /* global
+     _homedir_get */
+const
+  _homedir_get =
+    _libcrash._homedir_get;
+/* global
      _msg_info */
 const
   _msg_info =
@@ -201,6 +206,11 @@ const
 const
   _target_app_auto_detect =
     _libevm_contract_call_module._target_app_auto_detect;
+/* global
+     _contract_address_auto_detect */
+const
+  _contract_address_auto_detect =
+    _libevm_contract_call_module._contract_address_auto_detect;
 
 function
   _global_variables() {
@@ -368,6 +378,22 @@ function
 async function 
   _overrides_set(
     _help_display) {
+  const
+    _homedir =
+      _homedir_get();
+  _override_set(
+    "call",
+    "date",
+    _get_date_human());
+  _override_set(
+    "data",
+    "dir",
+    _path_join([
+      _homedir,
+      ".local",
+      "share",
+      _app_name
+    ]));
   _target_app_auto_detect();
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
@@ -387,10 +413,6 @@ async function
         1);
     }
   }
-  _override_set(
-    "call",
-    "date",
-    _get_date_human());
   _override_set(
     "wallet",
     "name",
