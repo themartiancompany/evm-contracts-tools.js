@@ -556,6 +556,7 @@ async function
   let
     _contract,
     _contract_address,
+    _contract_dir,
     _contract_networks,
     _evm_contract_deployment_address_args,
     _exception,
@@ -579,12 +580,14 @@ async function
       await _ls(
         _deployments_dir);
   for ( _contract of _contracts ) {
+    _contract_dir =
+      _path_join([
+        _deployments_dir,
+        _contract
+      ]);
     _contract_networks =
       await ls(
-        _path_join([
-          _deployments_dir,
-          _contract
-        ]);
+        _contract_dir);
     for ( _network in _contract_networks ) {
       _evm_contract_deployment_address_args = [
         [ _target_network ],       // target networks
