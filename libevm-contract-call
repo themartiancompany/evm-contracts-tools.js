@@ -142,7 +142,7 @@ const
 const
   _evm_contract_deployment_address_module =
     await import(
-      "./libevm-contracts-deployment-address");
+      "./libevm-contract-deployment-address");
 /* global
      _evm_contract_deployment_address */
 const
@@ -901,7 +901,6 @@ export {
   _default_artifact_path_get,
   _evm_contract_call,
   _target_app_auto_detect,
-  _target_contract_auto_detect,
   _target_networks_auto_detect,
   _target_networks_get
 };
@@ -925,6 +924,8 @@ export {
 //     _contract_abi_auto_detect,
 //   _contract_abi_get:
 //     _contract_abi_get,
+//   _contract_address_auto_detect:
+//     _contract_address_auto_detect,
 //   _data_dir_auto_detect:
 //     _data_dir_auto_detect,
 //   _default_artifact_path_get:
