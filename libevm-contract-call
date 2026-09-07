@@ -558,10 +558,15 @@ async function
     _contract_address,
     _contract_networks,
     _evm_contract_deployment_address_args,
+    _exception,
+    _msg,
     _network;
   const
+    _target_contracts =
+      {};
+  const
     _lib =
-      _lib_get();
+      await _lib_get();
   const
     _deployments_dir =
       _path_join([
@@ -575,7 +580,7 @@ async function
         _deployments_dir);
   for ( _contract of _contracts ) {
     _contract_networks =
-      ls(
+      await ls(
         _path_join([
           _deployments_dir,
           _contract
@@ -596,9 +601,63 @@ async function
         await _evm_contract_deployment_address.apply(
           null,
           _evm_contract_deployment_address_args);
-      if () {
+      if ( _address == _contract_address ) {
+        if ( _target_network == "" ) {
+          _target_contracts[
+            _contract] =
+            1;
+        }
+        else {
+          if ( _network == _target_network ) {
+            _target_contracts[
+              _contract] =
+              1;
+          }
+	}
       }
     }
+  }
+  const
+    _target_contracts_set =
+      Object.keys(
+        _target_contracts);
+  const
+    _target_contracts_amount =
+      _target_contracts_set.length; 
+  if ( _target_contracts_amount < 1 ) {
+    _msg =
+      "No contract found for " +
+      `address '${_address}' ` +
+      `on network '${_network}' in '${_lib}'.`;
+    _msg_error(
+      _msg,
+      0);
+    _exception = {
+      "msg":
+        _msg
+    };
+    throw _exception;
+  }
+  if ( 1 < _target_contracts_amount ) {
+    _msg =
+      "Found more than one contract for " +
+      `contract '${_contract_name}' ` +
+      `in '${_lib}':\n`;
+    for ( _contract of _target_contracts_set ) {
+      _msg =
+        _msg + `${_contract}\n`;
+    }
+    _msg_error(
+      _msg,
+      0);
+    _exception = {
+      "msg":
+        _msg
+    };
+    throw _exception;
+  }
+  else {
+    return _target_contracts_set;
   }
 }
 
