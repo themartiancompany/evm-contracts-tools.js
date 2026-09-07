@@ -765,14 +765,6 @@ function
 }
 
 async function
-  _contract_address_get(
-    _target_app,
-    _target_contract,
-    _target_network) {
-  await 
-}
-
-async function
   _contract_address_auto_detect() {
   const
     _contract_address =
