@@ -385,6 +385,7 @@ async function
     "date",
     _get_date_human());
   _target_app_auto_detect();
+  _contract_address_auto_detect();
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
        _help_display != "" ) {
