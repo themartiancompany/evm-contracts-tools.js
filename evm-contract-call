@@ -378,22 +378,12 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  const
-    _homedir =
-      _homedir_get();
+  _cache_dir_auto_detect();
+  _data_dir_auto_detect();
   _override_set(
     "call",
     "date",
     _get_date_human());
-  _override_set(
-    "data",
-    "dir",
-    _path_join([
-      _homedir,
-      ".local",
-      "share",
-      _app_name
-    ]));
   _target_app_auto_detect();
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
