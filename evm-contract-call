@@ -182,6 +182,16 @@ const
   _address_check =
     _libevm_contract_call_module._address_check;
 /* global
+     _cache_dir_auto_detect */
+const
+  _cache_dir_auto_detect =
+    _libevm_contract_call_module._cache_dir_auto_detect;
+/* global
+     _data_dir_auto_detect */
+const
+  _data_dir_auto_detect =
+    _libevm_contract_call_module._data_dir_auto_detect;
+/* global
      _default_artifact_path_get */
 const
   _default_artifact_path_get =

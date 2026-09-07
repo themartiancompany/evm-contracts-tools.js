@@ -66,6 +66,11 @@ const
     await import(
       "libcrash-js");
 /* global
+     _dir_exists */
+const
+  _dir_exists =
+    _libcrash_module._dir_exists;
+/* global
      _dirname */
 const
   _dirname =
@@ -95,6 +100,11 @@ const
 const
   _lib_get =
     _libcrash_module._lib_get;
+/* global
+     _ls */
+const
+  _ls =
+    _libcrash_module._ls;
 /* global
      _msg_info */
 const
@@ -528,7 +538,7 @@ async function
   let
     _target_app;
   _target_app =
-    ""
+    "";
   const
     _contract_address_type =
       typeof(
@@ -586,7 +596,7 @@ async function
         _contract
       ]);
     _contract_networks =
-      await ls(
+      await _ls(
         _contract_dir);
     for ( _network in _contract_networks ) {
       _evm_contract_deployment_address_args = [
@@ -644,7 +654,7 @@ async function
   if ( 1 < _target_contracts_amount ) {
     _msg =
       "Found more than one contract for " +
-      `contract '${_contract_name}' ` +
+      `contract '${_contract}' ` +
       `in '${_lib}':\n`;
     for ( _contract of _target_contracts_set ) {
       _msg =
@@ -766,11 +776,14 @@ function
 
 async function
   _contract_address_auto_detect() {
-  const
-    _contract_address =
-      _get(
-        "contract",
-        "address");
+  let
+    _contract_address,
+    _evm_contract_deployment_address_args,
+    _msg;
+  _contract_address =
+    _get(
+      "contract",
+      "address");
   const
     _target_app =
       _get(
@@ -786,6 +799,11 @@ async function
       _get(
         "target",
         "contract");
+  const
+    _deployments_dir =
+      _get(
+        "deployments",
+        "dir");
   if ( _contract_address != "" ) {
     const
       _address_valid =
@@ -809,7 +827,7 @@ async function
           [ _target_network ],       // target chain ids
           "n",                       // all networks
           _target_app,
-          _contract,
+          _target_contract,
           "",                        // contract version
           "n",                       // user-level
           "",                        // configuration format

@@ -156,7 +156,7 @@ const
     _evm_chains_info_module._evm_chains_info;
 const
   _libevm_contract_deployments_dir_module =
-    await _require(
+    await import(
       "./libevm-contract-deployments-dir");
 /* global
      _evm_contract_deployments_dir */
@@ -165,7 +165,7 @@ const
     _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _libevm_contract_deployment_networks_module =
-    await _require(
+    await import(
       "./libevm-contract-deployment-networks");
 /* global
      _evm_contract_deployment_networks */
@@ -174,7 +174,7 @@ const
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 const
   _libevm_contract_deployment_versions_module =
-    await _require(
+    await import(
       "./libevm-contract-deployment-versions");
 /* global
      _evm_contract_deployment_versions */
