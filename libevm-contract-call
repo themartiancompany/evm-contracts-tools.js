@@ -605,7 +605,7 @@ async function
         _contract_dir);
     for ( _network in _contract_networks ) {
       _evm_contract_deployment_address_args = [
-        [  _target_network ]               ,       // target networks
+        [ _target_network ],       // target networks
         [ _target_network ],       // target chain ids
         "n",                       // all networks
         _target_app,

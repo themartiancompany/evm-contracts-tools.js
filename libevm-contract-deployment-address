@@ -338,13 +338,18 @@ async function
   let
     _args,
     _contract_address,
+    _msg,
     _network,
     _network_check_args,
     _target_network,
     _target_network_id,
     _user_deployments_dir,
-    _system_deployments_dir,
-    _msg;
+    _system_deployments_dir;
+  _msg =
+    `Getting '${_target_contract}' contract address for ` +
+    `libEVM app '${_target_app}' ` +
+    `for networks with RPCs '${_target_networks}' ` +
+    `and chain ID '${_network_ids}'.`;
   const
     _contracts_addresses =
       [];
