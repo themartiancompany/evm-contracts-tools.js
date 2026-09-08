@@ -154,24 +154,10 @@ const
 const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
-const
-  _libevm_contract_deployments_dir_module =
-    await import(
-      "./libevm-contract-deployments-dir");
-/* global
-     _evm_contract_deployments_dir */
-const
-  _evm_contract_deployments_dir =
-    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
-const
-  _libevm_contract_deployment_networks_module =
-    await import(
-      "./libevm-contract-deployment-networks");
+  /* global
+       _evm_contract_deployments_dir */
 /* global
      _evm_contract_deployment_networks */
-const
-  _evm_contract_deployment_networks =
-    _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 const
   _libevm_contract_deployment_versions_module =
     await import(
@@ -190,8 +176,26 @@ async function
     _target_network_id) {
   let
     _error_flag,
+    _evm_contract_deployment_networks,
     _msg,
     _network_id;
+  _evm_contract_deployment_networks =
+    _get(
+      "_evm_contract",
+      "deployment_networks");
+  const
+    _evm_contract_deployment_networks_type =
+      typeof(
+        _evm_contract_deployment_networks_dir);
+  if ( _evm_contract_deployment_networks_type == "undefined" ||
+       _evm_contract_deployment_networks == "" ) {
+    const
+      _libevm_contract_deployment_networks_module =
+        await import(
+          "./libevm-contract-deployment-networks");
+      _evm_contract_deployment_networks =
+        _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
+  }
   _error_flag =
     false;
   _deployments_path =
@@ -297,9 +301,28 @@ async function
   _user_deployments_init(
     _app,
     _deployments_dir) {
+  let
+    _evm_contract_deployments_dir;
   const
     _user_defined =
       "y";
+  _evm_contract_deployments_dir =
+    _get(
+      "_evm_contract",
+      "deployments_dir");
+  const
+    _evm_contract_deployments_dir_type =
+      typeof(
+        _evm_contract_deployments_dir);
+  if ( _evm_contract_deployments_dir_type == "undefined" ||
+       _evm_contract_deployments_dir == "" ) {
+    const
+      _libevm_contract_deployments_dir_module =
+        await import(
+          "./libevm-contract-deployments-dir");
+      _evm_contract_deployments_dir =
+        _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+  }
   const
     _evm_contract_deployments_dir_args = [
       _app,
@@ -347,7 +370,8 @@ async function
 async function
   _deployments_dir_auto_detect() {
   let
-    _deployments;
+    _deployments,
+    _evm_contract_deployments_dir;
   _deployments =
     "";
   const
@@ -362,6 +386,23 @@ async function
     const
       _user_defined =
         user_defined;
+    _evm_contract_deployments_dir =
+      _get(
+        "_evm_contract",
+        "deployments_dir");
+    const
+      _evm_contract_deployments_dir_type =
+        typeof(
+          _evm_contract_deployments_dir);
+    if ( _evm_contract_deployments_dir_type == "undefined" ||
+         _evm_contract_deployments_dir == "" ) {
+      const
+        _libevm_contract_deployments_dir_module =
+          await import(
+            "./libevm-contract-deployments-dir");
+        _evm_contract_deployments_dir =
+          _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+    }
     const
       _evm_contract_deployments_dir_args = [
         _app,
@@ -384,6 +425,7 @@ async function
     _config,
     _config_ext,
     _deployments,
+    _evm_contracts_deployment_versions,
     _found,
     _net,
     _network,
@@ -486,6 +528,27 @@ async function
           1);
       }
       const
+        _libevm_contract_deployment_versions_module =
+          await import(
+            "./libevm-contract-deployment-versions");
+      _evm_contract_deployment_versions =
+        _get(
+          "_evm_contract",
+          "deployment_versions");
+      const
+        _evm_contract_deployment_versions_type =
+          typeof(
+            _evm_contract_deployment_versions_dir);
+      if ( _evm_contract_deployment_versions_type == "undefined" ||
+           _evm_contract_deployment_versions == "" ) {
+        const
+          _libevm_contract_deployment_versions_module =
+            await import(
+              "./libevm-contract-deployment-versions");
+          _evm_contract_deployment_versions =
+            _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+      }
+      const
         _evm_contract_deployment_versions_args = [
           _config,
           "y",                  // display highest
@@ -548,6 +611,7 @@ async function
   const
     _user_defined =
       user_defined;
+
   const
     _evm_contract_deployments_dir_args = [
       _dir_current_name,
