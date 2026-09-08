@@ -388,6 +388,11 @@ function
 async function 
   _overrides_set(
     _help_display) {
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");
   await _cache_dir_auto_detect();
   await _data_dir_auto_detect();
   _override_set(

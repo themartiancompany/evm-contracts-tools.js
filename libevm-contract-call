@@ -711,8 +711,8 @@ async function
         _contract_dir);
     // _echo(_is_dir);
     if ( _is_dir ) {
-      _echo(
-        _contract_dir);
+      // _echo(
+      //   _contract_dir);
       _target_apps[
         _app] =
         1;
@@ -816,6 +816,11 @@ async function
       _get(
         "deployments",
         "dir");
+  _msg =
+    "Auto-detecting address " +
+    `for contract '${_contract_address}' ` +
+    `on network '${_target_network}' ` +
+    `for application '${_target_app}'.`;
   if ( _contract_address != "" ) {
     const
       _address_valid =
