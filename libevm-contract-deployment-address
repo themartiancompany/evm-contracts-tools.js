@@ -345,11 +345,6 @@ async function
     _target_network_id,
     _user_deployments_dir,
     _system_deployments_dir;
-  _msg =
-    `Getting '${_target_contract}' contract address for ` +
-    `libEVM app '${_target_app}' ` +
-    `for networks with RPCs '${_target_networks}' ` +
-    `and chain ID '${_network_ids}'.`;
   const
     _contracts_addresses =
       [];
@@ -424,6 +419,15 @@ async function
         `${_deployments_dir}/${_target_contract}`,
         _networks_all);
   }
+  _msg =
+    `Getting '${_target_contract}' contract address for ` +
+    `libEVM app '${_target_app}' ` +
+    `for networks with RPCs '${_target_networks}' ` +
+    `and chain ID '${_network_ids}', (user-defined contracts: ` +
+    `'${_user_defined}'), by looking for configuration files ` +
+    `of type '${_configuration_format}'.`;
+  _msg_info(
+    _msg);
   for ( _network of _target_networks ) {
     // _msg =
     //   "Info arguments for " +
