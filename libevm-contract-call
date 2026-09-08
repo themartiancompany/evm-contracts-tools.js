@@ -855,7 +855,7 @@ async function
         _msg_info(
           _msg);
         _evm_contract_deployment_address_args = [
-          _target_network_set       // target networks
+          _target_network_set        // target networks
           _target_network_set,       // target chain ids
           "n",                       // all networks
           _target_app,

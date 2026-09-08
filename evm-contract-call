@@ -389,10 +389,27 @@ async function
   _overrides_set(
     _help_display) {
   const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  if ( _quiet == "" ) {
+    _global[
+      "quiet"] =
+    "y"; 
+  }
+  const
     _target_app =
       _get(
         "target",
         "app");
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
   await _cache_dir_auto_detect();
   await _data_dir_auto_detect();
   _override_set(
@@ -431,7 +448,8 @@ async function
   await _wallet_overrides_set(
     "evm-wallet",
     wallet_name,
-    call_auth);
+    call_auth,
+    _target_networks);
   await _target_app_auto_detect();
   // await _target_networks_auto_detect();
   await _contract_address_auto_detect();
