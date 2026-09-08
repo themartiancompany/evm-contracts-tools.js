@@ -685,7 +685,9 @@ async function
   let
     _app,
     _contract_dir,
+    _is_dir,
     _msg;
+  console.log(_contract_name);
   const
     _lib =
       await _lib_get();
@@ -696,8 +698,6 @@ async function
     _apps =
       await _ls(
       _lib);
-  _echo(
-    _apps);
   for ( _app of _apps ) {
     _contract_dir =
       _path_join([
@@ -706,8 +706,15 @@ async function
         "deployments",
         _contract_name
       ]);
-    if ( await _dir_exists(
-           _contract_dir) ) {
+    // _echo(_contract_dir);
+    _is_dir =
+      await _dir_exists(
+        _contract_dir);
+    // _echo(_is_dir);
+    if ( _is_dir ) {
+      _echo("wow");
+      _echo(
+        _contract_dir);
       _target_apps[
         _app] =
         1;
@@ -765,6 +772,8 @@ async function
       _get(
         "contract",
         "address");
+  console.log(
+    _contract_address);
   const
     _contract_address_type =
       typeof(
