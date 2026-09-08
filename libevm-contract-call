@@ -687,7 +687,6 @@ async function
     _contract_dir,
     _is_dir,
     _msg;
-  console.log(_contract_name);
   const
     _lib =
       await _lib_get();
@@ -712,7 +711,6 @@ async function
         _contract_dir);
     // _echo(_is_dir);
     if ( _is_dir ) {
-      _echo("wow");
       _echo(
         _contract_dir);
       _target_apps[
