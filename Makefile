@@ -311,7 +311,8 @@ uninstall-scripts:
 	    "$(BIN_DIR)/$${_program}"; \
 	done; \
 	rm  \
-	  "$(LIB_DIR") \
+	  -rvf \
+	  "$(LIB_DIR)" \
 	  "$(NODE_DIR)"
 
 .PHONY: check build-man build-npm build-scripts install install-doc install-man install-npm install-scripts shellcheck
