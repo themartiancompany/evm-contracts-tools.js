@@ -76,6 +76,11 @@ const
   _dirname =
     _libcrash_module._dirname;
 /* global
+     _echo */
+const
+  _echo =
+    _libcrash_module._echo;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -691,6 +696,8 @@ async function
     _apps =
       await _ls(
       _lib);
+  _echo(
+    _apps);
   for ( _app of _apps ) {
     _contract_dir =
       _path_join([
@@ -699,7 +706,7 @@ async function
         "deployments",
         _contract_name
       ]);
-    if ( _dir_exists(
+    if ( await _dir_exists(
            _contract_dir) ) {
       _target_apps[
         _app] =
@@ -747,7 +754,7 @@ async function
     0];
 }
 
-function
+async function
   _target_app_auto_detect() {
   let
     _target_app;
@@ -765,7 +772,7 @@ function
   if ( _contract_address_type != "undefined" &&
        _contract_address != "" ) {
     _target_app =
-      _target_app_get(
+      await _target_app_get(
         _contract_address);
   }
   _override_set(

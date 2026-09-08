@@ -388,14 +388,14 @@ function
 async function 
   _overrides_set(
     _help_display) {
-  _cache_dir_auto_detect();
-  _data_dir_auto_detect();
+  await _cache_dir_auto_detect();
+  await _data_dir_auto_detect();
   _override_set(
     "call",
     "date",
     _get_date_human());
-  _target_app_auto_detect();
-  _contract_address_auto_detect();
+  await _target_app_auto_detect();
+  await _contract_address_auto_detect();
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
        _help_display != "" ) {
