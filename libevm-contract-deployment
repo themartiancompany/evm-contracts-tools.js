@@ -86,6 +86,11 @@ const
   _dir_exists =
     _libcrash_module._dir_exists;
 /* global
+     _echo */
+const
+  _echo =
+    _libcrash_module._echo;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -158,15 +163,8 @@ const
        _evm_contract_deployments_dir */
 /* global
      _evm_contract_deployment_networks */
-const
-  _libevm_contract_deployment_versions_module =
-    await import(
-      "./libevm-contract-deployment-versions");
 /* global
      _evm_contract_deployment_versions */
-const
-  _evm_contract_deployment_versions =
-    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
 
 async function
   _network_check(
@@ -189,6 +187,7 @@ async function
         _evm_contract_deployment_networks_dir);
   if ( _evm_contract_deployment_networks_type == "undefined" ||
        _evm_contract_deployment_networks == "" ) {
+    _echo("ciao");
     const
       _libevm_contract_deployment_networks_module =
         await import(
