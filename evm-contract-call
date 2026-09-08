@@ -399,34 +399,10 @@ async function
     "call",
     "date",
     _get_date_human());
-  await _target_app_auto_detect();
-  await _contract_address_auto_detect();
-  if ( ! _help_display &&
-       typeof(_help_display) != "undefined" &&
-       _help_display != "" ) {
-    const
-      _address_valid =
-        _address_check(
-          contract_address);
-    if ( ! _address_valid ) {
-      const
-        _msg =
-          "Contract address " +
-          `'${contract_address}' is ` +
-          `invalid.`;
-      _msg_error(
-        _msg,
-        1);
-    }
-  }
   _override_set(
     "wallet",
     "name",
     "default");
-  _override_set(
-    "index",
-    "retrieve",
-    "n");
   _override_set(
     "retries",
     "max",
@@ -452,6 +428,35 @@ async function
     "msg",
     "value",
     "0");
+  await _wallet_overrides_set(
+    "evm-wallet",
+    wallet_name,
+    call_auth);
+  await _target_app_auto_detect();
+  await _target_networks_auto_detect();
+  await _contract_address_auto_detect();
+  if ( ! _help_display &&
+       typeof(_help_display) != "undefined" &&
+       _help_display != "" ) {
+    const
+      _address_valid =
+        _address_check(
+          contract_address);
+    if ( ! _address_valid ) {
+      const
+        _msg =
+          "Contract address " +
+          `'${contract_address}' is ` +
+          `invalid.`;
+      _msg_error(
+        _msg,
+        1);
+    }
+  }
+  _override_set(
+    "index",
+    "retrieve",
+    "n");
   // _api_key_auto_detect();
   if ( contract_address != "" ) {
     if ( contract_abi == "" ) {
@@ -469,10 +474,6 @@ async function
       }
     }
   }
-  await _wallet_overrides_set(
-    "evm-wallet",
-    wallet_name,
-    call_auth);
 }
 
 function

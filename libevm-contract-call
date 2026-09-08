@@ -605,7 +605,7 @@ async function
         _contract_dir);
     for ( _network in _contract_networks ) {
       _evm_contract_deployment_address_args = [
-        [ _target_network ],       // target networks
+        [  _target_network ]               ,       // target networks
         [ _target_network ],       // target chain ids
         "n",                       // all networks
         _target_app,
@@ -802,10 +802,10 @@ async function
         "target",
         "app");
   const
-    _target_network =
+    _target_networks =
       _get(
         "target",
-        "network");
+        "networks");
   const
     _target_contract =
       _get(
@@ -819,8 +819,10 @@ async function
   _msg =
     "Auto-detecting address " +
     `for contract '${_contract_address}' ` +
-    `on network '${_target_network}' ` +
+    `on network '${_target_networks}' ` +
     `for application '${_target_app}'.`;
+  _echo(
+    _msg);
   if ( _contract_address != "" ) {
     const
       _address_valid =
