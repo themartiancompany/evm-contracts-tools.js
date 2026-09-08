@@ -187,7 +187,6 @@ async function
         _evm_contract_deployment_networks_dir);
   if ( _evm_contract_deployment_networks_type == "undefined" ||
        _evm_contract_deployment_networks == "" ) {
-    _echo("ciao");
     const
       _libevm_contract_deployment_networks_module =
         await import(
