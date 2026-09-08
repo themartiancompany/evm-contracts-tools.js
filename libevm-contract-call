@@ -772,8 +772,6 @@ async function
       _get(
         "contract",
         "address");
-  console.log(
-    _contract_address);
   const
     _contract_address_type =
       typeof(
