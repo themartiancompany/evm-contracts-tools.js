@@ -433,7 +433,7 @@ async function
     wallet_name,
     call_auth);
   await _target_app_auto_detect();
-  await _target_networks_auto_detect();
+  // await _target_networks_auto_detect();
   await _contract_address_auto_detect();
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&

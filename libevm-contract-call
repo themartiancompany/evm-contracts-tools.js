@@ -792,6 +792,9 @@ async function
     _contract_address,
     _evm_contract_deployment_address_args,
     _msg;
+  const
+    _target_networks_index =
+      {};
   _contract_address =
     _get(
       "contract",
@@ -816,10 +819,20 @@ async function
       _get(
         "deployments",
         "dir");
+  for ( _network in _target_networks ) {
+    const
+      _target_networks_index[
+        _network] =
+          1;
+  }
+  const
+    _target_networks_set =
+      Object.keys(
+        _target_networks_index;
   _msg =
     "Auto-detecting address " +
     `for contract '${_contract_address}' ` +
-    `on network '${_target_networks}' ` +
+    `on network '${_target_networks_set}' ` +
     `for application '${_target_app}'.`;
   _echo(
     _msg);
@@ -830,7 +843,7 @@ async function
           _contract_address);
     if ( ! _address_valid ) {
       if ( _target_app != "" &&
-           _target_network != "" &&
+           0 < _target_networks.length &&
            _target_contract != "" ) {
         _msg =
           "Looking for address " +
@@ -838,12 +851,12 @@ async function
           `'${_target_contract}' for the ` +
           `'${_target_app}' ` +
           "libEVM application on network " +
-          `'${_target_network}'.`;
+          `'${_target_networks}'.`;
         _msg_info(
           _msg);
         _evm_contract_deployment_address_args = [
-          [ _target_network ],       // target networks
-          [ _target_network ],       // target chain ids
+          _target_network_set       // target networks
+          _target_network_set,       // target chain ids
           "n",                       // all networks
           _target_app,
           _target_contract,
