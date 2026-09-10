@@ -158,15 +158,6 @@ const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
 const
-  _libevm_contract_deployments_dir_module =
-    await import(
-      "./libevm-contract-deployments-dir");
-/* global
-     _evm_contract_deployments_dir */
-const
-  _evm_contract_deployments_dir =
-    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
-const
   _libevm_contract_deployment_module =
     await import(
       "./libevm-contract-deployment");
@@ -346,6 +337,13 @@ async function
     _user_deployments_dir,
     _system_deployments_dir;
   const
+    _libevm_contract_deployments_dir_module =
+      await import(
+        "./libevm-contract-deployments-dir");
+  const
+    _evm_contract_deployments_dir =
+      _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+  const
     _contracts_addresses =
       [];
   const
@@ -355,8 +353,12 @@ async function
     _user_defined_type =
       typeof(
         _user_defined);
+  const
+    _deployments_dir_type =
+      typeof(
+        _deployments_dir);
   if ( _user_defined_type === "undefined" ||
-       _user_defined == "" ) {
+       _user_defined === "" ) {
     _msg =
       "User defined not specified, setting " +
       "default (n).";
@@ -365,8 +367,30 @@ async function
     _user_defined =
       "n";
   }
+  if ( _deployments_dir_type === "undefined" ||
+       _deployments_dir === "" ) {
+    try {
+      _deployments_dir =
+        await _evm_contract_deployments_dir(
+          _target_app,
+          _user_defined);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while retrieving system deployments " +
+        "directory location for auto-detection.";
+      _msg_error(
+        _msg,
+        0);
+      _msg_error(
+        _error,
+        0);
+      throw _error;
+    }
+  }
   if ( _user_defined == "n" ) {
-    if ( _target_app == "" ) {
+    if ( _target_app === "" ) {
       _msg =
         "A target application needs to " +
         "be specified with option '-a' " +
@@ -379,10 +403,25 @@ async function
         0);
       throw _msg;
     }
-    _system_deployments_dir =
-      await _evm_contract_deployments_dir(
-        _target_app,
-        _user_defined);
+    try {
+      _system_deployments_dir =
+        await _evm_contract_deployments_dir(
+          _target_app,
+          _user_defined);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while retrieving system deployments " +
+        "directory location.";
+      _msg_error(
+        _msg,
+        0);
+      _msg_error(
+        _error,
+        0);
+      throw _error;
+    }
     if ( _deployments_dir != _system_deployments_dir ) {
       _msg =
         "To set a custom deployments directory path " +
@@ -396,10 +435,25 @@ async function
   }
   else if ( _user_defined == "y" ) {
     if ( _target_app != "" ) {
-      _user_deployments_dir =
-        await _evm_contract_deployments_dir(
-          _target_app,
-          _user_defined);
+      try {
+        _user_deployments_dir =
+          await _evm_contract_deployments_dir(
+            _target_app,
+            _user_defined);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error while retrieving user deployments " +
+          "directory location.";
+        _msg_error(
+          _msg,
+          0);
+        _msg_error(
+          _error,
+          0);
+        throw _error;
+      }
     }
     if ( _deployments_dir != _user_deployments_dir ) {
       _msg =

@@ -164,14 +164,14 @@ const
   _evm_contract_deployment_address =
     _evm_contract_deployment_address_module._evm_contract_deployment_address;
 const
-  _evm_contract_deployments_dir =
+  _evm_contract_deployments_dir_module =
     await import(
       "./libevm-contract-deployments-dir");
 /* global
      _evm_contract_deployments_dir */
 const
   _evm_contract_deployments_dir =
-    _evm_contract_deployment_address_module._evm_contract_deployments_dir;
+    _evm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _ethereum_data_module =
     await _require(
@@ -914,6 +914,9 @@ async function
             "deployments directories.";
           _msg_error(
             _msg,
+            0);
+          _msg_error(
+            _error,
             0);
           throw _error;
 	  }
