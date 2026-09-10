@@ -791,7 +791,8 @@ async function
   let
     _contract_address,
     _evm_contract_deployment_address_args,
-    _msg;
+    _msg,
+    _network;
   const
     _target_networks_index =
       {};
@@ -854,8 +855,8 @@ async function
         _msg_info(
           _msg);
         _evm_contract_deployment_address_args = [
-          _target_network_set        // target networks
-          _target_network_set,       // target chain ids
+          _target_networks_set,      // target networks
+          _target_networks_set,      // target chain ids
           "n",                       // all networks
           _target_app,
           _target_contract,
@@ -873,7 +874,7 @@ async function
         _msg =
           "One between the " +
           `application '${_target_app}', ` +
-          `the network '${_target_network}' ` +
+          `the network '${_target_networks_set}' ` +
           `or the contract '${_target_contract}' ` +
           `has not been specified.`;
         _msg_info(

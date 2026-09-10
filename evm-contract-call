@@ -445,6 +445,7 @@ async function
     "msg",
     "value",
     "0");
+  _echo(_target_networks);
   await _wallet_overrides_set(
     "evm-wallet",
     wallet_name,
@@ -520,7 +521,7 @@ function
       `          Wallet password:   ${wallet_password}`,
       `              Wallet seed:   ${wallet_seed}`,
       `        Network options:`,
-      `           Target network:   ${target_network}`,
+      `          Target networks:   ${target_networks}`,
       `              Max retries:   ${retries_max}`,
       `             Call timeout:   ${call_timeout}`,
       `                  API key:   ${api_key}`,
@@ -674,7 +675,9 @@ async function
   _cmdline_parse() {
   let
     _help_display,
-    _msg;
+    _msg,
+    _network,
+    _target_networks_set;
   const
     _argv_args = {
       "booleans": [
@@ -686,7 +689,9 @@ async function
         "index-retrieve",
         "v",
         "verbose"
-      ]
+      ],
+      "string":
+        true
     };
   const
     _argv =
@@ -982,25 +987,6 @@ async function
       "auth",
       "y");
   }
-  const
-    _target_networks =
-      _get(
-        "target",
-        "networks");
-  if ( "n" in _argv ) {
-    _target_networks.push(
-      _argv[
-        "n"]);
-  }
-  if ( "network" in _argv ) {
-    _target_networks.push(
-      _argv[
-        "network"]);
-  }
-  _set(
-    "target",
-    "networks",
-    _target_networks);
   _libevm_cmdline_parse(
     _argv);
   if ( _argv[
@@ -1220,8 +1206,8 @@ else{
   _url_parse();
   _libevm_url_parse();
 }
-// _echo(
-//   contract_address);
+_echo(
+  target_networks);
 _main();
 
 export {
