@@ -294,6 +294,8 @@ async function
     }
   }
   else if ( _target_network == "" ) {
+    _network_id =
+      _target_network_id;
     _evm_chains_info_args = [
       "get",             // target command
       "id"  ,            // input type
