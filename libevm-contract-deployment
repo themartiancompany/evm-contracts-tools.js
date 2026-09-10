@@ -201,13 +201,13 @@ async function
   }
   _error_flag =
     false;
-  _deployments_path =
+  _contract_deployments_path =
     _path_join( [
       _deployments,
       _contract ]);
   const
     _evm_contract_deployment_networks_args = [
-      _deployments_path,
+      _contract_deployments_path,
       "y",                  // Display all
       "n",                  // Display safest
       "n"                   // Display cheapest
@@ -247,7 +247,8 @@ async function
   if ( _error_flag ) {
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   if ( _target_network_id == "" ) {
     _evm_chains_info_args = [
@@ -263,10 +264,25 @@ async function
       _target_network,
       []                 // database paths
     ];
-    _network_id =
-      await _evm_chains_info.apply(
-        null,
-        _evm_chains_info_args);
+    try {
+      _network_id =
+        await _evm_chains_info.apply(
+          null,
+          _evm_chains_info_args);
+    }
+    catch(
+      _error) {
+      _msg = 
+        "Error while running '_evm_chains_info' " +
+        `with arguments '${_evm_chains_info_args}'.`;
+      _msg_error(
+        _msg,
+        0);
+      _msg_error(
+        _error,
+        0);
+      throw _error;
+    }
   }
   else if ( _target_network == "" ) {
     _evm_chains_info_args = [
@@ -282,9 +298,24 @@ async function
       _target_network_id,
       []                 // database paths
     ];
-    _target_network =
-      await _evm_chains_info(
-        _evm_chains_info_args);
+    try {
+      _target_network =
+        await _evm_chains_info(
+          _evm_chains_info_args);
+    }
+    catch(
+      _error) {
+      _msg = 
+        "Error while running '_evm_chains_info' " +
+        `with arguments '${_evm_chains_info_args}'.`;
+      _msg_error(
+        _msg,
+        0);
+      _msg_error(
+        _error,
+        0);
+      throw _error;
+    }
   }
   if ( _target_network_id != "" ) {
     if ( _target_network_id != _network_id ) {
