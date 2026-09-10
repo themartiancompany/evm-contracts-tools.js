@@ -364,7 +364,7 @@ async function
     ];
     try {
       _msg =
-        "Runnning '_evm_contract_deployment_versions' " +
+        "Running '_evm_contract_deployment_versions' " +
         "with arguments:";
       _msg_info(
         _msg);
@@ -376,6 +376,11 @@ async function
         await _evm_contract_deployment_versions.apply(
           null,
           _evm_contract_deployment_versions_args);
+      _msg =
+        "Got contract version " +
+        `'${_version}'.`;
+      _msg_info(
+        _msg);
     }
     catch(
       _error) {
@@ -395,8 +400,12 @@ async function
       _config[
         _key_name][
           _version];
-  if ( _contract_address == "" ||
-       _contract_address == null ) {
+  const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type === "undefined" ||
+       _contract_address == "" ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
       `contract deployment specified for network ` +
@@ -406,6 +415,12 @@ async function
       _msg,
       0);
     throw _msg;
+  }
+  else if ( _contract_address_type == "string" ) {
+    _msg =
+      `Got address '${_contract_address}'`;
+    _msg_info(
+      _msg);
   }
   return _contract_address;
 }
