@@ -221,6 +221,11 @@ const
 const
   _contract_address_auto_detect =
     _libevm_contract_call_module._contract_address_auto_detect;
+/* global
+     _target_contract_auto_detect */
+const
+  _target_contract_auto_detect =
+    _libevm_contract_call_module._target_contract_auto_detect;
 
 function
   _global_variables() {
@@ -452,6 +457,7 @@ async function
     "n",                // qr support
     _target_networks);
   await _target_app_auto_detect();
+  await _target_contract_auto_detect();
   // await _target_networks_auto_detect();
   await _contract_address_auto_detect();
   if ( ! _help_display &&
@@ -1025,6 +1031,12 @@ function
     "retrieve",
     _argv_url_get(
       "index_retrieve")[
+        0]);
+  _set(
+    "target",
+    "app",
+    _argv_url_get(
+      "app")[
         0]);
   _set(
     "data",

@@ -859,7 +859,7 @@ async function
     `for contract '${_contract_address}' ` +
     `on network '${_target_networks_set}' ` +
     `for application '${_target_app}'.`;
-  _echo(
+  _msg_info(
     _msg);
   if ( _contract_address != "" ) {
     const
@@ -890,10 +890,24 @@ async function
           "",                        // configuration format
           _deployments_dir
         ];
-        _contract_address =
-          await _evm_contract_deployment_address.apply(
-            null,
-            _evm_contract_deployment_address_args);
+        try {
+          _contract_address =
+            await _evm_contract_deployment_address.apply(
+              null,
+              _evm_contract_deployment_address_args);
+	}
+        catch(
+          _error) {
+          _msg =
+            "Error while looking for contract " +
+            "address from local libEVM applications " +
+            "deployments directories.";
+          _msg_error(
+            _msg,
+            0);
+          throw _error;
+	  }
+	}
       }
       else {
         _msg =
