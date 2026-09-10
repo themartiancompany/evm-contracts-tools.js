@@ -309,7 +309,8 @@ async function
     ];
     try {
       _target_network =
-        await _evm_chains_info(
+        await _evm_chains_info.apply(
+          null,
           _evm_chains_info_args);
     }
     catch(
