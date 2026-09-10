@@ -84,6 +84,11 @@ const
   _dir_exists =
     _libcrash_module._dir_exists;
 /* global
+     _echo */
+const
+  _echo =
+    _libcrash_module._echo;
+/* global
      _echo2 */
 const
   _echo2 =
@@ -103,6 +108,11 @@ const
 const
   _from_bash_ass_array =
     _libcrash_module._from_bash_ass_array;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash_module._global_get;
 /* global
      _homedir_get */
 const
@@ -209,11 +219,21 @@ async function
     _config,
     _config_file_ext,
     _config_path,
+    _evm_contract_deployment_versions_args,
     _libevm_contract_deployment_versions_module,
     _found,
     _key_name,
     _msg,
     _net;
+  _evm_contract_deployment_versions_args =
+    [];
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
   _msg =
     "Reading address from " +
     "configuration file.";
@@ -312,7 +332,7 @@ async function
   if ( _version_type === "undefined" ||
        _version == "" ) {
     _msg =
-      "No version selected," +
+      "No version selected, " +
       "retrieving.";
     _msg_info(
       _msg);
@@ -329,23 +349,33 @@ async function
       _msg_error(
         _msg,
         0);
+      _echo2(
+        _error);
       throw _error;
     }
     const
       _evm_contract_deployment_versions =
         _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
-    const
-      _evm_contract_deployment_versions_args = [
-        _config_path,
-        "y",            // display highest
-        "n",            // display lowest
-        _configuration_format
-      ];
+    _evm_contract_deployment_versions_args = [
+      _config_path,
+      "y",            // display highest
+      "n",            // display lowest
+      _configuration_format
+    ];
     try {
-    _version =
-      await _evm_contract_deployment_versions.apply(
-        null,
-        _evm_contract_deployment_versions_args);
+      _msg =
+        "Runnning '_evm_contract_deployment_versions' " +
+        "with arguments:";
+      _msg_info(
+        _msg);
+      if ( _quiet == "n" ) {
+        _echo(
+          _evm_contract_deployment_versions_args);
+      }
+      _version =
+        await _evm_contract_deployment_versions.apply(
+          null,
+          _evm_contract_deployment_versions_args);
     }
     catch(
       _error) {
@@ -360,7 +390,6 @@ async function
       throw _error;
     }
   }
-
   const
     _contract_address =
       _config[
