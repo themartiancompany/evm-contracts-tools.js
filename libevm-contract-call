@@ -517,9 +517,25 @@ async function
     _method_args) {
   let
     _explorer,
+    _msg,
     _out,
     _result,
     _rpc;
+  const
+    _call_type_type =
+      typeof(
+        _call_type);
+  if ( _call_type_type == "undefined" ||
+       _call_type == "" ) {
+    // Properly
+    _call_type =
+      "static";
+  }
+  _msg =
+    "Running EVM network call " +
+    `of type '${_call_type}'.`;
+  _msg_info(
+    _msg);
   if ( _call_type == "static" ) {
     const
       _infos =
@@ -532,10 +548,9 @@ async function
       "";
   }
   else {
-    const
-      _msg =
-        `Unknown call type ` +
-        `'${_call_type}'.`;
+    _msg =
+      `Unknown call type ` +
+      `'${_call_type}'.`;
     _msg_error(
       _msg,
       0);
