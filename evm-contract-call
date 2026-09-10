@@ -481,10 +481,17 @@ async function
       _msg);
     throw _error; 
   }
-  if ( ! _help_display &&
-       typeof(_help_display) != "undefined" &&
-       _help_display != "" ) {
+  const
+    _help_display_type =
+      typeof(
+        _help_display);
+  if ( ( _help_display_type !== "undefined" &&
+         _help_display !== "" ) &&
+       ( _help_display_type !== "boolean" &&
+         _help_display !== true ) ) {
     try {
+      _echo(
+        "wow");
       _contract_address =
         _get(
           "contract",
