@@ -449,6 +449,7 @@ async function
     "evm-wallet",
     wallet_name,
     call_auth,
+    "n",                // qr support
     _target_networks);
   await _target_app_auto_detect();
   // await _target_networks_auto_detect();
