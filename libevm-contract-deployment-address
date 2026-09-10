@@ -217,6 +217,11 @@ function
     _key_name,
     _msg,
     _net;
+  _msg =
+    "Reading address from " +
+    "configuration file.";
+  _msg_info(
+    _msg);
   if ( typeof(
          _configuration_format) === "undefined" ||
        _configuration_format == "" ) {
@@ -549,10 +554,23 @@ async function
     ] );
   }
   for ( _args of _contract_address_get_args ) {
-    _contract_address =
-      _contract_address_get.apply(
-        null,
-        _args);
+    try {
+      _contract_address =
+        _contract_address_get.apply(
+          null,
+          _args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while running " +
+        "_contract_address_get " +
+        `with parameters '${_contract_address_get}'.`;
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
     _contracts_addresses.push(
       _contract_address);
   }
