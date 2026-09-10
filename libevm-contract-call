@@ -895,7 +895,7 @@ async function
             await _evm_contract_deployment_address.apply(
               null,
               _evm_contract_deployment_address_args);
-	}
+        }
         catch(
           _error) {
           _msg =
@@ -907,7 +907,6 @@ async function
             0);
           throw _error;
 	  }
-	}
       }
       else {
         _msg =
