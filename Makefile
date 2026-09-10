@@ -302,6 +302,13 @@ install-man:
 	  "build/man/$(_PROJECT_NPM).1" \
 	  "$(MAN_DIR)/man1/$(_PROJECT_NPM).1"
 
+uninstall-man:
+
+	cd \
+	  "man"; \
+	make \
+	  "uninstall"
+
 uninstall-scripts:
 
 	for _program in \

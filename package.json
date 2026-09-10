@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.76",
+      "^0.0.77",
     "brace-expansion":
       "^5.0.9",
     "eslint":
@@ -120,7 +120,7 @@
   },
   "dependencies": {
     "libcrash-js":
-      "npm:crash-js@^1000000000000009.1000000000000001.1000000000000001",
+      "npm:crash-js@^1000000000000011.1000000000000001.1000000000000001",
     "ethers":
       "^6.13.2",
     "evm-chains-info":

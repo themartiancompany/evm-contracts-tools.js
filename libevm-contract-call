@@ -820,7 +820,7 @@ async function
       _get(
         "deployments",
         "dir");
-  for ( _network in _target_networks ) {
+  for ( _network of _target_networks ) {
     _target_networks_index[
       _network] =
         1;
