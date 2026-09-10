@@ -89,6 +89,11 @@ const
   _echo =
     _libcrash._echo;
 /* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash._echo2;
+/* global
      _exit */
 const
   _exit =
@@ -543,14 +548,14 @@ async function
         `for contract '${_target_contract}' ` +
 	`and address'${_contract_address}',`;
         "auto-detecting.";
-      _msg_info(
+      _echo2(
         _msg);
       contract_abi =
-        _default_artifact_path_get(
+        await _default_artifact_path_get(
           "abi");
-      _artifact_local_auto_detect(
+      await _artifact_local_auto_detect(
         "bytecode");
-      _artifact_local_auto_detect(
+      await _artifact_local_auto_detect(
         "compiler_output");
       if ( contract_abi == "" ||
            _default_artifact_path_get(
