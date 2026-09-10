@@ -84,6 +84,11 @@ const
   _dir_exists =
     _libcrash_module._dir_exists;
 /* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash_module._echo2;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -569,6 +574,8 @@ async function
       _msg_error(
         _msg,
         0);
+      _echo2(
+        _error);
       throw _msg;
     }
     _contracts_addresses.push(
