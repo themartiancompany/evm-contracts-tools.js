@@ -820,15 +820,14 @@ async function
         "deployments",
         "dir");
   for ( _network in _target_networks ) {
-    const
-      _target_networks_index[
-        _network] =
-          1;
+    _target_networks_index[
+      _network] =
+        1;
   }
   const
     _target_networks_set =
       Object.keys(
-        _target_networks_index;
+        _target_networks_index);
   _msg =
     "Auto-detecting address " +
     `for contract '${_contract_address}' ` +
