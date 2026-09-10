@@ -469,7 +469,7 @@ async function
     const
       _address_valid =
         await _address_check(
-          contract_address);
+          _contract_address);
     if ( ! _address_valid ) {
       const
         _msg =

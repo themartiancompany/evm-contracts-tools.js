@@ -312,7 +312,7 @@ async function
   if ( _version_type === "undefined" ||
        _version == "" ) {
     _msg =
-      "No version selected,"
+      "No version selected," +
       "retrieving.";
     _msg_info(
       _msg);
