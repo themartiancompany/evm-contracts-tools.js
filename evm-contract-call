@@ -399,6 +399,7 @@ async function
   _overrides_set(
     _help_display) {
   let
+    _address_valid,
     _contract_abi,
     _contract_address,
     _msg;
@@ -495,10 +496,9 @@ async function
         _get(
           "contract",
           "address");
-      const
-        _address_valid =
-          await _address_check(
-            _contract_address);
+      _address_valid =
+        await _address_check(
+          _contract_address);
     }
     catch(
       _error) {
@@ -574,17 +574,19 @@ async function
           `for contract '${_target_contract}' ` +
           `and address'${_contract_address}',` +
           "auto-detecting.";
+        _msg_info(
+          _msg);
         try {
-          contract_abi =
+          _contract_abi =
             await _default_artifact_path_get(
               "abi");
           await _artifact_local_auto_detect(
             "bytecode");
           await _artifact_local_auto_detect(
             "compiler_output");
-          if ( contract_abi == "" ||
+          if ( _contract_abi == "" ||
                _default_artifact_path_get(
-                 "abi") == contract_abi ) {
+                 "abi") == _contract_abi ) {
             await _contract_abi_auto_detect();
           }
         }
@@ -1263,28 +1265,27 @@ async function
     _app_opts) {
   let
     _msg,
-    _result,
     _results;
-  // try {
-  //   _results =
-  //     await _evm_contract_call.apply(
-  //       null,
-  //       _app_opts);
-  // }
-  // catch(
-  //   _error) {
-  //   _msg =
-  //     "Error running '_evm_contract_call' " +
-  //     `with options '${_app_opts}'.`;
-  //   _msg_error(
-  //     _msg,
-  //     0)
-  //   _echo(
-  //     _msg);
-  //   _echo2(
-  //     _error);
-  //   throw _error;
-  // }
+  try {
+    _results =
+      await _evm_contract_call.apply(
+        null,
+        _app_opts);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_evm_contract_call' " +
+      `with options '${_app_opts}'.`;
+    _msg_error(
+      _msg,
+      0);
+    _echo(
+      _msg);
+    _echo2(
+      _error);
+    throw _error;
+  }
   // const
   //   _results_type =
   //     typeof(
@@ -1314,16 +1315,18 @@ async function
   //     0);
   //   throw _msg;
   // }
+  return _results;
 }
 
 async function
   _main() {
   let
-    _msg;
+    _cmdline_out,
+    _msg,
+    _overrides_set_up;
   try {
-    const
-      _overrides_set_up =
-        await _overrides_set();
+    _overrides_set_up =
+      await _overrides_set();
   }
   catch(
     _error) {
@@ -1335,6 +1338,13 @@ async function
       0);
     throw _error;
   }
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
   _config_show();
   _set(
     "app",
@@ -1366,14 +1376,24 @@ async function
         "app",
         "opts");
   try {
-    await _evm_contract_call_cmdline(
-      _app_opts);
+    _msg =
+      "Running '_evm_contract_call_cmdline' " +
+      `with parameters:`;
+    _msg_info(
+      _msg);
+    if ( _quiet == "n" ) {
+      _echo(
+        _app_opts);
+    }
+    _cmdline_out =
+      await _evm_contract_call_cmdline(
+        _app_opts);
   }
   catch(
     _error) {
     _msg =
       "Running '_evm_contract_call_cmdline' " +
-      `with parameters '${_app_opts}'.`;
+      `with parameters '${_app_opts}' failed.`;
     _msg_error(
       _msg,
       0);
@@ -1381,6 +1401,7 @@ async function
       _error);
     throw _error;
   }
+  return _cmdline_out;
 }
 
 _global_variables();

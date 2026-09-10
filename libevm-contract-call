@@ -515,54 +515,69 @@ async function
     _contract_compiler_output,
     _contract_method,
     _method_args) {
-  let
-    _explorer,
-    _msg,
-    _out,
-    _result,
-    _rpc;
+  // let
+  //   _msg,
+  //   _out;
   const
     _call_type_type =
       typeof(
         _call_type);
-  if ( _call_type_type == "undefined" ||
-       _call_type == "" ) {
-    // Properly
+  if ( _call_type_type == "undefined" ) {
     _call_type =
       "static";
   }
-  _msg =
-    "Running EVM network call " +
-    `of type '${_call_type}'.`;
-  _msg_info(
-    _msg);
-  if ( _call_type == "static" ) {
-    _out =
-      "static";
-    _echo(
-      "static");
-    // const
-    //   _infos =
-    //     [];
-    // _out =
-    //   "";
+  else if ( _call_type_type == "string" ) {
+    if ( _call_type.length < 1 ) {
+      // Properly
+      _call_type =
+        "static";
+    }
+    else {
+      _echo(
+        _call_type);
+    }
   }
-  else if ( _call_type == "dynamic" ) {
+  else if ( _call_type_type == "object" ) {
     _echo(
-      "dynamic");
-    _out =
-      "static";
+      _call_type);
   }
   else {
-    _msg =
-      `Unknown call type ` +
-      `'${_call_type}'.`;
-    _msg_error(
-      _msg,
-      0);
-    throw _msg;
+    _echo(
+      _call_type);
   }
-  return _out;
+  return [ _call_type ];
+  // _msg =
+  //   "Running EVM network call " +
+  //   `of type '${_call_type}'.`;
+  // _msg_info(
+  //   _msg);
+  // if ( _call_type == "static" ) {
+  //   _out =
+  //     "static";
+  //   _echo(
+  //     "static");
+  //   // const
+  //   //   _infos =
+  //   //     [];
+  //   // _out =
+  //   //   "";
+  // }
+  // else if ( _call_type == "dynamic" ) {
+  //   _echo(
+  //     "dynamic");
+  //   _out =
+  //     "static";
+  // }
+  // else {
+  //   _msg =
+  //     `Unknown call type ` +
+  //     `'${_call_type}'.`;
+  //   _msg_error(
+  //     _msg,
+  //     0);
+  //   throw _msg;
+  // }
+  // return _out;
 }
 
 function
@@ -873,8 +888,7 @@ async function
     _contract_addresses,
     _evm_contract_deployment_address_args,
     _msg,
-    _network,
-    _target_contract;
+    _network;
   const
     _target_networks_index =
       {};
@@ -892,10 +906,11 @@ async function
       _get(
         "target",
         "networks");
-  _target_contract =
-    _get(
-      "target",
-      "contract");
+  const
+    _target_contract =
+      _get(
+        "target",
+        "contract");
   const
     _deployments_dir =
       _get(
@@ -924,7 +939,7 @@ async function
           _contract_address);
     if ( _address_valid ) {
       _msg =
-        `Address '${_address}' ` +
+        `Address '${_contract_address}' ` +
         `is valid.`;
       _msg_info(
         _msg);

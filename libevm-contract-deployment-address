@@ -225,8 +225,6 @@ async function
     _key_name,
     _msg,
     _net;
-  _evm_contract_deployment_versions_args =
-    [];
   const
     _global =
       _global_get();
