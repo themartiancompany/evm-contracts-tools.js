@@ -926,10 +926,14 @@ async function
           _deployments_dir
         ];
         try {
+          const
+            _contract_addresses =
+              await _evm_contract_deployment_address.apply(
+                null,
+                _evm_contract_deployment_address_args);
           _contract_address =
-            await _evm_contract_deployment_address.apply(
-              null,
-              _evm_contract_deployment_address_args);
+            _contract_addresses[
+              0];
         }
         catch(
           _error) {
