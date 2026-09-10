@@ -339,6 +339,13 @@ async function
       throw _msg;
     }
   }
+  _msg =
+    "Network check for deployments " +
+    `'${_deployments}', contract '${_contract}', ` +
+    `network '${_target_network}' and network with ID ` +
+    `'${_target_network_id}' completed.`;
+  _msg_info(
+    _msg);
 }
 
 async function
