@@ -445,7 +445,6 @@ async function
     "msg",
     "value",
     "0");
-  _echo(_target_networks);
   await _wallet_overrides_set(
     "evm-wallet",
     wallet_name,
@@ -1206,8 +1205,6 @@ else{
   _url_parse();
   _libevm_url_parse();
 }
-_echo(
-  target_networks);
 _main();
 
 export {
