@@ -537,15 +537,21 @@ async function
   _msg_info(
     _msg);
   if ( _call_type == "static" ) {
-    const
-      _infos =
-        [];
     _out =
-      "";
+      "static";
+    _echo(
+      "static");
+    // const
+    //   _infos =
+    //     [];
+    // _out =
+    //   "";
   }
   else if ( _call_type == "dynamic" ) {
+    _echo(
+      "dynamic");
     _out =
-      "";
+      "static";
   }
   else {
     _msg =

@@ -1263,44 +1263,63 @@ async function
     _app_opts) {
   let
     _msg,
-    _result;
-  try {
-    const
-      _results =
-        await _evm_contract_call.apply(
-          null,
-          _app_opts);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error running '_evm_contract_call' " +
-      `with options '${_app_opts}'.`;
-    _msg_error(
-      _msg,
-      0)
-    _echo2(
-      _error);
-    throw _error;
-  }
-  const
-    _results_type =
-      typeof(
-        _results);
-  if ( _results_type == "object" ) {
-    for ( _result of _results ) {
-      _echo(
-        _result);
-    }
-  }
-  else if ( _results_type == "string" ) {
-    _printf(
-      _results);
-  }
+    _result,
+    _results;
+  // try {
+  //   _results =
+  //     await _evm_contract_call.apply(
+  //       null,
+  //       _app_opts);
+  // }
+  // catch(
+  //   _error) {
+  //   _msg =
+  //     "Error running '_evm_contract_call' " +
+  //     `with options '${_app_opts}'.`;
+  //   _msg_error(
+  //     _msg,
+  //     0)
+  //   _echo(
+  //     _msg);
+  //   _echo2(
+  //     _error);
+  //   throw _error;
+  // }
+  // const
+  //   _results_type =
+  //     typeof(
+  //       _results);
+  // if ( _results_type == "array" ) {
+  //   for ( _result of _results ) {
+  //     _echo(
+  //       _result);
+  //   }
+  // }
+  // else if ( _results_type == "object" ) {
+  //   for ( _result in _results ) {
+  //     _echo(
+  //       _results[
+  //         _result]);
+  //   }
+  // }
+  // else if ( _results_type == "string" ) {
+  //   _printf(
+  //     _results);
+  // }
+  // else if ( _results_type == "undefined" ) {
+  //   _msg =
+  //     "No results";
+  //   _msg_error(
+  //     _msg,
+  //     0);
+  //   throw _msg;
+  // }
 }
 
 async function
   _main() {
+  let
+    _msg;
   try {
     const
       _overrides_set_up =
@@ -1308,39 +1327,60 @@ async function
   }
   catch(
     _error) {
-    const
-      _msg =
-        "Error setting up " +
-        "overrides.";
+    _msg =
+      "Error setting up " +
+      "overrides.";
     _msg_error(
       _msg,
       0);
     throw _error;
   }
   _config_show();
-  app_opts = [
-    call_type,
-    call_timeout,
-    wallet_name,
-    wallet_path,
-    wallet_password,
-    wallet_seed,
-    api_key,
-    msg_value,
-    price_gas,
-    measure_unit,
-    retries_max,
-    target_network,
-    rpc_selection,
-    contract_address,
-    contract_abi,
-    contract_bytecode,
-    contract_compiler_output,
-    contract_method,
-    method_args
-  ];
-  await _evm_contract_call_cmdline(
-    app_opts);
+  _set(
+    "app",
+    "opts",
+    [
+      call_type,
+      call_timeout,
+      wallet_name,
+      wallet_path,
+      wallet_password,
+      wallet_seed,
+      api_key,
+      msg_value,
+      price_gas,
+      measure_unit,
+      retries_max,
+      target_networks,
+      rpc_selection,
+      contract_address,
+      contract_abi,
+      contract_bytecode,
+      contract_compiler_output,
+      contract_method,
+      method_args
+    ]);
+  const
+    _app_opts =
+      _get(
+        "app",
+        "opts");
+  try {
+    await _evm_contract_call_cmdline(
+      _app_opts);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Running '_evm_contract_call_cmdline' " +
+      `with parameters '${_app_opts}'.`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
 }
 
 _global_variables();
