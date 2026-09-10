@@ -393,6 +393,9 @@ function
 async function 
   _overrides_set(
     _help_display) {
+  let
+    _contract_abi,
+    _contract_address;
   const
     _global =
       _global_get();
@@ -465,7 +468,7 @@ async function
        _help_display != "" ) {
     const
       _address_valid =
-        _address_check(
+        await _address_check(
           contract_address);
     if ( ! _address_valid ) {
       const
@@ -483,8 +486,23 @@ async function
     "retrieve",
     "n");
   // _api_key_auto_detect();
-  if ( contract_address != "" ) {
-    if ( contract_abi == "" ) {
+  _contract_abi =
+    _get(
+      "contract",
+      "abi");
+  _contract_address =
+    _get(
+      "contract",
+      "address");
+  if ( _contract_address != "" ) {
+    if ( _contract_abi == "" ) {
+      _msg =
+        "Specified no contract ABI " +
+        `for contract '${_target_contract}' ` +
+	`and address'${_contract_address}',`;
+        "auto-detecting.";
+      _msg_info(
+        _msg);
       contract_abi =
         _default_artifact_path_get(
           "abi");
@@ -495,7 +513,7 @@ async function
       if ( contract_abi == "" ||
            _default_artifact_path_get(
              "abi") == contract_abi ) {
-        _contract_abi_auto_detect();
+        await _contract_abi_auto_detect();
       }
     }
   }

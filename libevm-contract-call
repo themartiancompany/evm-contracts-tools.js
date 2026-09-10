@@ -374,8 +374,8 @@ function
   _abi_target =
     _abi;
   if ( typeof(
-         _abi_target) == "undefined" ||
-       _abi_target == "" ) {
+         _abi_target) === "undefined" ||
+       _abi_target === "" ) {
     _abi_target =
       _default_artifact_path_get(
         "abi");
