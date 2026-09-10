@@ -149,15 +149,6 @@ const
   _require =
     _libcrash_module._require;
 const
-  _evm_chains_info_module =
-    await _require(
-      "evm-chains-info");
-/* global
-     _evm_chains_info */
-const
-  _evm_chains_info =
-    _evm_chains_info_module._evm_chains_info;
-const
   _libevm_contract_deployment_module =
     await import(
       "./libevm-contract-deployment");
