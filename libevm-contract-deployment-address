@@ -570,7 +570,7 @@ async function
       _msg =
         "Error while running " +
         "_contract_address_get " +
-        `with parameters '${_contract_address_get}'.`;
+        `with parameters '${_contract_address_get_args}'.`;
       _msg_error(
         _msg,
         0);
