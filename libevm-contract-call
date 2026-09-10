@@ -240,9 +240,33 @@ function
 
 function
   _default_artifact_path_get(
-    _type) {
+    _type,
+    _target_network,
+    _contract_address) {
   let
     _file_name;
+  const
+    _network_type =
+      typeof(
+        _target_network);
+  if ( _network_type === "undefined" ||
+       _target_network === "" ) {
+    _target_network =
+      _get(
+        "target",
+        "network");
+  }
+  const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type === "undefined" ||
+       _contract_address === "" ) {
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  }
   const
     _home =
       _homedir_get();
@@ -255,15 +279,15 @@ function
         "evm-contract-call" ]);
   if ( _type == "abi" ) {
     _file_name =
-      `${contract_address}.abi.json`;
+      `${_contract_address}.abi.json`;
   }
   else if ( _type == "bytecode" ) {
     _file_name =
-      `${contract_address}.bin`;
+      `${_contract_address}.bin`;
   }
   else if ( _type == "compiler_output" ) {
     _file_name =
-      `${contract_address}.json`;
+      `${_contract_address}.json`;
   }
   else {
     const
@@ -271,13 +295,14 @@ function
         `Unknown artifact type '${_type}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   const
     _artifact =
       _path_join( [
         _data_dir,
-        target_network,
+        _target_network,
         _file_name ]);
   return _artifact;
 }
