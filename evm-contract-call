@@ -479,10 +479,28 @@ async function
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
        _help_display != "" ) {
-    const
-      _address_valid =
-        await _address_check(
-          _contract_address);
+    try {
+      _contract_address =
+        _get(
+          "contract",
+          "address");
+      const
+        _address_valid =
+          await _address_check(
+            _contract_address);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error detecting validity " +
+        ` of address '${_contract_address}'`;
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
     if ( ! _address_valid ) {
       const
         _msg =
@@ -491,7 +509,8 @@ async function
           `invalid.`;
       _msg_error(
         _msg,
-        1);
+        0);
+      throw _msg;
     }
   }
   _override_set(
@@ -508,10 +527,15 @@ async function
       "contract",
       "address");
   const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  const
     _contract_abi_type =
       typeof(
         _contract_abi);
-  if ( _contract_address != "" ) {
+  if ( _contract_address_type !== "undefined" &&
+       _contract_address != "" ) {
     if ( _contract_abi_type === "undefined" ||
           _contract_abi == "" ) {
       _msg =
@@ -540,6 +564,15 @@ async function
       _msg_info(
         _contract_abi);
     }
+  }
+  else {
+    _msg =
+      `Contract address (type '${_contract_address_type}'):`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _contract_address);
   }
 }
 
