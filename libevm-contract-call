@@ -849,6 +849,7 @@ async function
   _contract_address_auto_detect() {
   let
     _contract_address,
+    _contract_addresses,
     _evm_contract_deployment_address_args,
     _msg,
     _network,
@@ -900,7 +901,14 @@ async function
       _address_valid =
         await _address_check(
           _contract_address);
-    if ( ! _address_valid ) {
+    if ( _address_valid ) {
+      _msg =
+        `Address '${_address}' ` +
+        `is valid.`;
+      _msg_info(
+        _msg);
+    }
+    else {
       if ( _target_app != "" &&
            0 < _target_networks.length &&
            _target_contract != "" ) {
@@ -911,7 +919,7 @@ async function
           `'${_target_app}' ` +
           "libEVM application on network " +
           `'${_target_networks}' at deployments ` +
-	  `directory '${_deployments_dir}'.`;
+          `directory '${_deployments_dir}'.`;
         _msg_info(
           _msg);
         _evm_contract_deployment_address_args = [
@@ -926,11 +934,10 @@ async function
           _deployments_dir
         ];
         try {
-          const
-            _contract_addresses =
-              await _evm_contract_deployment_address.apply(
-                null,
-                _evm_contract_deployment_address_args);
+          _contract_addresses =
+            await _evm_contract_deployment_address.apply(
+              null,
+              _evm_contract_deployment_address_args);
           _contract_address =
             _contract_addresses[
               0];
@@ -948,7 +955,7 @@ async function
             _error,
             0);
           throw _error;
-	  }
+        }
       }
       else {
         _msg =

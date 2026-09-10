@@ -336,23 +336,9 @@ async function
       "retrieving.";
     _msg_info(
       _msg);
-    try {
-      _libevm_contract_deployment_versions_module =
-        await import(
-          "./libevm-contract-deployment-versions");
-    }
-    catch(
-      _error) {
-      _msg =
-        "Error while importing " +
-        "'lib-evm-contract-deployment-versions'.";
-      _msg_error(
-        _msg,
-        0);
-      _echo2(
-        _error);
-      throw _error;
-    }
+    _libevm_contract_deployment_versions_module =
+      await import(
+        "./libevm-contract-deployment-versions");
     const
       _evm_contract_deployment_versions =
         _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
@@ -418,7 +404,7 @@ async function
   }
   else if ( _contract_address_type == "string" ) {
     _msg =
-      `Got address '${_contract_address}'`;
+      `Got contract address '${_contract_address}'`;
     _msg_info(
       _msg);
   }
@@ -437,6 +423,7 @@ async function
     _configuration_format,
     _deployments_dir) {
   let
+    _address,
     _args,
     _contract_address,
     _msg,
@@ -674,6 +661,14 @@ async function
   }
   for ( _args of _contract_address_get_args ) {
     try {
+      _msg =
+        "Running " +
+        "_contract_address_get " +
+        `with parameters:`;
+      _msg_info(
+        _msg);
+      _echo2(
+        _args);
       _contract_address =
         await _contract_address_get.apply(
           null,
@@ -697,7 +692,16 @@ async function
     _contracts_addresses.push(
       _contract_address);
   }
-  return _contracts_addresses;
+  const
+    _contracts_addresses_set =
+      {};
+  for ( _address of _contracts_addresses ) {
+    _contracts_addresses_set[
+      _address] =
+      1;
+  }
+  return Object.keys(
+    _contracts_addresses_set);
 }
 
 export {

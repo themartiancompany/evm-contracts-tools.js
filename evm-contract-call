@@ -462,7 +462,20 @@ async function
   await _target_app_auto_detect();
   await _target_contract_auto_detect();
   // await _target_networks_auto_detect();
-  await _contract_address_auto_detect();
+  try {
+    await _contract_address_auto_detect();
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error auto-detecting address.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _msg);
+    throw _error; 
+  }
   if ( ! _help_display &&
        typeof(_help_display) != "undefined" &&
        _help_display != "" ) {
@@ -494,8 +507,13 @@ async function
     _get(
       "contract",
       "address");
+  const
+    _contract_abi_type =
+      typeof(
+        _contract_abi);
   if ( _contract_address != "" ) {
-    if ( _contract_abi == "" ) {
+    if ( _contract_abi_type === "undefined" ||
+          _contract_abi == "" ) {
       _msg =
         "Specified no contract ABI " +
         `for contract '${_target_contract}' ` +
@@ -515,6 +533,12 @@ async function
              "abi") == contract_abi ) {
         await _contract_abi_auto_detect();
       }
+    }
+    else {
+      _msg =
+        "Contract ABI:";
+      _msg_info(
+        _contract_abi);
     }
   }
 }
@@ -1193,9 +1217,22 @@ async function
 
 async function
   _main() {
-  const
-    _overrides_set_up =
-      await _overrides_set();
+  try {
+    const
+      _overrides_set_up =
+        await _overrides_set();
+  }
+  catch(
+    _error) {
+    const
+      _msg =
+        "Error setting up " +
+        "overrides.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
   _config_show();
   app_opts = [
     call_type,
@@ -1236,7 +1273,13 @@ else{
   _url_parse();
   _libevm_url_parse();
 }
-_main();
+try {
+  _main();
+}
+catch(
+  _error) {
+  throw _error;
+}
 
 export {
   _evm_contract_call
