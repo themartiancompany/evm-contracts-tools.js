@@ -351,6 +351,20 @@ async function
   const
     _contract_address_get_args =
       [];
+  const
+    _user_defined_type =
+      typeof(
+        _user_defined);
+  if ( _user_defined_type === "undefined" ||
+       _user_defined == "" ) {
+    _msg =
+      "User defined not specified, setting " +
+      "default (n).";
+    _msg_info(
+      _msg);
+    _user_defined =
+      "n";
+  }
   if ( _user_defined == "n" ) {
     if ( _target_app == "" ) {
       _msg =
@@ -407,7 +421,12 @@ async function
     _msg_error(
       _msg,
       0);
-    throw _msg;
+    const
+      _exception = {
+        "msg":
+          _msg
+      };
+    throw _exception;
   }
   if ( _networks_all == "y" ) {
     _msg =

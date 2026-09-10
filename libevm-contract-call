@@ -164,6 +164,15 @@ const
   _evm_contract_deployment_address =
     _evm_contract_deployment_address_module._evm_contract_deployment_address;
 const
+  _evm_contract_deployments_dir =
+    await import(
+      "./libevm-contract-deployments-dir");
+/* global
+     _evm_contract_deployments_dir */
+const
+  _evm_contract_deployments_dir =
+    _evm_contract_deployment_address_module._evm_contract_deployments_dir;
+const
   _ethereum_data_module =
     await _require(
       "ethereum-data");
@@ -876,7 +885,8 @@ async function
           `'${_target_contract}' for the ` +
           `'${_target_app}' ` +
           "libEVM application on network " +
-          `'${_target_networks}'.`;
+          `'${_target_networks}' at deployments ` +
+	  `directory '${_deployments_dir}'.`;
         _msg_info(
           _msg);
         _evm_contract_deployment_address_args = [
