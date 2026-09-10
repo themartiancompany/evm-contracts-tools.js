@@ -787,12 +787,38 @@ async function
 }
 
 async function
+  _target_contract_auto_detect() {
+  let
+    _target_contract;
+  _target_contract =
+    "";
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  const
+    _address_valid =
+      await _address_check(
+        _contract_address);
+  if ( ! _address_valid ) {
+    _target_contract =
+      _contract_address;
+  }
+  _override_set(
+    "target",
+    "contract",
+    _target_contract);
+}
+
+async function
   _contract_address_auto_detect() {
   let
     _contract_address,
     _evm_contract_deployment_address_args,
     _msg,
-    _network;
+    _network,
+    _target_contract;
   const
     _target_networks_index =
       {};
@@ -810,11 +836,10 @@ async function
       _get(
         "target",
         "networks");
-  const
-    _target_contract =
-      _get(
-        "target",
-        "contract");
+  _target_contract =
+    _get(
+      "target",
+      "contract");
   const
     _deployments_dir =
       _get(
@@ -951,6 +976,7 @@ export {
   _default_artifact_path_get,
   _evm_contract_call,
   _target_app_auto_detect,
+  _target_contract_auto_detect,
   _target_networks_auto_detect,
   _target_networks_get
 };
@@ -986,6 +1012,8 @@ export {
 //     _target_app_auto_detect,
 //   _target_networks_auto_detect:
 //     _target_networks_auto_detect,
+//   _target_contract_auto_detect:
+//     _target_contract_auto_detect,
 //   _target_networks_get:
 //     _target_networks_get
 // };
