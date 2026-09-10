@@ -515,9 +515,11 @@ async function
     _contract_compiler_output,
     _contract_method,
     _method_args) {
-  // let
-  //   _msg,
-  //   _out;
+  let
+    _msg,
+    _out;
+  _out =
+    [];
   const
     _call_type_type =
       typeof(
@@ -532,20 +534,34 @@ async function
       _call_type =
         "static";
     }
-    else {
-      _echo(
-        _call_type);
-    }
   }
   else if ( _call_type_type == "object" ) {
     _echo(
       _call_type);
   }
+  else if ( _call_type == "array" ) {
+    _msg =
+      "Parameter '_call_type' " +
+      "must be of type 'string'";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
   else {
+    const
+      _msg =
+        `Call type '${_call_type}' ` +
+        `('${_call_type_type}'):`;
+    _msg_error(
+      _msg,
+       0);
     _echo(
       _call_type);
   }
-  return [ _call_type ];
+  _out.push(
+    _call_type);
+  return _out;
   // _msg =
   //   "Running EVM network call " +
   //   `of type '${_call_type}'.`;

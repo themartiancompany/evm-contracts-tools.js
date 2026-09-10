@@ -1265,12 +1265,23 @@ async function
     _app_opts) {
   let
     _msg,
-    _results;
+    _result,
+    _results,
+    _results_list,
+    _results_type;
   try {
     _results =
       await _evm_contract_call.apply(
         null,
         _app_opts);
+    _results_type =
+      typeof(
+        _results);
+    _msg =
+      `Got results '${_results}' ` +
+      `(type '${_results_type}').`;
+    _msg_info(
+      _msg);
   }
   catch(
     _error) {
@@ -1280,42 +1291,52 @@ async function
     _msg_error(
       _msg,
       0);
-    _echo(
-      _msg);
     _echo2(
       _error);
     throw _error;
   }
-  // const
-  //   _results_type =
-  //     typeof(
-  //       _results);
-  // if ( _results_type == "array" ) {
-  //   for ( _result of _results ) {
-  //     _echo(
-  //       _result);
-  //   }
-  // }
-  // else if ( _results_type == "object" ) {
-  //   for ( _result in _results ) {
-  //     _echo(
-  //       _results[
-  //         _result]);
-  //   }
-  // }
-  // else if ( _results_type == "string" ) {
-  //   _printf(
-  //     _results);
-  // }
-  // else if ( _results_type == "undefined" ) {
-  //   _msg =
-  //     "No results";
-  //   _msg_error(
-  //     _msg,
-  //     0);
-  //   throw _msg;
-  // }
-  return _results;
+  if ( _results_type == "array" ) {
+    for ( _result of _results ) {
+      _echo(
+        _result);
+    }
+    return _results;
+  }
+  else if ( _results_type == "object" ) {
+    for ( _result in _results ) {
+      _msg =
+        `Got result '${_result}':`;
+      _msg_info(
+        _msg);
+      _echo(
+        _results[
+          _result]);
+    }
+    return _results;
+  }
+  else if ( _results_type == "string" ) {
+    _printf(
+      _results);
+    return _results;
+  }
+  else if ( _results_type == "undefined" ) {
+    _msg =
+      "No results";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  else {
+    _msg =
+      `Result type '${_results_type}'.`;
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  _echo("ciao");
+  return true;
 }
 
 async function
@@ -1388,6 +1409,15 @@ async function
     _cmdline_out =
       await _evm_contract_call_cmdline(
         _app_opts);
+    _msg =
+      "Done running '_evm_contract_call_cmdline' " +
+      `with parameters:`;
+    _msg_info(
+      _msg);
+    if ( _quiet == "n" ) {
+      _echo(
+        _app_opts);
+    }
   }
   catch(
     _error) {
@@ -1401,6 +1431,8 @@ async function
       _error);
     throw _error;
   }
+  _exit(
+    0);
   return _cmdline_out;
 }
 
@@ -1414,25 +1446,11 @@ if ( await _cmdline_check(
        "./evm-contract-call") ) {
   await _cmdline_parse();
 }
-else{
+else {
   _url_parse();
   _libevm_url_parse();
 }
-try {
-  await _main();
-}
-catch(
-  _error) {
-  const
-    _msg =
-      "Error running 'main'.";
-  _msg_error(
-    _msg,
-    0);
-  _echo2(
-    _error);
-  throw _error;
-}
+await _main();
 
 export {
   _evm_contract_call

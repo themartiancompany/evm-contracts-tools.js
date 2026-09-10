@@ -432,6 +432,13 @@ async function
     _user_deployments_dir,
     _system_deployments_dir;
   const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  const
     _libevm_contract_deployments_dir_module =
       await import(
         "./libevm-contract-deployments-dir");
@@ -665,8 +672,10 @@ async function
         `with parameters:`;
       _msg_info(
         _msg);
-      _echo2(
-        _args);
+      if ( _quiet == "n" ) {
+        _echo2(
+          _args);
+      }
       _contract_address =
         await _contract_address_get.apply(
           null,
