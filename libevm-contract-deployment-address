@@ -227,53 +227,6 @@ async function
     _configuration_format_type =
       typeof(
         _configuration_format);
-  if ( _version_type === "undefined" ||
-       _version == "" ) {
-    _msg =
-      "No version selected,"
-      "retrieving.";
-    _msg_info(
-      _msg);
-    try {
-      _libevm_contract_deployment_versions_module =
-        await import(
-          "./libevm-contract-deployment-versions");
-    }
-    catch(
-      _error) {
-      _msg =
-        "Error while importing " +
-        "'lib-evm-contract-deployment-versions'.";
-      _msg_error(
-        _msg,
-        0);
-      throw _error;
-    }
-    const
-      _evm_contract_deployment_versions =
-        _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
-    const
-      _evm_contract_deployment_versions_args = [
-      ];
-    try {
-    _version =
-      await _evm_contract_deployment_versions.apply(
-        null,
-        _evm_contract_deployment_versions_args);
-    }
-    catch(
-      _error) {
-      _msg =
-        "Error while running " +
-        "'_evm_contract_deployment_versions' with arguments:";
-      _msg_error(
-        _msg,
-        0);
-      _echo2(
-        _evm_contract_deployment_versions_args);
-      throw _error;
-    }
-  }
   if ( _configuration_format_type === "undefined" ||
        _configuration_format == "" ) {
     _msg =
@@ -356,6 +309,58 @@ async function
       0);
     throw _msg;
   }
+  if ( _version_type === "undefined" ||
+       _version == "" ) {
+    _msg =
+      "No version selected,"
+      "retrieving.";
+    _msg_info(
+      _msg);
+    try {
+      _libevm_contract_deployment_versions_module =
+        await import(
+          "./libevm-contract-deployment-versions");
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while importing " +
+        "'lib-evm-contract-deployment-versions'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+    const
+      _evm_contract_deployment_versions =
+        _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+    const
+      _evm_contract_deployment_versions_args = [
+        _config_path,
+        "y",            // display highest
+        "n",            // display lowest
+        _configuration_format
+      ];
+    try {
+    _version =
+      await _evm_contract_deployment_versions.apply(
+        null,
+        _evm_contract_deployment_versions_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while running " +
+        "'_evm_contract_deployment_versions' with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _evm_contract_deployment_versions_args);
+      throw _error;
+    }
+  }
+
   const
     _contract_address =
       _config[
