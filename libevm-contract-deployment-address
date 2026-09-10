@@ -196,17 +196,8 @@ const
 const
   _evm_contract_deployment_networks =
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
-const
-  _libevm_contract_deployment_versions_module =
-    await import(
-      "./libevm-contract-deployment-versions");
-/* global
-     _evm_contract_deployment_versions */
-const
-  _evm_contract_deployment_versions =
-    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
 
-function
+async function
   _contract_address_get(
     _deployments,
     _contract,
@@ -227,9 +218,43 @@ function
     "configuration file.";
   _msg_info(
     _msg);
-  if ( typeof(
-         _configuration_format) === "undefined" ||
+  const
+    _version_type =
+      typeof(
+        _version);
+  const
+    _configuration_format_type =
+      typeof(
+        _configuration_format);
+  if ( _version_type === "undefined" ||
+       _version == "" ) {
+    _msg =
+      "No version selected,"
+      "retrieving.";
+    _msg_info(
+      _msg);
+    const
+      _libevm_contract_deployment_versions_module =
+        await import(
+          "./libevm-contract-deployment-versions");
+    const
+      _evm_contract_deployment_versions =
+        _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+    const
+      _evm_contract_deployment_versions_args = [
+      ];
+    _version =
+      await _evm_contract_deployment_versions.apply(
+        null,
+        _evm_contract_deployment_versions_args);
+  }
+  if ( _configuration_format_type === "undefined" ||
        _configuration_format == "" ) {
+    _msg =
+      "Configuration format not set, " +
+      "setting default (bash).";
+    _msg_info(
+      _msg);
     _configuration_format =
       "bash";
   }
@@ -497,10 +522,24 @@ async function
       "Selecting all networks.";
     _msg_info(
       _msg);
-    _target_networks =
-      await _evm_contract_deployment_networks(
-        `${_deployments_dir}/${_target_contract}`,
-        _networks_all);
+    try {
+      _target_networks =
+        await _evm_contract_deployment_networks(
+          `${_deployments_dir}/${_target_contract}`,
+          _networks_all);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while retrieving networks " +
+        `for contract '${_target_contract}'.`;
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
   }
   _msg =
     `Getting '${_target_contract}' contract address for ` +
@@ -561,7 +600,7 @@ async function
   for ( _args of _contract_address_get_args ) {
     try {
       _contract_address =
-        _contract_address_get.apply(
+        await _contract_address_get.apply(
           null,
           _args);
     }
@@ -570,10 +609,12 @@ async function
       _msg =
         "Error while running " +
         "_contract_address_get " +
-        `with parameters '${_contract_address_get_args}'.`;
+        `with parameters:`;
       _msg_error(
         _msg,
         0);
+      _echo2(
+        _args);
       _echo2(
         _error);
       throw _msg;
