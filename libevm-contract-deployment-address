@@ -553,7 +553,7 @@ async function
       _deployments_dir,
       _target_contract,
       _target_network,
-      _target_network_id,
+      _network,
       _contract_version,
       _configuration_format
     ] );
