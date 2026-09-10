@@ -400,7 +400,8 @@ async function
     _help_display) {
   let
     _contract_abi,
-    _contract_address;
+    _contract_address,
+    _msg;
   const
     _global =
       _global_get();
@@ -512,11 +513,10 @@ async function
       throw _error;
     }
     if ( ! _address_valid ) {
-      const
-        _msg =
-          "Contract address " +
-          `'${contract_address}' is ` +
-          `invalid.`;
+      _msg =
+        "Contract address " +
+        `'${contract_address}' is ` +
+        `invalid.`;
       _msg_error(
         _msg,
         0);
@@ -537,6 +537,11 @@ async function
       "contract",
       "address");
   const
+    _target_contract =
+      _get(
+        "target",
+        "contract");
+  const
     _contract_address_type =
       typeof(
         _contract_address);
@@ -544,54 +549,63 @@ async function
     _contract_abi_type =
       typeof(
         _contract_abi);
+  _echo("wio");
   if ( _contract_address_type !== "undefined" &&
        _contract_address != "" ) {
-    if ( _contract_abi_type === "undefined" ||
-          _contract_abi == "" ) {
+    if ( _contract_abi_type === "array" ) {
       _msg =
-        "Specified no contract ABI " +
-        `for contract '${_target_contract}' ` +
-        `and address'${_contract_address}',`;
-        "auto-detecting.";
-      _echo2(
-        _msg);
-      try {
-        contract_abi =
-          await _default_artifact_path_get(
-            "abi");
-        await _artifact_local_auto_detect(
-          "bytecode");
-        await _artifact_local_auto_detect(
-          "compiler_output");
-        if ( contract_abi == "" ||
-             _default_artifact_path_get(
-               "abi") == contract_abi ) {
-          await _contract_abi_auto_detect();
-        }
-      }
-      catch(
-        _error) {
+        "Not implemented.";
+      _msg_error(
+        _msg,
+        1);
+    }
+    else if ( _contract_abi_type === "string" ) {
+      _echo(_contract_abi.length);
+      if ( 0 < _contract_abi.length ) {
         _msg =
-          "Sigh.";
+          "Contract ABI:";
         _msg_error(
           _msg,
           0);
-        throw _error;
+        _echo2(
+          _contract_abi);
       }
-    }
-    else {
-      _msg =
-        "Contract ABI:";
-      _msg_error(
-        _contract_abi,
-        0);
-      _echo2(
-        _contract_abi);
+      else {
+        _msg =
+          "Specified no contract ABI " +
+          `for contract '${_target_contract}' ` +
+          `and address'${_contract_address}',` +
+          "auto-detecting.";
+        try {
+          contract_abi =
+            await _default_artifact_path_get(
+              "abi");
+          await _artifact_local_auto_detect(
+            "bytecode");
+          await _artifact_local_auto_detect(
+            "compiler_output");
+          if ( contract_abi == "" ||
+               _default_artifact_path_get(
+                 "abi") == contract_abi ) {
+            await _contract_abi_auto_detect();
+          }
+        }
+        catch(
+          _error) {
+          _msg =
+            "Sigh.";
+          _msg_error(
+            _msg,
+            0);
+          throw _error;
+        }
+      }
     }
   }
   else {
     _msg =
-      `Contract address (type '${_contract_address_type}'):`;
+      `Contract address (type ` +
+      `'${_contract_address_type}'):`;
     _msg_error(
       _msg,
       0);
