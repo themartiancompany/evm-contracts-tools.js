@@ -57,6 +57,11 @@ const
   _echo =
     _libcrash._echo;
 /* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash._echo2;
+/* global
      _exit */
 const
   _exit =
@@ -428,118 +433,25 @@ async function
 }
 
 async function
-  _contract_call_dynamic(
-    _call_timeout,
+  _contract_check(
     _wallet_seed,
     _wallet_password,
-    _api_key_path,
-    _price_gas,
-    _msg_value,
-    _measure_unit,
-    _target_network,
     _contract_address,
     _contract_abi_path,
     _contract_bytecode_path,
     _contract_compiler_output_path,
-    _contract_method,
-    _method_args,
-    _verbose,
+    _target_network,
+    _api_key_path,
     _contract) {
   let
-    _amount,
-    _contract_get_opts,
     _contract_object_get,
-    _fee_priority,
-    _gas_fee,
-    _method,
-    _msg,
-    _eip_1559,
-    _price_feasible_retries,
-    _price_feasible_retries_max,
-    _price_gas_max,
-    _price_gas_transaction_get_args,
-    _price_gas_transaction_get_retries_max,
-    _price_gas_transaction_get_selection_mode,
-    _retries_max,
-    _send_opts,
-    _receipt,
-    _tx;
-  _eip_1559 =
-    true;
-  _price_gas_max =
-    100000000;
-  _send_opts =
-    {};
-  if ( typeof(
-         _measure_unit) === "undefined" ||
-         _measure_unit == "" ) {
-    _measure_unit =
-      "wei";
-  }
-  if ( typeof(
-         _price_gas) === "undefined" ||
-         _price_gas == "" ) {
-    _price_gas =
-      0;
-  }
-  if ( _price_gas == "auto" ||
-       _price_gas == "fast" ||
-       _price_gas == "nextblock" ) {
-    _price_gas =
-      _price_gas_auto_detect(
-        _target_network,
-        _api_key_path,
-        _measure_unit,
-        _price_gas);
-  }
-  else {
-    _msg =
-      `Setting gas price '${_price_gas}'.`;
-    _msg_info(
-      _msg);
-  }
-  _price_gas =
-    Number(
-      _price_gas);
-  if ( typeof(
-         _msg_value) === "undefined" ) {
-    _msg_value =
-      0;
-  }
-  _msg_value =
-    BigInt(
-      _msg_value);
-  if ( typeof(
-         _call_timeout) === "undefined" ||
-       _call_timeout == "" ) {
-    _msg_info(
-      "Setting timeout to '300' seconds.");
-    _call_timeout =
-      300000;
-  }
-  else {
-    _call_timeout =
-      Number(
-        _call_timeout);
-  }
-  if ( typeof(
-         _measure_unit) === "undefined" ||
-         _measure_unit == "" ) {
-    _measure_unit =
-      "wei";
-  }
-  if ( typeof(
-         _verbose) === "undefined" ||
-         _verbose == "" ) {
-    _verbose =
-      "n";
-  }
-  _contract_object_get =
-    false;
+    _contract_get_args;
   const
     _contract_type =
       typeof(
         _contract);
+  _contract_object_get =
+    false;
   if ( _contract_type == "undefined" ) {
     _contract_object_get =
       true;
@@ -567,7 +479,7 @@ async function
   }
   else {
     const
-      _contract_get_opts = [
+      _contract_get_args = [
         _wallet_seed,
         _wallet_password,
         _contract_address,
@@ -581,7 +493,7 @@ async function
       _contract =
         await _contract_get.apply(
           null,
-          _contract_get_opts);
+          _contract_get_args);
       await _msg_info_contract_obtained(
         _contract);
     }
@@ -596,13 +508,374 @@ async function
       throw _error;
     }
   }
+  return _contract;
+}
+
+async function
+  _price_gas_check() {
+}
+
+function
+  _measure_unit_check(
+    _measure_unit) {
+  const
+    _measure_unit_type =
+      typeof(
+        _measure_unit);
+  if ( _measure_unit_type === "undefined" ||
+         _measure_unit == "" ) {
+    _measure_unit =
+      "wei";
+  }
+  else if ( _measure_unit_type === "string" ) {
+    if ( _measure_unit.length < 1 ) {
+      _measure_unit =
+        "wei";
+    }
+  }
+  else if ( _measure_unit_type === "array" ||
+            _measure_unit_type === "object" ) {
+    _msg =
+      "Measure unit must be of type 'string'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  else {
+    _msg =
+      `Unknown type '${_measure_unit_type}' ` +
+      "for variable '_measure_unit'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  return _measure_unit; 
+}
+
+async function
+  _price_gas_check(
+    _price_gas) {
+  let
+    _msg;
+  const
+    _price_gas_type =
+      typeof(
+        _price_gas);
+  if ( _price_gas_type === "undefined" ) {
+    _msg =
+      "Gas price not set, setting '0' for " +
+      "auto-detection.";
+    _msg_info(
+      _msg);
+    _price_gas =
+      0;
+  }
+  else if ( _price_gas_type === "string" ) {
+    if ( 0 < _price_gas.length ) {
+      const
+        _not_a_number =
+          Number(
+            _price_gas);
+      if ( ( ! ( _not_a_number < 0 ) &&
+           ( ! ( _not_a_number > 0 ) &&
+           ( ! ( _not_a_number == 0 ) ) {
+        if ( _price_gas != "auto" &&
+             _price_gas != "fast" &&
+             _price_gas != "nextblock" ) {
+          _msg =
+            `Gas price '${_price_gas}' ` +
+            `is not a recognized value for ` +
+            `variable '_price_gas'.`;
+          _msg_error(
+            _msg,
+            0);
+          throw _msg;
+        }
+      }
+    }
+    else {
+      _msg =
+        "Gas price not set, setting '0' for " +
+        "auto-detection.";
+      _msg_info(
+        _msg);
+      _price_gas =
+        0;
+    }
+  }
+  else {
+    _msg =
+      "Unknown value for variable " +
+      `'_price_gas' (${_price_gas_type}):`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _price_gas);
+    throw _msg;
+  }
+  if ( _price_gas == "auto" ||
+       _price_gas == "fast" ||
+       _price_gas == "nextblock" ) {
+    _msg =
+      `Gas price set to '${_price_gas}', ` +
+      `evaluating actual value.`;
+    _msg_info(
+      _msg);
+    try {
+      _price_gas =
+        await _price_gas_auto_detect(
+          _target_network,
+          _api_key_path,
+          _measure_unit,
+          _price_gas);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error getting gas price."
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
+  }
+  else {
+    _msg =
+      `Setting input gas price ` +
+      `'${_price_gas}'.`;
+    _msg_info(
+      _msg);
+  }
+  _price_gas =
+    Number(
+      _price_gas);
+  return _price_gas;
+}
+
+function
+  _msg_value_check(
+    _msg_value) {
+  const
+    _msg_value_type =
+      typeof(
+        _msg_value);
+  if ( _msg_value_type === "undefined" ) {
+    _msg =
+      "Message value not set, " +
+      "setting transaction value '0'.";
+    _msg_info(
+      _msg);
+    _msg_value =
+      0;
+  }
+  else if ( _msg_value_type === "string" ) {
+    if ( 0 < _msg_value.length ) {
+      const
+        _not_a_number =
+          Number(
+            _msg_value);
+      if ( ( ! ( _not_a_number < 0 ) &&
+           ( ! ( _not_a_number > 0 ) &&
+           ( ! ( _not_a_number == 0 ) ) {
+        _msg =
+          `Message value '${_msg_value}' ` +
+          `is not a recognized value ` +
+          `(a number) for ` +
+          `variable '_msg_value'.`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+    else {
+      _msg =
+        "Message value not set, " +
+        "setting transaction value '0'.";
+      _msg_info(
+        _msg);
+      _msg_value =
+        0;
+    }
+  _msg_value =
+    BigInt(
+      _msg_value);
+  return _msg_value;
+}
+
+function
+  _call_timeout_check(
+    _call_timeout) {
+  const
+    _call_timeout_type =
+      typeof(
+        _call_timeout);
+  if ( _call_timeout_type === "number" ) {
+    true;
+  }
+  else if ( _call_timeout_type === "undefined" ) {
+    _msg =
+      "Setting timeout to '300' seconds.";
+    _msg_info(
+      _msg);
+    _call_timeout =
+      300000;
+  }
+  else if ( _call_timeout_type === "string" ) {
+    if ( 0 < _call_timeout.length ) {
+      const
+        _not_a_number =
+          Number(
+            _call_timeout);
+      if ( ( ! ( _not_a_number < 0 ) &&
+           ( ! ( _not_a_number > 0 ) &&
+           ( ! ( _not_a_number == 0 ) ) {
+        _msg =
+          `Call timeout '${_call_timeout}' ` +
+          `is not a recognized value (a number) for ` +
+          `variable '_call_timeout'.`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+    else {
+      _msg =
+        "Setting timeout to '300' seconds.";
+      _msg_info(
+        _msg);
+      _call_timeout =
+        300000;
+    }
+  }
+  else if ( _call_timeout_type === "object" ) {
+    _msg =
+      `Call timeout '${_call_timeout}' ` +
+      `is not a recognized value (a number) for ` +
+      `variable '_call_timeout':`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _call_timeout);
+    throw _msg;
+  }
+  _call_timeout =
+    Number(
+      _call_timeout);
+  return _call_timeout;
+}
+
+async function
+  _contract_call_dynamic(
+    _call_timeout,
+    _wallet_seed,
+    _wallet_password,
+    _api_key_path,
+    _price_gas,
+    _msg_value,
+    _measure_unit,
+    _target_network,
+    _contract_address,
+    _contract_abi_path,
+    _contract_bytecode_path,
+    _contract_compiler_output_path,
+    _contract_method,
+    _method_args,
+    _verbose,
+    _contract,
+    _method) {
+  let
+    _amount,
+    _contract_check_args,
+    _contract_object_get,
+    _fee_priority,
+    _gas_fee,
+    _method,
+    _msg,
+    _eip_1559,
+    _price_feasible_retries,
+    _price_feasible_retries_max,
+    _price_gas_max,
+    _price_gas_transaction_get_args,
+    _price_gas_transaction_get_retries_max,
+    _price_gas_transaction_get_selection_mode,
+    _retries_max,
+    _send_opts,
+    _receipt,
+    _tx;
+  _eip_1559 =
+    true;
+  _price_gas_max =
+    100000000;
+  _send_opts =
+    {};
+  _measure_unit =
+    _measure_unit_check(
+      _measure_unit);
+  try {
+    _price_gas =
+      await _price_gas_check(
+        _price_gas);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error checking input gas price.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  _msg_value =
+    _msg_value_check(
+      _value);
+  _call_timeout =
+    _call_timeout_check(
+      _call_timeout);
+  if ( typeof(
+         _verbose) === "undefined" ||
+         _verbose == "" ) {
+    _verbose =
+      "n";
+  }
+  const
+    _contract_check_args = [
+      _wallet_seed,
+      _wallet_password,
+      _contract_address,
+      _contract_abi_path,
+      _contract_bytecode_path,
+      _contract_compiler_output_path,
+      _target_network,
+      _api_key_path,
+      _contract
+    ];
   try {
     _contract =
-      await _contract_get.apply(
+      await _contract_check.apply(
         null,
-        _contract_get_opts);
-    await _msg_info_contract_obtained(
-      _contract);
+        _contract_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error validating ethers " +
+      "contract object.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
+  try {
     _method =
       await _contract.getFunction(
         _contract_method);
