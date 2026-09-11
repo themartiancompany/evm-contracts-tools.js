@@ -352,7 +352,8 @@ async function
     _target_network,
     _api_key_path,
     _measure_unit,
-    _price_gas) {
+    _price_gas,
+    _retries_max) {
   let
     _gas_fee,
     _fee_priority,
@@ -429,7 +430,10 @@ async function
     `'${_price_gas_transaction_get_selection_mode}'.`;
   _msg_info(
     _msg);
-  return _price_gas;
+  return  [
+    _price_gas,
+    _gas_fee,
+    _fee_priority ] ;
 }
 
 async function
@@ -462,9 +466,10 @@ async function
         true;
     }
   else if ( _contract_type == "object" ) {
-    _contract_keys =
-      Object.keys(
-        _contract);
+    const
+      _contract_keys =
+        Object.keys(
+          _contract);
     if ( _contract_keys.length < 1 ) {
       _contract_object_get =
         true;
@@ -511,10 +516,6 @@ async function
   return _contract;
 }
 
-async function
-  _price_gas_check() {
-}
-
 function
   _measure_unit_check(
     _measure_unit) {
@@ -556,7 +557,10 @@ function
 
 async function
   _price_gas_check(
-    _price_gas) {
+    _price_gas,
+    _gas_fee,
+    _fee_priority,
+    _retries_max) {
   let
     _msg;
   const
@@ -566,7 +570,7 @@ async function
   if ( _price_gas_type === "undefined" ) {
     _msg =
       "Gas price not set, setting '0' for " +
-      "auto-detection.";
+      "RPC auto-detection.";
     _msg_info(
       _msg);
     _price_gas =
@@ -625,12 +629,15 @@ async function
     _msg_info(
       _msg);
     try {
-      _price_gas =
+      [ _price_gas,
+        _gas_fee,
+        _fee_priority ] =
         await _price_gas_auto_detect(
           _target_network,
           _api_key_path,
           _measure_unit,
-          _price_gas);
+          _price_gas,
+          _retries_max);
     }
     catch(
       _error) {
@@ -654,7 +661,13 @@ async function
   _price_gas =
     Number(
       _price_gas);
-  return _price_gas;
+  _gas_fee =
+    Number(
+      _gas_fee);
+  _fee_priority =
+    Number(
+      _fee_priority);
+  return _fee_priority;
 }
 
 function
@@ -773,6 +786,247 @@ function
 }
 
 async function
+  _method_check(
+    _contract_method,
+    _method) {
+  let
+    _method_object_get;
+  const
+    _method_type =
+      typeof(
+        _method);
+  _method_object_get =
+    false;
+  if ( _method_type == "undefined" ) {
+    _method_object_get =
+      true;
+  }
+  else if ( _method_type == "string" ) {
+    if ( _method.length < 1 ) {
+      _method_object_get =
+        true;
+    }
+  else if ( _method_type == "object" ) {
+    const
+      _method_keys =
+        Object.keys(
+          _method);
+    if ( _method_keys.length < 1 ) {
+      _method_object_get =
+        true;
+    }
+  }
+  if ( ! _method_object_get ) {
+    _msg =
+      "Using input ethers " +
+      "'Contract.Method' object.";
+    _msg_info(
+      _msg);
+  }
+  else {
+    try {
+      _method =
+        await _contract.getFunction(
+          _contract_method);
+      await _msg_info_method_obtained(
+        _method);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error obtaining ethers " +
+        "contract method object.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+  }
+  return _method;
+}
+
+async function
+  _call_price_gas_manual(
+    _measure_unit,
+    _price_gas,
+    _gas_fee,
+    _gas_priority,
+    _method,
+    _method_args,
+    _tx) {
+  let
+    _gas_limit,
+    _msg,
+    _price_feasible_retries,
+    _price_gas_max;
+  _price_gas_max =
+    100000000;
+  try {
+    _tx = await
+      _method.populateTransaction.apply(
+      null,
+      _method_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error populating transaction.";
+    _error_display(
+      _error);
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
+  // An hardcoded gas limit parameter.
+  _gas_limit =
+    Math.floor(
+      15803479 * 12 / 10);
+  // 17000000;
+  // Setting as gas limit double
+  // of how much you wanna spend.
+  // _gas_limit =
+  //   _price_gas * 2;
+  _msg =
+    `Setting gas price '${_price_gas}' ` +
+    `${_measure_unit}, gas limit '${_gas_limit}' ` +
+    `'${_measure_unit}' gas fee '${_gas_fee}' ` +
+    `${_measure_unit}' and fee priority ` +
+    `'${_fee_priority}' '${_measure_unit}'.`;
+  _msg_info(
+    _msg);
+  // Non-proof of stake networks
+  if ( _eip_1559 == false ) {
+    _tx[
+      "gasPrice"] =
+      _price_gas;
+  }
+  // Proof of stake networks
+  else if ( _eip_1559 == true ) {
+    _price_feasible_retries =
+      0;
+    while( _price_gas_max < Number(
+                              _price_gas) &&
+           _price_feasible_retries <= _price_feasible_retries_max ) {
+      _price_feasible_retries =
+        _price_feasible_retries + 1;
+      _msg =
+        `Current gas price '${_price_gas}', ` +
+        `maximum gas price '${_price_gas_max}'. ` +
+        `Waiting 30 seconds before retrying.`;
+      _msg_info(
+        _msg);
+      await _sleep(
+        30000);
+      _price_gas_transaction_get_args = [
+        _target_network,
+        _price_gas_transaction_get_selection_mode,
+        _api_key_path,
+        _measure_unit,
+        "",      // wallet seed
+        "",      // target address,
+        "price", // output type
+        "",      // output file
+        _price_gas_transaction_get_retries_max
+      ];
+      _price_gas = await
+        _price_gas_transaction_get.apply(
+          null,
+          _price_gas_transaction_get_args);
+      // _gas_limit =
+      //   Math.floor(
+      //     15803479 * 12 / 10);
+      // 17000000;
+      // 15803479 * 2;
+      // _price_gas;
+      if ( Number(_price_gas) <= _price_gas_max ) {
+        _gas_fee = await
+          _price_gas_transaction_get.apply(
+            null,
+            _price_gas_transaction_get_args);
+        _price_gas_transaction_get_args = [
+          _target_network,
+          _price_gas_transaction_get_selection_mode,
+          _api_key_path,
+          _measure_unit,
+          "",         // wallet seed
+          "",         // target address,
+          "priority", // output type
+          "",         // output file
+          _price_gas_transaction_get_retries_max
+        ];
+        _fee_priority = await
+          _price_gas_transaction_get.apply(
+            null,
+            _price_gas_transaction_get_args);
+      }
+    }
+    if ( _price_feasible_retries_max < _price_feasible_retries ) {
+      _msg =
+        `Setting price to max price ` +
+        `'${_price_gas_max}'`;
+      _msg_info(
+        _msg);
+      _price_gas =
+        _price_gas_max;
+    }
+    _price_feasible_retries =
+      _price_feasible_retries + 1;
+    _price_gas_max =
+      Math.max(
+        _price_gas_max,
+        // _gas_limit,
+        _gas_fee,
+        _fee_priority,
+        _price_gas,
+    );
+    // _tx[
+    //   "gasLimit"] =
+    //   _gas_limit;
+    _tx[
+      "maxFeePerGas"] =
+      _gas_fee;
+    _tx[
+      "maxPriorityFeePerGas"] =
+      _fee_priority;
+  }
+  if ( _msg_value > 0 ) {
+    if ( _measure_unit == "ether" ) {
+      _amount =
+        _ethers_to_wei(
+          _msg_value);
+    }
+    else if ( _measure_unit == "wei" ) {
+      _amount =
+        _msg_value;
+    }
+    else if ( _measure_unit == "" ) {
+      _amount =
+        _msg_value;
+    }
+    else {
+      _msg =
+        `Unknown measure unit '${_measure_unit}'.`;
+      _msg_error(
+        _msg,
+        1);
+    }
+    _tx[
+      "value"] =
+        _amount;
+    // _method_args.push(
+    //   _send_opts);
+  }
+  _tx = await
+    _contract.runner.sendTransaction(
+    _tx);
+  // _tx =
+  //   await _method.send.apply(
+  //     null,
+  //     _method_args)
+
+
+async function
   _contract_call_dynamic(
     _call_timeout,
     _wallet_seed,
@@ -789,6 +1043,7 @@ async function
     _contract_method,
     _method_args,
     _verbose,
+    _retries_max,
     _contract,
     _method) {
   let
@@ -797,32 +1052,32 @@ async function
     _contract_object_get,
     _fee_priority,
     _gas_fee,
-    _method,
     _msg,
     _eip_1559,
-    _price_feasible_retries,
     _price_feasible_retries_max,
     _price_gas_max,
     _price_gas_transaction_get_args,
     _price_gas_transaction_get_retries_max,
     _price_gas_transaction_get_selection_mode,
-    _retries_max,
     _send_opts,
     _receipt,
     _tx;
   _eip_1559 =
     true;
-  _price_gas_max =
-    100000000;
   _send_opts =
     {};
   _measure_unit =
     _measure_unit_check(
       _measure_unit);
   try {
-    _price_gas =
+    [ _price_gas,
+      _gas_fee,
+      _fee_priority ] =
       await _price_gas_check(
-        _price_gas);
+        _price_gas,
+        _gas_fee,
+        _fee_priority,
+        _retries_max);
   }
   catch(
     _error) {
@@ -875,12 +1130,28 @@ async function
       0);
     throw _error;
   }
+  const
+    _method_check_args = [
+      _contract_method,
+      _method
+    ];
   try {
     _method =
-      await _contract.getFunction(
-        _contract_method);
-    _msg_info_method_obtained(
-      _method);
+      await _method_check.apply(
+        null,
+        _method_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error validating ethers " +
+      "contract method object.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
+  try {
     if ( _price_gas > 0 ) {
       try {
         _tx = await
@@ -897,11 +1168,15 @@ async function
         _msg_error(
           _msg,
           0);
+        throw _error;
       }
+      // An hardcoded gas limit parameter.
       _gas_limit =
         Math.floor(
           15803479 * 12 / 10);
-        // 17000000;
+      // 17000000;
+      // Setting as gas limit double
+      // of how much you wanna spend.
       // _gas_limit =
       //   _price_gas * 2;
       _msg =
@@ -912,11 +1187,13 @@ async function
         `'${_fee_priority}' '${_measure_unit}'.`;
       _msg_info(
         _msg);
+      // Non-proof of stake networks
       if ( _eip_1559 == false ) {
         _tx[
           "gasPrice"] =
           _price_gas;
       }
+      // Proof of stake networks
       else if ( _eip_1559 == true ) {
         _price_feasible_retries =
           0;
@@ -1148,6 +1425,48 @@ function
 
 }
 
+function
+  _retries_max_check(
+    _retries_max) {
+  let
+    _msg;
+  const
+    _retries_max_type =
+      typeof(
+        _retries_max);
+  if ( _retries_max_type === "undefined" ) {
+    _msg =
+      "Setting maximum call retries to '100'.";
+    _msg_info(
+      _msg);
+    _retries_max =
+      100;
+  }
+  else if ( _retries_max_type === "string" ) {
+    if ( _retries_max.length < 1 ) {
+      _msg =
+        "Setting maximum call retries to '100'.";
+      _msg_info(
+        _msg);
+      _retries_max =
+        100;
+    }
+  }
+  else {
+    _msg =
+      "Variable '_retries_max' must be " +
+      `a number, not a '${_retries_max_type}'.`;
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  _retries_max =
+    Number(
+      _retries_max);
+  return _retries_max;
+}
+
 async function
   _contract_run(
     _retries_max,
@@ -1193,55 +1512,18 @@ async function
     _price_gas =
       "";
   }
-  if ( typeof(
-         _retries_max) === "undefined" ||
-       _retries_max == "" ) {
-    _msg =
-      "Setting maximum call retries to '100'.";
-    _msg_info(
-      _msg);
-    _retries_max =
-      100;
-  }
   _retries_max =
-    Number(
+    _retries_max_check(
       _retries_max);
-  if ( typeof(
-         _call_timeout) === "undefined" ||
-       _call_timeout == "" ) {
-    _msg =
-      "Setting timeout to '300' seconds.";
-    _msg_info(
-      _msg);
-    _call_timeout =
-      300000;
-  }
   _call_timeout =
-    Number(
+    _call_timeout_check(
       _call_timeout);
-  if ( typeof(
-         _msg_value) === "undefined" ||
-       _msg_value == "" ) {
-    _msg =
-      "Setting transaction value '0'.";
-    _msg_info(
-      _msg);
-    _msg_value =
-      0;
-  }
   _msg_value =
-    BigInt(
+    _msg_value_check(
       _msg_value);
-  if ( typeof(
-         _measure_unit) === undefined ||
-       _measure_unit == "" ) {
-    _msg =
-      "Setting measure unit to 'wei'.";
-    _msg_info(
-      _msg);
-    _measure_unit =
-      "wei";
-  }
+  _measure_unit =
+    _measure_unit_check(
+      _measure_unit);
   if ( typeof(
          _wallet_password) === "undefined" ||
        _wallet_password == "" ) {
