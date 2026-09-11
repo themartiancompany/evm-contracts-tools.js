@@ -494,6 +494,81 @@ function
     _call_type);
 }
 
+function
+  _call_type_check(
+    _call_type) {
+  const
+    _call_type_type =
+      typeof(
+        _call_type);
+  if ( _call_type_type == "undefined" ) {
+    _call_type =
+      "static";
+  }
+  else if ( _call_type_type == "string" ) {
+    if ( _call_type.length < 1 ) {
+      // To be properly auto-detected.
+      _call_type =
+        "static";
+    }
+  }
+  else if ( _call_type_type == "object" ||
+            _call_type_type == "array" ) {
+    _msg =
+      "Parameter '_call_type' " +
+      "must be of type 'string'";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  else {
+    const
+      _msg =
+        `Call type '${_call_type}' ` +
+        `('${_call_type_type}'):`;
+    _msg_error(
+      _msg,
+       0);
+    _echo2(
+      _call_type);
+    throw _msg;
+  }
+  return _call_type;
+}
+
+function
+  _methods_init(
+    _methods,
+    _target_networks) {
+  let
+    _network;
+  for ( _network of _target_networks ) {
+    if ( ! ( _network in _methods ) ) {
+      _methods[
+        _network] =
+        "";
+    }
+  }
+  return _methods;
+}
+
+function
+  _target_networks_check(
+    _target_networks) {
+  const
+    _target_networks_length =
+      _target_networks.length;
+  if ( _target_networks.length < 1 ) {
+    const
+      _msg =
+        "Auto-selecting network (chain ID '1').";
+    _target_networks.push(
+      1);
+  }
+  return _target_networks;
+}
+
 async function
   _evm_contract_call(
     _call_type,
@@ -517,68 +592,71 @@ async function
     _method_args) {
   let
     _msg,
-    _out;
+    _methods,
+    _method,
+    _network,
+    _out,
+    _value;
+  _methods =
+    {};
+  _target_networks =
+    _target_networks_check(
+      _target_networks);
+  _methods =
+    _methods_init(
+      _methods,
+      _target_networks);
   _out =
     [];
-  const
-    _call_type_type =
-      typeof(
-        _call_type);
-  if ( _call_type_type == "undefined" ) {
-    _call_type =
-      "static";
-  }
-  else if ( _call_type_type == "string" ) {
-    if ( _call_type.length < 1 ) {
-      // Properly
-      _call_type =
-        "static";
-    }
-  }
-  else if ( _call_type_type == "object" ) {
-    _echo(
+  _call_type =
+    _call_type_check(
       _call_type);
-  }
-  else if ( _call_type == "array" ) {
-    _msg =
-      "Parameter '_call_type' " +
-      "must be of type 'string'";
-    _msg_error(
-      _msg,
-      0);
-    throw _msg;
-  }
-  else {
-    const
-      _msg =
-        `Call type '${_call_type}' ` +
-        `('${_call_type_type}'):`;
-    _msg_error(
-      _msg,
-       0);
-    _echo(
-      _call_type);
-  }
-  _out.push(
-    _call_type);
-  return _out;
+  // const
+  //   _rpc =
+  //     await =
+  //       _rpc_get.apply(
+  //         null,
+  //         _rpc_get_args);
+  // _out.push(
+  //   _call_type);
+  // return _out;
   // _msg =
   //   "Running EVM network call " +
   //   `of type '${_call_type}'.`;
   // _msg_info(
   //   _msg);
-  // if ( _call_type == "static" ) {
-  //   _out =
-  //     "static";
-  //   _echo(
-  //     "static");
-  //   // const
-  //   //   _infos =
-  //   //     [];
-  //   // _out =
-  //   //   "";
-  // }
-  // else if ( _call_type == "dynamic" ) {
+  if ( _call_type == "static" ) {
+    const
+      _static_call_args = [
+        _wallet_seed,
+        _retries_max,
+        _api_key,
+        "",
+        _contract_abi,
+        _contract_bytecode,
+        _contract_compiler_output,
+        _method,
+        _contract_address,
+        _contract_method,
+        _method_args
+      ];
+    for ( _network of _target_networks ) {
+      _method =
+        _methods[
+          _network];
+      _static_call_args[
+        3] =
+        _method;
+      [ _value,
+        _method ] =
+        await _contract_call_static.apply(
+          null,
+          _static_call_args);
+      _out.push(
+        _value);
+    }
+  }
+  else if ( _call_type == "dynamic" ) {
   //   _echo(
   //     "dynamic");
   //   _out =
@@ -592,8 +670,8 @@ async function
   //     _msg,
   //     0);
   //   throw _msg;
-  // }
-  // return _out;
+  }
+  return _out;
 }
 
 function

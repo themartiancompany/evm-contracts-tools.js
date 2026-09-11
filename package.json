@@ -1,6 +1,6 @@
 { "name": "evm-contracts-tools",
   "version":
-    "0.0.62",
+    "0.0.63",
   "description":
     "JavaScript programs and libraries to enable seamless development of native computer applications designed to interact with Ethereum Virtual Machine-compatible networks.",
   "funding": {
@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.77",
+      "^0.0.78",
     "brace-expansion":
       "^5.0.9",
     "eslint":
@@ -120,17 +120,17 @@
   },
   "dependencies": {
     "libcrash-js":
-      "npm:crash-js@^1000000000000011.1000000000000001.1000000000000001",
+      "npm:crash-js@^1000000000000012.1000000000000001.1000000000000001",
     "ethers":
       "^6.13.2",
     "evm-chains-info":
-      "^0.0.36",
+      "^0.0.37",
     "evm-transactions-tools":
-      "^0.1.10000000001",
+      "^0.1.100000000001",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.96",
+      "npm:evm-wallet.js@^0.0.97",
     "libevm":
-      "^0.0.41",
+      "^0.0.42",
     "ws":
       "^8.21.0",
     "yargs":
@@ -138,15 +138,15 @@
   },
   "overrides": {
     "libcrash-js":
-      "npm:crash-js@^1000000000000011.1000000000000001.1000000000000001",
+      "npm:crash-js@^1000000000000012.1000000000000001.1000000000000001",
     "evm-contracts-tools":
       "./evm-contracts-tools",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.96",
+      "npm:evm-wallet.js@^0.0.97",
     "evm-wallet.js":
-      "npm:evm-wallet.js@^0.0.96",
+      "npm:evm-wallet.js@^0.0.97",
     "libevm":
-      "^0.0.41"
+      "^0.0.42"
   },
   "type":
     "module",

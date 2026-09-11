@@ -443,11 +443,12 @@ async function
     _contract_compiler_output_path,
     _contract_method,
     _method_args,
-    _verbose) {
+    _verbose,
+    _contract) {
   let
     _amount,
-    _contract,
     _contract_get_opts,
+    _contract_object_get,
     _fee_priority,
     _gas_fee,
     _method,
@@ -533,16 +534,68 @@ async function
     _verbose =
       "n";
   }
-  _contract_get_opts = [
-    _wallet_seed,
-    _wallet_password,
-    _contract_address,
-    _contract_abi_path,
-    _contract_bytecode_path,
-    _contract_compiler_output_path,
-    _target_network,
-    _api_key_path,
-  ];
+  _contract_object_get =
+    false;
+  const
+    _contract_type =
+      typeof(
+        _contract);
+  if ( _contract_type == "undefined" ) {
+    _contract_object_get =
+      true;
+  }
+  else if ( _contract_type == "string" ) {
+    if ( _contract.length < 1 ) {
+      _contract_object_get =
+        true;
+    }
+  else if ( _contract_type == "object" ) {
+    _contract_keys =
+      Object.keys(
+        _contract);
+    if ( _contract_keys.length < 1 ) {
+      _contract_object_get =
+        true;
+    }
+  }
+  if ( ! _contract_object_get ) {
+    _msg =
+      "Using input ethers " +
+      "'Contract' object.";
+    _msg_info(
+      _msg);
+  }
+  else {
+    const
+      _contract_get_opts = [
+        _wallet_seed,
+        _wallet_password,
+        _contract_address,
+        _contract_abi_path,
+        _contract_bytecode_path,
+        _contract_compiler_output_path,
+        _target_network,
+        _api_key_path,
+      ];
+    try {
+      _contract =
+        await _contract_get.apply(
+          null,
+          _contract_get_opts);
+      await _msg_info_contract_obtained(
+        _contract);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error obtaining ethers " +
+        "contract object.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+  }
   try {
     _contract =
       await _contract_get.apply(
@@ -765,7 +818,7 @@ async function
     _msg_info(
       _msg);
     if ( _verbose == "y" ) {
-      console.log(
+      _echo(
         _tx);
     }
     _receipt =
@@ -850,6 +903,13 @@ async function
     _contract_call_dynamic_opts,
     _wallet_path_list,
     _wallet_path;
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
   if ( typeof(
          _price_gas) === "undefined" ||
        _price_gas == "" ) {
@@ -983,15 +1043,15 @@ async function
             "Transaction response:";
           _msg_info(
             _msg);
-          console.log(
+          _echo(
             _tx);
           _msg =
             "Transaction receipt:";
           _msg_info(
             _msg);
-          console.log(
+          _echo(
             _receipt);
-	}
+        }
         if ( _receipt.hash != undefined ) {
           _receipt_tx_cost_get(
             _receipt,
@@ -1012,7 +1072,7 @@ async function
             _tx_cost =
               _wei_to_ether(
                 _tx_cost);
-	  }
+          }
           _msg =
             `Transaction cost: '${_tx_cost}'.`;
           _msg_info(

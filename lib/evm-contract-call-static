@@ -297,7 +297,7 @@ async function
               _contract_method);
           _msg_info_method_obtained(
             _method);
-	}
+        }
         catch(
           _error) {
           const
@@ -316,9 +316,9 @@ async function
             _msg_error(
               _msg,
               0);
-	  }
+          }
           throw _error;
-	}
+        }
       }
       else if ( _method_object != "" ||
                 _method_object != undefined ) {
