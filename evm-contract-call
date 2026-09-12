@@ -305,6 +305,13 @@ function
     "type",
     "");
   /* global
+       output_file:
+         writable */
+  _set(
+    "output",
+    "file",
+    "");
+  /* global
        index_retrieve:
          writable */
   _set(
@@ -431,6 +438,10 @@ async function
     "call",
     "date",
     _get_date_human());
+  _override_set(
+    "output",
+    "file",
+    "");
   _override_set(
     "wallet",
     "name",

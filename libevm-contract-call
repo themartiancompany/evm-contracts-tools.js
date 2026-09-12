@@ -719,7 +719,7 @@ async function
         _contract_method,
         _method_args,
         _output_file,
-        _quiet
+        _quiet,
         _contract,
         _method
       ];

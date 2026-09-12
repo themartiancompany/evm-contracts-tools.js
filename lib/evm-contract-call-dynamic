@@ -366,9 +366,6 @@ async function
     `Auto-detecting gas price.`;
   _msg_info(
     _msg);
-  const
-    _retries_max =
-      3;
   _price_feasible_retries_max =
     _retries_max;
   _price_gas_transaction_get_selection_mode =
@@ -582,9 +579,9 @@ async function
         _not_a_number =
           Number(
             _price_gas);
-      if ( ( ! ( _not_a_number < 0 ) &&
-           ( ! ( _not_a_number > 0 ) &&
-           ( ! ( _not_a_number == 0 ) ) {
+      if ( ( ! ( _not_a_number < 0 ) ) &&
+           ( ! ( _not_a_number > 0 ) ) &&
+           ( ! ( _not_a_number == 0 ) ) ) {
         if ( _price_gas != "auto" &&
              _price_gas != "fast" &&
              _price_gas != "nextblock" ) {
@@ -692,9 +689,9 @@ function
         _not_a_number =
           Number(
             _msg_value);
-      if ( ( ! ( _not_a_number < 0 ) &&
-           ( ! ( _not_a_number > 0 ) &&
-           ( ! ( _not_a_number == 0 ) ) {
+      if ( ( ! ( _not_a_number < 0 ) ) &&
+           ( ! ( _not_a_number > 0 ) ) &&
+           ( ! ( _not_a_number == 0 ) ) ) {
         _msg =
           `Message value '${_msg_value}' ` +
           `is not a recognized value ` +
@@ -745,9 +742,9 @@ function
         _not_a_number =
           Number(
             _call_timeout);
-      if ( ( ! ( _not_a_number < 0 ) &&
-           ( ! ( _not_a_number > 0 ) &&
-           ( ! ( _not_a_number == 0 ) ) {
+      if ( ( ! ( _not_a_number < 0 ) ) &&
+           ( ! ( _not_a_number > 0 ) ) &&
+           ( ! ( _not_a_number == 0 ) ) ) {
         _msg =
           `Call timeout '${_call_timeout}' ` +
           `is not a recognized value (a number) for ` +
@@ -891,6 +888,7 @@ async function
       _msg_info(
         _msg);
     }
+  }
   else if ( _price_gas_type == "number" ) {
     _msg =
       `Setting numeric value '${_price_gas}' ` +
