@@ -446,6 +446,7 @@ async function
       _price_gas_transaction_get.apply(
         null,
         _price_gas_transaction_get_args);
+  }
   catch(
     _error) {
     _msg =
@@ -515,7 +516,17 @@ async function
         true;
     }
   }
+  else if ( _contract_type == "boolean" ) {
+    _contract_object_get =
+      true;
+  }
   else {
+    _msg =
+      "Unknown type for 'Contract' ethers object.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
   }
   if ( ! _contract_object_get ) {
     _msg =
