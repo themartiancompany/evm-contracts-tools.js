@@ -383,10 +383,24 @@ async function
     "",      // output file
     _price_gas_transaction_get_retries_max
   ];
-  _price_gas = await
-    _price_gas_transaction_get.apply(
-      null,
-      _price_gas_transaction_get_args);
+  try {
+    _price_gas = await
+      _price_gas_transaction_get.apply(
+        null,
+        _price_gas_transaction_get_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error getting gas price from the " +
+      "network.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   _price_gas_transaction_get_args = [
     _target_network,
     _price_gas_transaction_get_selection_mode,
@@ -398,10 +412,24 @@ async function
     "",    // output file
     _price_gas_transaction_get_retries_max
   ];
-  _gas_fee = await
-    _price_gas_transaction_get.apply(
-      null,
-      _price_gas_transaction_get_args);
+  try {
+    _gas_fee = await
+      _price_gas_transaction_get.apply(
+        null,
+        _price_gas_transaction_get_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error getting gas fee from the " +
+      "network.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   _price_gas_transaction_get_args = [
     _target_network,
     _price_gas_transaction_get_selection_mode,
@@ -413,10 +441,23 @@ async function
     "",         // output file
     _price_gas_transaction_get_retries_max
   ];
-  _fee_priority = await
-    _price_gas_transaction_get.apply(
-      null,
-      _price_gas_transaction_get_args);
+  try {
+    _fee_priority = await
+      _price_gas_transaction_get.apply(
+        null,
+        _price_gas_transaction_get_args);
+  catch(
+    _error) {
+    _msg =
+      "Error getting fee priority from the " +
+      "network.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   _msg =
     `Got gas price '${_price_gas}' ` +
     `${_measure_unit} with '${_gas_fee}' ` +
@@ -430,7 +471,8 @@ async function
   return  [
     _price_gas,
     _gas_fee,
-    _fee_priority ] ;
+    _fee_priority
+  ];
 }
 
 async function
