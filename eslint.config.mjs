@@ -95,7 +95,7 @@ export default defineConfig([
     `**/evm-contract-deployment-networks`,
     `**/evm-contract-deployment-versions`,
     `**/evm-contract-deployments-dir`,
-    `**/lib/*`,
+    `**/lib/**`,
     `**/libevm-contract-call`,
     `**/libevm-contract-deployment-abi`,
     `**/libevm-contract-deployment-address`,

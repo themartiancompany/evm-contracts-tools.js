@@ -462,6 +462,7 @@ async function
       _contract_object_get =
         true;
     }
+  }
   else if ( _contract_type == "object" ) {
     const
       _contract_keys =
@@ -471,6 +472,8 @@ async function
       _contract_object_get =
         true;
     }
+  }
+  else {
   }
   if ( ! _contract_object_get ) {
     _msg =
@@ -803,6 +806,7 @@ async function
       _method_object_get =
         true;
     }
+  }
   else if ( _method_type == "object" ) {
     const
       _method_keys =
@@ -1072,13 +1076,22 @@ async function
     // _method_args.push(
     //   _send_opts);
   }
-  _tx = await
-    _contract.runner.sendTransaction(
-    _tx);
-  // _tx =
-  //   await _method.send.apply(
-  //     null,
-  //     _method_args)
+  try {
+    _tx = await
+      _contract.runner.sendTransaction(
+      _tx);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error sending transaction using " +
+      "'contract.runner.sendTransaction'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
+  return _tx;
 }
 
 async function
@@ -1089,7 +1102,8 @@ async function
     _method_args) {
   let
     _amount,
-    _msg;
+    _msg,
+    _tx;
   const
     _send_opts =
       {};
@@ -1148,6 +1162,7 @@ async function
       _error);
     throw _error;
   }
+  return _tx;
 }
 
 async function
@@ -1324,9 +1339,9 @@ async function
       ];
       try {
         _tx =
-          await _method.send.apply(
+          await _call_price_gas_auto.apply(
             null,
-            _method_args)
+            _call_price_gas_auto_args);
       }
       catch(
         _error) {
@@ -1416,10 +1431,12 @@ async function
       _msg);
     throw _error;
   }
-  return [ _tx,
-           _receipt,
-           _method,
-           _contract ];
+  return [
+    _tx,
+    _receipt,
+    _method,
+    _contract
+  ];
 }
 
 function
@@ -1470,272 +1487,272 @@ function
   return _retries_max;
 }
 
-async function
-  _contract_run(
-    _retries_max,
-    _call_timeout,
-    _wallet_seed,
-    _wallet_password,
-    _api_key_path,
-    _price_gas,
-    _msg_value,
-    _measure_unit,
-    _target_network,
-    _contract_address,
-    _contract_abi_path,
-    _contract_bytecode_path,
-    _contract_compiler_output_path,
-    _contract_method,
-    _method_args,
-    _output_file,
-    _verbose,
-    _contract,
-    _method) {
-  let
-    _attempt,
-    _msg,
-    _receipt,
-    _receipt_type,
-    _tx,
-    _tx_cost,
-    _wallet_path_list,
-    _wallet_path;
-  const
-    _global =
-      _global_get();
-  const
-    _quiet =
-      _global[
-        "quiet"];
-  if ( typeof(
-         _price_gas) === "undefined" ||
-       _price_gas == "" ) {
-    _msg =
-      "Setting no gas price.";
-    _msg_info(
-      _msg);
-    _price_gas =
-      "";
-  }
-  _retries_max =
-    _retries_max_check(
-      _retries_max);
-  _call_timeout =
-    _call_timeout_check(
-      _call_timeout);
-  _msg_value =
-    _msg_value_check(
-      _msg_value);
-  _measure_unit =
-    _measure_unit_check(
-      _measure_unit);
-  if ( typeof(
-         _wallet_password) === "undefined" ||
-       _wallet_password == "" ) {
-    _msg =
-      "Wallet without password.";
-    _msg_info(
-      _msg);
-  }
-  _wallet_path =
-    "";
-  if ( typeof(
-         _wallet_path) === "undefined" ||
-       _wallet_path == "" ) {
-    _wallet_path_list = [
-      _dirname(
-        _wallet_seed),
-      "wallet.dat"];
-    _wallet_path =
-      _path_join(
-        _wallet_path_list);
-      _msg_info_wallet_selected(
-        _wallet_path);
-  }
-  if ( typeof(
-         _verbose) === "undefined" ||
-       _verbose == "" ) {
-    _verbose =
-      "n";
-  }
-  const
-    _contract_check_args = [
-      _wallet_seed,
-      _wallet_password,
-      _contract_address,
-      _contract_abi_path,
-      _contract_bytecode_path,
-      _contract_compiler_output_path,
-      _target_network,
-      _api_key_path,
-      _contract
-    ];
-  try {
-    _contract =
-      await _contract_check.apply(
-        null,
-        _contract_check_args);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error validating ethers " +
-      "contract object.";
-    _msg_error(
-      _msg,
-      0);
-    throw _error;
-  }
-  const
-    _method_check_args = [
-      _contract_method,
-      _method
-    ];
-  try {
-    _method =
-      await _method_check.apply(
-        null,
-        _method_check_args);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error validating ethers " +
-      "contract method object.";
-    _msg_error(
-      _msg,
-      0);
-    throw _error;
-  }
-  const
-    _contract_call_dynamic_args = [
-      _call_timeout,
-      _wallet_seed,
-      _wallet_password,
-      _api_key_path,
-      _price_gas,
-      _msg_value,
-      _measure_unit,
-      _target_network,
-      _contract_address,
-      _contract_abi_path,
-      _contract_bytecode_path,
-      _contract_compiler_output_path,
-      _contract_method,
-      _method_args,
-      _verbose,
-      _retries_max,
-      _contract,
-      _method
-    ];
-  _attempt =
-    1;
-  while ( _attempt <= _retries_max ) {
-    try {
-      [ _tx,
-        _receipt,
-        _method,
-        _contract ] =
-        await _contract_call_dynamic.apply(
-          null,
-          _contract_call_dynamic_args);
-      _receipt_type =
-        typeof(
-          _receipt);
-      if ( _receipt_type == "undefined" ) {
-        _msg_error_transaction_undefined(
-          _attempt);
-        _msg =
-          "No receipt, transaction may have failed.";
-        throw _msg;
-      }
-      else if ( _receipt_type != "undefined" ) {
-        _msg =
-          `Transaction no. '${_tx.nonce}'.`;
-        _msg_info(
-          _msg);
-        if ( _verbose == "y" ) {
-          _msg =
-            "Transaction response:";
-          _msg_info(
-            _msg);
-          _echo(
-            _tx);
-          _msg =
-            "Transaction receipt:";
-          _msg_info(
-            _msg);
-          _echo(
-            _receipt);
-        }
-        if ( _receipt.hash != undefined ) {
-          _receipt_tx_cost_get(
-            _receipt,
-            _measure_unit);
-          _receipt_display(
-            _receipt,
-            _measure_unit);
-          _msg =
-            `Transaction hash: '${_receipt.hash}'.`;
-          _msg_info(
-            _msg);
-          _tx_cost =
-            _receipt[
-              "gasUsed"] *
-            _receipt[
-              "gasPrice"];
-          if ( _measure_unit == "ether" ) {
-            _tx_cost =
-              _wei_to_ether(
-                _tx_cost);
-          }
-          _msg =
-            `Transaction cost: '${_tx_cost}'.`;
-          _msg_info(
-            _msg);
-          break;
-        }
-        else if ( _receipt.hash == undefined ) {
-        _msg_error_transaction_failed(
-          _attempt);
-        _msg =
-          "Transaction hash undefined.";
-        throw _msg;
-        }
-        else {
-          _msg_error_transaction_failed(
-            _attempt);
-          _msg =
-            "Unknown transaction error.";
-          throw _msg;
-        }
-      }
-    } catch (
-        _error) {
-      _error_display(
-        _error);
-      _msg =
-        "Waiting 3 seconds before retrying.";
-      _msg_info(
-        _msg);
-      await _sleep(
-        3000);
-        _attempt =
-          _attempt + 1;
-    }
-  }
-  if ( _attempt > _retries_max ) {
-    _msg =
-      "Maximum number of retries reached.";
-    throw _msg;
-  }
-  return [
-    _tx,
-    _receipt,
-    _contract,
-    _method
-  ];
-}
+// async function
+//   _contract_run(
+//     _retries_max,
+//     _call_timeout,
+//     _wallet_seed,
+//     _wallet_password,
+//     _api_key_path,
+//     _price_gas,
+//     _msg_value,
+//     _measure_unit,
+//     _target_network,
+//     _contract_address,
+//     _contract_abi_path,
+//     _contract_bytecode_path,
+//     _contract_compiler_output_path,
+//     _contract_method,
+//     _method_args,
+//     _output_file,
+//     _verbose,
+//     _contract,
+//     _method) {
+//   let
+//     _attempt,
+//     _msg,
+//     _receipt,
+//     _receipt_type,
+//     _tx,
+//     _tx_cost,
+//     _wallet_path_list,
+//     _wallet_path;
+//   const
+//     _global =
+//       _global_get();
+//   const
+//     _quiet =
+//       _global[
+//         "quiet"];
+//   if ( typeof(
+//          _price_gas) === "undefined" ||
+//        _price_gas == "" ) {
+//     _msg =
+//       "Setting no gas price.";
+//     _msg_info(
+//       _msg);
+//     _price_gas =
+//       "";
+//   }
+//   _retries_max =
+//     _retries_max_check(
+//       _retries_max);
+//   _call_timeout =
+//     _call_timeout_check(
+//       _call_timeout);
+//   _msg_value =
+//     _msg_value_check(
+//       _msg_value);
+//   _measure_unit =
+//     _measure_unit_check(
+//       _measure_unit);
+//   if ( typeof(
+//          _wallet_password) === "undefined" ||
+//        _wallet_password == "" ) {
+//     _msg =
+//       "Wallet without password.";
+//     _msg_info(
+//       _msg);
+//   }
+//   _wallet_path =
+//     "";
+//   if ( typeof(
+//          _wallet_path) === "undefined" ||
+//        _wallet_path == "" ) {
+//     _wallet_path_list = [
+//       _dirname(
+//         _wallet_seed),
+//       "wallet.dat"];
+//     _wallet_path =
+//       _path_join(
+//         _wallet_path_list);
+//       _msg_info_wallet_selected(
+//         _wallet_path);
+//   }
+//   if ( typeof(
+//          _verbose) === "undefined" ||
+//        _verbose == "" ) {
+//     _verbose =
+//       "n";
+//   }
+//   const
+//     _contract_check_args = [
+//       _wallet_seed,
+//       _wallet_password,
+//       _contract_address,
+//       _contract_abi_path,
+//       _contract_bytecode_path,
+//       _contract_compiler_output_path,
+//       _target_network,
+//       _api_key_path,
+//       _contract
+//     ];
+//   try {
+//     _contract =
+//       await _contract_check.apply(
+//         null,
+//         _contract_check_args);
+//   }
+//   catch(
+//     _error) {
+//     _msg =
+//       "Error validating ethers " +
+//       "contract object.";
+//     _msg_error(
+//       _msg,
+//       0);
+//     throw _error;
+//   }
+//   const
+//     _method_check_args = [
+//       _contract_method,
+//       _method
+//     ];
+//   try {
+//     _method =
+//       await _method_check.apply(
+//         null,
+//         _method_check_args);
+//   }
+//   catch(
+//     _error) {
+//     _msg =
+//       "Error validating ethers " +
+//       "contract method object.";
+//     _msg_error(
+//       _msg,
+//       0);
+//     throw _error;
+//   }
+//   const
+//     _contract_call_dynamic_args = [
+//       _call_timeout,
+//       _wallet_seed,
+//       _wallet_password,
+//       _api_key_path,
+//       _price_gas,
+//       _msg_value,
+//       _measure_unit,
+//       _target_network,
+//       _contract_address,
+//       _contract_abi_path,
+//       _contract_bytecode_path,
+//       _contract_compiler_output_path,
+//       _contract_method,
+//       _method_args,
+//       _verbose,
+//       _retries_max,
+//       _contract,
+//       _method
+//     ];
+//   _attempt =
+//     1;
+//   while ( _attempt <= _retries_max ) {
+//     try {
+//       [ _tx,
+//         _receipt,
+//         _method,
+//         _contract ] =
+//         await _contract_call_dynamic.apply(
+//           null,
+//           _contract_call_dynamic_args);
+//       _receipt_type =
+//         typeof(
+//           _receipt);
+//       if ( _receipt_type == "undefined" ) {
+//         _msg_error_transaction_undefined(
+//           _attempt);
+//         _msg =
+//           "No receipt, transaction may have failed.";
+//         throw _msg;
+//       }
+//       else if ( _receipt_type != "undefined" ) {
+//         _msg =
+//           `Transaction no. '${_tx.nonce}'.`;
+//         _msg_info(
+//           _msg);
+//         if ( _verbose == "y" ) {
+//           _msg =
+//             "Transaction response:";
+//           _msg_info(
+//             _msg);
+//           _echo(
+//             _tx);
+//           _msg =
+//             "Transaction receipt:";
+//           _msg_info(
+//             _msg);
+//           _echo(
+//             _receipt);
+//         }
+//         if ( _receipt.hash != undefined ) {
+//           _receipt_tx_cost_get(
+//             _receipt,
+//             _measure_unit);
+//           _receipt_display(
+//             _receipt,
+//             _measure_unit);
+//           _msg =
+//             `Transaction hash: '${_receipt.hash}'.`;
+//           _msg_info(
+//             _msg);
+//           _tx_cost =
+//             _receipt[
+//               "gasUsed"] *
+//             _receipt[
+//               "gasPrice"];
+//           if ( _measure_unit == "ether" ) {
+//             _tx_cost =
+//               _wei_to_ether(
+//                 _tx_cost);
+//           }
+//           _msg =
+//             `Transaction cost: '${_tx_cost}'.`;
+//           _msg_info(
+//             _msg);
+//           break;
+//         }
+//         else if ( _receipt.hash == undefined ) {
+//         _msg_error_transaction_failed(
+//           _attempt);
+//         _msg =
+//           "Transaction hash undefined.";
+//         throw _msg;
+//         }
+//         else {
+//           _msg_error_transaction_failed(
+//             _attempt);
+//           _msg =
+//             "Unknown transaction error.";
+//           throw _msg;
+//         }
+//       }
+//     } catch (
+//         _error) {
+//       _error_display(
+//         _error);
+//       _msg =
+//         "Waiting 3 seconds before retrying.";
+//       _msg_info(
+//         _msg);
+//       await _sleep(
+//         3000);
+//         _attempt =
+//           _attempt + 1;
+//     }
+//   }
+//   if ( _attempt > _retries_max ) {
+//     _msg =
+//       "Maximum number of retries reached.";
+//     throw _msg;
+//   }
+//   return [
+//     _tx,
+//     _receipt,
+//     _contract,
+//     _method
+//   ];
+// }
 
 function
   _overrides_set() {
