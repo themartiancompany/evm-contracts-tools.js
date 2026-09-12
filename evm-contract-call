@@ -699,6 +699,12 @@ function
       "     -t --call-type                  It can be 'static' or 'dynamic'.",
       `       <call-type>                   Default: '${call_type}`,
       "",
+      "     -o --output-file                If specified saves the call output",
+      "       <file-path>                   at the specified location, otherwise it",
+      "                                     will print it on stdout.",
+      `                                     Default: '${output_file}`,
+      "",
+      "     -t --call-type                  It can be 'static' or 'dynamic'.",
       "  call options:",
       `     -V --msg-value                  How much '${measure_unit} to attach to the`,
       `       <msg-value>                   transaction.`,
@@ -911,6 +917,20 @@ async function
       "type",
       _argv[
         "call-type"]);
+  }
+  if ( "o" in _argv ) {
+    _set(
+      "output",
+      "file",
+      _argv[
+        "o"]);
+  }
+  if ( "output-file" in _argv ) {
+    _set(
+      "output",
+      "file",
+      _argv[
+        "output-file"]);
   }
   if ( "T" in _argv ) {
     _set(

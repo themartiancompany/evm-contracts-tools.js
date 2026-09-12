@@ -717,7 +717,7 @@ async function
         _contract_bytecode,
         _contract_compiler_output,
         _contract_method,
-        _method_args
+        _method_args,
         _output_file,
         _quiet
         _contract,
