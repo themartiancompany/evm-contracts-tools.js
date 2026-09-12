@@ -1331,7 +1331,6 @@ async function
       _echo(
         _result);
     }
-    return _results;
   }
   else if ( _results_type == "object" ) {
     for ( _result in _results ) {
@@ -1343,12 +1342,10 @@ async function
         _results[
           _result]);
     }
-    return _results;
   }
   else if ( _results_type == "string" ) {
     _printf(
       _results);
-    return _results;
   }
   else if ( _results_type == "undefined" ) {
     _msg =
@@ -1366,8 +1363,7 @@ async function
       0);
     throw _msg;
   }
-  _echo("ciao");
-  return true;
+  return _results;
 }
 
 async function

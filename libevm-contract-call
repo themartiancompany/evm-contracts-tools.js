@@ -81,6 +81,11 @@ const
   _echo =
     _libcrash_module._echo;
 /* global
+     _echo2*/
+const
+  _echo2=
+    _libcrash_module._echo2;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -90,6 +95,11 @@ const
 const
   _get =
     _libcrash_module._get;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash_module._global_get;
 /* global
      _homedir_get */
 const
@@ -507,6 +517,8 @@ function
 function
   _call_type_check(
     _call_type) {
+  let
+    _msg;
   const
     _call_type_type =
       typeof(
@@ -533,10 +545,9 @@ function
     throw _msg;
   }
   else {
-    const
-      _msg =
-        `Call type '${_call_type}' ` +
-        `('${_call_type_type}'):`;
+    _msg =
+      `Call type '${_call_type}' ` +
+      `('${_call_type_type}'):`;
     _msg_error(
       _msg,
        0);
@@ -672,11 +683,11 @@ async function
         _wallet_seed,
         _retries_max,
         _api_key,
-        "",
+        "network",
         _contract_abi,
         _contract_bytecode,
         _contract_compiler_output,
-        _method,
+        {},                         // method object
         _contract_address,
         _contract_method,
         _method_args
@@ -720,8 +731,8 @@ async function
         _method_args,
         _output_file,
         _quiet,
-        _contract,
-        _method
+        {},                         // contract object
+        {}                          // method object
       ];
     for ( _network of _target_networks ) {
       _contract_run_args[
@@ -739,13 +750,17 @@ async function
       _contract_run_args[
         18] =
         _method;
-      [ _value,
-        _method ] =
+      [ _tx,
+        _receipt,
+        _method,
+        _contract ] =
         await _contract_call_static.apply(
           null,
           _static_call_args);
-      _out.push(
-        _value);
+      _out.push([
+        _tx,
+        _receipt
+      ]);
     }
     _out =
       await _contract_run.apply(
