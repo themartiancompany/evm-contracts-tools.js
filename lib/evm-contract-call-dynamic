@@ -1174,7 +1174,6 @@ async function
     _amount,
     _call_price_gas_manual_args,
     _call_price_gas_auto_args,
-    _contract_check_args,
     _contract_object_get,
     _fee_priority,
     _gas_fee,
