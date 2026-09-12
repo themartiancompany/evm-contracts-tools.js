@@ -629,12 +629,15 @@ async function
     _method_args,
     _output_file) {
   let
+    _contract,
     _contracts,
     _msg,
-    _methods,
     _method,
+    _methods,
     _network,
     _out,
+    _receipt,
+    _tx,
     _value;
   const
     _global =
@@ -754,9 +757,9 @@ async function
         _receipt,
         _method,
         _contract ] =
-        await _contract_call_static.apply(
+        await _contract_run.apply(
           null,
-          _static_call_args);
+          _contract_run_args);
       _out.push([
         _tx,
         _receipt
