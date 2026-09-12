@@ -768,6 +768,7 @@ function
       _msg_value =
         0;
     }
+  }
   _msg_value =
     BigInt(
       _msg_value);
