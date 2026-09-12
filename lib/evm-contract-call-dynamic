@@ -1491,22 +1491,18 @@ async function
     _contract_method,
     _method_args,
     _output_file,
-    _verbose) {
-  let
+    _verbose,
     _contract,
-    _method,
+    _method) {
+  let
+    _attempt,
     _msg,
     _receipt,
     _receipt_type,
     _tx,
     _tx_cost,
-    _contract_call_dynamic_args,
     _wallet_path_list,
     _wallet_path;
-  _contract =
-    {};
-  _method =
-    {};
   const
     _global =
       _global_get();
@@ -1565,26 +1561,76 @@ async function
     _verbose =
       "n";
   }
-  _contract_call_dynamic_args = [
-    _call_timeout,
-    _wallet_seed,
-    _wallet_password,
-    _api_key_path,
-    _price_gas,
-    _msg_value,
-    _measure_unit,
-    _target_network,
-    _contract_address,
-    _contract_abi_path,
-    _contract_bytecode_path,
-    _contract_compiler_output_path,
-    _contract_method,
-    _method_args,
-    _verbose,
-    _retries_max,
-    _contract,
-    _method
-  ];
+  const
+    _contract_check_args = [
+      _wallet_seed,
+      _wallet_password,
+      _contract_address,
+      _contract_abi_path,
+      _contract_bytecode_path,
+      _contract_compiler_output_path,
+      _target_network,
+      _api_key_path,
+      _contract
+    ];
+  try {
+    _contract =
+      await _contract_check.apply(
+        null,
+        _contract_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error validating ethers " +
+      "contract object.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
+  const
+    _method_check_args = [
+      _contract_method,
+      _method
+    ];
+  try {
+    _method =
+      await _method_check.apply(
+        null,
+        _method_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error validating ethers " +
+      "contract method object.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
+  const
+    _contract_call_dynamic_args = [
+      _call_timeout,
+      _wallet_seed,
+      _wallet_password,
+      _api_key_path,
+      _price_gas,
+      _msg_value,
+      _measure_unit,
+      _target_network,
+      _contract_address,
+      _contract_abi_path,
+      _contract_bytecode_path,
+      _contract_compiler_output_path,
+      _contract_method,
+      _method_args,
+      _verbose,
+      _retries_max,
+      _contract,
+      _method
+    ];
   _attempt =
     1;
   while ( _attempt <= _retries_max ) {
@@ -1686,8 +1732,12 @@ async function
       "Maximum number of retries reached.";
     throw _msg;
   }
-  return [_tx,
-          _receipt ];
+  return [
+    _tx,
+    _receipt,
+    _contract,
+    _method
+  ];
 }
 
 function

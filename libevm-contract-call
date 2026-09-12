@@ -154,6 +154,16 @@ const
 const
   _address_check =
     _evm_contracts_tools_module._address_check;
+/* global
+     _contract_call_static */
+const
+  _contract_call_static =
+    _evm_contracts_tools_module._contract_call_static;
+/* global
+     _contract_run */
+const
+  _contract_run =
+    _evm_contracts_tools_module._contract_run;
 const
   _evm_contract_deployment_address_module =
     await import(
@@ -538,6 +548,22 @@ function
 }
 
 function
+  _contracts_init(
+    _contracts,
+    _target_networks) {
+  let
+    _network;
+  for ( _network of _target_networks ) {
+    if ( ! ( _network in _contracts ) ) {
+      _contracts[
+        _network] =
+        "";
+    }
+  }
+  return _contracts;
+}
+
+function
   _methods_init(
     _methods,
     _target_networks) {
@@ -589,18 +615,33 @@ async function
     _contract_bytecode,
     _contract_compiler_output,
     _contract_method,
-    _method_args) {
+    _method_args,
+    _output_file) {
   let
+    _contracts,
     _msg,
     _methods,
     _method,
     _network,
     _out,
     _value;
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  _contracts =
+    {};
   _methods =
     {};
   _target_networks =
     _target_networks_check(
+      _target_networks);
+  _contracts =
+    _contracts_init(
+      _contracts,
       _target_networks);
   _methods =
     _methods_init(
@@ -641,11 +682,14 @@ async function
         _method_args
       ];
     for ( _network of _target_networks ) {
+      _static_call_args[
+        4] =
+        _network;
       _method =
         _methods[
           _network];
       _static_call_args[
-        3] =
+        7] =
         _method;
       [ _value,
         _method ] =
@@ -657,19 +701,56 @@ async function
     }
   }
   else if ( _call_type == "dynamic" ) {
-  //   _echo(
-  //     "dynamic");
-  //   _out =
-  //     "static";
-  // }
-  // else {
-  //   _msg =
-  //     `Unknown call type ` +
-  //     `'${_call_type}'.`;
-  //   _msg_error(
-  //     _msg,
-  //     0);
-  //   throw _msg;
+    const
+      _contract_run_args = [
+        _retries_max,
+        _call_timeout,
+        _wallet_seed,
+        _wallet_password,
+        _api_key,
+        _price_gas,
+        _msg_value,
+        _measure_unit,
+        "network",
+        _contract_address,
+        _contract_abi,
+        _contract_bytecode,
+        _contract_compiler_output,
+        _contract_method,
+        _method_args
+        _output_file,
+        _quiet
+        _contract,
+        _method
+      ];
+    for ( _network of _target_networks ) {
+      _contract_run_args[
+        8] =
+        _network;
+      _method =
+        _methods[
+          _network];
+      _contract =
+        _contracts[
+          _network];
+      _contract_run_args[
+        17] =
+        _contract;
+      _contract_run_args[
+        18] =
+        _method;
+      [ _value,
+        _method ] =
+        await _contract_call_static.apply(
+          null,
+          _static_call_args);
+      _out.push(
+        _value);
+    }
+    _out =
+      await _contract_run.apply(
+        null,
+        _contract_run_args);
   }
   return _out;
 }
