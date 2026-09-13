@@ -116,6 +116,11 @@ const
   _get =
     _libcrash_module._get;
 /* global
+     _global_get */
+const
+  _global_get =
+    _libcrash_module._global_get;
+/* global
      _homedir_get */
 const
   _homedir_get =
@@ -246,7 +251,9 @@ async function
     _deployments_dir,
     _contract,
     _target_network,
-    _target_network_id) {
+    _target_network_id,
+    _app,
+    _user_defined) {
   let
     _contract_deployments_dir,
     _error_flag,
@@ -256,9 +263,18 @@ async function
     _network_id;
   _error_flag =
     false;
+  _app =
+    _app_check(
+      _app,
+      false);
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
     _deployments_dir_check_args = [
       _deployments_dir,
+      _app,
+      _user_defined
     ];
   try {
     _deployments_dir =
@@ -270,7 +286,7 @@ async function
     _error) {
     _msg =
       "Error checking '_deployments_dir' " +
-      "variable:";
+      "variable in '_network_check' function:";
     _msg_error(
       _msg,
       0);
