@@ -698,8 +698,8 @@ function
         _api_key,
         _compiler_output,
         _abi,
-        _target_app,
-        _target_contract);
+        _app,
+        _contract);
   }
   _override_set(
     "contract",
