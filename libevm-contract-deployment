@@ -1991,7 +1991,8 @@ async function
     _contract_address,
     _deployments_dir,
     _app,
-    _user_defined) {
+    _user_defined,
+    _networks) {
   let
     _contract,
     _contract_address_get,
@@ -2118,19 +2119,44 @@ async function
         0);
       throw _error;
     }
+    const
+      _target_networks_check_args = [
+        _networks,
+        false
+      ];
+    try {
+      _networks =
+        await _target_networks_check.apply(
+          null,
+          _target_networks_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_target_networks_check' " +
+        "with parameters:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _target_networks_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
     _msg =
       "Looking for address " +
       "corresponding to contract " +
       `'${_contract}' for the ` +
       `'${_app}' ` +
-      "libEVM application on network " +
-      `'${_target_networks}' at deployments ` +
+      "libEVM application on networks " +
+      `'${_networks}' at deployments ` +
       `directory '${_deployments_dir}'.`;
     _msg_info(
       _msg);
     _evm_contract_deployment_address_args = [
-      _target_networks_set,      // target networks
-      _target_networks_set,      // target chain ids
+      _networks,                 // target networks
+      _networks,                 // target chain ids
       "n",                       // all networks
       _app,
       _contract,
