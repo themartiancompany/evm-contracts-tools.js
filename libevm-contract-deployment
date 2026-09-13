@@ -2056,6 +2056,7 @@ async function
     _user_defined,
     _networks) {
   let
+    _address_valid,
     _contract,
     _contract_address_get,
     _evm_contract_deployment_address,
@@ -2369,6 +2370,7 @@ async function
 async function
   _target_contract_auto_detect() {
   let
+    _msg,
     _target_contract;
   _target_contract =
     _get(

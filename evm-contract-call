@@ -506,6 +506,18 @@ async function
     throw _error
   }
   try {
+    await _target_contract_auto_detect();
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error auto-detecting target contract.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error
+  }
+  try {
     await _contract_address_auto_detect();
   }
   catch(
