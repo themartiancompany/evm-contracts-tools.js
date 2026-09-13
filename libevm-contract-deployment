@@ -2250,7 +2250,7 @@ async function
     ];
   try {
     _contract =
-      await _target_contract_check(
+      await _target_contract_check.apply(
         _target_contract_check_args);
   }
   catch(
