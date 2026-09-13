@@ -457,9 +457,19 @@ async function
       _contract_get_fun.apply(
         null,
         _contract_get_opts);
-  } catch (e) {
-    console.error(
-      e);
+  } catch (
+    _error) {
+    _msg =
+      "Error running " +
+      `'${_contract_get_fun}' ` +
+      "with parameters:";
+    _msg_info(
+      _msg);
+    _echo2(
+      _contract_get_opts);
+    _echo2(
+      _error);
+    throw _error;
   }
   return _contract;
 }
