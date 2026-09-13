@@ -129,11 +129,23 @@ async function
       0);
     throw _msg;
   }
-  const
-    _deployments =
-      await _default_deployments_dir_get(
-        _app,
-        _deployment_type);
+  try {
+    const
+      _deployments =
+        await _default_deployments_dir_get(
+          _app,
+          _deployment_type);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_default_deployments_dir_get' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
   return _deployments;
 }
 
