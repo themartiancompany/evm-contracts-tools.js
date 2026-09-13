@@ -1969,7 +1969,8 @@ async function
       0);
     throw _msg;
   }
-  else if ( _target_networks_type === "array" ) {
+  else if ( _target_networks_type === "array" ||
+            _target_networks_type === "object" ) {
     if ( _target_networks.length < 1 ) {
       _msg =
         "Variable '_target_networks' not " +
