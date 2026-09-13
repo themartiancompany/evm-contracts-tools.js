@@ -2221,9 +2221,20 @@ async function
       `directory '${_deployments_dir}'.`;
     _msg_info(
       _msg);
-    _evm_contract_deployment_address =
-      _evm_contract_deployment_address_check(
-        _evm_contract_deployment_address) {
+    try {
+      _evm_contract_deployment_address =
+        await _evm_contract_deployment_address_check(
+          _evm_contract_deployment_address);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_evm_contract_deployment_address_check'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
     const
       _evm_contract_deployment_address_args = [
         _networks,                 // target networks
