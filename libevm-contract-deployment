@@ -1925,10 +1925,15 @@ async function
           _get(
             "target",
             "contract");
+        const
+          _target_contract_check_args = [
+            _contract_address
+	  ];
         try {
-          _target_contract =
-            await _target_contract_check(
-              _contract_address);
+          _contract =
+            await _target_contract_check.apply(
+              null,
+              _target_contract_check_args);
         }
         catch(
           _error) {
@@ -1939,7 +1944,7 @@ async function
             _msg,
             0);
           _echo2(
-            _contract_address);
+            _target_contract_check_args);
           _echo2(
             _error);
           throw _error;
@@ -1990,7 +1995,7 @@ async function
     _msg =
       "Looking for address " +
       "corresponding to contract " +
-      `'${_target_contract}' for the ` +
+      `'${_contract}' for the ` +
       `'${_app}' ` +
       "libEVM application on network " +
       `'${_target_networks}' at deployments ` +
@@ -2002,7 +2007,7 @@ async function
       _target_networks_set,      // target chain ids
       "n",                       // all networks
       _app,
-      _target_contract,
+      _contract,
       "",                        // contract version
       "n",                       // user-level
       "",                        // configuration format
@@ -2040,10 +2045,14 @@ async function
     _target_contract,
     _contract_address,
     _target_app,
-    _deployments_dir) {
+    _deployments_dir,
+    _user_defined) {
   let
     _msg,
     _target_contract_get;
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
     _target_contract_type =
       typeof(
