@@ -1644,7 +1644,8 @@ async function
 
 async function
   _contract_address_check(
-    _contract_address) {
+    _contract_address,
+    _deployments_dir) {
   let
     _contract,
     _contract_address_get;
@@ -1717,6 +1718,21 @@ async function
     throw _msg;
   }
   if ( _contract_address_get ) {
+    try {
+      _deployments_dir =
+        await _deployments_dir_check(
+          _deployments_dir);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error checking variable " +
+        "'_deployments_dir'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
     _msg =
       "Looking for address " +
       "corresponding to contract " +
@@ -1829,13 +1845,13 @@ export {
   _config_file_path_check,
   _configuration_format_auto_detect,
   _configuration_format_get,
+  _contract_address_check,
   _contract_version_auto_detect,
   _deployments_dir_auto_detect,
   _deployments_dir_check,
   _network_check,
   _networks_all_auto_detect,
   _target_app_auto_detect,
-  _target_address_check,
   _target_contract_check,
   _user_deployments_check,
   _user_defined_check,
