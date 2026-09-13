@@ -640,9 +640,9 @@ function
   let
     _abi,
     _abi_retrieve,
-    _contract_get;
+    _contract;
   const
-    _contract =
+    _app =
       _get(
         "target",
         "app");
