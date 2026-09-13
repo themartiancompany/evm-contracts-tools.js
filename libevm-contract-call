@@ -739,6 +739,10 @@ async function
     }
     else if ( 1 == _networks.length ) {
       const
+        _network =
+          _networks[
+            0];
+      const
         _contract_abi_get_args = [
           _network,
           _address,

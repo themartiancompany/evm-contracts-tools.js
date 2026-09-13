@@ -171,6 +171,62 @@ const
 /* global
      _evm_contract_deployment_versions */
 
+function
+  _configuration_format_check(
+    _configuration_format) {
+  let
+    _msg;
+  const
+    _configuration_format_type =
+      typeof(
+        _configuration_format);
+  if ( _configuration_format_type === "undefined" ) {
+    _msg =
+      "Configuration format not set, " +
+      "setting default (bash).";
+    _msg_info(
+      _msg);
+    _configuration_format =
+      "bash";
+  }
+  else if ( _configuration_format_type === "string" ) {
+    if ( _configuration_format.length < 1 ) {
+      _msg =
+        "Configuration format not set, " +
+        "setting default (bash).";
+      _msg_info(
+        _msg);
+      _configuration_format =
+        "bash";
+    }
+    else {
+      _msg =
+        "Setting configuration format " +
+        `'${_configuration_format}'.`;
+    }
+  }
+  else {
+    _msg =
+      "Type of variable " +
+      "'configuration format' must be string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _configuration_format !== "bash" &&
+       _configuration_format !== "json" ) {
+    _msg =
+      "Unknown configuration format " +
+      `'${_configuration_format}'.`
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  return _configuration_format;
+}
+
 async function
   _network_check(
     _deployments,
@@ -421,6 +477,83 @@ async function
   }
 }
 
+function
+  _user_defined_check(
+    _user_defined) {
+  let
+    _msg;
+  const
+    _user_defined_type =
+      const
+        typeof(
+          _user_defined);
+  if ( _user_defined_type === "undefined" ) {
+    _msg =
+      "Variable '_user_defined' undefined, " +
+      "setting default value 'n'.";
+    _msg_info(
+      _msg);
+    _user_defined =
+      "n";
+  }
+  else if ( _user_defined_type === "string" ) {
+    if ( _user_defined.length < 1 ) {
+      _msg =
+        "Variable '_user_defined' not set, " +
+        "setting default value 'n'.";
+      _msg_info(
+        _msg);
+      _user_defined =
+        "n";
+    }
+    else {
+      _msg =
+        "Variable '_user_defined' can have " +
+        "value 'y' or 'n'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  else {
+    _msg =
+      "Variable '_user_defined' must be of type " +
+      "string and have value 'y' or 'n'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  return _user_defined;
+}
+
+async function
+  _deployments_dir_check(
+    _deployments_dir,
+    _app,
+    _user_defined) {
+  try {
+    _user_defined =
+      _user_defined_check(
+      );
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error checking '_user_defined' " +
+      "variable:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _user_defined);
+    _echo2(
+      _error);
+    throw _error;
+  }
+}
+
 async function
   _deployments_dir_auto_detect() {
   let
@@ -471,6 +604,120 @@ async function
     "deployments",
     "dir",
     _deployments);
+}
+
+function
+  _app_check(
+    _app,
+    _local) {
+  let
+    _undefined_flag,
+    _msg;
+  const
+    _local_type =
+      typeof(
+        _local);
+  if ( _local_type === "undefined" ) {
+    _msg =
+      "Local not specified, setting default " +
+      "value 'false'.";
+    _local =
+      true;
+  }
+  else if ( _local_type !== "boolean" ) {
+    _msg =
+      "Variable '_local' must be a boolean.";
+    _msg_error(
+      _msg,
+      0);
+  }
+  const
+    _app_type =
+      typeof(
+        _app);
+  if ( _app_type == "undefined" ) {
+    _msg =
+      "No application specified.";
+    _undefined_flag =
+      true;
+  }
+  if ( _app_type == "string" ) {
+    if ( _app.length < 1 ) {
+      _msg =
+        "No application specified.";
+      _undefined_flag =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "Application argument must be of " +
+      "type string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _undefined_flag ) {
+    if ( _local ) {
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+    else {
+      _msg =
+        "Local option disabled, " +
+        "getting '_app' variable from " +
+        "global variable 'target_app'.";
+      _msg_info(
+        _msg);
+      const
+        _global =
+          _global_get();
+      const
+        _target_app =
+          _get(
+            "target",
+            "app");
+      const
+        _target_app_type =
+          typeof(
+            _target_app);
+      if ( _target_app_type === "string" ) {
+        if ( 0 < _target_app.length ) {
+          _msg =
+            "Getting '_app' variable value from " +
+            "global variable 'target_app'.";
+          _msg_info(
+            _msg);
+          _app =
+            _target_app;
+        }
+        else {
+          _msg =
+            "Error while auto-detecting '_app' variable " +
+            "value, global variable 'target_app' " +
+            "also not set.";
+          _msg_error(
+            _msg,
+            0);
+          throw _msg;
+        }
+      }
+      else {
+        _msg =
+          "Global variable 'target_app' has " +
+          "the wrong type for the local " +
+          `variable '_app' ('${_target_app_variable}')`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+  }
+  return _app;
 }
 
 async function
@@ -744,6 +991,7 @@ export {
   _networks_all_auto_detect,
   _target_app_auto_detect,
   _user_deployments_check,
+  _user_defined_check,
 };
 
 // module.exports = {
@@ -763,4 +1011,6 @@ export {
 //     _target_app_auto_detect,
 //   _user_deployments_check:
 //     _user_deployments_check,
+//   _user_defined_check:
+//     _user_defined_check,
 // };
