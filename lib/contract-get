@@ -379,6 +379,7 @@ async function
   let
     _api_key,
     _contract,
+    _contract_get_fun,
     _contract_get_opts,
     _network_provider,
     _wallet,
