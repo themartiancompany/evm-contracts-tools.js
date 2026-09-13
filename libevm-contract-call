@@ -165,6 +165,11 @@ const
   _deployments_dir_auto_detect =
     _libevm_contract_deployment_module._deployments_dir_auto_detect;
 /* global
+     _target_contract_auto_detect */
+const
+  _target_contract_auto_detect =
+    _libevm_contract_deployment_module._target_contract_auto_detect;
+/* global
      _target_contract_check */
 const
   _target_contract_check =

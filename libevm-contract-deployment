@@ -2004,6 +2004,7 @@ export {
   _network_check,
   _networks_all_auto_detect,
   _target_app_auto_detect,
+  _target_contract_auto_detect,
   _target_contract_check,
   _user_deployments_check,
   _user_defined_check,
@@ -2034,6 +2035,8 @@ export {
 //     _networks_all_auto_detect,
 //   _target_app_auto_detect:
 //     _target_app_auto_detect,
+//   _target_contract_auto_detect:
+//     _target_contract_auto_detect,
 //   _target_contract_check:
 //     _target_contract_check,
 //   _contract_address_check:
