@@ -782,7 +782,7 @@ function
     _undefined_flag =
       true;
   }
-  if ( _app_type == "string" ) {
+  else if ( _app_type == "string" ) {
     if ( _app.length < 1 ) {
       _msg =
         "No application specified.";
@@ -793,7 +793,7 @@ function
   else {
     _msg =
       "Application argument must be of " +
-      "type string.";
+      `type string (current type: '${_app_type}').`;
     _msg_error(
       _msg,
       0);
