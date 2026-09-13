@@ -1944,7 +1944,8 @@ async function
       _target_networks_type =
         typeof(
           _target_networks);
-      if ( _target_networks_type === "array" ) {
+      if ( _target_networks_type === "array" ||
+           _target_networks_type === "object" ) {
         if ( _target_networks.length < 1 ) {
           _msg =
             "Global variable 'target_networks' " +
@@ -1975,10 +1976,12 @@ async function
       else {
         _msg =
           `Unknown type '${_target_networks_type}' for` +
-          "global variable 'target_networks'.";
+          "global variable 'target_networks':";
         _msg_error(
           _msg,
           0);
+        _echo2(
+          _target_networks);
         throw _msg;
       }
     }
@@ -2055,7 +2058,7 @@ async function
         const
           _target_contract_check_args = [
             _contract_address
-	  ];
+          ];
         try {
           _contract =
             await _target_contract_check.apply(
@@ -2075,7 +2078,7 @@ async function
           _echo2(
             _error);
           throw _error;
-	}
+        }
       }
     }
   }
@@ -2140,6 +2143,34 @@ async function
         0);
       _echo2(
         _target_networks_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    _contract =
+      _get(
+        "target",
+        "contract");
+    const
+      _target_contract_check_args = [
+        _contract_address
+      ];
+    try {
+      _contract =
+        await _target_contract_check.apply(
+          null,
+          _target_contract_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_target_contract_check' " +
+        `with parameters:`;
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _target_contract_check_args);
       _echo2(
         _error);
       throw _error;
