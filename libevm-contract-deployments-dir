@@ -55,120 +55,15 @@ const
 const
   _msg_error =
     _libcrash_module._msg_error;
-
-function
-  _app_check(
-    _app,
-    _local) {
-  let
-    _undefined_flag,
-    _msg;
-  const
-    _local_type =
-      typeof(
-        _local);
-  if ( _local_type === "undefined" ) {
-    _msg =
-      "Local not specified, setting default " +
-      "value 'false'.";
-    _local =
-      true;
-  }
-  else if ( _local_type !== "boolean" ) {
-    _msg =
-      "Variable '_local' must be a boolean.";
-    _msg_error(
-      _msg,
-      0);
-  }
-  const
-    _app_type =
-      typeof(
-        _app);
-  if ( _app_type == "undefined" ) {
-    _msg =
-      "No application specified.";
-    _undefined_flag =
-      true;
-  }
-  if ( _app_type == "string" ) {
-    if ( _app.length < 1 ) {
-      _msg =
-        "No application specified.";
-      _undefined_flag =
-        true;
-    }
-  }
-  else {
-    _msg =
-      "Application argument must be of " +
-      "type string.";
-    _msg_error(
-      _msg,
-      0);
-    throw _msg;
-  }
-  if ( _undefined_flag ) {
-    if ( _local ) {
-      _msg_error(
-        _msg,
-        0);
-      throw _msg;
-    }
-    else {
-      _msg =
-        "Local option disabled, " +
-        "getting '_app' variable from " +
-        "global variable 'target_app'.";
-      _msg_info(
-        _msg);
-      const
-        _global =
-          _global_get();
-      const
-        _target_app =
-          _get(
-            "target",
-            "app");
-      const
-        _target_app_type =
-          typeof(
-            _target_app);
-      if ( _target_app_type === "string" ) {
-        if ( 0 < _target_app.length ) {
-          _msg =
-            "Getting '_app' variable value from " +
-            "global variable 'target_app'.";
-          _msg_info(
-            _msg);
-          _app =
-            _target_app;
-        }
-        else {
-          _msg =
-            "Error while auto-detecting '_app' variable " +
-            "value, global variable 'target_app' " +
-            "also not set.";
-          _msg_error(
-            _msg,
-            0);
-          throw _msg;
-        }
-      }
-      else {
-        _msg =
-          "Global variable 'target_app' has " +
-          "the wrong type for the local " +
-          `variable '_app' ('${_target_app_variable}')`;
-        _msg_error(
-          _msg,
-          0);
-        throw _msg;
-      }
-    }
-  }
-  return _app;
-}
+const
+  _libevm_contract_deployment_module =
+    await import(
+      "./libevm-contract-deployment");
+/* global
+     _app_check */
+const
+  _app_check =
+    _libevm_contract_deployment_module._app_check;
 
 async function
   _default_deployments_dir_get(

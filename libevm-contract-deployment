@@ -983,6 +983,7 @@ function
 }
 
 export {
+  _app_check,
   _configuration_format_auto_detect,
   _configuration_format_get,
   _contract_version_auto_detect,
@@ -995,6 +996,8 @@ export {
 };
 
 // module.exports = {
+//   _app_check:
+//     _app_check,
 //   _configuration_format_auto_detect:
 //     _configuration_format_auto_detect,
 //   _configuration_format_get:
