@@ -604,13 +604,33 @@ function
         "abi");
     if ( ! _file_exists(
              _abi_target) ) {
-      if ( _target_app !== "" &&
-           _target_contract !== "" ) {
+      if ( _app !== "" &&
+           _contract !== "" ) {
         _msg =
           `Getting LibEVM app '${_app}' ` +
           `ABI for contract '${_contract}'.`;
         _msg_info(
           _msg);
+        const
+          _evm_contract_deployment_abi_args = [
+
+	  ];
+        try {
+          _abi =
+            _evm_contract_deployment_abi.apply(
+              null,
+              _evm_contract_deployment_abi_args);
+	}
+        catch(
+          _error) {
+          _msg =
+            `Error retrieving LibEVM app '${_app}' ` +
+            `ABI for contract '${_contract}'.`;
+          _msg_error(
+            _msg,
+            0);
+          throw _error);
+	}
       }
     }
   }
