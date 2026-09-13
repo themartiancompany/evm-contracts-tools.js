@@ -1468,11 +1468,12 @@ function
   return _configuration_format;
 }
 
-function
+async function
   _configuration_format_auto_detect() {
   let
     _config_file_path,
-    _configuration_format;
+    _configuration_format,
+    _msg;
   _configuration_format =
     _get(
       "configuration",
@@ -1578,7 +1579,7 @@ async function
     _evm_contract_deployment_versions =
       _get(
         "_evm_contract_deployment",
-        "versions"
+        "versions");
     try {
       const
         _libevm_contract_deployment_versions_module =
@@ -1604,7 +1605,7 @@ async function
         _config_file,
         _display_highest,
         _display_lowest,
-        _configuration_format) {
+        _configuration_format
       ];
     try {
       _version =
@@ -1758,6 +1759,10 @@ async function
       typeof(
         _target_contract); 
   if ( _target_contract_type === "undefined" ) {
+    _msg =
+      "Target contract undefined, auto-detecting.";
+    _msg_info(
+      _msg);
     _target_contract_get =
       true;
   }
@@ -1765,8 +1770,8 @@ async function
     if ( _target_contract.length < 1 ) {
       _msg =
         "Target contract not set, auto-detecting.";
-      _msg_error(
-        _msg,
+      _msg_info(
+        _msg);
       _target_contract_get =
         true;
     }
