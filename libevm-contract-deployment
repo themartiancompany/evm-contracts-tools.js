@@ -2195,7 +2195,13 @@ async function
 }
 
 async function
-  _contract_abi_auto_detect() {
+  _contract_abi_auto_detect(
+    _app,
+    _contract,
+    _networks,
+    _address,
+    _deployments_dir,
+    _user_defined) {
   let
     _abi,
     _abi_retrieve,
@@ -2207,26 +2213,85 @@ async function
     _quiet =
       _global[
         "quiet"];
+  _app =
+    _app_check(
+      _app,
+      false);
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
-    _app =
-      _get(
-        "target",
-        "app");
+    _deployments_dir_check_args = [
+      _deployments_dir,
+      _app,
+      _user_defined
+    ];
+  try {
+    _deployments_dir =
+      await _deployments_dir_check.apply(
+        null,
+        _deployments_dir_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_deployments_dir_check'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
   const
+    _target_contract_check_args = [
+      _contract,
+      _address,
+      _app,
+      _deployments_dir
+    ];
+  try {
     _contract =
-      _get(
-        "target",
-        "contract");
+      await _target_contract_check(
+        _target_contract_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_target_contract_check' " +
+      "with parameters:";
+    _echo2(
+      _target_contract_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _networks =
       _get(
         "target",
         "networks");
   const
+    _contract_address_check_args = [
+      _address,
+      _deployments_dir,
+      _app
+    ];
+  try {
     _address =
-      _get(
-        "contract",
-        "address");
+      await _contract_address_check.apply(
+        null,
+        _contract_address_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_contract_address_check' " +
+      "with parameters:";
+    _echo2(
+      _contract_address_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _api_key =
       _get(
