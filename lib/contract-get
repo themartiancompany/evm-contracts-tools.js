@@ -381,6 +381,7 @@ async function
     _contract,
     _contract_get_fun,
     _contract_get_opts,
+    _msg,
     _network_provider,
     _wallet,
     _wallet_get_opts,
@@ -441,14 +442,14 @@ async function
       _contract_get_compiler_output;
   }
   else if ( _contract_bytecode_path == "" && 
-	    _contract_abi_path != "" ) {
+            _contract_abi_path != "" ) {
     _contract_get_opts.push(
       _contract_abi_path);
     _contract_get_fun =
       _contract_get_abi;
   }
   else if ( _contract_bytecode_path == "" &&
-	    _contract_abi_path == "" &&
+            _contract_abi_path == "" &&
             _contract_compiler_output_path == "" ) {
     _msg_error_no_input_data();
   }
