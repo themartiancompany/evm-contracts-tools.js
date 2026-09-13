@@ -229,7 +229,7 @@ function
 
 async function
   _network_check(
-    _deployments,
+    _deployments_dir,
     _contract,
     _target_network,
     _target_network_id) {
@@ -240,35 +240,42 @@ async function
     _evm_chains_info_args,
     _msg,
     _network_id;
+  _error_flag =
+    false;
+  const
+    _deployments_dir_check_args = [
+    ];
+  
   _msg =
     "Network check for deployments " +
-    `'${_deployments}', contract '${_contract}', ` +
+    `'${_deployments_dir}', contract '${_contract}', ` +
     `network '${_target_network}' and network with ID ` +
     `'${_target_network_id}'.`;
   _msg_info(
     _msg);
   _evm_contract_deployment_networks =
     _get(
-      "_evm_contract",
-      "deployment_networks");
-  const
-    _evm_contract_deployment_networks_type =
-      typeof(
-        _evm_contract_deployment_networks_dir);
-  if ( _evm_contract_deployment_networks_type == "undefined" ||
-       _evm_contract_deployment_networks == "" ) {
-    const
-      _libevm_contract_deployment_networks_module =
-        await import(
-          "./libevm-contract-deployment-networks");
-      _evm_contract_deployment_networks =
-        _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
+      "_evm_contract_deployment",
+      "networks");
+  try {
+    _evm_contract_deployment_networks =
+      await _evm_contract_deployment_networks_check(
+        _evm_contract_deployment_networks);
   }
-  _error_flag =
-    false;
+  catch(
+    _error) {
+    _msg =
+      "Error importing '_evm_contract_deployment_networks'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   _contract_deployments_path =
     _path_join( [
-      _deployments,
+      _deployments_dir,
       _contract ]);
   const
     _evm_contract_deployment_networks_args = [
@@ -277,11 +284,27 @@ async function
       "n",                  // Display safest
       "n"                   // Display cheapest
     ];
-  const
-    _networks =
-      await _evm_contract_deployment_networks.apply(
-        null,
-        _evm_contract_deployment_networks_args);
+  try {
+    const
+      _networks =
+        await _evm_contract_deployment_networks.apply(
+          null,
+          _evm_contract_deployment_networks_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_evm_contract_deployment_networks' " +
+      `with parameters:`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _evm_contract_deployment_networks_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
   if ( _target_network_id != "" ) {
     if ( ! _networks.includes(
              _target_network_id) ) {
@@ -400,7 +423,7 @@ async function
   }
   _msg =
     "Network check for deployments " +
-    `'${_deployments}', contract '${_contract}', ` +
+    `'${_deployments_dir}', contract '${_contract}', ` +
     `network '${_target_network}' and network with ID ` +
     `'${_target_network_id}' completed.`;
   _msg_info(
@@ -488,9 +511,8 @@ function
     _msg;
   const
     _user_defined_type =
-      const
-        typeof(
-          _user_defined);
+      typeof(
+        _user_defined);
   if ( _user_defined_type === "undefined" ) {
     _msg =
       "Variable '_user_defined' undefined, " +
@@ -539,9 +561,8 @@ function
     _msg;
   const
     _user_level_type =
-      const
-        typeof(
-          _user_level);
+      typeof(
+        _user_level);
   if ( _user_level_type === "undefined" ) {
     _msg =
       "Variable '_user_level' undefined, " +
@@ -667,7 +688,7 @@ async function
     _user_defined =
       _get(
         "user",
-        "defined";
+        "defined");
     _user_defined =
       _user_defined_check(
         _user_defined);
@@ -821,7 +842,8 @@ async function
   let
     _config,
     _config_ext,
-    _deployments,
+    _contract,
+    _deployments_dir,
     _evm_contracts_deployment_versions,
     _found,
     _net,
@@ -832,9 +854,14 @@ async function
     _msg;
   _networks =
     [];
-  const
-    _contract =
-      target_contract;
+  _contract =
+    _get(
+      "target",
+      "contract");
+  _deployments_dir =
+    _get(
+      "deployments",
+      "dir");
   _found =
     false;
   if ( configuration_format == "bash" ) {
@@ -854,9 +881,9 @@ async function
     const
       _deployments_dir_type =
         typeof(
-          deployments_dir);
-    if ( _deployments_dir_type != "undefined" &&
-         deployments_dir != "" ) {
+          _deployments_dir);
+    if ( _deployments_dir_type !== "undefined" &&
+         deployments_dir !== "" ) {
       _deployments =
         deployments_dir;
       if ( 0 < target_networks.length ) {
@@ -930,8 +957,13 @@ async function
             "./libevm-contract-deployment-versions");
       _evm_contract_deployment_versions =
         _get(
-          "_evm_contract",
-          "deployment_versions");
+          "_evm_contract_deployment",
+          "versions");
+      try {
+        _evm_contract_deployment_versions =
+          _evm_contract_deployment_versions_check(
+            await _evm_contract_deployment_versions);
+      }
       const
         _evm_contract_deployment_versions_type =
           typeof(
@@ -1111,6 +1143,65 @@ async function
     }
   }
   return _evm_contract_deployment_versions;
+}
+
+async function
+  _evm_contract_deployment_networks_check(
+    _evm_contract_deployment_networks) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployment_networks_type =
+      typeof(
+        _evm_contract_deployment_networks);
+  if ( _evm_contract_deployment_networks_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployment_networks' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployment_networks_type === "string" ) {
+    if ( _evm_contract_deployment_networks.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployment_networks' " +
+        "undefined, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployment_networks' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployment_networks_module =
+          await import(
+            "./libevm-contract-deployment-networks");
+        _evm_contract_deployment_networks =
+          _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployment-networks'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployment_networks;
 }
 
 async function
@@ -1491,6 +1582,10 @@ async function
       true;
   }
   if ( _version_get ) {
+    _evm_contract_deployment_versions =
+      _get(
+        "_evm_contract_deployment",
+        "versions"
     try {
       const
         _libevm_contract_deployment_versions_module =
@@ -1535,6 +1630,185 @@ async function
   return _version;
 }
 
+async function
+  _contract_address_check(
+    _contract_address) {
+  let
+    _contract,
+    _contract_address_get;
+  _contract_address_get =
+    false;
+  const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type === "undefined" ) {
+    _msg =
+      "Contract address not set, " +
+      "auto-detecting given input data.";
+    _msg_info(
+      _msg);
+    _contract_address_get =
+      true;
+  }
+  else if ( _contract_address_type === "string" ) {
+    if ( _contract_address.length < 1 ) {
+      _msg =
+        "Contract address not set, " +
+        "auto-detecting given input data.";
+      _msg_info(
+        _msg);
+      _contract_address_get =
+        true;
+    }
+    else {
+      try {
+        const
+          _address_valid =
+            await _address_check(
+              _contract_address);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error verifying validity of " +
+          `address '${_contract_address}'.`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+      if ( ! _address_valid ) {
+        _msg =
+          "Address not valid, getting " +
+          "contract address.";
+        _contract_address_get =
+          true;
+        _contract =
+          _get(
+            "target",
+            "contract");
+        _target_contract =
+          _target_contract_check(
+            _contract_address);
+      }
+    }
+  }
+  else {
+    _msg =
+      "Invalid type for variable " +
+      `'_contract_address' (${_contract_address_type}):`;
+    _msg_info(
+      _msg);
+    _echo2(
+      _contract_address);
+    throw _msg;
+  }
+  if ( _contract_address_get ) {
+    _msg =
+      "Looking for address " +
+      "corresponding to contract " +
+      `'${_target_contract}' for the ` +
+      `'${_target_app}' ` +
+      "libEVM application on network " +
+      `'${_target_networks}' at deployments ` +
+      `directory '${_deployments_dir}'.`;
+    _msg_info(
+      _msg);
+    _evm_contract_deployment_address_args = [
+      _target_networks_set,      // target networks
+      _target_networks_set,      // target chain ids
+      "n",                       // all networks
+      _target_app,
+      _target_contract,
+      "",                        // contract version
+      "n",                       // user-level
+      "",                        // configuration format
+      _deployments_dir
+    ];
+    try {
+      _contract_addresses =
+        await _evm_contract_deployment_address.apply(
+          null,
+          _evm_contract_deployment_address_args);
+      _contract_address =
+        _contract_addresses[
+          0];
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error while looking for contract " +
+        "address from local libEVM applications " +
+        "deployments directories.";
+      _msg_error(
+        _msg,
+        0);
+      _msg_error(
+        _error,
+        0);
+      throw _error;
+    }
+
+  }
+  return _contract_address;
+}
+
+async function
+  _target_contract_check(
+    _target_contract,
+    _contract_address) {
+  let
+    _target_contract_get;
+  const
+    _target_contract_type =
+      typeof(
+        _target_contract); 
+  if ( _target_contract_type === "undefined" ) {
+    _target_contract_get =
+      true;
+  }
+  else if ( _target_contract_type === "string" ) {
+    if ( _target_contract.length < 1 ) {
+      _msg =
+        "Target contract not set, auto-detecting.";
+      _msg_error(
+        _msg,
+      _target_contract_get =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "Target contract must have type 'string'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _target_contract_get ) {
+    try {
+      _contract_address =
+        await _contract_address_check(
+         _contract_address);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error auto-detecting target contract name.";
+    }
+    const
+      _address_valid =
+        await _address_check(
+          _contract_address);
+    if ( ! _address_valid ) {
+      _target_contract =
+        _contract_address;
+    }
+  }
+  return _target_contract;
+}
+
 export {
   _app_check,
   _config_file_path_check,
@@ -1546,6 +1820,8 @@ export {
   _network_check,
   _networks_all_auto_detect,
   _target_app_auto_detect,
+  _target_address_check,
+  _target_contract_check,
   _user_deployments_check,
   _user_defined_check,
   _user_level_check,
@@ -1573,6 +1849,10 @@ export {
 //     _networks_all_auto_detect,
 //   _target_app_auto_detect:
 //     _target_app_auto_detect,
+//   _target_contract_check:
+//     _target_contract_check,
+//   _contract_address_check:
+//     _contract_address_check,
 //   _user_deployments_check:
 //     _user_deployments_check,
 //   _user_defined_check:
