@@ -260,7 +260,8 @@ async function
     _evm_contract_deployment_networks,
     _evm_chains_info_args,
     _msg,
-    _network_id;
+    _network_id,
+    _networks;
   _error_flag =
     false;
   _app =
@@ -331,11 +332,10 @@ async function
       "n"                   // Display cheapest
     ];
   try {
-    const
-      _networks =
-        await _evm_contract_deployment_networks.apply(
-          null,
-          _evm_contract_deployment_networks_args);
+    _networks =
+      await _evm_contract_deployment_networks.apply(
+        null,
+        _evm_contract_deployment_networks_args);
   }
   catch(
     _error) {
