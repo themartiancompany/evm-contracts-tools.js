@@ -474,7 +474,8 @@ async function
     _app,
     _contract) {
   let
-    _abi_target;
+    _abi_target,
+    _msg;
   const
     _abi_type =
       typeof(
@@ -668,7 +669,8 @@ async function
   let
     _abi,
     _abi_retrieve,
-    _contract;
+    _contract,
+    _msg;
   const
     _app =
       _get(
@@ -719,15 +721,42 @@ async function
     }
   }
   if ( _abi_retrieve ) {
-    _abi =
-      await _contract_abi_get(
+    const
+      _contract_abi_get_args = [
         _network,
         _address,
         _api_key,
         _compiler_output,
         _abi,
         _app,
-        _contract);
+        _contract
+      ];
+    _msg =
+      "Running '_contract_abi_get' with " +
+      "parameters:";
+    _msg_info(
+      _msg);
+    if ( _quiet == "n" ) {
+      _echo(
+        _contract_abi_get_args);
+    }
+    try {
+      _abi =
+        await _contract_abi_get.apply(
+          null,
+          _contract_abi_get_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_contract_abi_get'.";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
   }
   _override_set(
     "contract",
