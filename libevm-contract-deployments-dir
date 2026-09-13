@@ -64,6 +64,11 @@ const
 const
   _app_check =
     _libevm_contract_deployment_module._app_check;
+/* global
+     _user_level_check */
+const
+  _user_level_check =
+    _libevm_contract_deployment_module._user_level_check;
 
 async function
   _default_deployments_dir_get(
@@ -103,6 +108,9 @@ async function
   _app =
     _app_check(
       _app);
+  _user_level =
+    _user_level_check(
+      _user_level);
   if ( _user_level == "n" ) {
     _deployment_type =
       "system";

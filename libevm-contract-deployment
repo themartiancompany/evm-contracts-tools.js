@@ -528,6 +528,57 @@ function
   return _user_defined;
 }
 
+function
+  _user_level_check(
+    _user_level) {
+  let
+    _msg;
+  const
+    _user_level_type =
+      const
+        typeof(
+          _user_level);
+  if ( _user_level_type === "undefined" ) {
+    _msg =
+      "Variable '_user_level' undefined, " +
+      "setting default value 'n'.";
+    _msg_info(
+      _msg);
+    _user_level =
+      "n";
+  }
+  else if ( _user_level_type === "string" ) {
+    if ( _user_level.length < 1 ) {
+      _msg =
+        "Variable '_user_level' not set, " +
+        "setting default value 'n'.";
+      _msg_info(
+        _msg);
+      _user_level =
+        "n";
+    }
+    else {
+      _msg =
+        "Variable '_user_level' can have " +
+        "value 'y' or 'n'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  else {
+    _msg =
+      "Variable '_user_level' must be of type " +
+      "string and have value 'y' or 'n'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  return _user_level;
+}
+
 async function
   _deployments_dir_check(
     _deployments_dir,
@@ -536,7 +587,7 @@ async function
   try {
     _user_defined =
       _user_defined_check(
-      );
+        _user_defined);
   }
   catch(
     _error) {
@@ -993,6 +1044,7 @@ export {
   _target_app_auto_detect,
   _user_deployments_check,
   _user_defined_check,
+  _user_level_check,
 };
 
 // module.exports = {
@@ -1016,4 +1068,6 @@ export {
 //     _user_deployments_check,
 //   _user_defined_check:
 //     _user_defined_check,
+//   _user_level_check:
+//     _user_level_check,
 // };
