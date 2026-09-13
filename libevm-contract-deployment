@@ -1861,6 +1861,132 @@ async function
 }
 
 async function
+  _target_networks_check(
+    _target_networks,
+    _local) {
+  let
+    _msg,
+    _target_networks_get,
+    _target_networks_type;
+  const
+    _local_type =
+      typeof(
+        _local);
+  if ( _local_type === "undefined" ) {
+    _msg =
+      "Local not specified, setting default " +
+      "value 'false'.";
+    _local =
+      true;
+  }
+  else if ( _local_type !== "boolean" ) {
+    _msg =
+      "Variable '_local' must be a boolean.";
+    _msg_error(
+      _msg,
+      0);
+  }
+  _target_networks_get =
+    false;
+  _target_networks_type =
+    typeof(
+      _target_networks);
+  if ( _target_networks_type === "undefined" ) {
+    _msg =
+      "Variable '_target_networks' undefined, " +
+      "auto-detecting.";
+    _msg_info(
+      _msg);
+    _target_networks_get =
+      true;
+  }
+  else if ( _target_networks_type === "string" ) {
+    _msg =
+      "Variable '_target_networks' must be of type " +
+      "'array'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  else if ( _target_networks_type === "array" ) {
+    if ( _target_networks.length < 1 ) {
+      _msg =
+        "Variable '_target_networks' not " +
+        "specified, auto-detecting.";
+      _msg_info(
+        _msg);
+      _target_networks_get =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "Variable '_target_networks' must be of type " +
+      `'array' (current type: '${_target_networks_type}'):`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _target_networks);
+    throw _msg;
+  }
+  if ( _target_networks_get ) {
+    if ( _local ) {
+      true;
+      // _networks_check
+    }
+    else {
+      _target_networks =
+        _get(
+          "target",
+          "networks");
+      _target_networks_type =
+        typeof(
+          _target_networks);
+      if ( _target_networks_type === "array" ) {
+        if ( _target_networks.length < 1 ) {
+          _msg =
+            "Global variable 'target_networks' " +
+            "empty.";
+          _msg_error(
+            _msg,
+            0);
+          throw _msg;
+        }
+        else {
+          _msg =
+            "Variable '_target_networks'." +
+            "set from public global variable " +
+            "'target_networks'.";
+          _msg_info(
+            _msg);
+        }
+      }
+      else if ( _target_networks_type === "undefined" ) {
+        _msg =
+          "Global variable 'target_networks' " +
+          "undefined.";
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+      else {
+        _msg =
+          `Unknown type '${_target_networks_type}' for` +
+          "global variable 'target_networks'.";
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+  }
+  return _target_networks;
+}
+
+async function
   _contract_address_check(
     _contract_address,
     _deployments_dir,
