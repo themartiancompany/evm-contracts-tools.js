@@ -247,12 +247,12 @@ function
 }
 
 async function
-  _contract_abi_get(
+  _contract_abi_check(
+    _abi,
     _network,
     _address,
     _api_key,
     _compiler_output,
-    _abi,
     _app,
     _contract) {
   let
@@ -2338,37 +2338,40 @@ async function
           _networks[
             0];
       const
-        _contract_abi_get_args = [
+        _contract_abi_check_args = [
+          _abi,
           _network,
           _address,
           _api_key,
           _compiler_output,
-          _abi,
           _app,
           _contract
         ];
       _msg =
-        "Running '_contract_abi_get' with " +
+        "Running '_contract_abi_check' with " +
         "parameters:";
       _msg_info(
         _msg);
       if ( _quiet == "n" ) {
         _echo(
-          _contract_abi_get_args);
+          _contract_abi_check_args);
       }
       try {
         _abi =
-          await _contract_abi_get.apply(
+          await _contract_abi_check.apply(
             null,
-            _contract_abi_get_args);
+            _contract_abi_check_args);
       }
       catch(
         _error) {
         _msg =
-          "Error running '_contract_abi_get'.";
+          "Error running '_contract_abi_get' with " +
+          "parameters:";
         _msg_error(
           _msg,
           0);
+        _echo2(
+          _contract_abi_check_args);
         _echo2(
           _error);
         throw _error;
@@ -2390,8 +2393,6 @@ async function
     "abi",
     _abi);
 }
-
-
 
 export {
   _app_check,
