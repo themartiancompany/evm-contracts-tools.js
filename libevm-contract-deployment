@@ -541,7 +541,8 @@ async function
     if ( ! _networks.includes(
              _target_network_id) ) {
       _msg =
-        "The contract does not result deployed on " +
+        `The contract '${_contract}' ` +
+        `does not result deployed on ` +
         `network with id '${_target_network_id}'.`;
       _error_flag =
         true;
@@ -2208,10 +2209,10 @@ async function
         _error);
       throw _error;
     }
-    _contract =
-      _get(
-        "target",
-        "contract");
+    // _contract =
+    //   _get(
+    //     "target",
+    //     "contract");
     _msg =
       "Looking for address " +
       "corresponding to contract " +
@@ -2249,10 +2250,11 @@ async function
         _deployments_dir
       ];
     try {
-      _contract_addresses =
-        await _evm_contract_deployment_address.apply(
-          null,
-          _evm_contract_deployment_address_args);
+      const
+        _contract_addresses =
+          await _evm_contract_deployment_address.apply(
+            null,
+            _evm_contract_deployment_address_args);
       _contract_address =
         _contract_addresses[
           0];
@@ -2330,7 +2332,7 @@ async function
         await _deployments_dir_check(
          _contract_address,
          _deployments_dir,
-	 _target_app);
+         _target_app);
     }
     catch(
       _error) {
@@ -2370,6 +2372,7 @@ async function
 async function
   _target_contract_auto_detect() {
   let
+    _contract_address,
     _msg,
     _target_contract;
   _target_contract =
@@ -2386,11 +2389,10 @@ async function
       _get(
         "deployments",
         "dir");
-  const
-    _contract_address =
-      _get(
-        "contract",
-        "address");
+  _contract_address =
+    _get(
+      "contract",
+      "address");
   const
     _contract_address_check_args = [
       _contract_address,
