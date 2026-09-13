@@ -1313,6 +1313,7 @@ async function
       _msg);
     _config_file_get =
       true;
+  }
   else if ( _config_file_path_type == "string" ) {
     if ( _config_file_path.length < 1 ) {
     _msg =
