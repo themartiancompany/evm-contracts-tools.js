@@ -1481,20 +1481,32 @@ async function
         _get(
           "target",
           "contract");
+      const
+        _target_contract_check_args = [
+          _target_contract,
+          _contract_address,
+          _target_app,
+          _deployments_dir);
+	];
       try {
         _target_contract =
-          await _target_contract_check(
-            _target_contract);
+          await _target_contract_check.apply(
+            null,
+            _target_contract_check_args);
       }
       catch(
         _error) {
         _msg =
           "Error running '_target_contract_check' " +
-          `with parameter '${_target_contract}'.`;
+          `with parameters:`;
         _msg_error(
           _msg,
           0);
-        throw _msg;
+        _echo2(
+          _target_contract_check_args);
+        _echo2(
+          _error);
+        throw _error;
       }
       if ( _target_app != "" &&
            0 < _target_networks.length &&
