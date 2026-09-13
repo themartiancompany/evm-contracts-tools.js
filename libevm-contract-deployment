@@ -1645,7 +1645,8 @@ async function
 async function
   _contract_address_check(
     _contract_address,
-    _deployments_dir) {
+    _deployments_dir,
+    _app) {
   let
     _contract,
     _contract_address_get;
@@ -1718,10 +1719,21 @@ async function
     throw _msg;
   }
   if ( _contract_address_get ) {
+    _app =
+      _app_check(
+        _app,
+        false);
+    const
+      _deployments_dir_check_args = [
+        _deployments_dir,
+        _app,
+        _user_defined
+      ];
     try {
       _deployments_dir =
-        await _deployments_dir_check(
-          _deployments_dir);
+        await _deployments_dir_check.apply(
+          null,
+          _deployments_dir_check_args);
     }
     catch(
       _error) {
@@ -1737,7 +1749,7 @@ async function
       "Looking for address " +
       "corresponding to contract " +
       `'${_target_contract}' for the ` +
-      `'${_target_app}' ` +
+      `'${_app}' ` +
       "libEVM application on network " +
       `'${_target_networks}' at deployments ` +
       `directory '${_deployments_dir}'.`;
@@ -1747,7 +1759,7 @@ async function
       _target_networks_set,      // target networks
       _target_networks_set,      // target chain ids
       "n",                       // all networks
-      _target_app,
+      _app,
       _target_contract,
       "",                        // contract version
       "n",                       // user-level
