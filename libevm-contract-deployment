@@ -2411,6 +2411,7 @@ export {
   _configuration_format_auto_detect,
   _configuration_format_check,
   _configuration_format_get,
+  _contract_abi_auto_detect,
   _contract_address_check,
   _contract_version_auto_detect,
   _deployments_dir_auto_detect,
