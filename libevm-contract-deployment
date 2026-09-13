@@ -1864,12 +1864,17 @@ async function
   _contract_address_check(
     _contract_address,
     _deployments_dir,
-    _app) {
+    _app,
+    _user_defined) {
   let
     _contract,
-    _contract_address_get;
+    _contract_address_get,
+    _msg;
   _contract_address_get =
     false;
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
     _contract_address_type =
       typeof(
@@ -1924,7 +1929,7 @@ async function
           _target_contract =
             await _target_contract_check(
               _contract_address);
-	}
+        }
         catch(
           _error) {
           _msg =
@@ -2088,12 +2093,18 @@ async function
       _msg =
         "Error auto-detecting target contract name.";
     }
+    const
+      _contract_address_check_args = [
+        _contract_address,
+        _deployments_dir,
+	_target_app,
+        _user_defined
+      ];
     try {
       _contract_address =
-        await _contract_address_check(
-         _contract_address,
-         _deployments_dir,
-	 _target_app);
+        await _contract_address_check.apply(
+          null,
+          _contract_address_check_args);
     }
     catch(
       _error) {
