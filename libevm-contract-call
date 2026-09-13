@@ -464,7 +464,7 @@ function
   true;
 }
 
-function
+async function
   _contract_abi_get(
     _network,
     _address,
@@ -663,7 +663,7 @@ function
   return _abi;
 }
 
-function
+async function
   _contract_abi_auto_detect() {
   let
     _abi,
@@ -720,7 +720,7 @@ function
   }
   if ( _abi_retrieve ) {
     _abi =
-      _contract_abi_get(
+      await _contract_abi_get(
         _network,
         _address,
         _api_key,
