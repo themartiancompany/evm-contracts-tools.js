@@ -2288,9 +2288,6 @@ async function
   let
     _msg,
     _target_contract_get;
-  _user_defined =
-    _user_defined_check(
-      _user_defined);
   const
     _target_contract_type =
       typeof(
@@ -2322,6 +2319,9 @@ async function
     throw _msg;
   }
   if ( _target_contract_get ) {
+    _user_defined =
+      _user_defined_check(
+        _user_defined);
     const
       _deployments_dir_check_args = [
         _deployments_dir,
