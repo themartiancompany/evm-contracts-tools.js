@@ -623,13 +623,13 @@ async function
             "n",                    // user level
             "json",                 // configuration format
             ""
-	  ];
+          ];
         try {
           _abi =
             await _evm_contract_deployment_abi.apply(
               null,
               _evm_contract_deployment_abi_args);
-	}
+        }
         catch(
           _error) {
           _msg =
@@ -639,7 +639,7 @@ async function
             _msg,
             0);
           throw _error;
-	}
+        }
       }
     }
   }
@@ -672,6 +672,13 @@ async function
     _contract,
     _msg;
   const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  const
     _app =
       _get(
         "target",
@@ -681,10 +688,10 @@ async function
       "target",
       "contract");
   const
-    _network =
+    _networks =
       _get(
         "target",
-        "network");
+        "networks");
   const
     _address =
       _get(
@@ -721,40 +728,61 @@ async function
     }
   }
   if ( _abi_retrieve ) {
-    const
-      _contract_abi_get_args = [
-        _network,
-        _address,
-        _api_key,
-        _compiler_output,
-        _abi,
-        _app,
-        _contract
-      ];
-    _msg =
-      "Running '_contract_abi_get' with " +
-      "parameters:";
-    _msg_info(
-      _msg);
-    if ( _quiet == "n" ) {
-      _echo(
-        _contract_abi_get_args);
-    }
-    try {
-      _abi =
-        await _contract_abi_get.apply(
-          null,
-          _contract_abi_get_args);
-    }
-    catch(
-      _error) {
+    if ( 1 < _networks.length ) {
       _msg =
-        "Error running '_contract_abi_get'.";
+        "You can't currently retrieve " +
+        "ABI for more than a contract."
       _msg_error(
         _msg,
         0);
-      _echo2(
-        _error);
+      throw _msg;
+    }
+    else if ( 1 == _networks.length ) {
+      const
+        _contract_abi_get_args = [
+          _network,
+          _address,
+          _api_key,
+          _compiler_output,
+          _abi,
+          _app,
+          _contract
+        ];
+      _msg =
+        "Running '_contract_abi_get' with " +
+        "parameters:";
+      _msg_info(
+        _msg);
+      if ( _quiet == "n" ) {
+        _echo(
+          _contract_abi_get_args);
+      }
+      try {
+        _abi =
+          await _contract_abi_get.apply(
+            null,
+            _contract_abi_get_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_contract_abi_get'.";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _error);
+        throw _error;
+      }
+    }
+    else {
+      _msg =
+        "You must currently select a network " +
+        "to auto-detect the abi for " +
+        "a libevm application contract.";
+      _msg_error(
+        _msg,
+        0);
       throw _error;
     }
   }
