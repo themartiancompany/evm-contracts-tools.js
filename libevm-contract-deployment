@@ -553,7 +553,9 @@ function
       _user_defined =
         "n";
     }
-    else {
+    else if ( _user_defined.length > 1 ||
+              ( _user_defined !== "n" &&
+                _user_defined !== "y" ) ) {
       _msg =
         "Variable '_user_defined' can have " +
         "value 'y' or 'n'.";
