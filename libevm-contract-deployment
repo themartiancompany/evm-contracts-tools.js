@@ -1909,6 +1909,88 @@ async function
   return _target_contract;
 }
 
+async function
+  _target_contract_auto_detect() {
+  let
+    _target_contract;
+  _target_contract =
+    _get(
+      "target",
+      "contract");
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");
+  const
+    _deployments_dir =
+      _get(
+        "deployments",
+        "dir");
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  const
+    _contract_address_check_args = [
+      _contract_address,
+      _deployments_dir,
+      _target_app
+    ];
+  try {
+    _contract_address =
+      await _contract_address_check.apply(
+        null,
+        _contract_address_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_contract_address_check' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _contract_address_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _target_contract_check_args = [
+      _target_contract,
+      _contract_address,
+      _target_app,
+      _deployments_dir
+    ];
+  try {
+    _target_contract =
+      await _target_contract_check.apply(
+        null,
+        _target_contract_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_target_contract_check' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _target_contract_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  _override_set(
+    "target",
+    "contract",
+    _target_contract);
+}
+
 export {
   _app_check,
   _config_file_path_check,

@@ -1393,31 +1393,6 @@ async function
 }
 
 async function
-  _target_contract_auto_detect() {
-  let
-    _target_contract;
-  _target_contract =
-    "";
-  const
-    _contract_address =
-      _get(
-        "contract",
-        "address");
-  const
-    _address_valid =
-      await _address_check(
-        _contract_address);
-  if ( ! _address_valid ) {
-    _target_contract =
-      _contract_address;
-  }
-  _override_set(
-    "target",
-    "contract",
-    _target_contract);
-}
-
-async function
   _contract_address_auto_detect() {
   let
     _contract_address,
