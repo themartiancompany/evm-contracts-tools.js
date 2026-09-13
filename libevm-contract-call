@@ -630,6 +630,7 @@ async function
     _output_file) {
   let
     _contract,
+    _contract_run_args,
     _contracts,
     _msg,
     _method,
@@ -637,6 +638,7 @@ async function
     _network,
     _out,
     _receipt,
+    _static_call_args,
     _tx,
     _value;
   const
@@ -681,30 +683,33 @@ async function
   // _msg_info(
   //   _msg);
   if ( _call_type == "static" ) {
-    const
+    for ( _network of _target_networks ) {
+      _method =
+        _methods[
+          _network];
       _static_call_args = [
         _wallet_seed,
         _retries_max,
         _api_key,
-        "network",
+        _network,
         _contract_abi,
         _contract_bytecode,
         _contract_compiler_output,
-        {},                         // method object
+        _method,
         _contract_address,
         _contract_method,
         _method_args
       ];
-    for ( _network of _target_networks ) {
-      _static_call_args[
-        4] =
-        _network;
-      _method =
-        _methods[
-          _network];
-      _static_call_args[
-        7] =
-        _method;
+      _msg =
+        "Performing static call " +
+        `on network '${_network}' ` +
+        "with arguments:";
+      _msg_info(
+        _msg);
+      if ( _quiet == "n" ) {
+        _echo(
+          _static_call_args);
+      }
       [ _value,
         _method ] =
         await _contract_call_static.apply(
@@ -715,7 +720,13 @@ async function
     }
   }
   else if ( _call_type == "dynamic" ) {
-    const
+    for ( _network of _target_networks ) {
+      _method =
+        _methods[
+          _network];
+      _contract =
+        _contracts[
+          _network];
       _contract_run_args = [
         _retries_max,
         _call_timeout,
@@ -725,7 +736,7 @@ async function
         _price_gas,
         _msg_value,
         _measure_unit,
-        "network",
+        _network,
         _contract_address,
         _contract_abi,
         _contract_bytecode,
@@ -734,25 +745,9 @@ async function
         _method_args,
         _output_file,
         _quiet,
-        {},                         // contract object
-        {}                          // method object
+        _contract,
+        _method
       ];
-    for ( _network of _target_networks ) {
-      _contract_run_args[
-        8] =
-        _network;
-      _method =
-        _methods[
-          _network];
-      _contract =
-        _contracts[
-          _network];
-      _contract_run_args[
-        17] =
-        _contract;
-      _contract_run_args[
-        18] =
-        _method;
       [ _tx,
         _receipt,
         _method,
