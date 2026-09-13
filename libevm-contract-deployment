@@ -2283,7 +2283,8 @@ async function
     _contract_address,
     _target_app,
     _deployments_dir,
-    _user_defined) {
+    _user_defined,
+    _networks) {
   let
     _msg,
     _target_contract_get;
@@ -2321,30 +2322,64 @@ async function
     throw _msg;
   }
   if ( _target_contract_get ) {
+    const
+      _deployments_dir_check_args = [
+        _deployments_dir,
+        _target_app,
+        _user_defined
+      ];
     try {
-      const
-        _deployments_dir_check_args = [
-          _deployments_dir,
-          _target_app,
-          _user_defined
-        ];
       _deployments_dir =
-        await _deployments_dir_check(
-         _contract_address,
-         _deployments_dir,
-         _target_app);
+        await _deployments_dir_check.apply(
+          null,
+          _deployments_dir_check_args);
     }
     catch(
       _error) {
       _msg =
-        "Error auto-detecting target contract name.";
+        "Error running '_deployments_dir_check' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _deployments_dir_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    const
+      _target_networks_check_args = [
+        _networks,
+        false
+      ];
+    try {
+      _networks =
+        await _target_networks_check.apply(
+          null,
+          _target_networks_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_target_networks_check' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _target_networks_check_args);
+      _echo2(
+        _error);
+      throw _error;
     }
     const
       _contract_address_check_args = [
         _contract_address,
         _deployments_dir,
-	_target_app,
-        _user_defined
+        _target_app,
+        _user_defined,
+        _networks
       ];
     try {
       _contract_address =
@@ -2355,7 +2390,16 @@ async function
     catch(
       _error) {
       _msg =
-        "Error auto-detecting target contract name.";
+        "Error running '_contract_address_check' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _contract_address_check_args);
+      _echo2(
+        _error);
+      throw _error;
     }
     const
       _address_valid =
