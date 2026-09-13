@@ -344,7 +344,7 @@ function
       _msg);
     if ( _quiet == "n" ) {
       _echo(
-        _msg);
+        _target_networks);
     }
   }
   else {
