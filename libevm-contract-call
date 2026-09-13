@@ -1486,7 +1486,7 @@ async function
           _target_contract,
           _contract_address,
           _target_app,
-          _deployments_dir);
+          _deployments_dir
 	];
       try {
         _target_contract =
