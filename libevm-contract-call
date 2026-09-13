@@ -613,11 +613,19 @@ function
           _msg);
         const
           _evm_contract_deployment_abi_args = [
-
+            [ _network ] ,
+            [ _network ],
+            "n",
+            _app,
+            _contract,
+            "",                     // version
+            "n",                    // user level
+            "json",                 // configuration format
+            ""
 	  ];
         try {
           _abi =
-            _evm_contract_deployment_abi.apply(
+            await _evm_contract_deployment_abi.apply(
               null,
               _evm_contract_deployment_abi_args);
 	}
@@ -629,7 +637,7 @@ function
           _msg_error(
             _msg,
             0);
-          throw _error);
+          throw _error;
 	}
       }
     }

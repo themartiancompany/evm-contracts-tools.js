@@ -572,12 +572,13 @@ async function
     else if ( _contract_abi_type === "string" ) {
       if ( 0 < _contract_abi.length ) {
         _msg =
-          "Contract ABI:";
-        _msg_error(
-          _msg,
-          0);
-        _echo2(
-          _contract_abi);
+          "Selecting contract ABI:";
+        _msg_info(
+          _msg);
+        if ( _quiet == "n" ) {
+          _echo(
+            _contract_abi);
+	}
       }
       else {
         _msg =
@@ -588,18 +589,19 @@ async function
         _msg_info(
           _msg);
         try {
-          _contract_abi =
-            await _default_artifact_path_get(
-              "abi");
+          await _contract_abi_auto_detect();
+          // _contract_abi =
+          //   await _default_artifact_path_get(
+          //     "abi");
           await _artifact_local_auto_detect(
             "bytecode");
           await _artifact_local_auto_detect(
             "compiler_output");
-          if ( _contract_abi == "" ||
-               _default_artifact_path_get(
-                 "abi") == _contract_abi ) {
-            await _contract_abi_auto_detect();
-          }
+          // if ( _contract_abi == "" ||
+          //      _default_artifact_path_get(
+          //        "abi") == _contract_abi ) {
+          //   await _contract_abi_auto_detect();
+          // }
         }
         catch(
           _error) {
