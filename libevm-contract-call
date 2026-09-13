@@ -156,6 +156,15 @@ const
   _set =
     _libcrash_module._set;
 const
+  _libevm_contract_deployment_module =
+    await import(
+      "./libevm-contract-deployment");
+/* global
+     _deployments_dir_auto_detect */
+const
+  _deployments_dir_auto_detect =
+    _libevm_contract_deployment_module._deployments_dir_auto_detect;
+const
   _evm_contracts_tools_module =
     await import(
       "./evm-contracts-tools");
@@ -1594,6 +1603,7 @@ export {
   _contract_address_auto_detect,
   _data_dir_auto_detect,
   _default_artifact_path_get,
+  _deployments_dir_auto_detect,
   _evm_contract_call,
   _target_app_auto_detect,
   _target_contract_auto_detect,
@@ -1626,6 +1636,8 @@ export {
 //     _data_dir_auto_detect,
 //   _default_artifact_path_get:
 //     _default_artifact_path_get,
+//   _deployments_dir_auto_detect:
+//     _deployments_dir_auto_detect,
 //   _evm_contract_call:
 //     _evm_contract_call,
 //   _target_app_auto_detect:
