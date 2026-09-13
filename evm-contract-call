@@ -407,7 +407,6 @@ async function
     _help_display) {
   let
     _address_valid,
-    _contract_abi,
     _contract_address,
     _msg;
   const
@@ -539,10 +538,11 @@ async function
     "retrieve",
     "n");
   // _api_key_auto_detect();
-  _contract_abi =
-    _get(
-      "contract",
-      "abi");
+  const
+    _contract_abi =
+      _get(
+        "contract",
+        "abi");
   _contract_address =
     _get(
       "contract",
@@ -578,7 +578,7 @@ async function
         if ( _quiet == "n" ) {
           _echo(
             _contract_abi);
-	}
+        }
       }
       else {
         _msg =
