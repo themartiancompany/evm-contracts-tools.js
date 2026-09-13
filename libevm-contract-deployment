@@ -169,12 +169,21 @@ const
 const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
-  /* global
-       _evm_contract_deployments_dir */
+/* global
+     _evm_contract_deployments_dir */
 /* global
      _evm_contract_deployment_networks */
 /* global
      _evm_contract_deployment_versions */
+const
+  _evm_contracts_tools_module =
+    await import(
+      "./evm-contracts-tools");
+/* global
+     _address_check */
+const
+  _address_check =
+    _evm_contracts_tools_module._address_check;
 
 function
   _configuration_format_check(
