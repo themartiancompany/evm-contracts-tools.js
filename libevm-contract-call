@@ -639,17 +639,17 @@ function
   _contract_abi_auto_detect() {
   let
     _abi,
-    _abi_retrieve;
+    _abi_retrieve,
+    _contract_get;
   const
     _contract =
       _get(
         "target",
         "app");
-  const
-    _contract =
-      _get(
-        "target",
-        "contract");
+  _contract =
+    _get(
+      "target",
+      "contract");
   const
     _network =
       _get(
@@ -683,6 +683,7 @@ function
   if ( _abi_type === "undefined" ) {
     _abi_retrieve =
       true;
+  }
   else if ( _abi_type === "string" ) {
     if ( _abi.length < 1 ) {
       _abi_retrieve =
