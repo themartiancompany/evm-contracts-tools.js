@@ -2265,10 +2265,21 @@ async function
     throw _error;
   }
   const
+    _network_type =
+      typeof(
+        _networks);
+  if ( _network_type === "undefined" ) {
     _networks =
       _get(
         "target",
         "networks");
+    _msg =
+      "Variable '_network' undefined, using " +
+      "global variable 'target_networks' " +
+      `('${_networks}')`;
+    _msg_info(
+      _msg);
+  }
   const
     _contract_address_check_args = [
       _address,
