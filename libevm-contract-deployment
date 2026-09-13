@@ -91,6 +91,11 @@ const
   _echo =
     _libcrash_module._echo;
 /* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash_module._echo2;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -234,7 +239,7 @@ async function
     _target_network,
     _target_network_id) {
   let
-    _contract_deployments_path,
+    _contract_deployments_dir,
     _error_flag,
     _evm_contract_deployment_networks,
     _evm_chains_info_args,
@@ -244,8 +249,24 @@ async function
     false;
   const
     _deployments_dir_check_args = [
+      _deployments_dir,
     ];
-  
+  try {
+    _deployments_dir =
+      await _deployments_dir_check.apply(
+        null,
+        _deployments_dir_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error checking '_deployments_dir' " +
+      "variable:";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
   _msg =
     "Network check for deployments " +
     `'${_deployments_dir}', contract '${_contract}', ` +
@@ -273,13 +294,13 @@ async function
       _error);
     throw _error;
   }
-  _contract_deployments_path =
+  _contract_deployments_dir =
     _path_join( [
       _deployments_dir,
       _contract ]);
   const
     _evm_contract_deployment_networks_args = [
-      _contract_deployments_path,
+      _contract_deployments_dir,
       "y",                  // Display all
       "n",                  // Display safest
       "n"                   // Display cheapest

@@ -669,7 +669,6 @@ async function
   let
     _abi,
     _abi_retrieve,
-    _contract,
     _msg;
   const
     _global =
