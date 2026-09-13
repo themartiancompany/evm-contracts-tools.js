@@ -603,10 +603,13 @@ function
       _user_level =
         "n";
     }
-    else {
+    else if ( _user_level.length > 1 ||
+              ( _user_level !== "n" &&
+                _user_level !== "y" ) ) {
       _msg =
         "Variable '_user_level' can have " +
-        "value 'y' or 'n'.";
+        "value 'y' or 'n' (current value " +
+        `'${_user_level}'.`;
       _msg_error(
         _msg,
         0);
@@ -1387,7 +1390,7 @@ async function
       await _user_defined_check(
         _user_defined);
     _configuration_format =
-      await _configuration_format_check(
+      _configuration_format_check(
         _configuration_format);
     if ( _configuration_format == "bash" ) {
       _config_file_ext =
@@ -1734,6 +1737,8 @@ async function
         await _deployments_dir_check.apply(
           null,
           _deployments_dir_check_args);
+      _msg_info(
+        `Got '${_deployments_dir}'`);
     }
     catch(
       _error) {
@@ -1856,6 +1861,7 @@ export {
   _app_check,
   _config_file_path_check,
   _configuration_format_auto_detect,
+  _configuration_format_check,
   _configuration_format_get,
   _contract_address_check,
   _contract_version_auto_detect,
@@ -1878,6 +1884,8 @@ export {
 //     _config_file_path_check,
 //   _configuration_format_auto_detect:
 //     _configuration_format_auto_detect,
+//   _configuration_format_check:
+//     _configuration_format_check,
 //   _configuration_format_get:
 //     _configuration_format_get,
 //   _contract_version_auto_detect:

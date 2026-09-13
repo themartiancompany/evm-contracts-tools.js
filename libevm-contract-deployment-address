@@ -430,6 +430,9 @@ async function
     _target_network_id,
     _user_deployments_dir,
     _system_deployments_dir;
+  _configuration_format =
+    _configuration_format_check(
+      _configuration_format);
   const
     _global =
       _global_get();
