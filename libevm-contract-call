@@ -164,6 +164,11 @@ const
 const
   _deployments_dir_auto_detect =
     _libevm_contract_deployment_module._deployments_dir_auto_detect;
+/* global
+     _target_contract_check */
+const
+  _target_contract_check =
+    _libevm_contract_deployment_module._target_contract_check;
 const
   _evm_contracts_tools_module =
     await import(
@@ -1476,9 +1481,21 @@ async function
         _get(
           "target",
           "contract");
-      _target_contract =
-        _target_contract_check(
-          _target_contract);
+      try {
+        _target_contract =
+          await _target_contract_check(
+            _target_contract);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_target_contract_check' " +
+          `with parameter '${_target_contract}'.`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
       if ( _target_app != "" &&
            0 < _target_networks.length &&
            _target_contract != "" ) {
