@@ -420,18 +420,22 @@ async function
     _get(
       "_evm_contract",
       "deployments_dir");
-  const
-    _evm_contract_deployments_dir_type =
-      typeof(
+  try {
+    _evm_contract_deployments_dir =
+      await _evm_contract_deployments_dir_check(
         _evm_contract_deployments_dir);
-  if ( _evm_contract_deployments_dir_type == "undefined" ||
-       _evm_contract_deployments_dir == "" ) {
-    const
-      _libevm_contract_deployments_dir_module =
-        await import(
-          "./libevm-contract-deployments-dir");
-      _evm_contract_deployments_dir =
-        _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error getting '_evm_cotract_deployments_dir' " +
+      "function.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
   }
   const
     _evm_contract_deployments_dir_args = [
@@ -581,80 +585,121 @@ function
 
 async function
   _deployments_dir_check(
-    _deployments_dir,
+    _deployments,
     _app,
     _user_defined) {
+  let
+    _evm_contract_deployments_dir;
+  _evm_contract_deployments_dir =
+    _get(
+      "_evm_contract",
+      "deployments_dir");
   try {
-    _user_defined =
-      _user_defined_check(
-        _user_defined);
+    _evm_contract_deployments_dir =
+      await _evm_contract_deployments_dir_check(
+        _evm_contract_deployments_dir);
   }
   catch(
     _error) {
     _msg =
-      "Error checking '_user_defined' " +
-      "variable:";
+      "Error getting '_evm_contract_deployments_dir' " +
+      "function.";
     _msg_error(
       _msg,
       0);
     _echo2(
-      _user_defined);
-    _echo2(
       _error);
     throw _error;
   }
-}
-
-async function
-  _deployments_dir_auto_detect() {
-  let
-    _deployments,
-    _evm_contract_deployments_dir;
-  _deployments =
-    "";
+  _app =
+    _app_check(
+      _app);
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
-    _app =
-      target_app;
-  const
-    _app_type =
-      typeof(
-        _app);
-  if ( _app_type != "undefined" &&
-       _app != "" ) {
-    const
-      _user_defined =
-        user_defined;
-    _evm_contract_deployments_dir =
-      _get(
-        "_evm_contract",
-        "deployments_dir");
-    const
-      _evm_contract_deployments_dir_type =
-        typeof(
-          _evm_contract_deployments_dir);
-    if ( _evm_contract_deployments_dir_type == "undefined" ||
-         _evm_contract_deployments_dir == "" ) {
-      const
-        _libevm_contract_deployments_dir_module =
-          await import(
-            "./libevm-contract-deployments-dir");
-        _evm_contract_deployments_dir =
-          _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
-    }
-    const
-      _evm_contract_deployments_dir_args = [
-        _app,
-        _user_defined
-      ];
+    _evm_contract_deployments_dir_args = [
+      _app,
+      _user_defined
+    ];
+  try {
     _deployments =
       await _evm_contract_deployments_dir.apply(
         null,
         _evm_contract_deployments_dir_args);
   }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_evm_contract_deployments_dir' " +
+      "function with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _evm_contract_deployments_dir_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  return _deployments;
+}
+
+async function
+  _deployments_dir_auto_detect() {
+  let
+    _app,
+    _deployments_dir,
+    _evm_contract_deployments_dir,
+    _user_defined;
+  _deployments_dir =
+    _get(
+      "deployments",
+      "dir");
+  _app =
+    _get(
+      "target",
+      "app");
+  _app =
+    _app_check(
+      _app);
+  if ( _app != "" ) {
+    _user_defined =
+      _get(
+        "user",
+        "defined";
+    _user_defined =
+      _user_defined_check(
+        _user_defined);
+    const
+      _deployments_dir_check_args = [
+        _deployments_dir,
+        _app,
+        _user_defined
+      ];
+    try {
+      _deployments_dir =
+        await _deployments_dir_check.apply(
+          null,
+          _deployments_dir_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error checking '_deployments_dir' " +
+        "variable."
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
+  }
   _override_set(
     "deployments",
     "dir",
-    _deployments);
+    _deployments_dir);
 }
 
 function
@@ -951,9 +996,128 @@ function
 }
 
 async function
+  _evm_contract_deployments_dir_check(
+    _evm_contract_deployments_dir) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployments_dir_type =
+      typeof(
+        _evm_contract_deployments_dir);
+  if ( _evm_contract_deployments_dir_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployments_dir' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployments_dir_type === "string" ) {
+    if ( _evm_contract_deployments_dir.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployments_dir' " +
+        "undefined, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployments_dir' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployments_dir_module =
+          await import(
+            "./libevm-contract-deployments-dir");
+        _evm_contract_deployments_dir =
+          _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployments-dir'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployments_dir;
+}
+
+async function
+  _evm_contract_deployment_versions_check(
+    _evm_contract_deployment_versions) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployment_versions_type =
+      typeof(
+        _evm_contract_deployment_versions);
+  if ( _evm_contract_deployment_versions_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployment_versions' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployment_versions_type === "string" ) {
+    if ( _evm_contract_deployment_versions.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployment_versions' " +
+        "undefined, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployment_versions' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployment_versions_module =
+          await import(
+            "./libevm-contract-deployment-versions");
+        _evm_contract_deployment_versions =
+          _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployment-versions'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployment_versions;
+}
+
+async function
   _target_app_auto_detect() {
   let
-    _app;
+    _app,
+    _evm_contract_deployments_dir;
   _app =
     "";
   const
@@ -962,27 +1126,72 @@ async function
         _pwd());
   const
     _user_defined =
-      user_defined;
-
+      _get(
+        "user",
+        "defined");
+  _evm_contract_deployments_dir =
+    _get(
+      "_evm_contract",
+      "deployments_dir");
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
+  try {
+    _evm_contract_deployments_dir =
+      await _evm_contract_deployments_dir_check(
+        _evm_contract_deployments_dir);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error getting '_evm_cotract_deployments_dir' " +
+      "function.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _evm_contract_deployments_dir_args = [
       _dir_current_name,
       _user_defined
     ];
-  const
-    _target_dir =
-      await _evm_contract_deployments_dir.apply(
-        null,
-        _evm_contract_deployments_dir_args);
+  try {
+    const
+      _target_dir =
+        await _evm_contract_deployments_dir.apply(
+          null,
+          _evm_contract_deployments_dir_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_evm_contract_deployments_dir' " +
+      "with arguments:";
+    _echo2(
+      _evm_contract_deployments_dir_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
   if ( _dir_exists(
          _target_dir) ) {
+    _msg =
+      "Found existing directory " +
+      `'${_target_dir}', setting ` +
+      `'${_dir_current_name}' as application name.`;
+    _msg_info(
+      _msg);
     _app =
       _dir_current_name;
   }
   else {
     _msg =
       `Directory '${_target_dir}' ` +
-      "not found.";
+      "not found, impossible auto-detecting " +
+      "application name for given contract.";
     _msg_info(
       _msg);
   }
@@ -992,11 +1201,166 @@ async function
     _app);
 }
 
+async function
+  _config_file_path_check(
+    _config_file_path,
+    _app,
+    _deployments_dir,
+    _contract,
+    _network,
+    _network_id,
+    _configuration_format,
+    _user_defined) {
+  let
+    _config_file_ext,
+    _config_file_path_get,
+    _msg,
+    _net;
+  const
+    _config_file_path_type =
+      typeof(
+        _config_file_path);
+  _config_file_path_get =
+    false;
+  if ( _config_file_path_type == "undefined" ) {
+    _msg =
+      "Configuration file path undefined, " +
+      "auto-detecting.";
+    _msg_info(
+      _msg);
+    _config_file_get =
+      true;
+  else if ( _config_file_path_type == "string" ) {
+    if ( _config_file_path.length < 1 ) {
+    _msg =
+      "Configuration file path not set, " +
+      "auto-detecting.";
+    _msg_info(
+      _msg);
+    _config_file_get =
+      true;
+    }
+    else {
+      if ( ! _file_exists(
+             _config_file_path) ) {
+        _msg =
+          `File at location '${_config_file_path}' ` +
+          `does not exist.`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+  }
+  else {
+    _msg =
+      `Unknown type '${_config_file_path_type}' ` +
+      `for '_config_file_path' variable (correct ` +
+      `type: string).`;
+    _msg_error(
+      _msg,
+      0);
+  }
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  if ( _config_file_get ) {
+    const
+      _contract_type =
+        typeof(
+          _contract);
+    if ( _contract_type === "undefined" ) {
+      _msg =
+        "A contract name must be specified a contract name."
+    }
+    _user_defined =
+      await _user_defined_check(
+        _user_defined);
+    _configuration_format =
+      await _configuration_format_check(
+        _configuration_format);
+    if ( _configuration_format == "bash" ) {
+      _config_file_ext =
+        "sh";
+    }
+    else if ( _configuration_format == "json" ) {
+      _config_file_ext =
+        "json";
+    }
+    else {
+      _msg =
+        "Unknown configuration format " +
+        `${_configuration_format}'.`;
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+    const
+      _deployments_dir_check_args = [
+        _deployments_dir,
+        _app,
+        _user_defined
+      ];
+    try {
+      _deployments_dir =
+        await _deployments_dir_check.apply(
+          null,
+          _deployments_dir_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error checking '_deployments_dir' " +
+        "variable."
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    const
+      _networks = [
+        _network,
+        _network_id
+      ];
+    _found =
+      false;
+    for ( _net of _networks ) {
+      _config_file_path =
+        _path_join( [
+          _deployments_dir,
+          _contract,
+          _net,
+          `config.${_config_file_ext}` ]);
+      if ( _file_exists(
+             _config_file_path) ) {
+        _found =
+          true;
+        break;
+      }
+    }
+  }
+  return _config_file_path;
+}
+
 function
   _configuration_format_get(
     _config_file) {
   let
-    _configuration_format;
+    _configuration_format,
+    _msg;
+  _msg =
+    "Getting configuration format " +
+    `for configuration file '${_config_file}'.`;
+  _msg_info(
+    _msg);
   if ( _config_file.endsWith(
          ".sh") ) {
     _configuration_format =
@@ -1008,12 +1372,11 @@ function
       "json";
   }
   else {
-    const
-      _msg =
-        "Impossible determining " +
-        "configuration format from file " +
-        "extension, defaulting to 'json'.";
-    _msg_info(
+    _msg =
+      "Impossible determining " +
+      "configuration format from file " +
+      "extension, defaulting to 'json'.";
+    _msg_error(
       _msg,
       0);
     throw _msg;
@@ -1023,39 +1386,185 @@ function
 
 function
   _configuration_format_auto_detect() {
+  let
+    _config_file_path,
+    _configuration_format;
+  _configuration_format =
+    _get(
+      "configuration",
+      "format");
+  _config_file_path =
+    _get(
+      "config",
+      "file");
   const
-    _configuration_format =
-      _configuration_format_get(
-        config_file);
+    _app =
+      _get(
+        "target",
+        "app");
+  const
+    _deployments_dir =
+      _get(
+        "deployments",
+        "dir");
+  const
+    _target_contract =
+      _get(
+        "target",
+        "contract");
+  const
+    _target_network =
+      _get(
+        "target",
+        "network");
+  const
+    _user_defined =
+      _get(
+        "user",
+        "defined");
+  const
+    _config_file_path_check_args = [
+      _config_file_path,
+      _app,
+      _deployments_dir,
+      _contract,
+      _target_network,
+      _target_network,
+      _configuration_format,
+      _user_defined
+    ];
+  try {
+    _config_file_path =
+      await _config_file_path_check.apply(
+        null,
+        _config_file_path_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error checking 'config_file' variable.";
+    _msg_error(
+      _msg,
+      0);
+    echo2(
+      _error);
+    throw _error;
+  }
+  _configuration_format =
+    _configuration_format_get(
+      _config_file);
   _override_set(
     "configuration",
     "format",
     _configuration_format);
 }
 
+async function
+  _version_check(
+    _version,
+    _configuration_format) {
+  let
+    _msg,
+    _version_get;
+  _configuration_format = 
+    _configuration_format_check(
+      _configuration_format);
+  const
+    _version_type =
+      typeof(
+        _version);
+  _version_get =
+    false;
+  if ( _version_type === "undefined" ) {
+    _msg =
+      "Variable 'version' undefined, " +
+      "auto-detecting.";
+    _version_get =
+      true;
+  }
+  if ( _version_type === "string" ) {
+    if ( _version.length < 1 ) {
+      _msg =
+        "Variable 'version' not specified, " +
+        "auto-detecting.";
+    _version_get =
+      true;
+  }
+  if ( _version_get ) {
+    try {
+      const
+        _libevm_contract_deployment_versions_module =
+          await import(
+            "./libevm-contract-deployment-versions");
+      /* global
+           _evm_contract_deployment_versions */
+      const
+        _evm_contract_deployment_versions =
+          _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployment-versions'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+    const
+      _evm_contract_deployment_versions_args = [
+        _config_file,
+        _display_highest,
+        _display_lowest,
+        _configuration_format) {
+      ];
+    try {
+      _version =
+        await _evm_contract_deployment_versions
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error auto-retrieving version.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+  }
+  return _version;
+}
+
 export {
   _app_check,
+  _config_file_path_check,
   _configuration_format_auto_detect,
   _configuration_format_get,
   _contract_version_auto_detect,
   _deployments_dir_auto_detect,
+  _deployments_dir_check,
   _network_check,
   _networks_all_auto_detect,
   _target_app_auto_detect,
   _user_deployments_check,
   _user_defined_check,
   _user_level_check,
+  _version_check
 };
 
 // module.exports = {
 //   _app_check:
 //     _app_check,
+//   _config_file_path_check:
+//     _config_file_path_check,
 //   _configuration_format_auto_detect:
 //     _configuration_format_auto_detect,
 //   _configuration_format_get:
 //     _configuration_format_get,
 //   _contract_version_auto_detect:
 //     _contract_version_auto_detect,
+//   _deployments_dir_check:
+//     _deployments_dir_check,
 //   _deployments_dir_auto_detect:
 //     _deployments_dir_auto_detect,
 //   _network_check:
@@ -1070,4 +1579,6 @@ export {
 //     _user_defined_check,
 //   _user_level_check:
 //     _user_level_check,
+//   _version_check:
+//     _version_check,
 // };

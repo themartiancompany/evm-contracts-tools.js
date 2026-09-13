@@ -200,6 +200,11 @@ const
 const
   _user_deployments_check =
     _libevm_contract_deployment_module._user_deployments_check;
+/* global
+     _version_check */
+const
+  _version_check =
+    _libevm_contract_deployment_module._version_check;
 const
   _libevm_contract_deployment_networks_module =
     await import(
@@ -209,86 +214,6 @@ const
 const
   _evm_contract_deployment_networks =
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
-const
-  _libevm_contract_deployment_versions_module =
-    await import(
-      "./libevm-contract-deployment-versions");
-/* global
-     _evm_contract_deployment_versions */
-const
-  _evm_contract_deployment_versions =
-    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
-
-async function
-  _version_check(
-    _version) {
-  let
-    _msg,
-    _version_get;
-  const
-    _version_type =
-      typeof(
-        _version);
-  _version_get =
-    false;
-  if ( _version_type === "undefined" ) {
-    _msg =
-      "Variable 'version' undefined, " +
-      "auto-detecting.";
-    _version_get =
-      true;
-  }
-  if ( _version_type === "string" ) {
-    if ( _version.length < 1 ) {
-      _msg =
-        "Variable 'version' not specified, " +
-        "auto-detecting.";
-    _version_get =
-      true;
-  }
-  if ( _version_get ) {
-    try {
-      const
-        _libevm_contract_deployment_versions_module =
-          await import(
-            "./libevm-contract-deployment-versions");
-      /* global
-           _evm_contract_deployment_versions */
-      const
-        _evm_contract_deployment_versions =
-          _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
-    }
-    catch(
-      _error) {
-      _msg =
-        "Error importing './libevm-contract-deployment-versions'.";
-      _msg_error(
-        _msg,
-        0);
-      throw _error;
-    }
-    const
-      _evm_contract_deployment_versions_args = [
-        _config_file,
-        _display_highest,
-        _display_lowest,
-        _configuration_format) {
-      ];
-    try {
-      _version =
-        await _evm_contract_deployment_versions
-    }
-    catch(
-      _error) {
-      _msg =
-        "Error auto-retrieving version.";
-      _msg_error(
-        _msg,
-        0);
-      throw _error;
-    }
-  }
-}
 
 function
   _contract_abi_get(

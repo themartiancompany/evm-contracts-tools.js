@@ -168,6 +168,11 @@ const
     await import(
       "./libevm-contract-deployment");
 /* global
+     _config_file_path_check */
+const
+  _config_file_path_check =
+    _libevm_contract_deployment_module._config_file_path_check;
+/* global
      _configuration_format_check */
 const
   _configuration_format_check =
@@ -212,68 +217,6 @@ const
   _evm_contract_deployment_networks =
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 
-
-async function
-  _config_file_get(
-    _deployments,
-    _contract,
-    _network,
-    _network_id,
-    _configuration_format) {
-  let
-    _config_file_ext,
-    _net;
-  const
-    _global =
-      _global_get();
-  const
-    _quiet =
-      _global[
-        "quiet"];
-  _configuration_format =
-    await _configuration_format_check(
-      _configuration_format);
-  if ( _configuration_format == "bash" ) {
-    _config_file_ext =
-      "sh";
-  }
-  else if ( _configuration_format == "json" ) {
-    _config_file_ext =
-      "json";
-  }
-  else {
-    _msg =
-      "Unknown configuration format " +
-      `${_configuration_format}'.`;
-    _msg_error(
-      _msg,
-      0);
-    throw _msg;
-  }
-  const
-    _networks = [
-      _network,
-      _network_id
-    ];
-  _found =
-    false;
-  for ( _net of _networks ) {
-    _config_path =
-      _path_join( [
-        _deployments,
-        _contract,
-        _net,
-        `config.${_config_file_ext}` ]);
-    if ( _file_exists(
-           _config_path) ) {
-      _found =
-        true;
-      break;
-    }
-  }
-
-}
-
 async function
   _contract_address_get(
     _deployments,
@@ -308,20 +251,9 @@ async function
     _version_type =
       typeof(
         _version);
-  const
-    _configuration_format_type =
-      typeof(
-        _configuration_format);
-  if ( _configuration_format_type === "undefined" ||
-       _configuration_format == "" ) {
-    _msg =
-      "Configuration format not set, " +
-      "setting default (bash).";
-    _msg_info(
-      _msg);
-    _configuration_format =
-      "bash";
-  }
+  _configuration_format =
+    _configuration_format_check(
+      _configuration_format);
   if ( _configuration_format == "bash" ) {
     _config_file_ext =
       "sh";
