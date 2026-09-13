@@ -1419,7 +1419,8 @@ async function
     _contract_addresses,
     _evm_contract_deployment_address_args,
     _msg,
-    _network;
+    _network,
+    _target_contract;
   const
     _target_networks_index =
       {};
@@ -1437,11 +1438,6 @@ async function
       _get(
         "target",
         "networks");
-  const
-    _target_contract =
-      _get(
-        "target",
-        "contract");
   const
     _deployments_dir =
       _get(
@@ -1476,6 +1472,13 @@ async function
         _msg);
     }
     else {
+      _target_contract =
+        _get(
+          "target",
+          "contract");
+      _target_contract =
+        _target_contract_check(
+          _target_contract);
       if ( _target_app != "" &&
            0 < _target_networks.length &&
            _target_contract != "" ) {
