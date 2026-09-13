@@ -1595,6 +1595,7 @@ async function
         "auto-detecting.";
     _version_get =
       true;
+    }
   }
   if ( _version_get ) {
     _evm_contract_deployment_versions =
@@ -1602,20 +1603,14 @@ async function
         "_evm_contract_deployment",
         "versions");
     try {
-      const
-        _libevm_contract_deployment_versions_module =
-          await import(
-            "./libevm-contract-deployment-versions");
-      /* global
-           _evm_contract_deployment_versions */
-      const
-        _evm_contract_deployment_versions =
-          _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+      _evm_contract_deployment_versions =
+        await _evm_contract_deployment_versions_check(
+          _evm_contract_deployment_versions);
     }
     catch(
       _error) {
       _msg =
-        "Error importing './libevm-contract-deployment-versions'.";
+        "Error importing '_evm-contract-deployment-versions'.";
       _msg_error(
         _msg,
         0);
@@ -1630,7 +1625,9 @@ async function
       ];
     try {
       _version =
-        await _evm_contract_deployment_versions
+        await _evm_contract_deployment_versions.apply(
+          null,
+          _evm_contract_deployment_versions_args);
     }
     catch(
       _error) {
@@ -1764,7 +1761,6 @@ async function
         0);
       throw _error;
     }
-
   }
   return _contract_address;
 }
