@@ -325,6 +325,8 @@ async function
     _app,
     _contract,
     _configuration_format,
+    _deployments_dir,
+    _user_defined,
     _local) {
   let
     _abi_get,
@@ -340,6 +342,9 @@ async function
     _abi_type =
       typeof(
         _abi);
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   if ( _abi_type === "undefined" ) {
     _msg =
       "ABI undefined, setting default.";
@@ -510,11 +515,22 @@ async function
             _configuration_format_check.apply(
               null,
               _configuration_format_check_args);
+          const
+            _deployments_dir_check_args = [
+              _deployments_dir,
+              _app,
+              _user_defined
+            ];
+          _deployments_dir =
+            _deployments_dir_check.apply(
+              null,
+              _deployments_dir_check_args);
           _msg =
             `Getting LibEVM app '${_app}' ` +
             `ABI for contract '${_contract}' for ` +
             `network '${_network}' in format ` +
-            `'${_configuration_format}'.`;
+            `'${_configuration_format}' at deployments ` +
+            `directory '${_deployments_dir}'.`;
           _msg_info(
             _msg);
           const
@@ -527,7 +543,7 @@ async function
               "",                     // version
               "n",                    // user level
               _configuration_format,
-              ""
+              _deployments_dir
             ];
           try {
             _abi =
