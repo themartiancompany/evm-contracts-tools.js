@@ -243,7 +243,6 @@ async function
     _address,
     _break,
     _found,
-    _key_name,
     _msg,
     _net,
     _non_empty_networks;
@@ -372,8 +371,8 @@ async function
       typeof(
         _contract_abi);
   if ( _contract_abi === "" ||
-       _contract_abi_type == "undefined" ||
-       _contract_abi == null ) {
+       _contract_abi_type === "undefined" ||
+       _contract_abi === null ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
       `contract deployment specified for network ` +

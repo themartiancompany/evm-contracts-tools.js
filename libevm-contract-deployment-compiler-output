@@ -2,25 +2,27 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/**    ----------------------------------------------------------------
+/**    ----------------------------------------------------------
  *     libevm-contract-deployment-compiler-output
- *     ----------------------------------------------------------------
+ *     ----------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
  *         2025, 2026
  * 
  *     All rights reserved
- *     ----------------------------------------------------------------
+ *     ----------------------------------------------------------
  * 
- *     This program is free software: you can redistribute it and/or
- *     modify it under the terms of the GNU General Public License as
- *     published by the Free Software Foundation, either version 3 of
- *     the License, or (at your option) any later version.
+ *     This program is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General
+ *     Public License as published by the Free Software
+ *     Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *     This program is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the
+ *     implied warranty of MERCHANTABILITY or FITNESS FOR A
+ *     PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
  * 
  *     You should have received a copy of the
  *     GNU General Public License
@@ -83,6 +85,11 @@ const
 const
   _dir_exists =
     _libcrash_module._dir_exists;
+/* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash_module._echo2;
 /* global
      _file_exists */
 const
@@ -158,15 +165,6 @@ const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
 const
-  _libevm_contract_deployments_dir_module =
-    await import(
-      "./libevm-contract-deployments-dir");
-/* global
-     _evm_contract_deployments_dir */
-const
-  _evm_contract_deployments_dir =
-    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
-const
   _libevm_contract_deployment_module =
     await import(
       "./libevm-contract-deployment");
@@ -200,6 +198,25 @@ const
 const
   _user_deployments_check =
     _libevm_contract_deployment_module._user_deployments_check;
+/* global
+     _user_defined_check */
+const
+  _user_defined_check =
+    _libevm_contract_deployment_module._user_defined_check;
+/* global
+     _version_check */
+const
+  _version_check =
+    _libevm_contract_deployment_module._version_check;
+const
+  _libevm_contract_deployments_dir_module =
+    await import(
+      "./libevm-contract-deployments-dir");
+/* global
+     _evm_contract_deployments_dir */
+const
+  _evm_contract_deployments_dir =
+    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _libevm_contract_deployment_networks_module =
     await import(
@@ -209,68 +226,152 @@ const
 const
   _evm_contract_deployment_networks =
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
-const
-  _libevm_contract_deployment_versions_module =
-    await import(
-      "./libevm-contract-deployment-versions");
-/* global
-     _evm_contract_deployment_versions */
-const
-  _evm_contract_deployment_versions =
-    _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
 
-function
+async function
   _contract_compiler_output_get(
     _deployments,
+    _app,
     _contract,
     _network,
     _network_id,
     _version,
-    _configuration_format) {
+    _configuration_format,
+    _user_defined) {
   let
+    _break,
     _compiler_output,
     _compiler_output_path,
+    _compiler_output_retrieve,
     _found,
     _msg,
-    _net;
+    _net,
+    _non_empty_networks;
   const
     _networks = [
       _network,
       _network_id
     ];
+  _non_empty_networks =
+    false;
   _found =
     false;
   for ( _net of _networks ) {
-    _compiler_output_path =
-      _path_join( [
-        _deployments,
-        _contract,
-        _net,
-        _version,
-        `${_contract}.json` ]);
-    if ( _file_exists(
-           _compiler_output_path) ) {
-      _found =
+    _compiler_output_retrieve =
+      false;
+    _break =
+      false;
+    if ( _net.length < 1 ) {
+      _msg =
+        `Empty value network '${_net}', ` +
+        "skipping.";
+      _msg_info(
+        _msg);
+    }
+    else {
+      _compiler_output_retrieve =
+      true;
+    }
+    if ( _compiler_output_retrieve ) {
+      _non_empty_networks =
         true;
+      _msg =
+        "Getting bytecode for network " +
+        `'${_net}'.`;
+      _msg_info(
+        _msg);
+      const
+        _version_check_args = [
+          _version,
+          _app,            // app
+          _contract,
+          "",            // address
+          _net,
+          _user_defined,
+          _deployments,
+          "",            // config file
+          _configuration_format
+        ];
+      try {
+        _version =
+          await _version_check.apply(
+            null,
+            _version_check_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_version_check' " +
+          "with arguments:";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _version_check_args);
+        _echo2(
+          _error);
+        throw _error;
+      }
+      _msg =
+        `Checked version '${_version}'.`;
+      _msg_info(
+        _msg);
+      _compiler_output_path =
+        _path_join( [
+          _deployments,
+          _contract,
+          _net,
+          _version,
+          `${_contract}.json`
+      ]);
+      _msg =
+        `Checking file '${_compiler_output_path}'.`;
+      _msg_info(
+        _msg);
+      if ( _file_exists(
+             _compiler_output_path) ) {
+        _found =
+          true;
+        _break =
+          true;
+      }
+      else {
+        _msg =
+          `Bytecode at path '${_bytecode_path}' ` +
+          `not found.`;
+        _msg_info(
+          _msg);
+      }
+    }
+    if ( _break ) {
+      _msg =
+        "File found, breaking loop.";
+      _msg_info(
+        _msg);
       break;
     }
   }
-  if ( ! _found ) {
+  if ( ! _found &&
+       _non_empty_networks ) {
     _msg =
       `No network '${_network}' deployment ` +
-      `configuration for contract '${_contract}' ` +
+      `configuration (hardhat compiler output)` +
+      `for contract '${_contract}' ` +
       `found at path '${_deployments}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   const
     _contract_compiler_output =
       _compiler_output_path;
-  if ( _contract_compiler_output == "" ||
-       _contract_compiler_output == null ||
-       typeof(
-         _contract_compiler_output) == "undefined" ) {
+  const
+    _contract_compiler_output_type =
+      typeof(
+        _contract_compiler_output);
+  if ( _contract_compiler_output === "" ||
+       _contract_compiler_output_type === "undefined"
+       _contract_compiler_output === null ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
       `contract deployment compiler output for network ` +
@@ -281,6 +382,10 @@ function
       0);
     throw _msg;
   }
+  _msg =
+    `Got compiler output: '${_contract_compiler_output}'.`;
+  _msg_info(
+    _msg);
   return _contract_compiler_output;
 }
 
@@ -298,6 +403,7 @@ async function
   let
     _args,
     _contract_compiler_output,
+    _deployments_dir_get,
     _network,
     _network_check_args,
     _target_network,
@@ -311,31 +417,44 @@ async function
   const
     _contract_compiler_output_get_args =
       [];
-  const
-    _user_defined_type =
-      typeof(
-        _user_defined);
-  if ( _user_defined_type === "undefined" ||
-       _user_defined === "" ) {
-    _msg =
-      "User defined not specified, setting " +
-      "default (n).";
-    _msg_info(
-      _msg);
-    _user_defined =
-      "n";
-  }
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
     _deployments_dir_type =
       typeof(
         _deployments_dir);
-  if ( _deployments_dir_type === "undefined" ||
-       _deployments_dir === "" ) {
+  _deployments_dir_get =
+    false;
+  if ( _deployments_dir_type === "undefined" ) {
+    _msg =
+      "Deployments directory undefined, getting.";
+    _msg_info(
+      _msg);
+    _deployments_dir_get =
+      true;
+  }
+  else if ( _deployments_dir_type === "string" ) {
+    if ( _deployments_dir.length < 1 ) {
+      _msg =
+        "Deployments directory not set, getting.";
+      _msg_info(
+        _msg);
+      _deployments_dir_get =
+        true;
+    }
+  }
+  if ( _deployments_dir_get ) {
+    const
+      _evm_contract_deployments_dir_args = [
+        _target_app,
+        _user_defined
+      ];
     try {
       _deployments_dir =
-        await _evm_contract_deployments_dir(
-          _target_app,
-          _user_defined);
+        await _evm_contract_deployments_dir.apply(
+          null,
+          _evm_contract_deployments_dir_args);
     }
     catch(
       _error) {
@@ -425,52 +544,88 @@ async function
     //   `network '${_network}'.`;
     // _msg_info(
     //   _msg);
-    _target_network_id =
-      "";
-    _network_check_args = [
-      _deployments_dir,
-      _target_contract,
-      _network,
-      _target_network_id
-    ];
-    await _network_check.apply(
-      null,
-      _network_check_args);
-    _contract_compiler_output_get_args.push( [
-      _deployments_dir,
-      _target_contract,
-      _network,
-      _target_network_id,
-      _contract_version,
-      _configuration_format
-    ] );
+    if ( _network.length < 1 ) {
+      _msg =
+        "Empty network, skipping.";
+      _msg_info(
+        _msg);
+    }
+    else {
+      _target_network_id =
+        "";
+      _network_check_args = [
+        _deployments_dir,
+        _target_contract,
+        _network,
+        _target_network_id
+      ];
+      await _network_check.apply(
+        null,
+        _network_check_args);
+      _contract_compiler_output_get_args.push( [
+        _deployments_dir,
+        _target_app,
+        _target_contract,
+        _network,
+        _target_network_id,
+        _contract_version,
+        _configuration_format,
+        _user_defined
+      ] );
+    }
   }
-  for ( _network of  _network_ids ) {
-    _target_network =
-      "";
-    _network_check_args = [
-      _deployments_dir,
-      _target_contract,
-      _target_network,
-      _network
-    ];
-    await _network_check.apply(
-      null,
-      _network_check_args);
-    _contract_compiler_output_get_args.push( [
-      _deployments_dir,
-      _target_contract,
-      _target_network,
-      _target_network_id,
-      _contract_version,
-      _configuration_format
-    ] );
+  for ( _network of _network_ids ) {
+    if ( _network.length < 1 ) {
+      _msg =
+        "Empty network, skipping.";
+      _msg_info(
+        _msg);
+    }
+    else {
+      _target_network =
+        "";
+      _network_check_args = [
+        _deployments_dir,
+        _target_contract,
+        _target_network,
+        _network
+      ];
+      await _network_check.apply(
+        null,
+        _network_check_args);
+      _contract_compiler_output_get_args.push( [
+        _deployments_dir,
+        _target_app,
+        _target_contract,
+        _target_network,
+        _network,
+        _contract_version,
+        _configuration_format,
+        _user_defined
+      ] );
+    }
   }
   for ( _args of _contract_compiler_output_get_args ) {
-    _contract_compiler_output =
-      _contract_compiler_output_get.apply(
-        null,
+    try {
+      _contract_compiler_output =
+        _contract_compiler_output_get.apply(
+          null,
+          _args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_contract_compiler_output_get' " +
+        "with parameters:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
         _args);
+      _echo2(
+        _error);
+      throw _error;
+    }
     _contracts_compiler_outputs.push(
       _contract_compiler_output);
   }
