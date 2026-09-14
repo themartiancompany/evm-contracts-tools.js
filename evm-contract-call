@@ -423,17 +423,17 @@ function
 async function
   _artifacts_auto_detect() {
   let
+    _contract_abi,
+    _contract_bytecode,
     _msg;
-  const
-    _contract_abi =
-      _get(
-        "contract",
-        "abi");
-  const
-    _contract_bytecode =
-      _get(
-        "contract",
-        "bytecode");
+  _contract_abi =
+    _get(
+      "contract",
+      "abi");
+  _contract_bytecode =
+    _get(
+      "contract",
+      "bytecode");
   const
     _contract_compiler_output =
       _get(
@@ -519,6 +519,10 @@ async function
           0);
         throw _msg;
       }
+      _contract_abi =
+        _get(
+          "contract",
+          "abi");
       if ( _contract_bytecode_type === "array" ) {
         _msg =
           "Contract bytecode with type " +
@@ -571,6 +575,10 @@ async function
           0);
         throw _msg;
       }
+      _contract_bytecode =
+        _get(
+          "contract",
+          "bytecode");
       if ( _contract_compiler_output_type === "array" ) {
         _msg =
           "Contract compiler output with type " +
@@ -613,7 +621,7 @@ async function
                  _contract_bytecode === "" ) {
               _msg =
                 "Either one between the contract abi " +
-                "plus the bytecode or the contract" +
+                "plus the bytecode or the contract " +
                 "compiler output must be available " +
                 "to perform a call.";
               _msg_error(
