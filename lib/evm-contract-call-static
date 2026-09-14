@@ -330,10 +330,23 @@ async function
         _method =
           _method_object;
       }
-      _value =
-        await _method.staticCall.apply(
-          null,
-          _method_args);
+      try {
+        _value =
+          await _method.staticCall.apply(
+            null,
+            _method_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          `Error running ` +
+          `'${_contract_method}.staticCall' with ` +
+          "the given parameters.";
+        _msg_error(
+          _msg,
+          0);
+        throw _error;
+      }
       if ( _value != undefined ) {
         _passed =
           true;
