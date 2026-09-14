@@ -416,6 +416,11 @@ async function
         await _contract_object_check.apply(
           null,
           _contract_object_check_args);
+      _msg =
+        "Contract object to derive method " +
+        "object checked.";
+      _msg_info(
+        _msg);
     }
     catch(
       _error) {
@@ -445,19 +450,21 @@ async function
       const
         _msg_no_fragment =
           "no matching fragment";
-      const
-        _msg_short =
-          _error[
-            "shortMessage"];
-      if ( _msg_no_fragment == _msg_short ) {
-        _msg =
-          `Found no '${_contract_method}' method ` +
-          `nor contract ABI '${_contract_abi_path}' ` +
-          `nor in compiler output ` +
-          `'${_contract_compiler_output_path}'.`;
-        _msg_error(
-          _msg,
-          0);
+      if ( "shortMessage" in _error ) {
+        const
+          _msg_short =
+            _error[
+              "shortMessage"];
+        if ( _msg_no_fragment == _msg_short ) {
+          _msg =
+            `Found no '${_contract_method}' method ` +
+            `nor contract ABI '${_contract_abi_path}' ` +
+            `nor in compiler output ` +
+            `'${_contract_compiler_output_path}'.`;
+          _msg_error(
+            _msg,
+            0);
+        }
       }
       _msg =
         "Error running '_contract_object.getFunction' " +
