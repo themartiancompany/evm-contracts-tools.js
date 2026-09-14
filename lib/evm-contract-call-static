@@ -266,6 +266,7 @@ async function
       _msg);
     _contract_object_get =
       true;
+  }
   else if ( _contract_object_type === "string" ) {
     if ( _contract_object.length < 1 )  {
       _msg =
