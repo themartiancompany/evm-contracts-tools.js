@@ -237,7 +237,9 @@ async function
     _user_defined) {
   let
     _abi_path,
+    _abi_retrieve,
     _address,
+    _break,
     _found,
     _key_name,
     _msg,
