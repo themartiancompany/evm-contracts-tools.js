@@ -331,10 +331,6 @@ async function
              _abi_path) ) {
         _found =
           true;
-        _msg =
-          `ABI: '${_abi_path}'.`;
-        _msg_info(
-          _msg);
         _break =
           true;
       }
@@ -382,6 +378,10 @@ async function
       0);
     throw _msg;
   }
+  _msg =
+    `Got ABI: '${_abi_path}'.`;
+  _msg_info(
+    _msg);
   return _contract_abi;
 }
 
