@@ -2,25 +2,27 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/**    ----------------------------------------------------------------
+/**    ----------------------------------------------------------
  *     libevm-contract-deployment-abi
- *     ----------------------------------------------------------------
+ *     ----------------------------------------------------------
  *     Copyright ©
  *       Pellegrino Prevete
  *         2025, 2026
  * 
  *     All rights reserved
- *     ----------------------------------------------------------------
+ *     ----------------------------------------------------------
  * 
- *     This program is free software: you can redistribute it and/or
- *     modify it under the terms of the GNU General Public License as
- *     published by the Free Software Foundation, either version 3 of
- *     the License, or (at your option) any later version.
+ *     This program is free software: you can redistribute it
+ *     and/or modify it under the terms of the GNU General
+ *     Public License as published by the Free Software
+ *     Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
  * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *     This program is distributed in the hope that it will
+ *     be useful, but WITHOUT ANY WARRANTY; without even the
+ *     implied warranty of MERCHANTABILITY or FITNESS FOR A
+ *     PARTICULAR PURPOSE.
+ *     See the GNU General Public License for more details.
  * 
  *     You should have received a copy of the
  *     GNU General Public License
@@ -163,15 +165,6 @@ const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
 const
-  _libevm_contract_deployments_dir_module =
-    await import(
-      "./libevm-contract-deployments-dir");
-/* global
-     _evm_contract_deployments_dir */
-const
-  _evm_contract_deployments_dir =
-    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
-const
   _libevm_contract_deployment_module =
     await import(
       "./libevm-contract-deployment");
@@ -215,6 +208,15 @@ const
 const
   _version_check =
     _libevm_contract_deployment_module._version_check;
+const
+  _libevm_contract_deployments_dir_module =
+    await import(
+      "./libevm-contract-deployments-dir");
+/* global
+     _evm_contract_deployments_dir */
+const
+  _evm_contract_deployments_dir =
+    _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
 const
   _libevm_contract_deployment_networks_module =
     await import(
@@ -322,7 +324,8 @@ async function
           _contract,
           _net,
           _version,
-          `${_contract}.abi.json` ]);
+          `${_contract}.abi.json`
+        ]);
       _msg =
         `Checking file '${_abi_path}'.`;
       _msg_info(
@@ -364,9 +367,12 @@ async function
   const
     _contract_abi =
       _abi_path;
-  if ( _contract_abi == "" ||
-       typeof(
-         _contract_abi) == "undefined" ||
+  const
+    _contract_abi_type =
+      typeof(
+        _contract_abi);
+  if ( _contract_abi === "" ||
+       _contract_abi_type == "undefined" ||
        _contract_abi == null ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
@@ -521,7 +527,8 @@ async function
       `can be 'y' or 'n', current value '${_user_defined}'.`;
     _msg_error(
       _msg,
-      1);
+      0);
+    throw _msg;
   }
   if ( _networks_all == "y" ) {
     _msg =
