@@ -170,6 +170,16 @@ const
   _contract_abi_check =
     _libevm_contract_deployment_module._contract_abi_check;
 /* global
+     _contract_address_auto_detect */
+const
+  _contract_address_auto_detect =
+    _libevm_contract_deployment_module._contract_address_auto_detect;
+/* global
+     _contract_address_check */
+const
+  _contract_address_check =
+    _libevm_contract_deployment_module._contract_address_check;
+/* global
      _contract_bytecode_auto_detect */
 const
   _contract_bytecode_auto_detect =
