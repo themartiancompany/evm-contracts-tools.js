@@ -354,7 +354,7 @@ async function
        _non_empty_networks ) {
     _msg =
       `No network '${_network}' deployment ` +
-      `configuration (hardhat compiler output)` +
+      `configuration (hardhat compiler output) ` +
       `for contract '${_contract}' ` +
       `found at path '${_deployments}'.`;
     _msg_error(
