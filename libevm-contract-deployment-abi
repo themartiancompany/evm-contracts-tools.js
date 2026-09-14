@@ -539,50 +539,66 @@ async function
     //   `network '${_network}'.`;
     // _msg_info(
     //   _msg);
-    _target_network_id =
-      "";
-    _network_check_args = [
-      _deployments_dir,
-      _target_contract,
-      _network,
-      _target_network_id
-    ];
-    await _network_check.apply(
-      null,
-      _network_check_args);
-    _contract_abi_get_args.push( [
-      _deployments_dir,
-      _target_app,
-      _target_contract,
-      _network,
-      _target_network_id,
-      _contract_version,
-      _configuration_format,
-      _user_defined
-    ] );
+    if ( _network.length < 1 ) {
+      _msg =
+        "Empty network, skipping.";
+      _msg_info(
+        _msg);
+    }
+    else {
+      _target_network_id =
+        "";
+      _network_check_args = [
+        _deployments_dir,
+        _target_contract,
+        _network,
+        _target_network_id
+      ];
+      await _network_check.apply(
+        null,
+        _network_check_args);
+      _contract_abi_get_args.push( [
+        _deployments_dir,
+        _target_app,
+        _target_contract,
+        _network,
+        _target_network_id,
+        _contract_version,
+        _configuration_format,
+        _user_defined
+      ] );
+    }
   }
   for ( _network of  _network_ids ) {
-    _target_network =
-      "";
-    _network_check_args = [
-      _deployments_dir,
-      _target_contract,
-      _target_network,
-      _network
-    ];
-    await _network_check.apply(
-      null,
-      _network_check_args);
-    _contract_abi_get_args.push( [
-      _deployments_dir,
-      _target_app,
-      _target_contract,
-      _target_network,
-      _target_network_id,
-      _contract_version,
-      _configuration_format,
-      _user_defined
-    ] );
+    if ( _network.length < 1 ) {
+      _msg =
+        "Empty network, skipping.";
+      _msg_info(
+        _msg);
+    }
+    else {
+      _target_network =
+        "";
+      _network_check_args = [
+        _deployments_dir,
+        _target_contract,
+        _target_network,
+        _network
+      ];
+      await _network_check.apply(
+        null,
+        _network_check_args);
+      _contract_abi_get_args.push( [
+        _deployments_dir,
+        _target_app,
+        _target_contract,
+        _target_network,
+        _target_network_id,
+        _contract_version,
+        _configuration_format,
+        _user_defined
+      ] );
+    }
   }
   for ( _args of _contract_abi_get_args ) {
     try {
