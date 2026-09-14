@@ -413,7 +413,7 @@ async function
       ];
     try {
       _contract_object =
-        _contract_object_check.apply(
+        await _contract_object_check.apply(
           null,
           _contract_object_check_args);
     }
@@ -437,9 +437,8 @@ async function
       ];
     try {
       _method_object =
-        await _contract_object.getFunction.apply(
-          null,
-          _contract_get_function_args);
+        await _contract_object.getFunction(
+          _contract_method);
     }
     catch(
       _error) {
@@ -567,7 +566,7 @@ async function
     _error) {
     _msg =
       "Error running '_method_object_check' " +
-      "parameters:";
+      "with parameters:";
     _msg_error(
       _msg,
       0);
