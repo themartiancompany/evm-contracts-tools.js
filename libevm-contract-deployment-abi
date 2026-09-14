@@ -249,15 +249,22 @@ async function
     ];
   _found =
     false;
+  // _echo2(
+  //   _networks);
   for ( _net of _networks ) {
     if ( _net.length < 1 ) {
       _msg =
-        "Empty value network, " +
+        `Empty value network '${_net}', ` +
         "skipping.";
       _msg_info(
         _msg);
     }
     else {
+      _msg =
+        "Getting ABI for network " +
+        `'${_net}'.`;
+      _msg_info(
+        _msg);
       const
         _version_check_args = [
           _version,

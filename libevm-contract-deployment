@@ -1194,13 +1194,13 @@ function
     _app_type =
       typeof(
         _app);
-  if ( _app_type == "undefined" ) {
+  if ( _app_type === "undefined" ) {
     _msg =
       "No application specified.";
     _undefined_flag =
       true;
   }
-  else if ( _app_type == "string" ) {
+  else if ( _app_type === "string" ) {
     if ( _app.length < 1 ) {
       _msg =
         "No application specified.";
