@@ -439,10 +439,11 @@ async function
       _get(
         "contract",
         "compiler_output");
-  _contract_address =
-    _get(
-      "contract",
-      "address");
+  const
+    _contract_address =
+      _get(
+        "contract",
+        "address");
   const
     _target_contract =
       _get(
