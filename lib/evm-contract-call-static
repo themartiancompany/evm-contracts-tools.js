@@ -259,7 +259,7 @@ async function
   const
     _contract_object_type =
       typeof(
-        _contract_object_type);
+        _contract_object);
   _contract_object_get =
     false;
   if ( _contract_object_type === "undefined" ) {
