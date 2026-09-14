@@ -255,7 +255,8 @@ async function
     _target_network,
     _api_key_path) {
   let
-    _contract_object_get;
+    _contract_object_get,
+    _msg;
   const
     _contract_object_type =
       typeof(
@@ -352,7 +353,8 @@ async function
     _target_network,
     _api_key_path) {
   let
-    _method_object_get;
+    _method_object_get,
+    _msg;
   const
     _method_object_type =
       typeof(
