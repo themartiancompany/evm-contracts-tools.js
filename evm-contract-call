@@ -1039,6 +1039,7 @@ async function
   _cmdline_parse() {
   let
     _help_display,
+    _method_args,
     _msg,
     _network,
     _target_networks_set;
@@ -1135,14 +1136,30 @@ async function
     _argv[
       "_"][
         1]);
+  try {
+    const
+      _args_length =
+        await _argv[
+          "_"].length);
+    _method_args =
+      await _argv[
+        "_"].slice(
+        2,
+        _args_length);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error slicing '_argv'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _error;
+  }
   _set(
     "method",
     "args",
-    _argv[
-      "_"].slice(
-      2,
-      _argv[
-        "_"].length - 2));
+    _method_args);
   if ( "t" in _argv ) {
     _set(
       "call",
