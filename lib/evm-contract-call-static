@@ -527,6 +527,10 @@ async function
       await _contract_object_check.apply(
         null,
         _contract_object_check_args);
+    _msg =
+      "Checked ethers contract object.";
+    _msg_info(
+      _msg);
   }
   catch(
     _error) {
@@ -561,6 +565,10 @@ async function
       await _method_object_check.apply(
         null,
         _method_object_check_args);
+    _msg =
+      "Checked ethers contract object.";
+    _msg_info(
+      _msg);
   }
   catch(
     _error) {
@@ -576,21 +584,19 @@ async function
       _error);
     throw _error;
   }
+  _method =
+    _method_object;
   _passed = 
     false;
   while ( _retry <= _retries_max &&
           _passed == false ) {
     try {
       try {
-        _method =
-          _method_object;
-        _echo2(
-          _method);
         _value =
           await _method.staticCall.apply(
             null,
             _method_args);
-        }
+      }
       catch(
         _error) {
         _msg =
@@ -602,11 +608,15 @@ async function
           0);
         throw _error;
       }
-      if ( _value != undefined ) {
+      const
+        _value_type =
+          typeof(
+            _value);
+      if ( _value_type !== "undefined" ) {
         _passed =
           true;
       }
-      else if ( _value == undefined ) {
+      else if ( _value_type === "undefined" ) {
         _exception = {
           "error": {
             "message":
@@ -618,8 +628,15 @@ async function
     }
     catch (
       _error) {
-      _error_display(
+      _msg =
+        "Error running static call.";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
         _error);
+      // _error_display(
+      //   _error);
       _retry =
         _retry + 1;
       _msg_error(
