@@ -256,6 +256,7 @@ async function
         "skipping.";
       _msg_info(
         _msg);
+    }
     else {
       const
         _version_check_args = [
