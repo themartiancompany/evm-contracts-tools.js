@@ -2256,8 +2256,8 @@ async function
     const
       _evm_contract_deployment_versions_args = [
         _config_file,
-        _display_highest,
-        _display_lowest,
+        "y",                   // display highest version
+        "n",                   // display lowest version
         _configuration_format
       ];
     try {
