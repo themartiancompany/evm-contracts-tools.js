@@ -593,10 +593,6 @@ async function
       }
     }
   }
-  const
-    _abi_dir =
-      _dirname(
-        _abi);
   if ( ! _file_exists(
            _abi) &&
        ! _file_exists(
@@ -607,6 +603,10 @@ async function
         _abi_target;
     }
     else {
+      const
+        _abi_dir =
+          _dirname(
+            _abi);
       _contract_artifacts_retrieve(
         _abi_dir);
     }
