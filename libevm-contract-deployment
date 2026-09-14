@@ -637,6 +637,317 @@ async function
 }
 
 async function
+  _contract_bytecode_check(
+    _bytecode,
+    _network,
+    _address,
+    _api_key,
+    _compiler_output,
+    _app,
+    _contract,
+    _configuration_format,
+    _deployments_dir,
+    _user_defined,
+    _local) {
+  let
+    _bytecode_get,
+    _bytecode_target,
+    _bytecode_targets,
+    _evm_contract_deployment_bytecode,
+    _msg;
+  _bytecode_get =
+    false;
+  _local =
+    _local_check(
+      _local);
+  const
+    _bytecode_type =
+      typeof(
+        _bytecode);
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
+  if ( _bytecode_type === "undefined" ) {
+    _msg =
+      "Bytecode undefined, setting default.";
+    _msg_info(
+      _msg);
+    _bytecode_get =
+      true;
+  }
+  else if ( _bytecode_type === "string" ) {
+    if ( _bytecode.length < 1 ) {
+      _bytecode_get =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "Bytecode path must be a string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _bytecode_get ) {
+    if ( ! _local ) {
+      _bytecode =
+        _get(
+          "contract",
+          "bytecode");
+      _msg =
+        "Variable '_bytecode' not defined, " +
+        "defaulting to global variable " +
+        "'contract_bytecode', which has value " +
+        `'${_bytecode}'.`;
+      _msg_info(
+        _msg);
+    }
+    else {
+      const
+        _network_type =
+          typeof(
+            _network);
+      if ( _network_type === "undefined" ) {
+        _network =
+          _get(
+            "target",
+            "network");
+        _msg =
+          "Variable '_network' not defined, " +
+          "defaulting to global variable " +
+          "'target_network', which has value " +
+          `'${_network}'.`;
+        _msg_info(
+          _msg);
+      }
+      const
+        _api_key_type =
+          typeof(
+            _api_key);
+      if ( _api_key_type == "undefined" ) {
+        _api_key =
+          _get(
+            "api",
+            "key");
+        _msg =
+          "Variable '_api_key' not defined, " +
+          "defaulting to global variable " +
+          "'api_key', which has value " +
+          `'${_api_key}'.`;
+        _msg_info(
+          _msg);
+      }
+      const
+        _compiler_output_type =
+          typeof(
+            _compiler_output);
+      if ( _compiler_output_type == "undefined" ) {
+        _compiler_output =
+          _get(
+            "contract",
+            "compiler_output");
+        _msg =
+          "Variable '_compiler_output' not defined, " +
+          "defaulting to global variable " +
+          "'contract_compiler_output', which has value " +
+          `'${_compiler_output}'.`;
+        _msg_info(
+          _msg);
+      }
+      _app =
+        _app_check(
+          _app);
+      const
+        _contract_type =
+          typeof(
+            _contract);
+      if ( _contract_type == "undefined" ) {
+        _contract =
+          _get(
+            "target",
+            "contract");
+        _msg =
+          "Variable '_contract' not defined, " +
+          "defaulting to global variable " +
+          "'target_contract', which has value " +
+          `'${_contract}'.`;
+        _msg_info(
+          _msg);
+      }
+      const
+        _address_type =
+          typeof(
+            _address);
+      if ( _address_type == "undefined" ) {
+        _address =
+          _get(
+            "contract",
+            "address");
+        _msg =
+          "Variable '_address' not defined, " +
+          "defaulting to global variable " +
+          "'contract_address', which has value " +
+          `'${_address}'.`;
+        _msg_info(
+          _msg);
+      }
+      _bytecode_target =
+        _bytecode;
+      _bytecode_target =
+        _default_artifact_path_get(
+          "bytecode");
+      const
+        _bytecode_target_exists =
+          _file_exists(
+            _bytecode_target);
+      if ( ! _bytecode_target_exists ) {
+        if ( _app !== "" &&
+             _contract !== "" ) {
+          _evm_contract_deployment_bytecode =
+            _get(
+              "_evm_contract_deployment",
+              "bytecode");
+          try {
+            _evm_contract_deployment_bytecode =
+              await _evm_contract_deployment_bytecode_check.apply(
+                null,
+                _evm_contract_deployment_bytecode);
+          }
+          catch(
+            _error) {
+            _msg =
+              "Error running " +
+              "'_evm_contract_deployment_bytecode_check' " +
+              "with parameters:";
+            _msg_error(
+              _msg,
+              0);
+            _echo2(
+              _evm_contract_deployment_bytecode);
+            _echo2(
+              _error);
+            throw _error;
+          }
+          const
+            _configuration_format_check_args = [
+              _configuration_format
+            ];
+          _configuration_format =
+            _configuration_format_check.apply(
+              null,
+              _configuration_format_check_args);
+          const
+            _deployments_dir_check_args = [
+              _deployments_dir,
+              _app,
+              _user_defined
+            ];
+          try {
+            _deployments_dir =
+              await _deployments_dir_check.apply(
+                null,
+                _deployments_dir_check_args);
+          }
+          catch(
+            _error) {
+            _msg =
+              "Error running '_deployments_dir_check' " +
+              "with parameters:";
+            _msg_error(
+              _msg,
+              0);
+            _echo2(
+              _deployments_dir_check_args);
+            _echo2(
+              _error);
+            throw _error;
+          }
+          _msg =
+            `Getting LibEVM app '${_app}' ` +
+            `bytecode for contract '${_contract}' for ` +
+            `network '${_network}' in format ` +
+            `'${_configuration_format}' at deployments ` +
+            `directory '${_deployments_dir}'.`;
+          _msg_info(
+            _msg);
+          const
+            _evm_contract_deployment_bytecode_args = [
+              [ _network ] ,
+              [ _network ],
+              "n",
+              _app,
+              _contract,
+              "",                     // version
+              "n",                    // user level
+              _configuration_format,
+              _deployments_dir
+            ];
+          try {
+            _bytecode_targets =
+              await _evm_contract_deployment_bytecode.apply(
+                null,
+                _evm_contract_deployment_bytecode_args);
+          }
+          catch(
+            _error) {
+            _msg =
+              `Error retrieving LibEVM app '${_app}' ` +
+              `Bytecode for contract '${_contract}'.`;
+            _msg_error(
+              _msg,
+              0);
+            throw _error;
+          }
+          if ( 0 < _bytecode_target.length ) {
+            _bytecode_target =
+              _bytecode_targets[
+                0];
+          }
+          else if ( _bytecode_target.length < 1 ) {
+            _msg =
+              "Got no results.";
+            _msg_warning(
+              _msg);
+          }
+        }
+      }
+      else {
+        _msg =
+          "Selecting abi target " +
+          `'${_bytecode_target}' for auto-detection.`;
+        _msg_info(
+          _msg);
+      }
+    }
+  }
+  if ( ! _file_exists(
+           _bytecode) &&
+       ! _file_exists(
+           _compiler_output) ) {
+    if ( _file_exists(
+           _bytecode_target) ) {
+      _bytecode =
+        _bytecode_target;
+    }
+    else {
+      _msg =
+        `Bytecode '${_bytecode}' does not ` +
+        `exist and '${_bytecode_target}' neither.`;
+      _msg_info(
+        _msg);
+      const
+        _bytecode_dir =
+          _dirname(
+            _bytecode);
+      _contract_artifacts_retrieve(
+        _bytecode_dir);
+    }
+  }
+  return _bytecode;
+}
+
+async function
   _network_check(
     _deployments_dir,
     _contract,
@@ -1489,65 +1800,6 @@ function
 }
 
 async function
-  _evm_contract_deployments_dir_check(
-    _evm_contract_deployments_dir) {
-  let
-    _import,
-    _msg;
-  _import =
-    false;
-  const
-    _evm_contract_deployments_dir_type =
-      typeof(
-        _evm_contract_deployments_dir);
-  if ( _evm_contract_deployments_dir_type === "undefined" ) {
-    _msg =
-      "Function '_evm_contract_deployments_dir' " +
-      "undefined, importing.";
-    _import =
-      true;
-  }
-  else if ( _evm_contract_deployments_dir_type === "string" ) {
-    if ( _evm_contract_deployments_dir.length < 1 ) {
-      _msg =
-        "Function '_evm_contract_deployments_dir' " +
-        "undefined, importing.";
-      _import =
-        true;
-    }
-    else {
-      _msg =
-        "Function '_evm_contract_deployments_dir' " +
-        "is a string.";
-      _msg_error(
-        _msg,
-        0);
-      throw _msg;
-    }
-  }
-  if ( _import ) {
-    try {
-      const
-        _libevm_contract_deployments_dir_module =
-          await import(
-            "./libevm-contract-deployments-dir");
-        _evm_contract_deployments_dir =
-          _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
-    }
-    catch(
-      _error) {
-      _msg =
-        "Error importing './libevm-contract-deployments-dir'.";
-      _msg_error(
-        _msg,
-        0);
-      throw _msg;
-    }
-  }
-  return _evm_contract_deployments_dir;
-}
-
-async function
   _evm_contract_deployment_abi_check(
     _evm_contract_deployment_abi) {
   let
@@ -1666,35 +1918,35 @@ async function
 }
 
 async function
-  _evm_contract_deployment_versions_check(
-    _evm_contract_deployment_versions) {
+  _evm_contract_deployment_bytecode_check(
+    _evm_contract_deployment_bytecode) {
   let
     _import,
     _msg;
   _import =
     false;
   const
-    _evm_contract_deployment_versions_type =
+    _evm_contract_deployment_bytecode_type =
       typeof(
-        _evm_contract_deployment_versions);
-  if ( _evm_contract_deployment_versions_type === "undefined" ) {
+        _evm_contract_deployment_bytecode);
+  if ( _evm_contract_deployment_bytecode_type === "undefined" ) {
     _msg =
-      "Function '_evm_contract_deployment_versions' " +
+      "Function '_evm_contract_deployment_bytecode' " +
       "undefined, importing.";
     _import =
       true;
   }
-  else if ( _evm_contract_deployment_versions_type === "string" ) {
-    if ( _evm_contract_deployment_versions.length < 1 ) {
+  else if ( _evm_contract_deployment_bytecode_type === "string" ) {
+    if ( _evm_contract_deployment_bytecode.length < 1 ) {
       _msg =
-        "Function '_evm_contract_deployment_versions' " +
-        "undefined, importing.";
+        "Function '_evm_contract_deployment_bytecode' " +
+        "is an empty string, importing.";
       _import =
         true;
     }
     else {
       _msg =
-        "Function '_evm_contract_deployment_versions' " +
+        "Function '_evm_contract_deployment_bytecode' " +
         "is a string.";
       _msg_error(
         _msg,
@@ -1705,23 +1957,23 @@ async function
   if ( _import ) {
     try {
       const
-        _libevm_contract_deployment_versions_module =
+        _libevm_contract_deployment_bytecode_module =
           await import(
-            "./libevm-contract-deployment-versions");
-        _evm_contract_deployment_versions =
-          _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+            "./libevm-contract-deployment-bytecode");
+        _evm_contract_deployment_bytecode =
+          _libevm_contract_deployment_bytecode_module._evm_contract_deployment_bytecode;
     }
     catch(
       _error) {
       _msg =
-        "Error importing './libevm-contract-deployment-versions'.";
+        "Error importing './libevm-contract-deployment-bytecode'.";
       _msg_error(
         _msg,
         0);
       throw _msg;
     }
   }
-  return _evm_contract_deployment_versions;
+  return _evm_contract_deployment_bytecode;
 }
 
 async function
@@ -1781,6 +2033,124 @@ async function
     }
   }
   return _evm_contract_deployment_networks;
+}
+
+async function
+  _evm_contract_deployment_versions_check(
+    _evm_contract_deployment_versions) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployment_versions_type =
+      typeof(
+        _evm_contract_deployment_versions);
+  if ( _evm_contract_deployment_versions_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployment_versions' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployment_versions_type === "string" ) {
+    if ( _evm_contract_deployment_versions.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployment_versions' " +
+        "undefined, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployment_versions' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployment_versions_module =
+          await import(
+            "./libevm-contract-deployment-versions");
+        _evm_contract_deployment_versions =
+          _libevm_contract_deployment_versions_module._evm_contract_deployment_versions;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployment-versions'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployment_versions;
+}
+
+async function
+  _evm_contract_deployments_dir_check(
+    _evm_contract_deployments_dir) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployments_dir_type =
+      typeof(
+        _evm_contract_deployments_dir);
+  if ( _evm_contract_deployments_dir_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployments_dir' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployments_dir_type === "string" ) {
+    if ( _evm_contract_deployments_dir.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployments_dir' " +
+        "undefined, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployments_dir' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployments_dir_module =
+          await import(
+            "./libevm-contract-deployments-dir");
+        _evm_contract_deployments_dir =
+          _libevm_contract_deployments_dir_module._evm_contract_deployments_dir;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployments-dir'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployments_dir;
 }
 
 async function
@@ -3116,6 +3486,243 @@ async function
     _abi);
 }
 
+async function
+  _contract_bytecode_auto_detect() {
+  let
+    _bytecode,
+    _bytecode_retrieve,
+    _contract_address,
+    _configuration_format,
+    _deployments_dir,
+    _msg,
+    _target_contract;
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");  
+  const
+    _user_defined =
+      "n";
+  _deployments_dir =
+    _get(
+      "deployments",
+      "dir");
+  _target_contract =
+    _get(
+      "target",
+      "contract");
+  _msg_info(
+    `Target app  '${_target_app}'.`);
+  _msg_info(
+    `Target contract  '${_target_contract}'.`);
+  _contract_address =
+    _get(
+      "contract",
+      "address");
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
+  const
+    _deployments_dir_check_args = [
+      _deployments_dir,
+      _target_app,
+      _user_defined
+    ];
+  _msg =
+    "Running '_deployments_dir_check' " +
+    `with arguments:`;
+  _msg_info(
+    _msg);
+  if ( _quiet == "n" ) {
+    _echo(
+      _deployments_dir_check_args);
+  }
+  try {
+    _deployments_dir =
+      await _deployments_dir_check.apply(
+        null,
+        _deployments_dir_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_deployments_dir_check' " +
+      `with arguments:`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _deployments_dir_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _target_contract_check_args = [
+      _target_contract,
+      _contract_address,
+      _target_app,
+      _deployments_dir
+    ];
+  try {
+    _target_contract =
+      await _target_contract_check.apply(
+        null,
+        _target_contract_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_target_contract_check' " +
+      "with parameters:";
+    _echo2(
+      _target_contract_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _contract_address_check_args = [
+      _contract_address,
+      _deployments_dir,
+      _target_app
+    ];
+  try {
+    _contract_address =
+      await _contract_address_check.apply(
+        null,
+        _contract_address_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_contract_address_check' " +
+      "with parameters:";
+    _echo2(
+      _contract_address_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _api_key =
+      _get(
+        "api",
+        "key");
+  const
+    _compiler_output =
+      _get(
+        "contract",
+        "compiler_output");
+  _bytecode =
+    _get(
+      "contract",
+      "bytecode");
+  const
+    _bytecode_type =
+      typeof(
+        _bytecode);
+  _bytecode_retrieve =
+    false;
+  if ( _bytecode_type === "undefined" ) {
+    _bytecode_retrieve =
+      true;
+  }
+  else if ( _bytecode_type === "string" ) {
+    if ( _bytecode.length < 1 ) {
+      _bytecode_retrieve =
+        true;
+    }
+  }
+  if ( _bytecode_retrieve ) {
+    if ( 1 < _target_networks.length ) {
+      _msg =
+        "You can't currently retrieve " +
+        "bytecode for more than a contract.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+    else if ( 1 == _target_networks.length ) {
+      const
+        _network =
+          _target_networks[
+            0];
+      _configuration_format =
+        _configuration_format_check(
+          _configuration_format);
+      const
+        _contract_bytecode_check_args = [
+          _bytecode,
+          _network,
+          _contract_address,
+          _api_key,
+          _compiler_output,
+          _target_app,
+          _target_contract,
+          _configuration_format,
+          _deployments_dir,
+          _user_defined,
+          true                  // local
+        ];
+      _msg =
+        "Running '_contract_bytecode_check' with " +
+        "parameters:";
+      _msg_info(
+        _msg);
+      if ( _quiet == "n" ) {
+        _echo(
+          _contract_bytecode_check_args);
+      }
+      try {
+        _bytecode =
+          await _contract_bytecode_check.apply(
+            null,
+            _contract_bytecode_check_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_contract_bytecode_check' with " +
+          "parameters:";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _contract_bytecode_check_args);
+        _echo2(
+          _error);
+        throw _error;
+      }
+    }
+    else {
+      _msg =
+        "You must currently select a network " +
+        "to auto-detect the bytecode for " +
+        "a libevm application contract.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  _override_set(
+    "contract",
+    "bytecode",
+    _bytecode);
+}
+
 export {
   _app_check,
   _config_file_path_check,
@@ -3123,6 +3730,7 @@ export {
   _configuration_format_check,
   _configuration_format_get,
   _contract_abi_auto_detect,
+  _contract_bytecode_auto_detect,
   _contract_address_check,
   _contract_version_auto_detect,
   _default_artifact_path_get,

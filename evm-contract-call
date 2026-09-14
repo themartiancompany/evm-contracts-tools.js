@@ -580,6 +580,16 @@ async function
       _get(
         "contract",
         "abi");
+  const
+    _contract_bytecode =
+      _get(
+        "contract",
+        "bytecode");
+  const
+    _contract_compiler_output =
+      _get(
+        "contract",
+        "compiler_output");
   _contract_address =
     _get(
       "contract",
@@ -597,64 +607,187 @@ async function
     _contract_abi_type =
       typeof(
         _contract_abi);
+  const
+    _contract_bytecode_type =
+      typeof(
+        _contract_bytecode);
+  const
+    _contract_compiler_output_type =
+      typeof(
+        _contract_compiler_output_type);
   if ( _contract_address_type !== "undefined" &&
-       _contract_address != "" ) {
-    if ( _contract_abi_type === "array" ) {
-      _msg =
-        "Not implemented.";
-      _msg_error(
-        _msg,
-        1);
-    }
-    else if ( _contract_abi_type === "string" ) {
-      if ( 0 < _contract_abi.length ) {
+       _contract_address_type === "string" ) {
+    if ( 0 < _contract_address.length )
+      if ( _contract_abi_type === "array" ) {
         _msg =
-          "Selecting contract ABI:";
-        _msg_info(
-          _msg);
-        if ( _quiet == "n" ) {
-          _echo(
-            _contract_abi);
+          "Not implemented.";
+        _msg_error(
+          _msg,
+          1);
+      }
+      else if ( _contract_abi_type === "string" ) {
+        if ( 0 < _contract_abi.length ) {
+          _msg =
+            "Selecting contract ABI:";
+          _msg_info(
+            _msg);
+          if ( _quiet == "n" ) {
+            _echo(
+              _contract_abi);
+          }
+        }
+        else {
+          _msg =
+            "Specified no contract ABI " +
+            `for contract '${_target_contract}' ` +
+            `and address '${_contract_address}', ` +
+            "auto-detecting.";
+          _msg_info(
+            _msg);
+          try {
+            await _contract_abi_auto_detect();
+            //   await _default_artifact_path_get(
+            //     "abi");
+            // await _artifact_local_auto_detect(
+            //   "bytecode");
+            // await _artifact_local_auto_detect(
+            //   "compiler_output");
+            // if ( _contract_abi == "" ||
+            //      _default_artifact_path_get(
+            //        "abi") == _contract_abi ) {
+            //   await _contract_abi_auto_detect();
+            // }
+          }
+          catch(
+            _error) {
+            _msg =
+              "Error auto-detecting contract ABI.";
+            _msg_error(
+              _msg,
+              0);
+            throw _error;
+          }
         }
       }
       else {
         _msg =
-          "Specified no contract ABI " +
-          `for contract '${_target_contract}' ` +
-          `and address '${_contract_address}', ` +
-          "auto-detecting.";
-        _msg_info(
-          _msg);
-        try {
-          await _contract_abi_auto_detect();
-          // _contract_abi =
-          //   await _default_artifact_path_get(
-          //     "abi");
-          await _artifact_local_auto_detect(
-            "bytecode");
-          await _artifact_local_auto_detect(
-            "compiler_output");
-          // if ( _contract_abi == "" ||
-          //      _default_artifact_path_get(
-          //        "abi") == _contract_abi ) {
-          //   await _contract_abi_auto_detect();
-          // }
-        }
-        catch(
-          _error) {
+          `Unknown type '${_contract_abi_type}' ` +
+          `for contract ABI (must be string).`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+      if ( _contract_bytecode_type === "array" ) {
+        _msg =
+          "Not implemented.";
+        _msg_error(
+          _msg,
+          1);
+      }
+      else if ( _contract_bytecode_type === "string" ) {
+        if ( 0 < _contract_bytecode.length ) {
           _msg =
-            "Sigh.";
-          _msg_error(
-            _msg,
-            0);
-          throw _error;
+            "Selecting contract Bytecode:";
+          _msg_info(
+            _msg);
+          if ( _quiet == "n" ) {
+            _echo(
+              _contract_bytecode);
+          }
+        }
+        else {
+          _msg =
+            "Specified no contract bytecode " +
+            `for contract '${_target_contract}' ` +
+            `and address '${_contract_address}', ` +
+            "auto-detecting.";
+          _msg_info(
+            _msg);
+          try {
+            await _contract_bytecode_auto_detect();
+          }
+          catch(
+            _error) {
+            _msg =
+              "Sigh.";
+            _msg_error(
+              _msg,
+              0);
+            throw _error;
+          }
         }
       }
+      else {
+        _msg =
+          `Unknown type '${_contract_bytecode_type}' ` +
+          `for contract bytecode (must be string).`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+      if ( _contract_compiler_output_type === "array" ) {
+        _msg =
+          "Not implemented.";
+        _msg_error(
+          _msg,
+          1);
+      }
+      else if ( _contract_compiler_output_type === "string" ) {
+        if ( 0 < _contract_compiler_output.length ) {
+          _msg =
+            "Selecting contract compiler output:";
+          _msg_info(
+            _msg);
+          if ( _quiet == "n" ) {
+            _echo(
+              _contract_compiler_output);
+          }
+        }
+        else {
+          _msg =
+            "Specified no contract compiler output " +
+            `for contract '${_target_contract}' ` +
+            `and address '${_contract_address}', ` +
+            "auto-detecting.";
+          _msg_info(
+            _msg);
+          try {
+            await _contract_compiler_output_auto_detect();
+          }
+          catch(
+            _error) {
+            _msg =
+              "Error auto-detecting contract compiler output.";
+            _msg_error(
+              _msg,
+              0);
+            throw _error;
+          }
+        }
+      }
+      else {
+        _msg =
+          `Unknown type '${_contract_compiler_output_type}' ` +
+          `for contract compiler output (must be string).`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+    else {
+      _msg =
+        "No address in input, artifacts detection " +
+        "skipped.";
+      _msg_info(
+        _msg);
     }
   }
   else {
     _msg =
-      `Contract address (type ` +
+      `Uknown type for contract address (type ` +
       `'${_contract_address_type}'):`;
     _msg_error(
       _msg,
