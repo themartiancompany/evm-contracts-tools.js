@@ -499,7 +499,6 @@ async function
     _method_args,
     _contract_object) {
   let
-    _contract,
     _contract_get_args,
     _contract_object_get,
     _exception,
@@ -599,10 +598,18 @@ async function
           _passed == false ) {
     try {
       try {
+        _msg =
+          "Running static call."
+        _msg_info(
+          _msg);
         _value =
           await _method.staticCall.apply(
             null,
             _method_args);
+        _msg =
+          "Value obtained;";
+        _msg_info(
+          _msg);
       }
       catch(
         _error) {
@@ -620,6 +627,10 @@ async function
           typeof(
             _value);
       if ( _value_type !== "undefined" ) {
+        _msg =
+          "Call value obtained";
+        _msg_info(
+          _msg);
         _passed =
           true;
       }
@@ -646,11 +657,26 @@ async function
       //   _error);
       _retry =
         _retry + 1;
+      _msg =
+        "Increasing retry and waiting 3 seconds.";
       _msg_error(
-        "Increasing retry and waiting 3 seconds.",
+        _msg,
         0);
-      await _sleep(
-        3000);
+      try {
+        await _sleep(
+          3000);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Problems sleeping?";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _error);
+        throw _error;
+      }
     }
   }
   if ( _retry > _retries_max ) {
