@@ -370,7 +370,7 @@ async function
       typeof(
         _contract_compiler_output);
   if ( _contract_compiler_output === "" ||
-       _contract_compiler_output_type === "undefined"
+       _contract_compiler_output_type === "undefined" ||
        _contract_compiler_output === null ) {
     _msg =
       `No '${_contract}' version '${_version}' ` +
