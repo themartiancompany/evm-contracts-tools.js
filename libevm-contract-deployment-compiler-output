@@ -275,20 +275,20 @@ async function
       _non_empty_networks =
         true;
       _msg =
-        "Getting bytecode for network " +
+        "Getting compiler output for network " +
         `'${_net}'.`;
       _msg_info(
         _msg);
       const
         _version_check_args = [
           _version,
-          _app,            // app
+          _app,                  // app
           _contract,
-          "",            // address
+          "",                    // address
           _net,
           _user_defined,
           _deployments,
-          "",            // config file
+          "",                    // config file
           _configuration_format
         ];
       try {
@@ -336,7 +336,7 @@ async function
       }
       else {
         _msg =
-          `Bytecode at path '${_bytecode_path}' ` +
+          `Compiler output at path '${_compiler_output_path}' ` +
           `not found.`;
         _msg_info(
           _msg);
