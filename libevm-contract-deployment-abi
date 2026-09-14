@@ -234,11 +234,11 @@ async function
     _key_name,
     _msg,
     _net;
+  const
+    _version_check_args = [
+      _version,
+    ];
   try {
-    const
-      _version_check_args = [
-        _version,
-      ];
     _version =
       await _version_check.apply(
         null,
