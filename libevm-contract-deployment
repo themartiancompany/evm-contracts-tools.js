@@ -1111,6 +1111,8 @@ async function
 function
   _local_check(
     _local) {
+  let
+    _msg;
   const
     _local_type =
       typeof(
