@@ -2514,6 +2514,7 @@ async function
     _abi,
     _abi_retrieve,
     _contract_address,
+    _deployments_dir,
     _msg,
     _target_contract;
   const
@@ -2539,6 +2540,10 @@ async function
     _get(
       "target",
       "contract");
+  _msg_info(
+    `Target app  '${_target_app}'.`);
+  _msg_info(
+    `Target contract  '${_target_contract}'.`);
   _contract_address =
     _get(
       "contract",
@@ -2554,6 +2559,15 @@ async function
       _target_app,
       _user_defined
     ];
+  _msg =
+    "Running '_deployments_dir_check' " +
+    `with arguments:`;
+  _msg_info(
+    _msg);
+  if ( _quiet == "n" ) {
+    _echo(
+      _deployments_dir_check_args);
+  }
   try {
     _deployments_dir =
       await _deployments_dir_check.apply(
@@ -2569,7 +2583,7 @@ async function
       _msg,
       0);
     _echo2(
-      _msg);
+      _deployments_dir_check_args);
     _echo2(
       _error);
     throw _error;
@@ -2584,6 +2598,7 @@ async function
   try {
     _target_contract =
       await _target_contract_check.apply(
+        null,
         _target_contract_check_args);
   }
   catch(
@@ -2651,7 +2666,7 @@ async function
     }
   }
   if ( _abi_retrieve ) {
-    if ( 1 < _networks.length ) {
+    if ( 1 < _target_networks.length ) {
       _msg =
         "You can't currently retrieve " +
         "ABI for more than a contract.";
@@ -2660,7 +2675,7 @@ async function
         0);
       throw _msg;
     }
-    else if ( 1 == _networks.length ) {
+    else if ( 1 == _target_networks.length ) {
       const
         _network =
           _target_networks[
