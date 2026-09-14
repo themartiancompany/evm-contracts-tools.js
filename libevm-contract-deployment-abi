@@ -252,6 +252,10 @@ async function
   // _echo2(
   //   _networks);
   for ( _net of _networks ) {
+    _abi_retrieve =
+      false;
+    _break =
+      false
     if ( _net.length < 1 ) {
       _msg =
         `Empty value network '${_net}', ` +
@@ -260,6 +264,10 @@ async function
         _msg);
     }
     else {
+      _abi_retrieve =
+      true;
+    }
+    if ( _abi_retrieve ) {
       _msg =
         "Getting ABI for network " +
         `'${_net}'.`;
@@ -308,11 +316,20 @@ async function
           _net,
           _version,
           `${_contract}.abi.json` ]);
+      _msg =
+        `Checking file '${_abi_path}'.`;
+      _msg_info(
+        _msg);
       if ( _file_exists(
              _abi_path) ) {
         _found =
           true;
-        break;
+        _msg =
+          `ABI: '${_abi_path}'.`;
+        _msg_info(
+          _msg);
+        _break =
+          true;
       }
       else {
         _msg =
@@ -321,6 +338,9 @@ async function
         _msg_info(
           _msg);
       }
+    }
+    if ( _break ) {
+      break
     }
   }
   if ( ! _found ) {
