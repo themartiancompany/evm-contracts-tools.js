@@ -297,6 +297,10 @@ async function
           _error);
         throw _error;
       }
+      _msg =
+        `Checked version '${_version}'.`;
+      _msg_info(
+        _msg);
       _abi_path =
         _path_join( [
           _deployments,
