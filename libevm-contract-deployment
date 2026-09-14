@@ -2300,7 +2300,7 @@ async function
     _evm_contract_deployment_compiler_output_type =
       typeof(
         _evm_contract_deployment_compiler_output);
-  if ( _evm_contract_deployment_copmpiler_output_type === "undefined" ) {
+  if ( _evm_contract_deployment_compiler_output_type === "undefined" ) {
     _msg =
       "Function '_evm_contract_deployment_compiler_output' " +
       "undefined, importing.";
