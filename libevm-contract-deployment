@@ -315,48 +315,6 @@ function
   return _artifact;
 }
 
-function
-  _abi_check(
-    _abi,
-    _local) {
-  let
-    _abi_get;
-  _abi_get =
-    false;
-  _local =
-    _local_check(
-      _local);
-  const
-    _abi_type =
-      typeof(
-        _abi);
-  if ( _abi_type === "undefined" ) {
-    _msg =
-      "ABI undefined, setting default.";
-    _msg_info(
-      _msg);
-    _abi_get =
-      true;
-  }
-  else if ( _abi_type === "string" ) {
-    if ( _abi.length < 1 ) {
-      _abi_get =
-        true;
-    }
-  }
-  else {
-    _msg =
-      "ABI path must be a string.";
-    _msg_error(
-      _msg,
-      0);
-    throw _msg;
-  }
-  if ( _abi_get ) {
-    _abi
-  }
-}
-
 async function
   _contract_abi_check(
     _abi,
@@ -1176,6 +1134,7 @@ function
       _local =
         true;
     }
+  }
   else if ( _local_type !== "boolean" ) {
     _msg =
       "Variable '_local' must be a boolean.";
