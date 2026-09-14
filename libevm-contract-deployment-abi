@@ -206,6 +206,11 @@ const
   _user_deployments_check =
     _libevm_contract_deployment_module._user_deployments_check;
 /* global
+     _user_defined_check */
+const
+  _user_defined_check =
+    _libevm_contract_deployment_module._user_defined_check;
+/* global
      _version_check */
 const
   _version_check =
@@ -223,6 +228,7 @@ const
 async function
   _contract_abi_get(
     _deployments,
+    _app,
     _contract,
     _network,
     _network_id,
@@ -247,7 +253,7 @@ async function
     const
       _version_check_args = [
         _version,
-        "",            // app
+        _app,            // app
         _contract,
         "",            // address
         _net,
@@ -342,6 +348,7 @@ async function
   let
     _args,
     _contract_abi,
+    _deployments_dir_get,
     _network,
     _network_check_args,
     _target_network,
@@ -355,31 +362,44 @@ async function
   const
     _contract_abi_get_args =
       [];
-  const
-    _user_defined_type =
-      typeof(
-        _user_defined);
-  if ( _user_defined_type === "undefined" ||
-       _user_defined === "" ) {
-    _msg =
-      "User defined not specified, setting " +
-      "default (n).";
-    _msg_info(
-      _msg);
-    _user_defined =
-      "n";
-  }
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
   const
     _deployments_dir_type =
       typeof(
         _deployments_dir);
-  if ( _deployments_dir_type === "undefined" ||
-       _deployments_dir === "" ) {
+  _deployments_dir_get =
+    false;
+  if ( _deployments_dir_type === "undefined" ) {
+    _msg =
+      "Deployments directory undefined, getting.";
+    _msg_info(
+      _msg);
+    _deployments_dir_get =
+      true;
+  }
+  else if ( _deployments_dir_type === "string" ) {
+    if ( _deployments_dir.length < 1 ) {
+      _msg =
+        "Deployments directory not set, getting.";
+      _msg_info(
+        _msg);
+      _deployments_dir_get =
+        true;
+    }
+  }
+  if ( _deployments_dir_get ) {
+    const
+      _evm_contract_deployments_dir_args = [
+        _target_app,
+        _user_defined
+      ];
     try {
       _deployments_dir =
-        await _evm_contract_deployments_dir(
-          _target_app,
-          _user_defined);
+        await _evm_contract_deployments_dir.apply(
+          null,
+          _evm_contract_deployments_dir_args);
     }
     catch(
       _error) {
@@ -481,6 +501,7 @@ async function
       _network_check_args);
     _contract_abi_get_args.push( [
       _deployments_dir,
+      _target_app,
       _target_contract,
       _network,
       _target_network_id,
@@ -503,6 +524,7 @@ async function
       _network_check_args);
     _contract_abi_get_args.push( [
       _deployments_dir,
+      _target_app,
       _target_contract,
       _target_network,
       _target_network_id,
