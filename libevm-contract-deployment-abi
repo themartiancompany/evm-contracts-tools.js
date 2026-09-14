@@ -84,6 +84,11 @@ const
   _dir_exists =
     _libcrash_module._dir_exists;
 /* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash_module._echo2;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -215,7 +220,7 @@ const
   _evm_contract_deployment_networks =
     _libevm_contract_deployment_networks_module._evm_contract_deployment_networks;
 
-function
+async function
   _contract_abi_get(
     _deployments,
     _contract,
@@ -229,9 +234,30 @@ function
     _key_name,
     _msg,
     _net;
-  _version =
-    _version_check(
-      _version);
+  try {
+    const
+      _version_check_args = [
+        _version,
+      ];
+    _version =
+      await _version_check.apply(
+        null,
+        _version_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_version_check' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _version_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _networks = [
       _network,
@@ -473,10 +499,26 @@ async function
     ] );
   }
   for ( _args of _contract_abi_get_args ) {
-    _contract_abi =
-      _contract_abi_get.apply(
-        null,
+    try {
+      _contract_abi =
+        await _contract_abi_get.apply(
+          null,
+          _args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_contract_abi_get' " +
+        "with parameters:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
         _args);
+      _echo2(
+        _error);
+      throw _error;
+    }
     _contracts_abis.push(
       _contract_abi);
   }
