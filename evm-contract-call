@@ -835,6 +835,12 @@ async function
     _error) {
     _msg =
       "Error running '_artifacts_auto_detect'."
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
   }
 }
 
