@@ -394,7 +394,7 @@ async function
   if ( _method_object_get ) {
     const
       _contract_object_check_args = [
-        _contract_object
+        _contract_object,
         _wallet_seed,
         _wallet_password,
         _contract_address,
