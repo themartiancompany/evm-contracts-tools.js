@@ -573,7 +573,7 @@ async function
         null,
         _method_object_check_args);
     _msg =
-      "Checked ethers contract object.";
+      "Checked ethers contract method object.";
     _msg_info(
       _msg);
   }
