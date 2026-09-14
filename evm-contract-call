@@ -614,7 +614,7 @@ async function
   const
     _contract_compiler_output_type =
       typeof(
-        _contract_compiler_output_type);
+        _contract_compiler_output);
   if ( _contract_address_type !== "undefined" &&
        _contract_address_type === "string" ) {
     if ( 0 < _contract_address.length ) {
