@@ -584,6 +584,8 @@ async function
       try {
         _method =
           _method_object;
+        _echo2(
+          _method);
         _value =
           await _method.staticCall.apply(
             null,

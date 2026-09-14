@@ -385,7 +385,7 @@ async function
     _api_key,
     _contract,
     _contract_get_fun,
-    _contract_get_opts,
+    _contract_get_args,
     _msg,
     _network_provider,
     _wallet,
@@ -397,11 +397,32 @@ async function
       _file_read(
         _api_key_path);
   }
-  _network_provider =
-    _provider_get(
+  const
+    _provider_get_args = [
       _target_network,
-      _api_key);
-  _contract_get_opts =
+      _api_key
+    ];
+  try {
+    _network_provider =
+      await _provider_get.apply(
+        null,
+        _provider_get_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_provider_get' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _provider_get_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  _contract_get_args =
     [];
   if ( _wallet_seed != "" ) {
     _wallet_path_list = [
@@ -424,31 +445,31 @@ async function
         _wallet_get_opts);
     _msg_info_wallet_selected(
       _wallet);
-    _contract_get_opts.push(
+    _contract_get_args.push(
       _wallet);
   }
   else {
-    _contract_get_opts.push(
+    _contract_get_args.push(
       _network_provider);
   }
-  _contract_get_opts.push(
+  _contract_get_args.push(
     _contract_address);
   if ( _contract_bytecode_path != "" ) {
-    _contract_get_opts.push(
+    _contract_get_args.push(
       _contract_abi_path,
       _contract_bytecode_path);
     _contract_get_fun =
       _contract_get_bytecode;
   }
   else if ( _contract_compiler_output_path != "" ) {
-    _contract_get_opts.push(
+    _contract_get_args.push(
       _contract_compiler_output_path);
     _contract_get_fun =
       _contract_get_compiler_output;
   }
   else if ( _contract_bytecode_path == "" && 
             _contract_abi_path != "" ) {
-    _contract_get_opts.push(
+    _contract_get_args.push(
       _contract_abi_path);
     _contract_get_fun =
       _contract_get_abi;
@@ -462,17 +483,18 @@ async function
     _contract = await
       _contract_get_fun.apply(
         null,
-        _contract_get_opts);
+        _contract_get_args);
   } catch (
     _error) {
     _msg =
       "Error running " +
       `'${_contract_get_fun}' ` +
       "with parameters:";
-    _msg_info(
-      _msg);
+    _msg_error(
+      _msg,
+      0);
     _echo2(
-      _contract_get_opts);
+      _contract_get_args);
     _echo2(
       _error);
     throw _error;
