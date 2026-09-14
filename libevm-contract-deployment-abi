@@ -569,7 +569,7 @@ async function
       ] );
     }
   }
-  for ( _network of  _network_ids ) {
+  for ( _network of _network_ids ) {
     if ( _network.length < 1 ) {
       _msg =
         "Empty network, skipping.";
@@ -593,7 +593,7 @@ async function
         _target_app,
         _target_contract,
         _target_network,
-        _target_network_id,
+        _network,
         _contract_version,
         _configuration_format,
         _user_defined
