@@ -175,6 +175,11 @@ const
 const
   _require =
     _libcrash_module._require;
+/* global
+     _set */
+const
+  _set =
+    _libcrash_module._set;
 const
   _evm_chains_info_module =
     await _require(
