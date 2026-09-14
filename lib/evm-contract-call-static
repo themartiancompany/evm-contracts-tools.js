@@ -239,6 +239,238 @@ function
 }
 
 async function
+  _contract_object_check(
+    _contract_object,
+    _wallet_seed,
+    _wallet_password,
+    _contract_address,
+    _contract_abi_path,
+    _contract_bytecode_path,
+    _contract_compiler_output_path,
+    _target_network,
+    _api_key_path) {
+  let
+    _contract_object_get;
+  const
+    _contract_object_type =
+      typeof(
+        _contract_object_type);
+  _contract_object_get =
+    false;
+  if ( _contract_object_type === "undefined" ) {
+    _msg =
+      "Ethers contract object is " +
+      "undefined, generating " +
+      "ethers contract object.";
+    _msg_info(
+      _msg);
+    _contract_object_get =
+      true;
+  else if ( _contract_object_type === "string" ) {
+    if ( _contract_object.length < 1 )  {
+      _msg =
+        "Ethers contract object is an empty " +
+        "string, generating " +
+        "ethers contract object.";
+      _msg_info(
+        _msg);
+      _contract_object_get =
+        true;
+    }
+  }
+  else if ( _contract_object_type === "object" ) {
+    const
+      _contract_object_keys =
+        Object.keys(
+          _contract_object);
+    if ( _contract_object_keys.length < 1 )  {
+      _msg =
+        "Ethers contract object is an empty " +
+        "object, generating " +
+        "ethers contract object.";
+      _msg_info(
+        _msg);
+      _contract_object_get =
+        true;
+    }
+  }
+  if ( _contract_object_get ) {
+    const
+      _contract_get_args = [
+        _wallet_seed,
+        _wallet_password,
+        _contract_address,
+        _contract_abi_path,
+        _contract_bytecode_path,
+        _contract_compiler_output_path,
+        _target_network,
+        _api_key_path
+      ];
+    try {
+      _contract_object =
+        await _contract_get.apply(
+          null,
+          _contract_get_args);
+    }
+    catch(
+      _error) {
+      msg =
+        "Error running '_contract_get' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _contract_get_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    _msg_info_contract_obtained(
+      _contract_object);
+  }
+  return _contract_object;
+}
+
+async function
+  _method_object_check(
+    _method_object,
+    _contract_object,
+    _contract_method,
+    _wallet_seed,
+    _wallet_password,
+    _contract_address,
+    _contract_abi_path,
+    _contract_bytecode_path,
+    _contract_compiler_output_path,
+    _target_network,
+    _api_key_path) {
+  let
+    _method_object_get;
+  const
+    _method_object_type =
+      typeof(
+        _method_object);
+  _method_object_get =
+    false;
+  if ( _method_object_type === "undefined" ) {
+    _msg =
+      "Ethers contract method object is " +
+      "undefined, generating " +
+      "ethers contract method object.";
+    _msg_info(
+      _msg);
+    _method_object_get =
+      true;
+  }
+  else if ( _method_object_type === "string" ) {
+    if ( _method_object.length < 1 )  {
+      _msg =
+        "Ethers contract method object is an empty " +
+        "string, generating " +
+        "ethers contract method object.";
+      _msg_info(
+        _msg);
+      _method_object_get =
+        true;
+    }
+  }
+  else if ( _contract_object_type === "object" ) {
+    const
+      _contract_object_keys =
+        Object.keys(
+          _contract_object);
+    if ( _contract_object_keys.length < 1 )  {
+      _msg =
+        "Ethers contract method object is an empty " +
+        "object, generating.";
+      _msg_info(
+        _msg);
+      _method_object_get =
+        true;
+    }
+  }
+  if ( _method_object_get ) {
+    const
+      _contract_object_check_args = [
+        _contract_object
+        _wallet_seed,
+        _wallet_password,
+        _contract_address,
+        _contract_abi_path,
+        _contract_bytecode_path,
+        _contract_compiler_output_path,
+        _target_network,
+        _api_key_path
+      ];
+    try {
+      _contract_object =
+        _contract_object_check.apply(
+          null,
+          _contract_object_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_contract_object_check' " +
+        "with parameters:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _contract_object_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    const
+      _contract_get_function_args = [
+        _contract_method
+      ];
+    try {
+      _method_object =
+        await _contract_object.getFunction.apply(
+          null,
+          _contract_get_function_args);
+    }
+    catch(
+      _error) {
+      const
+        _msg_no_fragment =
+          "no matching fragment";
+      const
+        _msg_short =
+          _error[
+            "shortMessage"];
+      if ( _msg_no_fragment == _msg_short ) {
+        _msg =
+          `Found no '${_contract_method}' method ` +
+          `nor contract ABI '${_contract_abi_path}' ` +
+          `nor in compiler output ` +
+          `'${_contract_compiler_output_path}'.`;
+        _msg_error(
+          _msg,
+          0);
+      }
+      _msg =
+        "Error running '_contract_object.getFunction' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _contract_get_function_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    _msg_info_method_obtained(
+      _method_object);
+  }
+  return _method_object;
+}
+
+async function
   _contract_call_static(
     _wallet_seed,
     _retries_max,
@@ -250,10 +482,13 @@ async function
     _method_object,
     _contract_address,
     _contract_method,
-    _method_args) {
+    _method_args,
+    _contract_object) {
   let
     _contract,
     _contract_get_args,
+    _contract_object_get,
+    _exception,
     _method,
     _msg,
     _passed,
@@ -268,90 +503,85 @@ async function
   const
     _wallet_password =
       "";
-  _contract_get_args = [
-    _wallet_seed,
-    _wallet_password,
-    _contract_address,
-    _contract_abi_path,
-    _contract_bytecode_path,
-    _contract_compiler_output_path,
-    _target_network,
-    _api_key_path,
-  ];
+  const
+    _contract_object_check_args = [
+      _contract_object,
+      _wallet_seed,
+      _wallet_password,
+      _contract_address,
+      _contract_abi_path,
+      _contract_bytecode_path,
+      _contract_compiler_output_path,
+      _target_network,
+      _api_key_path
+    ];
+  try {
+    _contract_object =
+      await _contract_object_check.apply(
+        null,
+        _contract_object_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_contract_object_check' " +
+      "parameters:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _contract_object_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _method_object_check_args = [
+      _method_object,
+      _contract_object,
+      _contract_method,
+      _wallet_seed,
+      _wallet_password,
+      _contract_address,
+      _contract_abi_path,
+      _contract_bytecode_path,
+      _contract_compiler_output_path,
+      _target_network,
+      _api_key_path
+    ];
+  try {
+    _method_object =
+      await _method_object_check.apply(
+        null,
+        _method_object_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_method_object_check' " +
+      "parameters:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _method_object_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
   _passed = 
     false;
   while ( _retry <= _retries_max &&
           _passed == false ) {
     try {
-      if ( _method_object === "" ||
-           typeof(
-             _method_object) === "undefined" ) {
-        try {
-          _contract =
-            await _contract_get.apply(
-              null,
-              _contract_get_args);
-        }
-        catch(
-          _error) {
-          msg =
-            "Error running '_contract_get' " +
-            "with arguments:";
-          _msg_error(
-            _msg,
-            0);
-          _echo2(
-            _contract_get_args);
-          _echo2(
-            _error);
-          throw _error;
-	}
-        _msg_info_contract_obtained(
-          _contract);
-        try {
-          _method =
-            await _contract.getFunction(
-              _contract_method);
-          _msg_info_method_obtained(
-            _method);
-        }
-        catch(
-          _error) {
-          const
-            _msg_no_fragment =
-              "no matching fragment";
-          const
-            _msg_short =
-              _error[
-                "shortMessage"];
-          if ( _msg_no_fragment == _msg_short ) {
-            _msg =
-              `Found no '${_contract_method}' method ` +
-              `nor contract ABI '${_contract_abi_path}' ` +
-              `nor in compiler output ` +
-              `'${_contract_compiler_output_path}'.`;
-            _msg_error(
-              _msg,
-              0);
-          }
-          throw _error;
-        }
-      }
-      else if ( _method_object != "" ||
-                _method_object != undefined ) {
-        _msg =
-          "Re-using contract method.";
-        _msg_info(
-          _msg);
+      try {
         _method =
           _method_object;
-      }
-      try {
         _value =
           await _method.staticCall.apply(
             null,
             _method_args);
-      }
+        }
       catch(
         _error) {
         _msg =
@@ -368,12 +598,17 @@ async function
           true;
       }
       else if ( _value == undefined ) {
-        throw { "error": {
-                  "message":
-                    "Value undefined, static call error" } };
+        _exception = {
+          "error": {
+            "message":
+              "Value undefined, static call error"
+            }
+        };
+        throw _exception;
       }
-    } catch (
-        _error) {
+    }
+    catch (
+      _error) {
       _error_display(
         _error);
       _retry =
@@ -386,9 +621,13 @@ async function
     }
   }
   if ( _retry > _retries_max ) {
-    throw { "error": {
-              "message":
-                "Maximum number of retries reached." } };
+    _exception = {
+      "error": {
+        "message":
+          "Maximum number of retries reached."
+        }
+      };
+    throw _exception;
   }
   return [
     _value,
