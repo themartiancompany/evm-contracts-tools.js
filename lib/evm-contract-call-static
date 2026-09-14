@@ -253,7 +253,7 @@ async function
     _method_args) {
   let
     _contract,
-    _contract_get_opts,
+    _contract_get_args,
     _method,
     _msg,
     _passed,
@@ -268,7 +268,7 @@ async function
   const
     _wallet_password =
       "";
-  _contract_get_opts = [
+  _contract_get_args = [
     _wallet_seed,
     _wallet_password,
     _contract_address,
@@ -286,10 +286,26 @@ async function
       if ( _method_object === "" ||
            typeof(
              _method_object) === "undefined" ) {
-        _contract =
-          await _contract_get.apply(
-            null,
-            _contract_get_opts);
+        try {
+          _contract =
+            await _contract_get.apply(
+              null,
+              _contract_get_args);
+        }
+        catch(
+          _error) {
+          msg =
+            "Error running '_contract_get' " +
+            "with arguments:";
+          _msg_error(
+            _msg,
+            0);
+          _echo2(
+            _contract_get_args);
+          _echo2(
+            _error);
+          throw _error;
+	}
         _msg_info_contract_obtained(
           _contract);
         try {
