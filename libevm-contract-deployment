@@ -315,6 +315,48 @@ function
   return _artifact;
 }
 
+function
+  _abi_check(
+    _abi,
+    _local) {
+  let
+    _abi_get;
+  _abi_get =
+    false;
+  _local =
+    _local_check(
+      _local);
+  const
+    _abi_type =
+      typeof(
+        _abi);
+  if ( _abi_type === "undefined" ) {
+    _msg =
+      "ABI undefined, setting default.";
+    _msg_info(
+      _msg);
+    _abi_get =
+      true;
+  }
+  else if ( _abi_type === "string" ) {
+    if ( _abi.length < 1 ) {
+      _abi_get =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "ABI path must be a string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _abi_get ) {
+    _abi
+  }
+}
+
 async function
   _contract_abi_check(
     _abi,
@@ -323,26 +365,228 @@ async function
     _api_key,
     _compiler_output,
     _app,
-    _contract) {
+    _contract,
+    _configuration_format,
+    _local) {
   let
+    _abi_get,
     _abi_target,
+    _evm_contract_deployment_abi,
     _msg;
+  _abi_get =
+    false;
+  _local =
+    _local_check(
+      _local);
   const
     _abi_type =
       typeof(
         _abi);
   if ( _abi_type === "undefined" ) {
-    _abi =
-      _get(
-        "contract",
-        "abi");
     _msg =
-      "Variable '_abi' not defined, " +
-      "defaulting to global variable " +
-      "'contract_abi', which has value " +
-      `'${_abi}'.`;
+      "ABI undefined, setting default.";
     _msg_info(
       _msg);
+    _abi_get =
+      true;
+  }
+  else if ( _abi_type === "string" ) {
+    if ( _abi.length < 1 ) {
+      _abi_get =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "ABI path must be a string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _abi_get ) {
+    if ( ! _local ) {
+      _abi =
+        _get(
+          "contract",
+          "abi");
+      _msg =
+        "Variable '_abi' not defined, " +
+        "defaulting to global variable " +
+        "'contract_abi', which has value " +
+        `'${_abi}'.`;
+      _msg_info(
+        _msg);
+    }
+    else if ( _local ) {
+      const
+        _network_type =
+          typeof(
+            _network);
+      if ( _network_type === "undefined" ) {
+        _network =
+          _get(
+            "target",
+            "network");
+        _msg =
+          "Variable '_network' not defined, " +
+          "defaulting to global variable " +
+          "'target_network', which has value " +
+          `'${_network}'.`;
+        _msg_info(
+          _msg);
+        const
+          _api_key_type =
+            typeof(
+              _api_key);
+        if ( _api_key_type == "undefined" ) {
+          _api_key =
+            _get(
+              "api",
+              "key");
+          _msg =
+            "Variable '_api_key' not defined, " +
+            "defaulting to global variable " +
+            "'api_key', which has value " +
+            `'${_api_key}'.`;
+          _msg_info(
+            _msg);
+        }
+        const
+          _compiler_output_type =
+            typeof(
+              _compiler_output);
+        if ( _compiler_output_type == "undefined" ) {
+          _compiler_output =
+            _get(
+              "contract",
+              "compiler_output");
+          _msg =
+            "Variable '_compiler_output' not defined, " +
+            "defaulting to global variable " +
+            "'contract_compiler_output', which has value " +
+            `'${_compiler_output}'.`;
+          _msg_info(
+            _msg);
+        }
+        _app =
+          _app_check(
+            _app);
+        const
+          _contract_type =
+            typeof(
+              _contract);
+        if ( _contract_type == "undefined" ) {
+          _contract =
+            _get(
+              "target",
+              "contract");
+          _msg =
+            "Variable '_contract' not defined, " +
+            "defaulting to global variable " +
+            "'target_contract', which has value " +
+            `'${_contract}'.`;
+          _msg_info(
+            _msg);
+        }
+        const
+          _address_type =
+            typeof(
+              _address);
+        if ( _address_type == "undefined" ) {
+          _address =
+            _get(
+              "contract",
+              "address");
+          _msg =
+            "Variable '_address' not defined, " +
+            "defaulting to global variable " +
+            "'contract_address', which has value " +
+            `'${_address}'.`;
+          _msg_info(
+            _msg);
+        }
+        _abi_target =
+          _abi;
+        _abi_target =
+          _default_artifact_path_get(
+            "abi");
+        if ( ! _file_exists(
+                 _abi_target) ) {
+          if ( _app !== "" &&
+               _contract !== "" ) {
+            _evm_contract_deployment_abi =
+              _get(
+                "_evm_contract_deployment",
+                "abi");
+            try {
+              _evm_contract_deployment_abi =
+                await _evm_contract_deployment_abi_check.apply(
+                  null,
+                  _evm_contract_deployment_abi);
+            }
+            catch(
+              _error) {
+              _msg =
+                "Error running " +
+                "'_evm_contract_deployment_abi_check' " +
+                "with parameters:";
+              _msg_error(
+                _msg,
+                0);
+              _echo2(
+                _evm_contract_deployment_abi);
+              _echo2(
+                _error);
+              throw _error;
+            }
+            const
+              _configuration_format_check_args = [
+                _configuration_format
+              ];
+            _configuration_format =
+              _configuration_format_check.apply(
+                null,
+                _configuration_format_check_args);
+            _msg =
+              `Getting LibEVM app '${_app}' ` +
+              `ABI for contract '${_contract}' for ` +
+              `network '${_network}' in format ` +
+              `'${_configuration_format}'.`;
+            _msg_info(
+              _msg);
+            const
+              _evm_contract_deployment_abi_args = [
+                [ _network ] ,
+                [ _network ],
+                "n",
+                _app,
+                _contract,
+                "",                     // version
+                "n",                    // user level
+                _configuration_format,
+                ""
+              ];
+            try {
+              _abi =
+                await _evm_contract_deployment_abi.apply(
+                  null,
+                  _evm_contract_deployment_abi_args);
+            }
+            catch(
+              _error) {
+              _msg =
+                `Error retrieving LibEVM app '${_app}' ` +
+                `ABI for contract '${_contract}'.`;
+              _msg_error(
+                _msg,
+                0);
+              throw _error;
+            }
+          }
+        }
+      }
+    }
   }
   const
     _network_type =
@@ -360,125 +604,6 @@ async function
       `'${_network}'.`;
     _msg_info(
       _msg);
-  }
-  const
-    _api_key_type =
-      typeof(
-        _api_key);
-  if ( _api_key_type == "undefined" ) {
-    _api_key =
-      _get(
-        "api",
-        "key");
-    _msg =
-      "Variable '_api_key' not defined, " +
-      "defaulting to global variable " +
-      "'api_key', which has value " +
-      `'${_api_key}'.`;
-    _msg_info(
-      _msg);
-  }
-  const
-    _compiler_output_type =
-      typeof(
-        _compiler_output);
-  if ( _compiler_output_type == "undefined" ) {
-    _compiler_output =
-      _get(
-        "contract",
-        "compiler_output");
-    _msg =
-      "Variable '_compiler_output' not defined, " +
-      "defaulting to global variable " +
-      "'contract_compiler_output', which has value " +
-      `'${_compiler_output}'.`;
-    _msg_info(
-      _msg);
-  }
-  _app =
-    _app_check(
-      _app);
-  const
-    _contract_type =
-      typeof(
-        _contract);
-  if ( _contract_type == "undefined" ) {
-    _contract =
-      _get(
-        "target",
-        "contract");
-    _msg =
-      "Variable '_contract' not defined, " +
-      "defaulting to global variable " +
-      "'target_contract', which has value " +
-      `'${_contract}'.`;
-    _msg_info(
-      _msg);
-  }
-  const
-    _address_type =
-      typeof(
-        _address);
-  if ( _address_type == "undefined" ) {
-    _address =
-      _get(
-        "contract",
-        "address");
-    _msg =
-      "Variable '_address' not defined, " +
-      "defaulting to global variable " +
-      "'contract_address', which has value " +
-      `'${_address}'.`;
-    _msg_info(
-      _msg);
-  }
-  _abi_target =
-    _abi;
-  if ( typeof(
-         _abi_target) === "undefined" ||
-       _abi_target === "" ) {
-    _abi_target =
-      _default_artifact_path_get(
-        "abi");
-    if ( ! _file_exists(
-             _abi_target) ) {
-      if ( _app !== "" &&
-           _contract !== "" ) {
-        _msg =
-          `Getting LibEVM app '${_app}' ` +
-          `ABI for contract '${_contract}'.`;
-        _msg_info(
-          _msg);
-        const
-          _evm_contract_deployment_abi_args = [
-            [ _network ] ,
-            [ _network ],
-            "n",
-            _app,
-            _contract,
-            "",                     // version
-            "n",                    // user level
-            "json",                 // configuration format
-            ""
-          ];
-        try {
-          _abi =
-            await _evm_contract_deployment_abi.apply(
-              null,
-              _evm_contract_deployment_abi_args);
-        }
-        catch(
-          _error) {
-          _msg =
-            `Error retrieving LibEVM app '${_app}' ` +
-            `ABI for contract '${_contract}'.`;
-          _msg_error(
-            _msg,
-            0);
-          throw _error;
-        }
-      }
-    }
   }
   const
     _abi_dir =
@@ -1033,12 +1158,8 @@ async function
 }
 
 function
-  _app_check(
-    _app,
+  _local_check(
     _local) {
-  let
-    _undefined_flag,
-    _msg;
   const
     _local_type =
       typeof(
@@ -1046,17 +1167,43 @@ function
   if ( _local_type === "undefined" ) {
     _msg =
       "Local not specified, setting default " +
-      "value 'false'.";
+      "value 'true'.";
+    _msg_info(
+      _msg);
     _local =
       true;
   }
+  else if ( _local_type === "string" ) {
+    if ( _local.length < 1 ) {
+      _msg =
+        "Local not specified, setting default " +
+        "value 'true'.";
+      _msg_info(
+        _msg);
+      _local =
+        true;
+    }
   else if ( _local_type !== "boolean" ) {
     _msg =
       "Variable '_local' must be a boolean.";
     _msg_error(
       _msg,
       0);
+    throw _msg;
   }
+  return _local;
+}
+
+function
+  _app_check(
+    _app,
+    _local) {
+  let
+    _undefined_flag,
+    _msg;
+  _local =
+    _local_check(
+      _local);
   const
     _app_type =
       typeof(
@@ -1385,6 +1532,65 @@ async function
     }
   }
   return _evm_contract_deployments_dir;
+}
+
+async function
+  _evm_contract_deployment_abi_check(
+    _evm_contract_deployment_abi) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployment_abi_type =
+      typeof(
+        _evm_contract_deployment_abi);
+  if ( _evm_contract_deployment_abi_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployment_abi' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployment_abi_type === "string" ) {
+    if ( _evm_contract_deployment_abi.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployment_abi' " +
+        "undefined, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployment_abi' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployment_abi_module =
+          await import(
+            "./libevm-contract-deployment-abi");
+        _evm_contract_deployment_abi =
+          _libevm_contract_deployment_abi_module._evm_contract_deployment_abi;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployment-abi'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployment_abi;
 }
 
 async function
@@ -1997,24 +2203,9 @@ async function
     _msg,
     _target_networks_get,
     _target_networks_type;
-  const
-    _local_type =
-      typeof(
-        _local);
-  if ( _local_type === "undefined" ) {
-    _msg =
-      "Local not specified, setting default " +
-      "value 'false'.";
-    _local =
-      true;
-  }
-  else if ( _local_type !== "boolean" ) {
-    _msg =
-      "Variable '_local' must be a boolean.";
-    _msg_error(
-      _msg,
-      0);
-  }
+  _local =
+    _local_check(
+      _local);
   _target_networks_get =
     false;
   _target_networks_type =
@@ -2777,7 +2968,7 @@ async function
       catch(
         _error) {
         _msg =
-          "Error running '_contract_abi_get' with " +
+          "Error running '_contract_abi_check' with " +
           "parameters:";
         _msg_error(
           _msg,
