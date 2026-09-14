@@ -1871,7 +1871,7 @@ async function
       "auto-detecting.";
     _msg_info(
       _msg);
-    _config_file_get =
+    _config_file_path_get =
       true;
   }
   else if ( _config_file_path_type == "string" ) {
@@ -1881,7 +1881,7 @@ async function
       "auto-detecting.";
     _msg_info(
       _msg);
-    _config_file_get =
+    _config_file_path_get =
       true;
     }
     else {
@@ -1913,7 +1913,7 @@ async function
     _quiet =
       _global[
         "quiet"];
-  if ( _config_file_get ) {
+  if ( _config_file_path_get ) {
     const
       _contract_type =
         typeof(
@@ -2198,7 +2198,7 @@ async function
       _target_contract_check_args = [
         _contract,
         _address,
-        _target_app,
+        _app,
         _deployments_dir
       ];
     try {
