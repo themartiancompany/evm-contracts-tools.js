@@ -531,7 +531,7 @@ async function
               await _deployments_dir_check.apply(
                 null,
                 _deployments_dir_check_args);
-	  }
+          }
           catch(
             _error) {
             _msg =
@@ -545,7 +545,7 @@ async function
             _echo2(
               _error);
             throw _error;
-	  }
+          }
           _msg =
             `Getting LibEVM app '${_app}' ` +
             `ABI for contract '${_contract}' for ` +
@@ -567,7 +567,7 @@ async function
               _deployments_dir
             ];
           try {
-            _abi =
+            _abi_target =
               await _evm_contract_deployment_abi.apply(
                 null,
                 _evm_contract_deployment_abi_args);
@@ -593,6 +593,19 @@ async function
       }
     }
   }
+  const
+    _abi_target_type =
+      typeof(
+        _abi_target);
+  if ( _abi_target_type === "array" ) {
+    _msg =
+      "Javascript magic!";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _abi_target);
+  }
   if ( ! _file_exists(
            _abi) &&
        ! _file_exists(
@@ -603,6 +616,11 @@ async function
         _abi_target;
     }
     else {
+      _msg =
+        `ABI '${_abi}' does not ` +
+        `exist and '${_abi_target}' neither.`;
+      _msg_info(
+        _msg);
       const
         _abi_dir =
           _dirname(

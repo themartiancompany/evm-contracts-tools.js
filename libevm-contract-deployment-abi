@@ -379,7 +379,7 @@ async function
     throw _msg;
   }
   _msg =
-    `Got ABI: '${_abi_path}'.`;
+    `Got ABI: '${_contract_abi}'.`;
   _msg_info(
     _msg);
   return _contract_abi;
