@@ -776,15 +776,25 @@ async function
             _msg_error(
               _msg,
               0);
-            if ( _contract_abi == "" ||
-                 _contract_bytecode = "" ) {
+            if ( _contract_abi === "" ||
+                 _contract_bytecode === "" ) {
               _msg =
                 "Either one between the contract abi " +
                 "plus the bytecode or the contract" +
                 "compiler output must be available " +
                 "to perform a call.";
+              _msg_error(
+                _msg,
+                0);
+              throw _error;
 	    }
-            throw _error;
+            else {
+              _msg =
+                "Performing call using ABI and " +
+                "and bytecode.";
+              _msg_info(
+                _msg);
+	    }
           }
         }
       }
