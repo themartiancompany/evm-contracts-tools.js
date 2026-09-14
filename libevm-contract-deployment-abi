@@ -250,58 +250,65 @@ async function
   _found =
     false;
   for ( _net of _networks ) {
-    const
-      _version_check_args = [
-        _version,
-        _app,            // app
-        _contract,
-        "",            // address
-        _net,
-        _user_defined,
-        _deployments,
-        "",            // config file
-        _configuration_format
-      ];
-    try {
-      _version =
-        await _version_check.apply(
-          null,
-          _version_check_args);
-    }
-    catch(
-      _error) {
+    if ( _net.length < 1 ) {
       _msg =
-        "Error running '_version_check' " +
-        "with arguments:";
-      _msg_error(
-        _msg,
-        0);
-      _echo2(
-        _version_check_args);
-      _echo2(
-        _error);
-      throw _error;
-    }
-
-    _abi_path =
-      _path_join( [
-        _deployments,
-        _contract,
-        _net,
-        _version,
-        `${_contract}.abi.json` ]);
-    if ( _file_exists(
-           _abi_path) ) {
-      _found =
-        true;
-      break;
-    }
-    else {
-      _msg =
-        `ABI at path '${_abi_path}' ` +
-        `not found.`;
+        "Empty value network, " +
+        "skipping.";
       _msg_info(
         _msg);
+    else {
+      const
+        _version_check_args = [
+          _version,
+          _app,            // app
+          _contract,
+          "",            // address
+          _net,
+          _user_defined,
+          _deployments,
+          "",            // config file
+          _configuration_format
+        ];
+      try {
+        _version =
+          await _version_check.apply(
+            null,
+            _version_check_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_version_check' " +
+          "with arguments:";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _version_check_args);
+        _echo2(
+          _error);
+        throw _error;
+      }
+      _abi_path =
+        _path_join( [
+          _deployments,
+          _contract,
+          _net,
+          _version,
+          `${_contract}.abi.json` ]);
+      if ( _file_exists(
+             _abi_path) ) {
+        _found =
+          true;
+        break;
+      }
+      else {
+        _msg =
+          `ABI at path '${_abi_path}' ` +
+          `not found.`;
+        _msg_info(
+          _msg);
+      }
     }
   }
   if ( ! _found ) {
