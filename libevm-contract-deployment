@@ -2107,6 +2107,13 @@ async function
 async function
   _version_check(
     _version,
+    _app,
+    _contract,
+    _address,
+    _network,
+    _user_defined,
+    _deployments_dir,
+    _config_file,
     _configuration_format) {
   let
     _evm_contract_deployment_versions,
@@ -2138,6 +2145,37 @@ async function
     }
   }
   if ( _version_get ) {
+    _app =
+      _app_check(
+        _app,
+        false);
+    _user_defined =
+      _user_defined_check(
+        _user_defined);
+    const
+      _deployments_dir_check_args = [
+        _deployments_dir,
+        _app,
+        _user_defined
+      ];
+    try {
+      _deployments_dir =
+        await _deployments_dir_check.apply(
+          null,
+          _deployments_dir_check_args);
+      _msg_info(
+        `Got '${_deployments_dir}'`);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error checking variable " +
+        "'_deployments_dir'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
     _evm_contract_deployment_versions =
       _get(
         "_evm_contract_deployment",
@@ -2154,6 +2192,64 @@ async function
       _msg_error(
         _msg,
         0);
+      throw _error;
+    }
+    const
+      _target_contract_check_args = [
+        _contract,
+        _address,
+        _target_app,
+        _deployments_dir
+      ];
+    try {
+      _contract =
+        await _target_contract_check.apply(
+          null,
+          _target_contract_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_target_contract_check' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _target_contract_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    const
+      _config_file_path_check_args = [
+        _config_file,
+        _app,
+        _deployments_dir,
+        _contract,
+        _network,
+        _network,
+        _configuration_format,
+        _user_defined
+      ];
+    try {
+      _config_file =
+        await _config_file_path_check.apply(
+          null
+          _config_file_path_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_config_file_path_check' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _config_file_path_check_args);
+      _echo2(
+        _error);
       throw _error;
     }
     const

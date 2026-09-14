@@ -226,7 +226,9 @@ async function
     _contract,
     _network,
     _network_id,
-    _version) {
+    _version,
+    _configuration_format,
+    _user_defined) {
   let
     _abi_path,
     _address,
@@ -235,30 +237,6 @@ async function
     _msg,
     _net;
   const
-    _version_check_args = [
-      _version,
-    ];
-  try {
-    _version =
-      await _version_check.apply(
-        null,
-        _version_check_args);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error running '_version_check' " +
-      "with arguments:";
-    _msg_error(
-      _msg,
-      0);
-    _echo2(
-      _version_check_args);
-    _echo2(
-      _error);
-    throw _error;
-  }
-  const
     _networks = [
       _network,
       _network_id
@@ -266,6 +244,39 @@ async function
   _found =
     false;
   for ( _net of _networks ) {
+    const
+      _version_check_args = [
+        _version,
+        "",            // app
+        _contract,
+        "",            // address
+        _net,
+        _user_defined,
+        _deployments,
+        "",            // config file
+        _configuration_format
+      ];
+    try {
+      _version =
+        await _version_check.apply(
+          null,
+          _version_check_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_version_check' " +
+        "with arguments:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _version_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+
     _abi_path =
       _path_join( [
         _deployments,
@@ -474,7 +485,8 @@ async function
       _network,
       _target_network_id,
       _contract_version,
-      _configuration_format
+      _configuration_format,
+      _user_defined
     ] );
   }
   for ( _network of  _network_ids ) {
@@ -495,7 +507,8 @@ async function
       _target_network,
       _target_network_id,
       _contract_version,
-      _configuration_format
+      _configuration_format,
+      _user_defined
     ] );
   }
   for ( _args of _contract_abi_get_args ) {
