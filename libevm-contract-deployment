@@ -341,6 +341,7 @@ async function
   let
     _abi_get,
     _abi_target,
+    _abi_targets,
     _evm_contract_deployment_abi,
     _msg;
   _abi_get =
@@ -572,7 +573,7 @@ async function
               _deployments_dir
             ];
           try {
-            _abi_target =
+            _abi_targets =
               await _evm_contract_deployment_abi.apply(
                 null,
                 _evm_contract_deployment_abi_args);
@@ -587,13 +588,10 @@ async function
               0);
             throw _error;
           }
-          if ( 1 < _abi_target.length ) {
-            _msg =
-              "Got more than one result.";
-            _msg_warning(
-              _msg);
-            _echo2(
-              _abi_target);
+          if ( 0 < _abi_target.length ) {
+            _abi_target =
+              _abi_targets[
+                0];
           }
           else if ( _abi_target.length < 1 ) {
             _msg =
@@ -619,8 +617,7 @@ async function
     if ( _file_exists(
            _abi_target) ) {
       _abi =
-        _abi_target[
-          0];
+        _abi_target;
     }
     else {
       _msg =
