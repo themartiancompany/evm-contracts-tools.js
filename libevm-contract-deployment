@@ -4318,11 +4318,6 @@ async function
       _get(
         "api",
         "key");
-  const
-    _compiler_output =
-      _get(
-        "contract",
-        "compiler_output");
   _compiler_output =
     _get(
       "contract",
