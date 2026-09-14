@@ -246,6 +246,57 @@ function
   return _configuration_format;
 }
 
+function
+  _default_artifact_path_get(
+    _type,
+    _target_network,
+    _contract_address) {
+  let
+    _file_name;
+  const
+    _network_type =
+      typeof(
+        _target_network);
+  if ( _network_type === "undefined" ||
+       _target_network === "" ) {
+    _target_network =
+      _get(
+        "target",
+        "network");
+  }
+  const
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type === "undefined" ||
+       _contract_address === "" ) {
+    _contract_address =
+      _get(
+        "contract",
+        "address");
+  }
+  const
+    _home =
+      _homedir_get();
+  const
+    _data_dir =
+      _path_join( [
+        _home,
+        ".local",
+        "share",
+        "evm-contract-call" ]);
+  if ( _type == "abi" ) {
+    _file_name =
+      `${_contract_address}.abi.json`;
+  }
+  else if ( _type == "bytecode" ) {
+    _file_name =
+      `${_contract_address}.bin`;
+  }
+  else if ( _type == "compiler_output" ) {
+    _file_name =
+      `${_contract_address}.json`;
+
 async function
   _contract_abi_check(
     _abi,
