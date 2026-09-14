@@ -1139,8 +1139,8 @@ async function
   try {
     const
       _args_length =
-        await _argv[
-          "_"].length);
+        _argv[
+          "_"].length;
     _method_args =
       await _argv[
         "_"].slice(
