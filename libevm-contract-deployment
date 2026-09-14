@@ -2235,7 +2235,7 @@ async function
     try {
       _config_file =
         await _config_file_path_check.apply(
-          null
+          null,
           _config_file_path_check_args);
     }
     catch(
