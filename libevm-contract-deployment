@@ -2289,6 +2289,65 @@ async function
 }
 
 async function
+  _evm_contract_deployment_compiler_output_check(
+    _evm_contract_deployment_compiler_output) {
+  let
+    _import,
+    _msg;
+  _import =
+    false;
+  const
+    _evm_contract_deployment_compiler_output_type =
+      typeof(
+        _evm_contract_deployment_compiler_output);
+  if ( _evm_contract_deployment_copmpiler_output_type === "undefined" ) {
+    _msg =
+      "Function '_evm_contract_deployment_compiler_output' " +
+      "undefined, importing.";
+    _import =
+      true;
+  }
+  else if ( _evm_contract_deployment_compiler_output_type === "string" ) {
+    if ( _evm_contract_deployment_compiler_output.length < 1 ) {
+      _msg =
+        "Function '_evm_contract_deployment_compiler_output' " +
+        "is an empty string, importing.";
+      _import =
+        true;
+    }
+    else {
+      _msg =
+        "Function '_evm_contract_deployment_compiler_output' " +
+        "is a string.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  if ( _import ) {
+    try {
+      const
+        _libevm_contract_deployment_compiler_output_module =
+          await import(
+            "./libevm-contract-deployment-compiler-output");
+        _evm_contract_deployment_compiler_output =
+          _libevm_contract_deployment_compiler_output_module._evm_contract_deployment_compiler_output;
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error importing './libevm-contract-deployment-compiler-output'.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  return _evm_contract_deployment_compiler_output;
+}
+
+async function
   _evm_contract_deployment_networks_check(
     _evm_contract_deployment_networks) {
   let
