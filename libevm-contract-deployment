@@ -3125,6 +3125,7 @@ export {
   _contract_abi_auto_detect,
   _contract_address_check,
   _contract_version_auto_detect,
+  _default_artifact_path_get,
   _deployments_dir_auto_detect,
   _deployments_dir_check,
   _network_check,
@@ -3155,6 +3156,8 @@ export {
 //     _contract_abi_auto_detect,
 //   _contract_version_auto_detect:
 //     _contract_version_auto_detect,
+//   _default_artifact_path_get:
+//     _default_artifact_path_get,
 //   _deployments_dir_check:
 //     _deployments_dir_check,
 //   _deployments_dir_auto_detect:
