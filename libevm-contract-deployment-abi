@@ -249,6 +249,8 @@ async function
       _network,
       _network_id
     ];
+  _non_empty_networks =
+    false;
   _found =
     false;
   // _echo2(
@@ -270,6 +272,8 @@ async function
       true;
     }
     if ( _abi_retrieve ) {
+      _non_empty_networks =
+        true;
       _msg =
         "Getting ABI for network " +
         `'${_net}'.`;
@@ -342,10 +346,15 @@ async function
       }
     }
     if ( _break ) {
+      _msg =
+        "File found, breaking loop.";
+      _msg_info(
+        _msg);
       break
     }
   }
-  if ( ! _found ) {
+  if ( ! _found &&
+       _non_empty_networks ) {
     _msg =
       `No ABI file for '${_network}' deployment ` +
       `of contract '${_contract}' ` +
