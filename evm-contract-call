@@ -621,7 +621,7 @@ async function
         _msg =
           "Specified no contract ABI " +
           `for contract '${_target_contract}' ` +
-          `and address'${_contract_address}',` +
+          `and address '${_contract_address}', ` +
           "auto-detecting.";
         _msg_info(
           _msg);

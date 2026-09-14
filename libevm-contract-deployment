@@ -2127,6 +2127,10 @@ async function
             await _target_contract_check.apply(
               null,
               _target_contract_check_args);
+          _override_set(
+            "target",
+            "contract",
+            _contract);
         }
         catch(
           _error) {
@@ -2142,6 +2146,13 @@ async function
             _error);
           throw _error;
         }
+      }
+      else {
+        _msg =
+          `Address '${_contract_address}' ` +
+          `valid.`;
+        _msg_info(
+          _msg);
       }
     }
   }
@@ -2210,10 +2221,10 @@ async function
         _error);
       throw _error;
     }
-    // _contract =
-    //   _get(
-    //     "target",
-    //     "contract");
+    _contract =
+      _get(
+        "target",
+        "contract");
     _msg =
       "Looking for address " +
       "corresponding to contract " +
@@ -2498,17 +2509,13 @@ async function
 }
 
 async function
-  _contract_abi_auto_detect(
-    _app,
-    _contract,
-    _networks,
-    _address,
-    _deployments_dir,
-    _user_defined) {
+  _contract_abi_auto_detect() {
   let
     _abi,
     _abi_retrieve,
-    _msg;
+    _contract_address,
+    _msg,
+    _target_contract;
   const
     _global =
       _global_get();
@@ -2516,17 +2523,35 @@ async function
     _quiet =
       _global[
         "quiet"];
-  _app =
-    _app_check(
-      _app,
-      false);
-  _user_defined =
-    _user_defined_check(
-      _user_defined);
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");
+  const
+    _user_defined =
+      "n";
+  _deployments_dir =
+    _get(
+      "deployments",
+      "dir");
+  _target_contract =
+    _get(
+      "target",
+      "contract");
+  _contract_address =
+    _get(
+      "contract",
+      "address");
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
   const
     _deployments_dir_check_args = [
       _deployments_dir,
-      _app,
+      _target_app,
       _user_defined
     ];
   try {
@@ -2538,21 +2563,26 @@ async function
   catch(
     _error) {
     _msg =
-      "Error running '_deployments_dir_check'.";
+      "Error running '_deployments_dir_check' " +
+      `with arguments:`;
     _msg_error(
       _msg,
       0);
-    throw _msg;
+    _echo2(
+      _msg);
+    _echo2(
+      _error);
+    throw _error;
   }
   const
     _target_contract_check_args = [
-      _contract,
-      _address,
-      _app,
+      _target_contract,
+      _contract_address,
+      _target_app,
       _deployments_dir
     ];
   try {
-    _contract =
+    _target_contract =
       await _target_contract_check.apply(
         _target_contract_check_args);
   }
@@ -2568,29 +2598,13 @@ async function
     throw _error;
   }
   const
-    _network_type =
-      typeof(
-        _networks);
-  if ( _network_type === "undefined" ) {
-    _networks =
-      _get(
-        "target",
-        "networks");
-    _msg =
-      "Variable '_network' undefined, using " +
-      "global variable 'target_networks' " +
-      `('${_networks}')`;
-    _msg_info(
-      _msg);
-  }
-  const
     _contract_address_check_args = [
-      _address,
+      _contract_address,
       _deployments_dir,
-      _app
+      _target_app
     ];
   try {
-    _address =
+    _contract_address =
       await _contract_address_check.apply(
         null,
         _contract_address_check_args);
@@ -2649,17 +2663,17 @@ async function
     else if ( 1 == _networks.length ) {
       const
         _network =
-          _networks[
+          _target_networks[
             0];
       const
         _contract_abi_check_args = [
           _abi,
           _network,
-          _address,
+          _contract_address,
           _api_key,
           _compiler_output,
-          _app,
-          _contract
+          _target_app,
+          _target_contract
         ];
       _msg =
         "Running '_contract_abi_check' with " +
