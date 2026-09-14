@@ -1178,7 +1178,7 @@ export {
   _call_auth_auto_detect,
   _call_auth_get,
   _contract_abi_auto_detect,
-  _contract_abi_get,
+  _contract_abi_check,
   _contract_address_auto_detect,
   _contract_address_check,
   _contract_bytecode_auto_detect,
