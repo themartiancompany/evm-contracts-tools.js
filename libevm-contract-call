@@ -800,6 +800,8 @@ function
 function
   _artifact_local_auto_detect(
     _artifact_type) {
+  let
+    _msg;
   try {
     _artifact_type =
       _artifact_type_check(

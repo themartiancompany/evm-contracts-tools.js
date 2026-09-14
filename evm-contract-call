@@ -491,7 +491,7 @@ async function
     _msg_error(
       _msg,
       0);
-    throw _error
+    throw _error;
   }
   try {
     await _deployments_dir_auto_detect();
@@ -503,7 +503,7 @@ async function
     _msg_error(
       _msg,
       0);
-    throw _error
+    throw _error;
   }
   try {
     await _target_contract_auto_detect();
@@ -515,7 +515,7 @@ async function
     _msg_error(
       _msg,
       0);
-    throw _error
+    throw _error;
   }
   try {
     await _contract_address_auto_detect();
@@ -527,7 +527,7 @@ async function
     _msg_error(
       _msg,
       0);
-    throw _error
+    throw _error;
   }
   // await _target_networks_auto_detect();
   const

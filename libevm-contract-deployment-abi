@@ -260,7 +260,7 @@ async function
     _abi_retrieve =
       false;
     _break =
-      false
+      false;
     if ( _net.length < 1 ) {
       _msg =
         `Empty value network '${_net}', ` +
@@ -347,7 +347,7 @@ async function
         "File found, breaking loop.";
       _msg_info(
         _msg);
-      break
+      break;
     }
   }
   if ( ! _found &&
