@@ -321,7 +321,7 @@ async function
     }
     catch(
       _error) {
-      msg =
+      _msg =
         "Error running '_contract_get' " +
         "with arguments:";
       _msg_error(
