@@ -2109,6 +2109,7 @@ async function
     _version,
     _configuration_format) {
   let
+    _evm_contract_deployment_versions,
     _msg,
     _version_get;
   _configuration_format = 
