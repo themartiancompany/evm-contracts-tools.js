@@ -151,6 +151,11 @@ const
   _msg_error =
     _libcrash_module._msg_error;
 /* global
+     _msg_warning */
+const
+  _msg_warning =
+    _libcrash_module._msg_warning;
+/* global
      _override_set */
 const
   _override_set =
