@@ -170,6 +170,11 @@ const
   _contract_abi_auto_detect =
     _libevm_contract_deployment_module._contract_abi_auto_detect;
 /* global
+     _default_artifact_path_get */
+const
+  _default_artifact_path_get =
+    _libevm_contract_deployment_module._default_artifact_path_get;
+/* global
      _deployments_dir_auto_detect */
 const
   _deployments_dir_auto_detect =
@@ -731,8 +736,86 @@ async function
 }
 
 function
+  _artifact_type_check(
+    _artifact_type) {
+  let
+    _flag_empty,
+    _flag_wrong,
+    _msg_empty,
+    _msg_wrong;
+  _flag_empty =
+    false;
+  _flag_wrong =
+    false;
+  const
+    _artifact_type_type =
+      typeof(
+        _artifact_type);
+  if ( _artifact_type_type === "undefined" ) {
+    _msg_empty =
+      "Artifact type undefined.";
+    _flag_empty =
+      true;
+  }
+  else if ( _artifact_type_type === "string" ) {
+    if ( _artifact_type_type.length < 1 ) {
+    _msg_empty =
+      "Artifact type not set.";
+    _flag_empty =
+      true;
+    }
+    else {
+      if ( _artifact_type !== "abi" &&
+           _artifact_type !== "bytecode" &&
+           _artifact_type !== "compiler_output" ) {
+        _msg_wrong =
+          "Artifact type can be 'abi', " +
+          "'bytecode' or 'compiler_output'.";
+        _flag_wrong =
+          true;
+      }
+    }
+  }
+  else {
+    _msg_wrong =
+      "Artifact type must be of type string.";
+    _flag_wrong =
+      true;
+  }
+  if ( _flag_empty ) {
+    _msg_error(
+      _msg_empty,
+      0);
+    throw _msg_empty;
+  }
+  if ( _flag_wrong ) {
+    _msg_error(
+      _msg_wrong,
+      0);
+    throw _msg_wrong;
+  }
+  return _artifact_type;
+}
+
+function
   _artifact_local_auto_detect(
     _artifact_type) {
+  try {
+    _artifact_type =
+      _artifact_type_check(
+        _artifact_type);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error checking artifact type.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _artifact =
       _default_artifact_path_get(

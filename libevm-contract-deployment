@@ -296,6 +296,24 @@ function
   else if ( _type == "compiler_output" ) {
     _file_name =
       `${_contract_address}.json`;
+  }
+  else {
+    const
+      _msg =
+        `Unknown artifact type '${_type}'.`;
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  const
+    _artifact =
+      _path_join( [
+        _data_dir,
+        _target_network,
+        _file_name ]);
+  return _artifact;
+}
 
 async function
   _contract_abi_check(
