@@ -81,6 +81,11 @@ const
   _cp =
     _libcrash_module._cp;
 /* global
+     _dirname */
+const
+  _dirname =
+    _libcrash_module._dirname;
+/* global
      _dir_exists */
 const
   _dir_exists =
