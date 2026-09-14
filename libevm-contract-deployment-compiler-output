@@ -608,7 +608,7 @@ async function
   for ( _args of _contract_compiler_output_get_args ) {
     try {
       _contract_compiler_output =
-        _contract_compiler_output_get.apply(
+        await _contract_compiler_output_get.apply(
           null,
           _args);
     }
