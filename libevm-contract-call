@@ -160,15 +160,35 @@ const
     await import(
       "./libevm-contract-deployment");
 /* global
-     _contract_abi_get */
-const
-  _contract_abi_get =
-    _libevm_contract_deployment_module._contract_abi_get;
-/* global
      _contract_abi_auto_detect */
 const
   _contract_abi_auto_detect =
     _libevm_contract_deployment_module._contract_abi_auto_detect;
+/* global
+     _contract_abi_check */
+const
+  _contract_abi_check =
+    _libevm_contract_deployment_module._contract_abi_check;
+/* global
+     _contract_bytecode_auto_detect */
+const
+  _contract_bytecode_auto_detect =
+    _libevm_contract_deployment_module._contract_bytecode_auto_detect;
+/* global
+     _contract_bytecode_check */
+const
+  _contract_bytecode_check =
+    _libevm_contract_deployment_module._contract_bytecode_check;
+/* global
+     _contract_compiler_output_auto_detect */
+const
+  _contract_compiler_output_auto_detect =
+    _libevm_contract_deployment_module._contract_compiler_output_auto_detect;
+/* global
+     _contract_compiler_output_check */
+const
+  _contract_compiler_output_check =
+    _libevm_contract_deployment_module._contract_compiler_output_check;
 /* global
      _default_artifact_path_get */
 const
@@ -1091,163 +1111,6 @@ async function
     _target_app);
 }
 
-async function
-  _contract_address_auto_detect() {
-  let
-    _contract_address,
-    _contract_addresses,
-    _evm_contract_deployment_address_args,
-    _msg,
-    _network,
-    _target_contract;
-  const
-    _target_networks_index =
-      {};
-  _contract_address =
-    _get(
-      "contract",
-      "address");
-  const
-    _target_app =
-      _get(
-        "target",
-        "app");
-  const
-    _target_networks =
-      _get(
-        "target",
-        "networks");
-  const
-    _deployments_dir =
-      _get(
-        "deployments",
-        "dir");
-  for ( _network of _target_networks ) {
-    _target_networks_index[
-      _network] =
-        1;
-  }
-  const
-    _target_networks_set =
-      Object.keys(
-        _target_networks_index);
-  _msg =
-    "Auto-detecting address " +
-    `for contract '${_contract_address}' ` +
-    `on network '${_target_networks_set}' ` +
-    `for application '${_target_app}'.`;
-  _msg_info(
-    _msg);
-  if ( _contract_address != "" ) {
-    const
-      _address_valid =
-        await _address_check(
-          _contract_address);
-    if ( _address_valid ) {
-      _msg =
-        `Address '${_contract_address}' ` +
-        `is valid.`;
-      _msg_info(
-        _msg);
-    }
-    else {
-      _target_contract =
-        _get(
-          "target",
-          "contract");
-      const
-        _target_contract_check_args = [
-          _target_contract,
-          _contract_address,
-          _target_app,
-          _deployments_dir
-	];
-      try {
-        _target_contract =
-          await _target_contract_check.apply(
-            null,
-            _target_contract_check_args);
-      }
-      catch(
-        _error) {
-        _msg =
-          "Error running '_target_contract_check' " +
-          `with parameters:`;
-        _msg_error(
-          _msg,
-          0);
-        _echo2(
-          _target_contract_check_args);
-        _echo2(
-          _error);
-        throw _error;
-      }
-      if ( _target_app != "" &&
-           0 < _target_networks.length &&
-           _target_contract != "" ) {
-        _msg =
-          "Looking for address " +
-          "corresponding to contract " +
-          `'${_target_contract}' for the ` +
-          `'${_target_app}' ` +
-          "libEVM application on network " +
-          `'${_target_networks}' at deployments ` +
-          `directory '${_deployments_dir}'.`;
-        _msg_info(
-          _msg);
-        _evm_contract_deployment_address_args = [
-          _target_networks_set,      // target networks
-          _target_networks_set,      // target chain ids
-          "n",                       // all networks
-          _target_app,
-          _target_contract,
-          "",                        // contract version
-          "n",                       // user-level
-          "",                        // configuration format
-          _deployments_dir
-        ];
-        try {
-          _contract_addresses =
-            await _evm_contract_deployment_address.apply(
-              null,
-              _evm_contract_deployment_address_args);
-          _contract_address =
-            _contract_addresses[
-              0];
-        }
-        catch(
-          _error) {
-          _msg =
-            "Error while looking for contract " +
-            "address from local libEVM applications " +
-            "deployments directories.";
-          _msg_error(
-            _msg,
-            0);
-          _msg_error(
-            _error,
-            0);
-          throw _error;
-        }
-      }
-      else {
-        _msg =
-          "One between the " +
-          `application '${_target_app}', ` +
-          `the network '${_target_networks_set}' ` +
-          `or the contract '${_target_contract}' ` +
-          `has not been specified.`;
-        _msg_info(
-          _msg);
-      }
-    }
-  }
-  _set(
-    "contract",
-    "address",
-    _contract_address);
-}
-
 function
   _data_dir_auto_detect() {
   const
@@ -1307,6 +1170,11 @@ export {
   _contract_abi_auto_detect,
   _contract_abi_get,
   _contract_address_auto_detect,
+  _contract_address_check,
+  _contract_bytecode_auto_detect,
+  _contract_bytecode_check,
+  _contract_compiler_output_auto_detect,
+  _contract_compiler_output_check,
   _data_dir_auto_detect,
   _default_artifact_path_get,
   _deployments_dir_auto_detect,
@@ -1334,10 +1202,20 @@ export {
 //     _call_auth_get,
 //   _contract_abi_auto_detect:
 //     _contract_abi_auto_detect,
-//   _contract_abi_get:
-//     _contract_abi_get,
+//   _contract_abi_check:
+//     _contract_abi_check,
 //   _contract_address_auto_detect:
 //     _contract_address_auto_detect,
+//   _contract_address_check:
+//     _contract_address_check,
+//   _contract_bytecode_auto_detect:
+//     _contract_bytecode_auto_detect,
+//   _contract_bytecode_check:
+//     _contract_bytecode_check,
+//   _contract_compiler_output_auto_detect:
+//     _contract_compiler_output_auto_detect,
+//   _contract_compiler_output_check:
+//     _contract_compiler_output_check,
 //   _data_dir_auto_detect:
 //     _data_dir_auto_detect,
 //   _default_artifact_path_get:

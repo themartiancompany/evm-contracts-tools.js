@@ -893,7 +893,7 @@ async function
             _error) {
             _msg =
               `Error retrieving LibEVM app '${_app}' ` +
-              `Bytecode for contract '${_contract}'.`;
+              `bytecode for contract '${_contract}'.`;
             _msg_error(
               _msg,
               0);
@@ -945,6 +945,312 @@ async function
     }
   }
   return _bytecode;
+}
+
+async function
+  _contract_compiler_output_check(
+    _compiler_output,
+    _network,
+    _address,
+    _api_key,
+    _compiler_output,
+    _app,
+    _contract,
+    _configuration_format,
+    _deployments_dir,
+    _user_defined,
+    _local) {
+  let
+    _compiler_output_get,
+    _compiler_output_target,
+    _compiler_output_targets,
+    _evm_contract_deployment_compiler_output,
+    _msg;
+  _compiler_output_get =
+    false;
+  _local =
+    _local_check(
+      _local);
+  const
+    _compiler_output_type =
+      typeof(
+        _compiler_output);
+  _user_defined =
+    _user_defined_check(
+      _user_defined);
+  if ( _compiler_output_type === "undefined" ) {
+    _msg =
+      "Compiler output undefined, setting default.";
+    _msg_info(
+      _msg);
+    _compiler_output_get =
+      true;
+  }
+  else if ( _compiler_output_type === "string" ) {
+    if ( _compiler_output.length < 1 ) {
+      _compiler_output_get =
+        true;
+    }
+  }
+  else {
+    _msg =
+      "Compiler output path must be a string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _compiler_output_get ) {
+    if ( ! _local ) {
+      _compiler_output =
+        _get(
+          "contract",
+          "compiler_output");
+      _msg =
+        "Variable '_compiler_output' not defined, " +
+        "defaulting to global variable " +
+        "'contract_compiler_output', which has value " +
+        `'${_compiler_output}'.`;
+      _msg_info(
+        _msg);
+    }
+    else {
+      const
+        _network_type =
+          typeof(
+            _network);
+      if ( _network_type === "undefined" ) {
+        _network =
+          _get(
+            "target",
+            "network");
+        _msg =
+          "Variable '_network' not defined, " +
+          "defaulting to global variable " +
+          "'target_network', which has value " +
+          `'${_network}'.`;
+        _msg_info(
+          _msg);
+      }
+      const
+        _api_key_type =
+          typeof(
+            _api_key);
+      if ( _api_key_type == "undefined" ) {
+        _api_key =
+          _get(
+            "api",
+            "key");
+        _msg =
+          "Variable '_api_key' not defined, " +
+          "defaulting to global variable " +
+          "'api_key', which has value " +
+          `'${_api_key}'.`;
+        _msg_info(
+          _msg);
+      }
+      _app =
+        _app_check(
+          _app);
+      const
+        _contract_type =
+          typeof(
+            _contract);
+      if ( _contract_type == "undefined" ) {
+        _contract =
+          _get(
+            "target",
+            "contract");
+        _msg =
+          "Variable '_contract' not defined, " +
+          "defaulting to global variable " +
+          "'target_contract', which has value " +
+          `'${_contract}'.`;
+        _msg_info(
+          _msg);
+      }
+      const
+        _address_type =
+          typeof(
+            _address);
+      if ( _address_type == "undefined" ) {
+        _address =
+          _get(
+            "contract",
+            "address");
+        _msg =
+          "Variable '_address' not defined, " +
+          "defaulting to global variable " +
+          "'contract_address', which has value " +
+          `'${_address}'.`;
+        _msg_info(
+          _msg);
+      }
+      _compiler_output_target =
+        _compiler_output;
+      _compiler_output_target =
+        _default_artifact_path_get(
+          "compiler_output");
+      const
+        _compiler_output_target_exists =
+          _file_exists(
+            _compiler_output_target);
+      if ( ! _compiler_output_target_exists ) {
+        if ( _app !== "" &&
+             _contract !== "" ) {
+          _evm_contract_deployment_compiler_output =
+            _get(
+              "_evm_contract_deployment",
+              "compiler_output");
+          try {
+            _evm_contract_deployment_compiler_output =
+              await _evm_contract_deployment_compiler_output_check.apply(
+                null,
+                _evm_contract_deployment_compiler_output);
+          }
+          catch(
+            _error) {
+            _msg =
+              "Error running " +
+              "'_evm_contract_deployment_compiler_output_check' " +
+              "with parameters:";
+            _msg_error(
+              _msg,
+              0);
+            _echo2(
+              _evm_contract_deployment_compiler_output);
+            _echo2(
+              _error);
+            throw _error;
+          }
+          const
+            _configuration_format_check_args = [
+              _configuration_format
+            ];
+          _configuration_format =
+            _configuration_format_check.apply(
+              null,
+              _configuration_format_check_args);
+          const
+            _deployments_dir_check_args = [
+              _deployments_dir,
+              _app,
+              _user_defined
+            ];
+          try {
+            _deployments_dir =
+              await _deployments_dir_check.apply(
+                null,
+                _deployments_dir_check_args);
+          }
+          catch(
+            _error) {
+            _msg =
+              "Error running '_deployments_dir_check' " +
+              "with parameters:";
+            _msg_error(
+              _msg,
+              0);
+            _echo2(
+              _deployments_dir_check_args);
+            _echo2(
+              _error);
+            throw _error;
+          }
+          _msg =
+            `Getting LibEVM app '${_app}' ` +
+            `compiler output for contract '${_contract}' for ` +
+            `network '${_network}' in format ` +
+            `'${_configuration_format}' at deployments ` +
+            `directory '${_deployments_dir}'.`;
+          _msg_info(
+            _msg);
+          const
+            _evm_contract_deployment_compiler_output_args = [
+              [ _network ] ,
+              [ _network ],
+              "n",
+              _app,
+              _contract,
+              "",                     // version
+              "n",                    // user level
+              _configuration_format,
+              _deployments_dir
+            ];
+          try {
+            _compiler_output_targets =
+              await _evm_contract_deployment_compiler_output.apply(
+                null,
+                _evm_contract_deployment_compiler_output_args);
+          }
+          catch(
+            _error) {
+            _msg =
+              `Error retrieving LibEVM app '${_app}' ` +
+              `compiler output for contract '${_contract}'.`;
+            _msg_error(
+              _msg,
+              0);
+            throw _error;
+          }
+          if ( 0 < _compiler_output_target.length ) {
+            _compiler_output_target =
+              _compiler_output_targets[
+                0];
+          }
+          else if ( _compiler_output_target.length < 1 ) {
+            _msg =
+              "Got no results.";
+            _msg_warning(
+              _msg);
+          }
+        }
+      }
+      else {
+        _msg =
+          "Selecting compiler output target " +
+          `'${_compiler_output_target}' for auto-detection.`;
+        _msg_info(
+          _msg);
+      }
+    }
+  }
+  const
+    _abi =
+      _get(
+        "contract",
+        "abi");
+  const
+    _bytecode =
+      _get(
+        "contract",
+        "bytecode");
+  if ( ! _file_exists(
+           _compiler_output) &&
+       ( ! _file_exists(
+             _abi) &&
+         ! _file_exists(
+             _bytecode) ) ) {
+    if ( _file_exists(
+           _compiler_output_target) ) {
+      _compiler_output =
+        _compiler_output_target;
+    }
+    else {
+      _msg =
+        `Compiler output '${_compiler_output}' does not ` +
+        `exist and '${_compiler_output_target}' neither.`;
+      _msg_info(
+        _msg);
+      const
+        _compiler_output_dir =
+          _dirname(
+            _compiler_output);
+      _contract_artifacts_retrieve(
+        _compiler_output_dir);
+    }
+  }
+  return _compiler_output;
 }
 
 async function
@@ -3031,6 +3337,163 @@ async function
 }
 
 async function
+  _contract_address_auto_detect() {
+  let
+    _contract_address,
+    _contract_addresses,
+    _evm_contract_deployment_address_args,
+    _msg,
+    _network,
+    _target_contract;
+  const
+    _target_networks_index =
+      {};
+  _contract_address =
+    _get(
+      "contract",
+      "address");
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
+  const
+    _deployments_dir =
+      _get(
+        "deployments",
+        "dir");
+  for ( _network of _target_networks ) {
+    _target_networks_index[
+      _network] =
+        1;
+  }
+  const
+    _target_networks_set =
+      Object.keys(
+        _target_networks_index);
+  _msg =
+    "Auto-detecting address " +
+    `for contract '${_contract_address}' ` +
+    `on network '${_target_networks_set}' ` +
+    `for application '${_target_app}'.`;
+  _msg_info(
+    _msg);
+  if ( _contract_address != "" ) {
+    const
+      _address_valid =
+        await _address_check(
+          _contract_address);
+    if ( _address_valid ) {
+      _msg =
+        `Address '${_contract_address}' ` +
+        `is valid.`;
+      _msg_info(
+        _msg);
+    }
+    else {
+      _target_contract =
+        _get(
+          "target",
+          "contract");
+      const
+        _target_contract_check_args = [
+          _target_contract,
+          _contract_address,
+          _target_app,
+          _deployments_dir
+	];
+      try {
+        _target_contract =
+          await _target_contract_check.apply(
+            null,
+            _target_contract_check_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_target_contract_check' " +
+          `with parameters:`;
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _target_contract_check_args);
+        _echo2(
+          _error);
+        throw _error;
+      }
+      if ( _target_app != "" &&
+           0 < _target_networks.length &&
+           _target_contract != "" ) {
+        _msg =
+          "Looking for address " +
+          "corresponding to contract " +
+          `'${_target_contract}' for the ` +
+          `'${_target_app}' ` +
+          "libEVM application on network " +
+          `'${_target_networks}' at deployments ` +
+          `directory '${_deployments_dir}'.`;
+        _msg_info(
+          _msg);
+        _evm_contract_deployment_address_args = [
+          _target_networks_set,      // target networks
+          _target_networks_set,      // target chain ids
+          "n",                       // all networks
+          _target_app,
+          _target_contract,
+          "",                        // contract version
+          "n",                       // user-level
+          "",                        // configuration format
+          _deployments_dir
+        ];
+        try {
+          _contract_addresses =
+            await _evm_contract_deployment_address.apply(
+              null,
+              _evm_contract_deployment_address_args);
+          _contract_address =
+            _contract_addresses[
+              0];
+        }
+        catch(
+          _error) {
+          _msg =
+            "Error while looking for contract " +
+            "address from local libEVM applications " +
+            "deployments directories.";
+          _msg_error(
+            _msg,
+            0);
+          _msg_error(
+            _error,
+            0);
+          throw _error;
+        }
+      }
+      else {
+        _msg =
+          "One between the " +
+          `application '${_target_app}', ` +
+          `the network '${_target_networks_set}' ` +
+          `or the contract '${_target_contract}' ` +
+          `has not been specified.`;
+        _msg_info(
+          _msg);
+      }
+    }
+  }
+  _set(
+    "contract",
+    "address",
+    _contract_address);
+}
+
+async function
   _target_contract_check(
     _target_contract,
     _contract_address,
@@ -3723,6 +4186,243 @@ async function
     _bytecode);
 }
 
+async function
+  _contract_compiler_output_auto_detect() {
+  let
+    _compiler_output,
+    _compiler_output_retrieve,
+    _contract_address,
+    _configuration_format,
+    _deployments_dir,
+    _msg,
+    _target_contract;
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  const
+    _target_app =
+      _get(
+        "target",
+        "app");  
+  const
+    _user_defined =
+      "n";
+  _deployments_dir =
+    _get(
+      "deployments",
+      "dir");
+  _target_contract =
+    _get(
+      "target",
+      "contract");
+  _msg_info(
+    `Target app  '${_target_app}'.`);
+  _msg_info(
+    `Target contract  '${_target_contract}'.`);
+  _contract_address =
+    _get(
+      "contract",
+      "address");
+  const
+    _target_networks =
+      _get(
+        "target",
+        "networks");
+  const
+    _deployments_dir_check_args = [
+      _deployments_dir,
+      _target_app,
+      _user_defined
+    ];
+  _msg =
+    "Running '_deployments_dir_check' " +
+    `with arguments:`;
+  _msg_info(
+    _msg);
+  if ( _quiet == "n" ) {
+    _echo(
+      _deployments_dir_check_args);
+  }
+  try {
+    _deployments_dir =
+      await _deployments_dir_check.apply(
+        null,
+        _deployments_dir_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_deployments_dir_check' " +
+      `with arguments:`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _deployments_dir_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _target_contract_check_args = [
+      _target_contract,
+      _contract_address,
+      _target_app,
+      _deployments_dir
+    ];
+  try {
+    _target_contract =
+      await _target_contract_check.apply(
+        null,
+        _target_contract_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_target_contract_check' " +
+      "with parameters:";
+    _echo2(
+      _target_contract_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _contract_address_check_args = [
+      _contract_address,
+      _deployments_dir,
+      _target_app
+    ];
+  try {
+    _contract_address =
+      await _contract_address_check.apply(
+        null,
+        _contract_address_check_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_contract_address_check' " +
+      "with parameters:";
+    _echo2(
+      _contract_address_check_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _api_key =
+      _get(
+        "api",
+        "key");
+  const
+    _compiler_output =
+      _get(
+        "contract",
+        "compiler_output");
+  _compiler_output =
+    _get(
+      "contract",
+      "compiler_output");
+  const
+    _compiler_output_type =
+      typeof(
+        _compiler_output);
+  _compiler_output_retrieve =
+    false;
+  if ( _compiler_output_type === "undefined" ) {
+    _compiler_output_retrieve =
+      true;
+  }
+  else if ( _compiler_output_type === "string" ) {
+    if ( _compiler_output.length < 1 ) {
+      _compiler_output_retrieve =
+        true;
+    }
+  }
+  if ( _compiler_output_retrieve ) {
+    if ( 1 < _target_networks.length ) {
+      _msg =
+        "You can't currently retrieve " +
+        "compiler output for more than a contract.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+    else if ( 1 == _target_networks.length ) {
+      const
+        _network =
+          _target_networks[
+            0];
+      _configuration_format =
+        _configuration_format_check(
+          _configuration_format);
+      const
+        _contract_compiler_output_check_args = [
+          _compiler_output,
+          _network,
+          _contract_address,
+          _api_key,
+          _compiler_output,
+          _target_app,
+          _target_contract,
+          _configuration_format,
+          _deployments_dir,
+          _user_defined,
+          true                  // local
+        ];
+      _msg =
+        "Running '_contract_compiler_output_check' with " +
+        "parameters:";
+      _msg_info(
+        _msg);
+      if ( _quiet == "n" ) {
+        _echo(
+          _contract_compiler_output_check_args);
+      }
+      try {
+        _compiler_output =
+          await _contract_compiler_output_check.apply(
+            null,
+            _contract_compiler_output_check_args);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_contract_compiler_output_check' with " +
+          "parameters:";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _contract_compiler_output_check_args);
+        _echo2(
+          _error);
+        throw _error;
+      }
+    }
+    else {
+      _msg =
+        "You must currently select a network " +
+        "to auto-detect the compiler output for " +
+        "a libevm application contract.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  _override_set(
+    "contract",
+    "compiler_output",
+    _compiler_output);
+}
+
 export {
   _app_check,
   _config_file_path_check,
@@ -3730,8 +4430,12 @@ export {
   _configuration_format_check,
   _configuration_format_get,
   _contract_abi_auto_detect,
-  _contract_bytecode_auto_detect,
+  _contract_address_auto_detect,
   _contract_address_check,
+  _contract_bytecode_auto_detect,
+  _contract_bytecode_check,
+  _contract_compiler_output_auto_detect,
+  _contract_compiler_output_check,
   _contract_version_auto_detect,
   _default_artifact_path_get,
   _deployments_dir_auto_detect,
@@ -3758,10 +4462,22 @@ export {
 //     _configuration_format_check,
 //   _configuration_format_get:
 //     _configuration_format_get,
-//   _contract_abi_get:
-//     _contract_abi_get,
 //   _contract_abi_auto_detect:
 //     _contract_abi_auto_detect,
+//   _contract_abi_check:
+//     _contract_abi_check,
+//   _contract_address_auto_detect:
+//     _contract_address_auto_detect,
+//   _contract_address_check:
+//     _contract_address_check,
+//   _contract_bytecode_check:
+//     _contract_bytecode_check,
+//   _contract_bytecode_auto_detect:
+//     _contract_bytecode_auto_detect,
+//   _contract_compiler_output_auto_detect:
+//     _contract_compiler_output_auto_detect,
+//   _contract_compiler_output_check:
+//     _contract_compiler_output_check,
 //   _contract_version_auto_detect:
 //     _contract_version_auto_detect,
 //   _default_artifact_path_get:
@@ -3780,8 +4496,6 @@ export {
 //     _target_contract_auto_detect,
 //   _target_contract_check:
 //     _target_contract_check,
-//   _contract_address_check:
-//     _contract_address_check,
 //   _user_deployments_check:
 //     _user_deployments_check,
 //   _user_defined_check:
