@@ -192,6 +192,31 @@ const
   _cache_dir_auto_detect =
     _libevm_contract_call_module._cache_dir_auto_detect;
 /* global
+     _call_auth_auto_detect */
+const
+  _call_auth_auto_detect =
+    _libevm_contract_call_module._call_auth_auto_detect;
+/* global
+     _contract_abi_auto_detect */
+const
+  _contract_abi_auto_detect =
+    _libevm_contract_call_module._contract_abi_auto_detect;
+/* global
+     _contract_address_auto_detect */
+const
+  _contract_address_auto_detect =
+    _libevm_contract_call_module._contract_address_auto_detect;
+/* global
+     _contract_bytecode_auto_detect */
+const
+  _contract_bytecode_auto_detect =
+    _libevm_contract_call_module._contract_bytecode_auto_detect;
+/* global
+     _contract_compiler_output_auto_detect */
+const
+  _contract_compiler_output_auto_detect =
+    _libevm_contract_call_module._contract_compiler_output_auto_detect;
+/* global
      _data_dir_auto_detect */
 const
   _data_dir_auto_detect =
@@ -207,30 +232,15 @@ const
   _deployments_dir_auto_detect =
     _libevm_contract_call_module._deployments_dir_auto_detect;
 /* global
-     _contract_abi_auto_detect */
-const
-  _contract_abi_auto_detect =
-    _libevm_contract_call_module._contract_abi_auto_detect;
-/* global
      _evm_contract_call */
 const
   _evm_contract_call =
     _libevm_contract_call_module._evm_contract_call;
 /* global
-     _call_auth_auto_detect */
-const
-  _call_auth_auto_detect =
-    _libevm_contract_call_module._call_auth_auto_detect;
-/* global
      _target_app_auto_detect */
 const
   _target_app_auto_detect =
     _libevm_contract_call_module._target_app_auto_detect;
-/* global
-     _contract_address_auto_detect */
-const
-  _contract_address_auto_detect =
-    _libevm_contract_call_module._contract_address_auto_detect;
 /* global
      _target_contract_auto_detect */
 const
