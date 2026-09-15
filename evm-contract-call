@@ -1727,21 +1727,35 @@ async function
   return _cmdline_out;
 }
 
-_global_variables();
-_libevm_global_variables();
 if ( await _cmdline_check(
        "evm-contract-call.js") ||
      await _cmdline_check(
        "evm-contract-call") ||
      await _cmdline_check(
        "./evm-contract-call") ) {
+  _global_variables();
+  _libevm_global_variables();
   await _cmdline_parse();
 }
 else {
   _url_parse();
   _libevm_url_parse();
 }
-await _main();
+
+try {
+  await _main();
+}
+catch(
+  _error) {
+  _msg =
+    "Error running 'main'.";
+  _msg_error(
+    _msg,
+    0);
+  _echo2(
+    _error);
+  throw _error;
+}
 
 export {
   _evm_contract_call
