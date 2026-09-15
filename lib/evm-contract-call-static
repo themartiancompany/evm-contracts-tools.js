@@ -383,12 +383,12 @@ async function
         true;
     }
   }
-  else if ( _contract_object_type === "object" ) {
+  else if ( _method_object_type === "object" ) {
     const
-      _contract_object_keys =
+      _method_object_keys =
         Object.keys(
-          _contract_object);
-    if ( _contract_object_keys.length < 1 )  {
+          _method_object);
+    if ( _method_object_keys.length < 1 )  {
       _msg =
         "Ethers contract method object is an empty " +
         "object, generating.";
@@ -484,6 +484,44 @@ async function
   return _method_object;
 }
 
+function
+  _is_network_error(
+    _error) {
+  let
+    _is_error,
+    _msg;
+  _is_error =
+    false;
+  const
+    _error_type =
+      typeof(
+        _error);
+  if ( _error_type === "object" ) {
+    if ( "errno" in _error ) {
+      const
+        _errno =
+          _error[
+            "errno"];
+      if ( _errno === -3001 ) {
+        const
+          _rpc =
+            _error[
+              "hostname"];
+        _msg =
+          "Error connecting to RPC " +
+          `'${_rpc}', is the computer ` +
+          `connected to the internet?`;
+        _msg_error(
+          _msg,
+          0);
+        _is_error =
+          true;
+      }
+    }
+  }
+  return _is_error;
+}
+
 async function
   _contract_call_static(
     _wallet_seed,
@@ -528,74 +566,74 @@ async function
       _target_network,
       _api_key_path
     ];
-  try {
-    _contract_object =
-      await _contract_object_check.apply(
-        null,
-        _contract_object_check_args);
-    _msg =
-      "Checked ethers contract object.";
-    _msg_info(
-      _msg);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error running '_contract_object_check' " +
-      "parameters:";
-    _msg_error(
-      _msg,
-      0);
-    _echo2(
-      _contract_object_check_args);
-    _echo2(
-      _error);
-    throw _error;
-  }
-  const
-    _method_object_check_args = [
-      _method_object,
-      _contract_object,
-      _contract_method,
-      _wallet_seed,
-      _wallet_password,
-      _contract_address,
-      _contract_abi_path,
-      _contract_bytecode_path,
-      _contract_compiler_output_path,
-      _target_network,
-      _api_key_path
-    ];
-  try {
-    _method_object =
-      await _method_object_check.apply(
-        null,
-        _method_object_check_args);
-    _msg =
-      "Checked ethers contract method object.";
-    _msg_info(
-      _msg);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error running '_method_object_check' " +
-      "with parameters:";
-    _msg_error(
-      _msg,
-      0);
-    _echo2(
-      _method_object_check_args);
-    _echo2(
-      _error);
-    throw _error;
-  }
-  _method =
-    _method_object;
   _passed = 
     false;
   while ( _retry <= _retries_max &&
           _passed == false ) {
+    try {
+      _contract_object =
+        await _contract_object_check.apply(
+          null,
+          _contract_object_check_args);
+      _msg =
+        "Checked ethers contract object.";
+      _msg_info(
+        _msg);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_contract_object_check' " +
+        "parameters:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _contract_object_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    const
+      _method_object_check_args = [
+        _method_object,
+        _contract_object,
+        _contract_method,
+        _wallet_seed,
+        _wallet_password,
+        _contract_address,
+        _contract_abi_path,
+        _contract_bytecode_path,
+        _contract_compiler_output_path,
+        _target_network,
+        _api_key_path
+      ];
+    try {
+      _method_object =
+        await _method_object_check.apply(
+          null,
+          _method_object_check_args);
+      _msg =
+        "Checked ethers contract method object.";
+      _msg_info(
+        _msg);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_method_object_check' " +
+        "with parameters:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _method_object_check_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    _method =
+      _method_object;
     try {
       try {
         _msg =
@@ -613,6 +651,18 @@ async function
       }
       catch(
         _error) {
+        const
+          _error_is_network_error =
+            _is_network_error(
+              _error);
+        if ( ! _error_is_network_error ) {
+          _msg =
+            "Unknown error type " +
+            "for (evm-contract-call).";
+          _msg_error(
+            _msg,
+            0);
+        }
         _msg =
           `Error running ` +
           `'${_contract_method}.staticCall' with ` +
@@ -620,6 +670,8 @@ async function
         _msg_error(
           _msg,
           0);
+        _echo2(
+          _error);
         throw _error;
       }
       const
@@ -657,6 +709,16 @@ async function
       //   _error);
       _retry =
         _retry + 1;
+      _msg =
+        "Destroying method and contract " +
+        "objects.";
+      _contract_object.runner.provider.destroy();
+      _contract_object =
+        {};
+      _method_object =
+        {};
+      _msg_info(
+        _msg);
       _msg =
         "Increasing retry and waiting 3 seconds.";
       _msg_error(
