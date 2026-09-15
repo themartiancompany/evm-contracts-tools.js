@@ -218,7 +218,7 @@ const
 const
   _libevm_contract_deployment_module =
     await import(
-      "./lib/evm-contract-deployment");
+      "./libevm-contract-deployment");
 /* global
      _app_check */
 const
