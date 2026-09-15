@@ -191,7 +191,7 @@ const
 const
   _address_check_module =
     await import(
-      "./lib/address_check");
+      "./lib/address-check");
 /* global
      _address_check */
 const
