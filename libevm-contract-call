@@ -221,6 +221,11 @@ const
 const
   _target_contract_check =
     _libevm_contract_deployment_module._target_contract_check;
+/* global
+     _target_networks_auto_detect */
+const
+  _target_networks_auto_detect =
+    _libevm_contract_deployment_module._target_networks_auto_detect;
 const
   _address_check_module =
     await import(
@@ -302,6 +307,113 @@ const
 const
   _data_get =
     _ethereum_data_module._data_get;
+
+function
+  _artifact_type_check(
+    _artifact_type) {
+  let
+    _flag_empty,
+    _flag_wrong,
+    _msg_empty,
+    _msg_wrong;
+  _flag_empty =
+    false;
+  _flag_wrong =
+    false;
+  const
+    _artifact_type_type =
+      typeof(
+        _artifact_type);
+  if ( _artifact_type_type === "undefined" ) {
+    _msg_empty =
+      "Artifact type undefined.";
+    _flag_empty =
+      true;
+  }
+  else if ( _artifact_type_type === "string" ) {
+    if ( _artifact_type_type.length < 1 ) {
+    _msg_empty =
+      "Artifact type not set.";
+    _flag_empty =
+      true;
+    }
+    else {
+      if ( _artifact_type !== "abi" &&
+           _artifact_type !== "bytecode" &&
+           _artifact_type !== "compiler_output" ) {
+        _msg_wrong =
+          "Artifact type can be 'abi', " +
+          "'bytecode' or 'compiler_output'.";
+        _flag_wrong =
+          true;
+      }
+    }
+  }
+  else {
+    _msg_wrong =
+      "Artifact type must be of type string.";
+    _flag_wrong =
+      true;
+  }
+  if ( _flag_empty ) {
+    _msg_error(
+      _msg_empty,
+      0);
+    throw _msg_empty;
+  }
+  if ( _flag_wrong ) {
+    _msg_error(
+      _msg_wrong,
+      0);
+    throw _msg_wrong;
+  }
+  return _artifact_type;
+}
+
+function
+  _artifact_local_auto_detect(
+    _artifact_type) {
+  let
+    _msg;
+  try {
+    _artifact_type =
+      _artifact_type_check(
+        _artifact_type);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error checking artifact type.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  const
+    _artifact =
+      _default_artifact_path_get(
+        _artifact_type);
+  if ( _artifact_type == "abi" ) {
+    _override_set(
+      "contract",
+      "abi",
+      _artifact);
+  }
+  else if ( _artifact_type == "bytecode" ) {
+    _override_set(
+      "contract",
+      "bytecode",
+      _artifact);
+  }
+  else if ( _artifact_type == "compiler_output" ) {
+    _override_set(
+      "contract",
+      "compiler_output",
+      _artifact);
+  }
+}
 
 function
   _target_networks_get(
@@ -435,33 +547,6 @@ function
       _target_network[0];
   return [ _target_networks,
            _target_network ];
-}
-
-function
-  _target_networks_auto_detect() {
-  // TODO:
-  //   _evm_wallet_module._balance_discovery
-  let
-    _target_network,
-    _target_networks;
-  _target_networks =
-    _get(
-      "target",
-      "networks");
-  [ _target_networks,
-    /* eslint-disable-next-line
-         prefer-const */  
-    _target_network ] =
-    _target_networks_auto_detect(
-      _target_networks);
-  _set(
-    "target",
-    "networks",
-    _target_networks);
-  _override_set(
-    "target",
-    "network",
-    _target_network);
 }
 
 function
@@ -789,113 +874,6 @@ async function
   return _out;
 }
 
-function
-  _artifact_type_check(
-    _artifact_type) {
-  let
-    _flag_empty,
-    _flag_wrong,
-    _msg_empty,
-    _msg_wrong;
-  _flag_empty =
-    false;
-  _flag_wrong =
-    false;
-  const
-    _artifact_type_type =
-      typeof(
-        _artifact_type);
-  if ( _artifact_type_type === "undefined" ) {
-    _msg_empty =
-      "Artifact type undefined.";
-    _flag_empty =
-      true;
-  }
-  else if ( _artifact_type_type === "string" ) {
-    if ( _artifact_type_type.length < 1 ) {
-    _msg_empty =
-      "Artifact type not set.";
-    _flag_empty =
-      true;
-    }
-    else {
-      if ( _artifact_type !== "abi" &&
-           _artifact_type !== "bytecode" &&
-           _artifact_type !== "compiler_output" ) {
-        _msg_wrong =
-          "Artifact type can be 'abi', " +
-          "'bytecode' or 'compiler_output'.";
-        _flag_wrong =
-          true;
-      }
-    }
-  }
-  else {
-    _msg_wrong =
-      "Artifact type must be of type string.";
-    _flag_wrong =
-      true;
-  }
-  if ( _flag_empty ) {
-    _msg_error(
-      _msg_empty,
-      0);
-    throw _msg_empty;
-  }
-  if ( _flag_wrong ) {
-    _msg_error(
-      _msg_wrong,
-      0);
-    throw _msg_wrong;
-  }
-  return _artifact_type;
-}
-
-function
-  _artifact_local_auto_detect(
-    _artifact_type) {
-  let
-    _msg;
-  try {
-    _artifact_type =
-      _artifact_type_check(
-        _artifact_type);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error checking artifact type.";
-    _msg_error(
-      _msg,
-      0);
-    _echo2(
-      _error);
-    throw _error;
-  }
-  const
-    _artifact =
-      _default_artifact_path_get(
-        _artifact_type);
-  if ( _artifact_type == "abi" ) {
-    _override_set(
-      "contract",
-      "abi",
-      _artifact);
-  }
-  else if ( _artifact_type == "bytecode" ) {
-    _override_set(
-      "contract",
-      "bytecode",
-      _artifact);
-  }
-  else if ( _artifact_type == "compiler_output" ) {
-    _override_set(
-      "contract",
-      "compiler_output",
-      _artifact);
-  }
-}
-
 async function
   _target_app_get(
     _contract_address) {
@@ -990,7 +968,7 @@ async function
               _contract] =
               1;
           }
-	}
+        }
       }
     }
   }
@@ -1243,26 +1221,34 @@ export {
   _address_check,
   _app_lookup_contract,
   _artifact_local_auto_detect,
+  _artifact_type_check,
   _cache_dir_auto_detect,
   _call_auth_auto_detect,
   _call_auth_get,
+  _call_type_check,
   _contract_abi_auto_detect,
   _contract_abi_check,
   _contract_address_auto_detect,
   _contract_address_check,
+  _contract_artifacts_retrieve,
   _contract_bytecode_auto_detect,
   _contract_bytecode_check,
   _contract_compiler_output_auto_detect,
   _contract_compiler_output_check,
+  _contract_lookup_address,
+  _contracts_init,
   _data_dir_auto_detect,
   _default_artifact_path_get,
   _deployments_dir_auto_detect,
   _evm_contract_call,
   _help_display_check,
+  _methods_init,
   _target_app_auto_detect,
+  _target_app_get,
   _target_contract_auto_detect,
   _target_networks_auto_detect,
-  _target_networks_get
+  _target_networks_get,
+  _target_networks_check
 };
 
 // Common Javascript exports
@@ -1274,6 +1260,10 @@ export {
 //     _app_lookup_contract,
 //   _artifact_local_auto_detect:
 //     _artifact_local_auto_detect,
+//   _artifact_type_check:
+//     _artifact_type_check,
+//   _cache_dir_auto_detect:
+//     _cache_dir_auto_detect,
 //   _cache_dir_auto_detect:
 //     _cache_dir_auto_detect,
 //   _call_auth_auto_detect:
@@ -1288,6 +1278,8 @@ export {
 //     _contract_address_auto_detect,
 //   _contract_address_check:
 //     _contract_address_check,
+//   _contract_artifacts_retrieve:
+//     _contract_artifacts_retrieve,
 //   _contract_bytecode_auto_detect:
 //     _contract_bytecode_auto_detect,
 //   _contract_bytecode_check:
@@ -1296,6 +1288,10 @@ export {
 //     _contract_compiler_output_auto_detect,
 //   _contract_compiler_output_check:
 //     _contract_compiler_output_check,
+//   _contract_lookup_address:
+//     _contract_lookup_address,
+//   _contracts_init:
+//     _contracts_init,
 //   _data_dir_auto_detect:
 //     _data_dir_auto_detect,
 //   _default_artifact_path_get:
@@ -1304,12 +1300,20 @@ export {
 //     _deployments_dir_auto_detect,
 //   _evm_contract_call:
 //     _evm_contract_call,
+//   _help_display_check:
+//     _help_display_check,
+//   _methods_init:
+//     _methods_init,
 //   _target_app_auto_detect:
 //     _target_app_auto_detect,
-//   _target_networks_auto_detect:
-//     _target_networks_auto_detect,
+//   _target_app_get:
+//     _target_app_get,
 //   _target_contract_auto_detect:
 //     _target_contract_auto_detect,
+//   _target_networks_auto_detect:
+//     _target_networks_auto_detect,
+//   _target_networks_check:
+//     _target_networks_check,
 //   _target_networks_get:
 //     _target_networks_get
 // };

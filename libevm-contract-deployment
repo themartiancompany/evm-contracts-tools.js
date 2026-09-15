@@ -3108,6 +3108,33 @@ const
   _contract_version_check =
     _version_check;
 
+function
+  _target_networks_auto_detect() {
+  // TODO:
+  //   _evm_wallet_module._balance_discovery
+  let
+    _target_network,
+    _target_networks;
+  _target_networks =
+    _get(
+      "target",
+      "networks");
+  [ _target_networks,
+    /* eslint-disable-next-line
+         prefer-const */  
+    _target_network ] =
+    _target_networks_auto_detect(
+      _target_networks);
+  _set(
+    "target",
+    "networks",
+    _target_networks);
+  _override_set(
+    "target",
+    "network",
+    _target_network);
+}
+
 async function
   _target_networks_check(
     _target_networks,
@@ -4622,6 +4649,8 @@ export {
   _target_app_check,
   _target_contract_auto_detect,
   _target_contract_check,
+  _target_networks_auto_detect,
+  _target_networks_check,
   _user_deployments_check,
   _user_defined_check,
   _user_level_check,
@@ -4677,6 +4706,10 @@ export {
 //     _target_contract_auto_detect,
 //   _target_contract_check:
 //     _target_contract_check,
+//   _target_networks_auto_detect:
+//     _target_networks_auto_detect,
+//   _target_networks_check:
+//     _target_networks_check,
 //   _user_deployments_check:
 //     _user_deployments_check,
 //   _user_defined_check:

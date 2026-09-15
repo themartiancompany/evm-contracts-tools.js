@@ -115,6 +115,106 @@ const
 const
   _contract_call_static =
     _evm_contract_call_static_module._contract_call_static;
+
+const
+  _libevm_contract_call_module =
+    await import(
+      "./lib/evm-contract-call");
+/* global
+     _app_lookup_contract */
+const
+  _app_lookup_contract =
+    _libevm_contract_call_module._app_lookup_contract;
+/* global
+     _artifact_local_auto_detect */
+const
+  _artifact_local_auto_detect =
+    _libevm_contract_call_module._artifact_local_auto_detect;
+/* global
+     _artifact_type_check */
+const
+  _artifact_type_check =
+    _libevm_contract_call_module._artifact_type_check;
+/* global
+     _cache_dir_auto_detect */
+const
+  _cache_dir_auto_detect =
+    _libevm_contract_call_module._cache_dir_auto_detect;
+/* global
+     _call_auth_auto_detect */
+const
+  _call_auth_auto_detect =
+    _libevm_contract_call_module._call_auth_auto_detect;
+/* global
+     _call_auth_get */
+const
+  _call_auth_get =
+    _libevm_contract_call_module._call_auth_get;
+/* global
+     _call_type_check */
+const
+  _call_type_check =
+    _libevm_contract_call_module._call_type_check;
+/* global
+     _contract_artifacts_retrieve */
+const
+  _contract_artifacts_retrieve =
+    _libevm_contract_call_module._contract_artifacts_retrieve;
+/* global
+     _contract_lookup_address */
+const
+  _contract_lookup_address =
+    _libevm_contract_call_module._contract_lookup_address;
+/* global
+     _contracts_init */
+const
+  _contracts_init =
+    _libevm_contract_call_module._contracts_init;
+/* global
+     _data_dir_auto_detect */
+const
+  _data_dir_auto_detect =
+    _libevm_contract_call_module._data_dir_auto_detect;
+/* global
+     _evm_contract_call */
+const
+  _evm_contract_call =
+    _libevm_contract_call_module._evm_contract_call;
+/* global
+     _help_display_check */
+const
+  _help_display_check =
+    _libevm_contract_call_module._help_display_check;
+/* global
+     _libevm_contract_call_target_app_auto_detect */
+const
+  _libevm_contract_call_target_app_auto_detect =
+    _libevm_contract_call_module._target_app_auto_detect;
+/* global
+     _libevm_contract_call_target_networks_auto_detect */
+const
+  _libevm_contract_call_target_networks_auto_detect =
+    _libevm_contract_call_module._target_networks_auto_detect;
+/* global
+     _libevm_contract_call_target_networks_check */
+const
+  _libevm_contract_call_target_networks_check =
+    _libevm_contract_call_module._target_networks_check;
+/* global
+     _methods_init */
+const
+  _methods_init =
+    _libevm_contract_call_module._methods_init;
+/* global
+     _target_app_get */
+const
+  _target_app_get =
+    _libevm_contract_call_module._target_app_get;
+/* global
+     _target_networks_get */
+const
+  _target_networks_get =
+    _libevm_contract_call_module._target_networks_get;
 const
   _libevm_contract_deployment_module =
     await import(
@@ -240,6 +340,16 @@ const
   _target_contract_check =
     _libevm_contract_deployment_module._target_contract_check;
 /* global
+     _target_networks_auto_detect */
+const
+  _target_networks_auto_detect =
+    _libevm_contract_deployment_module._target_networks_auto_detect;
+/* global
+     _target_networks_check */
+const
+  _target_networks_check =
+    _libevm_contract_deployment_module._target_networks_check;
+/* global
      _user_deployments_check */
 const
   _user_deployments_check =
@@ -354,9 +464,16 @@ const
 
 export {
   _app_check,
+  _app_lookup_contract,
+  _artifact_local_auto_detect,
+  _artifact_type_check,
   _address_check,
   _bytecode_creation_get,
   _bytecode_runtime_get,
+  _cache_dir_auto_detect,
+  _call_auth_auto_detect,
+  _call_auth_get,
+  _call_type_check,
   _config_file_path_check,
   _configuration_format_auto_detect,
   _configuration_format_check,
@@ -366,6 +483,7 @@ export {
   _contract_address_auto_detect,
   _contract_address_check,
   _contract_address_get,
+  _contract_artifacts_retrieve,
   _contract_bytecode_check,
   _contract_bytecode_auto_detect,
   _contract_bytecode_get,
@@ -374,29 +492,42 @@ export {
   _contract_compiler_output_auto_detect,
   _contract_compiler_output_check,
   _contract_compiler_output_get,
+  _contract_lookup_address,
   _contract_get,
   _contract_run,
   _contract_version_auto_detect,
   _contract_version_check,
+  _contracts_init,
+  _data_dir_auto_detect,
   _default_artifact_path_get,
   _default_deployments_dir_get,
   _deployer_get,
   _deployer_verify,
   _deployments_dir_auto_detect,
   _deployments_dir_check,
+  _evm_contract_call,
   _evm_contract_deployment_abi,
   _evm_contract_deployment_address,
   _evm_contract_deployment_bytecode,
   _evm_contract_deployment_compiler_output,
   _evm_contract_deployment_networks,
   _evm_contract_deployments_dir,
+  _help_display_check,
+  _libevm_contract_call_target_app_auto_detect,
+  _libevm_contract_call_target_networks_auto_detect,
+  _libevm_contract_call_target_networks_check,
+  _methods_init,
   _network_check,
   _networks_all_auto_detect,
   _networks_find
   _target_app_auto_detect,
   _target_app_check,
+  _target_app_get,
   _target_contract_auto_detect,
   _target_contract_check,
+  _target_networks_auto_detect,
+  _target_networks_check,
+  _target_networks_get,
   _user_defined_check,
   _user_deployments_check,
   _user_level_check,
@@ -408,10 +539,26 @@ export {
 //     _address_check,
 //   _app_check:
 //     _app_check,
+//   _app_lookup_contract:
+//     _app_lookup_contract,
+//   _artifact_local_auto_detect:
+//     _artifact_local_auto_detect,
+//   _artifact_local_auto_detect:
+//     _artifact_local_auto_detect,
+//   _artifact_type_check:
+//     _artifact_type_check,
 //   _bytecode_creation_get:
 //     _bytecode_creation_get,
 //   _bytecode_runtime_get:
 //     _bytecode_runtime_get,
+//   _cache_dir_auto_detect:
+//     _cache_dir_auto_detect,
+//   _call_auth_auto_detect:
+//     _call_auth_auto_detect,
+//   _call_auth_get:
+//     _call_auth_get,
+//   _call_type_check:
+//     _call_type_check,
 //   _config_file_path_check:
 //     _config_file_path_check,
 //   _configuration_format_auto_detect:
@@ -430,6 +577,8 @@ export {
 //     _contract_address_check,
 //   _contract_address_get:
 //     _contract_address_get,
+//   _contract_artifacts_retrieve:
+//     _contract_artifacts_retrieve,
 //   _contract_bytecode_auto_detect:
 //     _contract_bytecode_auto_detect,
 //   _contract_bytecode_check:
@@ -446,6 +595,8 @@ export {
 //     _contract_compiler_output_check,
 //   _contract_compiler_output_get:
 //     _contract_compiler_output_get,
+//   _contract_lookup_address:
+//     _contract_lookup_address,
 //   _contract_get:
 //     _contract_get,
 //   _contract_run:
@@ -454,6 +605,10 @@ export {
 //     _contract_version_auto_detect,
 //   _contract_version_check:
 //     _contract_version_check,
+//   _contracts_init:
+//     _contracts_init,
+//   _data_dir_auto_detect:
+//     _data_dir_auto_detect,
 //   _default_artifact_path_get:
 //     _default_artifact_path_get,
 //   _deployer_get:
@@ -464,6 +619,8 @@ export {
 //     _deployments_dir_auto_detect,
 //   _deployments_dir_check:
 //     _deployments_dir_check,
+//   _evm_contract_call:
+//     _evm_contract_call,
 //   _evm_contract_deployment_abi:
 //     _evm_contract_deployment_abi,
 //   _evm_contract_deployment_address:
@@ -474,6 +631,16 @@ export {
 //     _evm_contract_deployment_compiler_output,
 //   _evm_contract_deployment_networks:
 //     _evm_contract_deployment_networks,
+//   _help_display_check:
+//     _help_display_check,
+//   _libevm_contract_call_target_app_auto_detect:
+//     _libevm_contract_call_target_app_auto_detect,
+//   _libevm_contract_call_target_networks_auto_detect:
+//     _libevm_contract_call_target_networks_auto_detect,
+//   _libevm_contract_call_target_networks_check:
+//     _libevm_contract_call_target_networks_check,
+//   _method_init:
+//     _method_init,
 //   _network_check:
 //     _network_check,
 //   _networks_all_auto_detect:
@@ -484,10 +651,16 @@ export {
 //     _target_app_auto_detect,
 //   _target_app_check:
 //     _target_app_check,
+//   _target_app_get:
+//     _target_app_get,
 //   _target_contract_auto_detect:
 //     _target_contract_auto_detect,
 //   _target_contract_check:
 //     _target_contract_check,
+//   _target_networks_auto_detect:
+//     _target_networks_auto_detect,
+//   _target_networks_check:
+//     _target_networks_check,
 //   _user_defined_check:
 //     _user_defined_check,
 //   _user_deployments_check:
