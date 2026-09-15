@@ -1184,6 +1184,51 @@ function
     _cache_dir);
 }
 
+function
+  _help_display_check(
+    _help_display) {
+  let
+    _msg;
+  const
+    _help_display_type =
+      typeof(
+        _help_display);
+  if ( _help_display_type === "undefined" ) {
+    _help_display =
+      false;
+  }
+  else if ( _help_display_type === "boolean" ) {
+    true;
+  }
+  else if ( _help_display_type === "string" ) {
+    if ( _help_display.length < 1 ) {
+      _help_display =
+        false;
+    }
+    else {
+      if ( _help_display == "true" ) {
+        _help_display =
+          true;
+      }
+      else if ( _help_display == "false" ) {
+        _help_display =
+          false;
+      }
+      else {
+        _msg =
+          `Unknown value '${_help_display}' ` +
+          "for variable '_help_display' (boolean).";
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+  }
+  return _help_display;
+}
+
+
 // ES6 module exports
 
 export {
@@ -1205,6 +1250,7 @@ export {
   _default_artifact_path_get,
   _deployments_dir_auto_detect,
   _evm_contract_call,
+  _help_display_check,
   _target_app_auto_detect,
   _target_contract_auto_detect,
   _target_networks_auto_detect,

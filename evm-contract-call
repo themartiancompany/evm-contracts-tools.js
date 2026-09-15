@@ -240,6 +240,11 @@ const
   _evm_contract_call =
     _libevm_contract_call_module._evm_contract_call;
 /* global
+     _help_display_check */
+const
+  _help_display_check =
+    _libevm_contract_call_module._help_display_check;
+/* global
      _target_app_auto_detect */
 const
   _target_app_auto_detect =
@@ -676,6 +681,9 @@ async function
     _address_valid,
     _contract_address,
     _msg;
+  _help_display =
+    _help_display_check(
+      _help_display);
   const
     _global =
       _global_get();
@@ -762,63 +770,56 @@ async function
       _error);
     throw _error;
   }
-  try {
-    await _target_app_auto_detect();
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error auto-detecting target application.";
-    _msg_error(
-      _msg,
-      0);
-    throw _error;
-  }
-  try {
-    await _deployments_dir_auto_detect();
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error auto-detecting deployments directory.";
-    _msg_error(
-      _msg,
-      0);
-    throw _error;
-  }
-  try {
-    await _target_contract_auto_detect();
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error auto-detecting target contract.";
-    _msg_error(
-      _msg,
-      0);
-    throw _error;
-  }
-  try {
-    await _contract_address_auto_detect();
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error auto-detecting contract address.";
-    _msg_error(
-      _msg,
-      0);
-    throw _error;
-  }
-  // await _target_networks_auto_detect();
-  const
-    _help_display_type =
-      typeof(
-        _help_display);
-  if ( ( _help_display_type !== "undefined" &&
-         _help_display !== "" ) &&
-       ( _help_display_type !== "boolean" &&
-         _help_display !== true ) ) {
+  if ( ! _help_display ) {
+    try {
+      await _target_app_auto_detect();
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error auto-detecting target application.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+    try {
+      await _deployments_dir_auto_detect();
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error auto-detecting deployments directory.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+    try {
+      await _target_contract_auto_detect();
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error auto-detecting target contract.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+    try {
+      await _contract_address_auto_detect();
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error auto-detecting contract address.";
+      _msg_error(
+        _msg,
+        0);
+      throw _error;
+    }
+    // await _target_networks_auto_detect();
     try {
       _contract_address =
         _get(
@@ -850,25 +851,25 @@ async function
         0);
       throw _msg;
     }
-  }
-  _override_set(
-    "index",
-    "retrieve",
-    "n");
-  // _api_key_auto_detect();
-  try {
-    await _artifacts_auto_detect();
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error running '_artifacts_auto_detect'."
-    _msg_error(
-      _msg,
-      0);
-    _echo2(
-      _error);
-    throw _error;
+    _override_set(
+      "index",
+      "retrieve",
+      "n");
+    // _api_key_auto_detect();
+    try {
+      await _artifacts_auto_detect();
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_artifacts_auto_detect'."
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
   }
 }
 
