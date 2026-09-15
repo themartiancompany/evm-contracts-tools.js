@@ -431,6 +431,13 @@ async function
     _contract_abi,
     _contract_bytecode,
     _msg;
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
   _contract_abi =
     _get(
       "contract",
@@ -626,7 +633,7 @@ async function
             if ( _contract_abi !== "" &&
                  _contract_bytecode !== "" ) {
               _error_info =
-                true
+                true;
 	    }
             if ( _error_info ) {
               _msg_info(
@@ -872,7 +879,7 @@ async function
     catch(
       _error) {
       _msg =
-        "Error running '_artifacts_auto_detect'."
+        "Error running '_artifacts_auto_detect'.";
       _msg_error(
         _msg,
         0);
@@ -1758,8 +1765,9 @@ try {
 }
 catch(
   _error) {
-  _msg =
-    "Error running 'main'.";
+  const
+    _msg =
+      "Error running 'main'.";
   _msg_error(
     _msg,
     0);
