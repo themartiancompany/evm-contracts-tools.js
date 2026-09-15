@@ -517,10 +517,23 @@ async function
       _wallet_seed,
       _network_provider
     ];
-    _wallet =
-      _wallet_get.apply(
-        null,
-        _wallet_get_opts);
+    try {
+      _wallet =
+        await _wallet_get.apply(
+          null,
+          _wallet_get_opts);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_wallet_get'.";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
     _msg_info_wallet_selected(
       _wallet);
     _contract_get_args.push(

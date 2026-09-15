@@ -737,12 +737,31 @@ async function
     "msg",
     "value",
     "0");
-  await _wallet_overrides_set(
-    "evm-wallet",
-    wallet_name,
-    call_auth,
-    "n",                // qr support
-    _target_networks);
+  const
+    _wallet_overrides_set_args = [
+      "evm-wallet",
+      wallet_name,
+      call_auth,
+      "n",                // qr support
+      _target_networks
+    ];
+  try {
+    await _wallet_overrides_set.apply(
+      null,
+      _wallet_overrides_set_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_wallet_overrides_set' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   try {
     await _target_app_auto_detect();
   }
