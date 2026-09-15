@@ -634,6 +634,7 @@ async function
 }
 
 export {
+  _contract_abi_get,
   _contract_version_auto_detect,
   _deployments_dir_auto_detect,
   _evm_contract_deployment_abi,
@@ -642,6 +643,8 @@ export {
 };
 
 // module.exports = {
+//   _contract_abi_get:
+//     _contract_abi_get,
 //   _contract_version_auto_detect:
 //     _contract_version_auto_detect,
 //   _deployments_dir_auto_detect:

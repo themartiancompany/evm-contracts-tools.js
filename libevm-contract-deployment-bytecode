@@ -633,6 +633,7 @@ async function
 }
 
 export {
+  _contract_bytecode_get,
   _contract_version_auto_detect,
   _deployments_dir_auto_detect,
   _evm_contract_deployment_bytecode,

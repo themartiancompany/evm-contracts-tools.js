@@ -222,24 +222,32 @@ const
   _target_contract_check =
     _libevm_contract_deployment_module._target_contract_check;
 const
-  _evm_contracts_tools_module =
+  _address_check_module =
     await import(
-      "./evm-contracts-tools");
+      "./lib/address-check");
 /* global
      _address_check */
 const
   _address_check =
-    _evm_contracts_tools_module._address_check;
-/* global
-     _contract_call_static */
+    _address_check_module._address_check;
 const
-  _contract_call_static =
-    _evm_contracts_tools_module._contract_call_static;
+  _evm_contract_call_dynamic_module =
+    await import(
+      "./lib/evm-contract-call-dynamic");
 /* global
      _contract_run */
 const
   _contract_run =
-    _evm_contracts_tools_module._contract_run;
+    _evm_contract_call_dynamic_module._contract_run;
+const
+  _evm_contract_call_static_module =
+    await import(
+      "./lib/evm-contract-call-static");
+/* global
+     _contract_call_static */
+const
+  _contract_call_static =
+    _evm_contract_call_static_module._contract_call_static;
 const
   _evm_contract_deployment_address_module =
     await import(
