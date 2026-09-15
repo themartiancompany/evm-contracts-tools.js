@@ -409,7 +409,7 @@ const
 /* global
      _evm_contract_deployment_bytecode */
 const
-  _evm_contract_deployment_contract_bytecode =
+  _evm_contract_deployment_bytecode =
     _libevm_contract_deployment_bytecode_module._evm_contract_deployment_bytecode;
 const
   _libevm_contract_deployment_compiler_output_module =
