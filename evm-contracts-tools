@@ -119,7 +119,7 @@ const
 const
   _libevm_contract_call_module =
     await import(
-      "./lib/evm-contract-call");
+      "./libevm-contract-call");
 /* global
      _app_lookup_contract */
 const
