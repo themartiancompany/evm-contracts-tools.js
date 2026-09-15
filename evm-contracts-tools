@@ -519,7 +519,7 @@ export {
   _methods_init,
   _network_check,
   _networks_all_auto_detect,
-  _networks_find
+  _networks_find,
   _target_app_auto_detect,
   _target_app_check,
   _target_app_get,
