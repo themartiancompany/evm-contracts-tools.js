@@ -395,7 +395,7 @@ const
 /* global
      _evm_contract_deployment_address */
 const
-  _evm_contract_deployment_contract_address =
+  _evm_contract_deployment_address =
     _libevm_contract_deployment_address_module._evm_contract_deployment_address;
 const
   _libevm_contract_deployment_bytecode_module =
