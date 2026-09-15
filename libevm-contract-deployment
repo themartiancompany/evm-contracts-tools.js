@@ -2527,84 +2527,135 @@ async function
 async function
   _target_app_auto_detect() {
   let
+    _address_missing,
     _app,
     _evm_contract_deployments_dir;
-  _app =
-    "";
   const
-    _dir_current_name =
-      _basename(
-        _pwd());
-  const
-    _user_defined =
+    _contract_address =
       _get(
-        "user",
-        "defined");
-  _evm_contract_deployments_dir =
-    _get(
-      "_evm_contract",
-      "deployments_dir");
-  _user_defined =
-    _user_defined_check(
-      _user_defined);
-  try {
-    _evm_contract_deployments_dir =
-      await _evm_contract_deployments_dir_check(
-        _evm_contract_deployments_dir);
-  }
-  catch(
-    _error) {
-    _msg =
-      "Error getting '_evm_cotract_deployments_dir' " +
-      "function.";
-    _msg_error(
-      _msg,
-      0);
-    _echo2(
-      _error);
-    throw _error;
-  }
+        "contract",
+        "address");
   const
-    _evm_contract_deployments_dir_args = [
-      _dir_current_name,
-      _user_defined
-    ];
-  try {
-    const
-      _target_dir =
-        await _evm_contract_deployments_dir.apply(
-          null,
-          _evm_contract_deployments_dir_args);
-  }
-  catch(
-    _error) {
+    _contract_address_type =
+      typeof(
+        _contract_address);
+  if ( _contract_address_type === "undefined" ) {
     _msg =
-      "Error running '_evm_contract_deployments_dir' " +
-      "with arguments:";
-    _echo2(
-      _evm_contract_deployments_dir_args);
-    _echo2(
-      _error);
-    throw _error;
-  }
-  if ( _dir_exists(
-         _target_dir) ) {
-    _msg =
-      "Found existing directory " +
-      `'${_target_dir}', setting ` +
-      `'${_dir_current_name}' as application name.`;
+      "Contract address undefined, skipping ",
+      "application auto-detection.";
     _msg_info(
       _msg);
-    _app =
-      _dir_current_name;
+    _address_missing =
+      true;
+  }
+  else if ( _contract_address_type === "string" ) {
+    if ( _contract_address.length < 1 ) {
+      _msg =
+        "Contract address undefined, skipping ",
+        "application auto-detection.";
+      _msg_info(
+        _msg);
+      _address_missing =
+        true;
+    }
+    else {
+      _msg =
+        "Contract address correctly detected, auto-detecting " +
+        "application.";
+      _msg_info(
+        _msg);
+      _address_missing =
+        false;
+    }
   }
   else {
     _msg =
-      `Directory '${_target_dir}' ` +
-      "not found, impossible auto-detecting " +
-      "application name for given contract.";
+      `Unknown type '${_contract_address_type}' ` +
+      `for global variable 'contract_address':`;
     _msg_info(
       _msg);
+    _echo2(
+      _contract_address);
+    throw _msg;
+  }
+  _app =
+    "";
+  if ( ! _address_missing ) {
+    const
+      _dir_current_name =
+        _basename(
+          _pwd());
+    const
+      _user_defined =
+        _get(
+          "user",
+          "defined");
+    _user_defined =
+      _user_defined_check(
+        _user_defined);
+    _evm_contract_deployments_dir =
+      _get(
+        "_evm_contract",
+        "deployments_dir");
+    try {
+      _evm_contract_deployments_dir =
+        await _evm_contract_deployments_dir_check(
+          _evm_contract_deployments_dir);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error getting '_evm_contract_deployments_dir' " +
+        "function.";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    const
+      _evm_contract_deployments_dir_args = [
+        _dir_current_name,
+        _user_defined
+      ];
+    try {
+      const
+        _target_dir =
+          await _evm_contract_deployments_dir.apply(
+            null,
+            _evm_contract_deployments_dir_args);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_evm_contract_deployments_dir' " +
+        "with arguments:";
+      _echo2(
+        _evm_contract_deployments_dir_args);
+      _echo2(
+        _error);
+      throw _error;
+    }
+    if ( _dir_exists(
+           _target_dir) ) {
+      _msg =
+        "Found existing directory " +
+        `'${_target_dir}', setting ` +
+        `'${_dir_current_name}' as application name.`;
+      _msg_info(
+        _msg);
+      _app =
+        _dir_current_name;
+    }
+    else {
+      _msg =
+        `Directory '${_target_dir}' ` +
+        "not found, impossible auto-detecting " +
+        "application name for given contract.";
+      _msg_info(
+        _msg);
+    }
   }
   _override_set(
     "target",
