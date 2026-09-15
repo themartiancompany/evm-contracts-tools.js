@@ -4518,16 +4518,55 @@ async function
       }
       catch(
         _error) {
+        let
+          _error_info;
         _msg =
           "Error running '_contract_compiler_output_check' with " +
           "parameters:";
-        _msg_error(
-          _msg,
-          0);
-        _echo2(
-          _contract_compiler_output_check_args);
-        _echo2(
-          _error);
+        _error_info =
+          false;
+        const
+          _contract_abi =
+            _get(
+              "contract",
+              "abi");
+        const
+          _contract_bytecode =
+            _get(
+              "contract",
+              "bytecode");
+        const
+          _contract_abi_type =
+            typeof(
+              _contract_abi);
+        const
+          _contract_bytecode_type =
+            typeof(
+              _contract_bytecode);
+        if ( _contract_abi_type == "string" &&
+             _contract_bytecode_type == "string" ) {
+          if ( 0 < _contract_abi.length &&
+               0 < _contract_bytecode.length ) {
+            if ( _file_exists(
+                   _contract_abi) &&
+                 _file_exists(
+                   _contract_bytecode) ) {
+              _error_info =
+                true;
+            }
+          }
+        }
+        if ( _error_info ) {
+          _msg_info(
+            _msg);
+        }
+        else {
+          _msg_error(
+            _msg,
+            0);
+          _echo2(
+            _contract_compiler_output_check_args);
+        }
         throw _error;
       }
     }

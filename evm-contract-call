@@ -1593,7 +1593,7 @@ async function
   }
   if ( _results_type == "array" ) {
     for ( _result of _results ) {
-      _echo(
+      await _printf(
         _result);
     }
   }
@@ -1603,7 +1603,7 @@ async function
         `Got result '${_result}':`;
       _msg_info(
         _msg);
-      _echo(
+      await _printf(
         _results[
           _result]);
     }
