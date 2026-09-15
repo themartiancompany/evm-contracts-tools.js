@@ -281,27 +281,102 @@ async function
     _contract,
     _contract_abi,
     _contract_bytecode,
+    _factory,
     _msg;
-  if ( _contract_abi_path == "" ) {
-    _contract_abi = [];
-  }
-  else if ( _contract_abi_path != "" ) {
-    _contract_abi =
-      _json_read(
+  _msg =
+    "Getting contract through ABI + bytecode.";
+  _msg_info(
+    _msg);
+  const
+    _contract_abi_path_type =
+      typeof(
         _contract_abi_path);
+  if ( _contract_abi_path_type === "undefined" ) {
+    _msg =
+      "Contract ABI path undefined, " +
+      "setting empty contract ABI.";
+    _msg_info(
+      _msg);
+    _contract_abi =
+      {};
+  }
+  if ( _contract_abi_path_type === "string" ) {
+    if ( _contract_abi_path.length < 1 ) {
+      _msg =
+        "Contract ABI path not set, " +
+        "setting empty contract ABI.";
+      _msg_info(
+        _msg);
+      _contract_abi =
+        {};
+    }
+    else {
+      try {
+        _msg =
+          `Reading ABI at '${_contract_abi_path}'`;
+        _contract_abi =
+          await _json_read(
+            _contract_abi_path);
+      }
+      catch(
+        _error) {
+        _msg =
+          "Error running '_json_read' on " +
+          `'${_contract_abi_path}'.`;
+        _echo2(
+          _error);
+        throw _error;
+      }
+    }
   }
   if ( _contract_bytecode_path != "" ) {
-    _contract_bytecode =
-      _file_read(
-        _contract_bytecode_path);
+    try {
+      _contract_bytecode =
+        _file_read(
+          _contract_bytecode_path);
+    }
+    catch(
+      _error) {
+      _msg =
+        "Error running '_json_read'.";
+      _echo2(
+        _error);
+      throw _error;
+    }
   }
   const
+    _contract_factory_args = [
+      _contract_abi,
+      _contract_bytecode,
+      _wallet);
+    ];
+  try {
     _factory =
       new _contract_factory(
         _contract_abi,
         _contract_bytecode,
         _wallet);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_contract_factory' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _contract_factory_args);
+    _echo2(
+      _error);
+    throw _error
+  }
   if ( _contract_address != "" ) {
+    _msg =
+      "Attaching address " +
+      `'${_contract_address}' to factory.`;
+    _msg_info(
+      _msg);
     _contract =
       _factory.attach(
         _contract_address);
@@ -310,15 +385,18 @@ async function
     try {
       _contract =
         _factory.getDeployTransaction();
-    } catch (e) {
-      const
-        _msg =
-          `Encountered the above error.`;
-      console.error(
-        e);
-      _msg_error(
-        _msg,
-        0);
+    }
+    catch (
+      _error) {
+    const
+      _msg =
+        `Error running 'factory.getDeployTransaction'.`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
     }
   }
   return _contract;
