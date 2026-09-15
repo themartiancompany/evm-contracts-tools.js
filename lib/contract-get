@@ -348,7 +348,7 @@ async function
     _contract_factory_args = [
       _contract_abi,
       _contract_bytecode,
-      _wallet);
+      _wallet
     ];
   try {
     _factory =
