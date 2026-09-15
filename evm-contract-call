@@ -617,13 +617,30 @@ async function
           }
           catch(
             _error) {
+            let
+              _error_info;
+            _error_info =
+              false;
             _msg =
               "Error auto-detecting contract compiler output.";
-            _msg_error(
-              _msg,
-              0);
-            if ( _contract_abi === "" ||
-                 _contract_bytecode === "" ) {
+            if ( _contract_abi !== "" &&
+                 _contract_bytecode !== "" ) {
+              _error_info =
+                true
+	    }
+            if ( _error_info ) {
+              _msg_info(
+                _msg);
+              _msg =
+                "Performing call using ABI and " +
+                "and bytecode.";
+              _msg_info(
+                _msg);
+            }
+            else {
+              _msg_error(
+                _msg,
+                0);
               _msg =
                 "Either one between the contract abi " +
                 "plus the bytecode or the contract " +
@@ -634,13 +651,6 @@ async function
                 0);
               throw _error;
             }
-            else {
-              _msg =
-                "Performing call using ABI and " +
-                "and bytecode.";
-              _msg_info(
-                _msg);
-	    }
           }
         }
       }

@@ -1117,7 +1117,9 @@ async function
           catch(
             _error) {
             _msg =
-              "Error running " +
+              "Error importing " +
+              "'_evm_contract_deployment_compiler_output' " +
+              "function by running " +
               "'_evm_contract_deployment_compiler_output_check' " +
               "with parameters:";
             _msg_error(

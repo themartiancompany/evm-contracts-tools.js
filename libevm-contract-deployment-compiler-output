@@ -395,6 +395,13 @@ async function
           _error_info =
             true;
         }
+        else {
+          _msg =
+            `Either contract abi '${_contract_abi}' ` +
+            `or contract bytecode '${_contract_bytecode}' ` +
+            `do not exist, so a missing compiler output ` +
+            `will trigger an error.`;
+	}
       }
     }
     if ( _error_info ) {
