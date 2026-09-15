@@ -117,34 +117,119 @@ const
     _evm_contract_call_static_module._contract_call_static;
 
 export {
+  _app_check,
   _address_check,
   _bytecode_creation_get,
   _bytecode_runtime_get,
+  _config_file_path_check,
+  _configuration_format_auto_detect,
+  _configuration_format_check,
+  _configuration_format_get,
+  _contract_abi_auto_detect,
+  _contract_abi_check,
+  _contract_address_auto_detect,
+  _contract_address_check,
+  _contract_bytecode_check,
+  _contract_bytecode_auto_detect,
   _contract_call_dynamic,
   _contract_call_static,
+  _contract_compiler_output_auto_detect,
+  _contract_compiler_output_check,
   _contract_get,
   _contract_run,
+  _contract_version_auto_detect,
+  _contract_version_check,
+  _default_artifact_path_get,
   _deployer_get,
   _deployer_verify,
+  _deployments_dir_auto_detect,
+  _deployments_dir_check,
+  _network_check,
+  _networks_all_auto_detect,
+  _target_app_auto_detect,
+  _target_app_check,
+  _target_contract_auto_detect,
+  _target_contract_check,
+  _user_defined_check,
+  _user_deployments_check,
+  _user_level_check,
+  _version_check
 };
 
 // module.exports = {
+
 //   _address_check:
 //     _address_check,
+//   _app_check:
+//     _app_check,
 //   _bytecode_creation_get:
 //     _bytecode_creation_get,
 //   _bytecode_runtime_get:
 //     _bytecode_runtime_get,
+//   _config_file_path_check:
+//     _config_file_path_check,
+//   _configuration_format_auto_detect:
+//     _configuration_format_auto_detect,
+//   _configuration_format_check:
+//     _configuration_format_check,
+//   _configuration_format_get:
+//     _configuration_format_get,
+//   _contract_abi_auto_detect:
+//     _contract_abi_auto_detect,
+//   _contract_abi_check:
+//     _contract_abi_check,
+//   _contract_address_auto_detect:
+//     _contract_address_auto_detect,
+//   _contract_address_check:
+//     _contract_address_check,
+//   _contract_bytecode_auto_detect:
+//     _contract_bytecode_auto_detect,
+//   _contract_bytecode_check:
+//     _contract_bytecode_check,
 //   _contract_call_dynamic:
 //     _contract_call_dynamic,
 //   _contract_call_static:
 //     _contract_call_static,
+//   _contract_compiler_output_auto_detect:
+//     _contract_compiler_output_auto_detect,
+//   _contract_compiler_output_check:
+//     _contract_compiler_output_check,
 //   _contract_get:
 //     _contract_get,
 //   _contract_run:
 //     _contract_run,
+//   _contract_version_auto_detect:
+//     _contract_version_auto_detect,
+//   _contract_version_check:
+//     _contract_version_check,
+//   _default_artifact_path_get:
+//     _default_artifact_path_get,
 //   _deployer_get:
 //     _deployer_get,
 //   _deployer_verify:
 //     _deployer_verify,
+//   _deployments_dir_auto_detect:
+//     _deployments_dir_auto_detect,
+//   _deployments_dir_check:
+//     _deployments_dir_check,
+//   _network_check:
+//     _network_check,
+//   _networks_all_auto_detect:
+//     _networks_all_auto_detect,
+//   _target_app_auto_detect:
+//     _target_app_auto_detect,
+//   _target_app_check:
+//     _target_app_check,
+//   _target_contract_auto_detect:
+//     _target_contract_auto_detect,
+//   _target_contract_check:
+//     _target_contract_check,
+//   _user_defined_check:
+//     _user_defined_check,
+//   _user_deployments_check:
+//     _user_deployments_check,
+//   _user_level_check:
+//     _user_level_check,
+//   _version_check:
+//     _version_check,
 // };

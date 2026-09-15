@@ -182,6 +182,21 @@ const
 const
   _set =
     _libcrash_module._set;
+/* global
+     _evm_contract_deployments_dir */
+/* global
+     _evm_contract_deployment_networks */
+/* global
+     _evm_contract_deployment_versions */
+const
+  _address_check_module =
+    await import(
+      "./lib/address_check");
+/* global
+     _address_check */
+const
+  _address_check =
+    _address_check_module._address_check;
 const
   _evm_chains_info_module =
     await _require(
@@ -191,21 +206,6 @@ const
 const
   _evm_chains_info =
     _evm_chains_info_module._evm_chains_info;
-/* global
-     _evm_contract_deployments_dir */
-/* global
-     _evm_contract_deployment_networks */
-/* global
-     _evm_contract_deployment_versions */
-const
-  _evm_contracts_tools_module =
-    await import(
-      "./evm-contracts-tools");
-/* global
-     _address_check */
-const
-  _address_check =
-    _evm_contracts_tools_module._address_check;
 
 function
   _configuration_format_check(
@@ -1931,6 +1931,10 @@ function
   return _app;
 }
 
+const
+  _target_app_check =
+    _app_check;
+
 async function
   _contract_version_auto_detect() {
   let
@@ -3099,6 +3103,10 @@ async function
   }
   return _version;
 }
+
+const
+  _contract_version_check =
+    _version_check;
 
 async function
   _target_networks_check(
@@ -4596,6 +4604,7 @@ export {
   _configuration_format_check,
   _configuration_format_get,
   _contract_abi_auto_detect,
+  _contract_abi_check,
   _contract_address_auto_detect,
   _contract_address_check,
   _contract_bytecode_auto_detect,
@@ -4603,12 +4612,14 @@ export {
   _contract_compiler_output_auto_detect,
   _contract_compiler_output_check,
   _contract_version_auto_detect,
+  _contract_version_check,
   _default_artifact_path_get,
   _deployments_dir_auto_detect,
   _deployments_dir_check,
   _network_check,
   _networks_all_auto_detect,
   _target_app_auto_detect,
+  _target_app_check,
   _target_contract_auto_detect,
   _target_contract_check,
   _user_deployments_check,
@@ -4646,6 +4657,8 @@ export {
 //     _contract_compiler_output_check,
 //   _contract_version_auto_detect:
 //     _contract_version_auto_detect,
+//   _contract_version_check:
+//     _contract_version_check,
 //   _default_artifact_path_get:
 //     _default_artifact_path_get,
 //   _deployments_dir_check:
@@ -4658,6 +4671,8 @@ export {
 //     _networks_all_auto_detect,
 //   _target_app_auto_detect:
 //     _target_app_auto_detect,
+//   _target_app_check:
+//     _target_app_check,
 //   _target_contract_auto_detect:
 //     _target_contract_auto_detect,
 //   _target_contract_check:
