@@ -423,7 +423,7 @@ const
 /* global
      _evm_contract_deployment_compiler_output */
 const
-  _evm_contract_deployment_contract_compiler_output =
+  _evm_contract_deployment_compiler_output =
     _libevm_contract_deployment_compiler_output_module._evm_contract_deployment_compiler_output;
 const
   _libevm_contract_deployment_networks_module =
