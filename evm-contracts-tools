@@ -288,6 +288,20 @@ const
   _evm_contract_deployment_contract_address =
     _libevm_contract_deployment_address_module._evm_contract_deployment_address;
 const
+  _libevm_contract_deployment_bytecode_module =
+    await import(
+      "./libevm-contract-deployment-bytecode");
+/* global
+     _contract_bytecode_get */
+const
+  _contract_bytecode_get =
+    _libevm_contract_deployment_bytecode_module._contract_bytecode_get;
+/* global
+     _evm_contract_deployment_bytecode */
+const
+  _evm_contract_deployment_contract_bytecode =
+    _libevm_contract_deployment_bytecode_module._evm_contract_deployment_bytecode;
+const
   _libevm_contract_deployment_compiler_output_module =
     await import(
       "./libevm-contract-deployment-compiler-output");
@@ -354,6 +368,7 @@ export {
   _contract_address_get,
   _contract_bytecode_check,
   _contract_bytecode_auto_detect,
+  _contract_bytecode_get,
   _contract_call_dynamic,
   _contract_call_static,
   _contract_compiler_output_auto_detect,
@@ -371,6 +386,7 @@ export {
   _deployments_dir_check,
   _evm_contract_deployment_abi,
   _evm_contract_deployment_address,
+  _evm_contract_deployment_bytecode,
   _evm_contract_deployment_compiler_output,
   _evm_contract_deployment_networks,
   _evm_contract_deployments_dir,
@@ -418,6 +434,8 @@ export {
 //     _contract_bytecode_auto_detect,
 //   _contract_bytecode_check:
 //     _contract_bytecode_check,
+//   _contract_bytecode_get:
+//     _contract_bytecode_get,
 //   _contract_call_dynamic:
 //     _contract_call_dynamic,
 //   _contract_call_static:
@@ -450,6 +468,8 @@ export {
 //     _evm_contract_deployment_abi,
 //   _evm_contract_deployment_address:
 //     _evm_contract_deployment_address,
+//   _evm_contract_deployment_bytecode:
+//     _evm_contract_deployment_bytecode,
 //   _evm_contract_deployment_compiler_output:
 //     _evm_contract_deployment_compiler_output,
 //   _evm_contract_deployment_networks:
