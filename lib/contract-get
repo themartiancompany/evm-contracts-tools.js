@@ -551,12 +551,22 @@ async function
       _contract_bytecode_path);
     _contract_get_fun =
       _contract_get_bytecode;
+    _msg =
+      "Selected function " +
+      "'_contract_get_bytecode'.";
+    _msg_info(
+      _msg);
   }
   else if ( _contract_compiler_output_path != "" ) {
     _contract_get_args.push(
       _contract_compiler_output_path);
     _contract_get_fun =
       _contract_get_compiler_output;
+    _msg =
+      "Selected function " +
+      "'_contract_get_compiler_output'.";
+    _msg_info(
+      _msg);
   }
   else if ( _contract_bytecode_path == "" && 
             _contract_abi_path != "" ) {
@@ -564,6 +574,11 @@ async function
       _contract_abi_path);
     _contract_get_fun =
       _contract_get_abi;
+    _msg =
+      "Selected function " +
+      "'_contract_get_abi'.";
+    _msg_info(
+      _msg);
   }
   else if ( _contract_bytecode_path == "" &&
             _contract_abi_path == "" &&
@@ -579,7 +594,7 @@ async function
     _error) {
     _msg =
       "Error running " +
-      `'${_contract_get_fun}' ` +
+      `'_contract_get_fun' ` +
       "with parameters:";
     _msg_error(
       _msg,
@@ -596,41 +611,18 @@ async function
 function
   _config_show() {
   let
-    _line,
-    _text;
-  _text = [];
-  _text.push(
-    "             Wallet seed: {wallet_seed}".replace(
-      "{wallet_seed}",
-      wallet_seed));
-  _text.push(
-    "         Wallet password: {wallet_password_path}".replace(
-      "{wallet_password_path}",
-      wallet_password_path));
-  _text.push(
-    "        Contract address: {contract_address}".replace(
-      "{contract_address}",
-      contract_address));
-  _text.push(
-    "       Contract ABI path: {contract_abi_path}".replace(
-      "{contract_abi_path}",
-      contract_abi_path));
-  _text.push(
-    "       Contract bytecode: {contract_bytecode_path}".replace(
-      "{contract_bytecode_path}",
-      contract_bytecode_path));
-  _text.push(
-    "Contract compiler output: {contract_compiler_output_path}".replace(
-      "{contract_compiler_output_path}",
-      contract_compiler_output_path));
-  _text.push(
-    "          Target network: {target_network}".replace(
-      "{target_network}",
-      target_network));
-  _text.push(
-    "                 API Key: {api_key_path}".replace(
-      "{api_key_path}",
-      api_key_path));
+    _line;
+  const
+    _text = [
+      `             Wallet seed: ${wallet_seed}`,
+      `         Wallet password: ${wallet_password_path}`,
+      `        Contract address: ${contract_address}`,
+      `       Contract ABI path: ${contract_abi_path}`,
+      `       Contract bytecode: ${contract_bytecode_path}`,
+      `Contract compiler output: ${contract_compiler_output_path}`,
+      `          Target network: ${target_network}`,
+      `                 API Key: ${api_key_path}`,
+    ];
   for ( _line of _text ) {
     _msg_info(
       _line);
@@ -657,23 +649,53 @@ function
       "    (<api-key-path>)",
       "",
       "Args:",
-      "  <quiet>                          Can be 'y' or 'n'",
-      "                                   Default: y",
-      "  <wallet-seed>                    Path of the seed phrase.",
-      "  <wallet-password-path>           Wallet password path.",
-      "  <contract-address>               Contract of the address one is",
-      "                                   getting the contract of.",
-      "  <contract-abi-path>              Path of the contract ABI.",
-      "  <contract-bytecode-path>         Path for the contract bytecode.",
-      "  <contract-compiler-output-path>  Path for the contract compiler",
-      "                                   output path (the hardhat artifact).",
-      "  <target-network>                 Network on which the contract",
-      "                                   resides.",
-      "  <api-key-path>                   Path of the API key for the",
-      "                                   contract ABI provider service.",
       "",
-      "  Options:",
-      "    -h                             This help."
+      "  <quiet>",
+      "",
+      "    Can be 'y' or 'n'",
+      `    Default: ${quiet}`,
+      "",
+      "  <wallet-seed>",
+      "",
+      "    Path of the seed phrase.",
+      "",
+      "  <wallet-password-path>",
+      "",
+      "    Wallet password path.",
+      "",
+      "  <contract-address>",
+      "",
+      "    Contract of the address one is",
+      "    getting the contract of.",
+      "",
+      "  <contract-abi-path>",
+      "",
+      "    Path of the contract ABI.",
+      "",
+      "  <contract-bytecode-path>",
+      "",
+      "    Path for the contract bytecode.",
+      "",
+      "  <contract-compiler-output-path>",
+      "",
+      "    Path for the contract compiler",
+      "    output path (the hardhat artifact).",
+      "",
+      "  <target-network>",
+      "",
+      "    Network on which the contract",
+      "    resides.",
+      "",
+      "  <api-key-path>",
+      "",
+      "    Path of the API key for the",
+      "    contract ABI provider service.",
+      "",
+      "Options:",
+      "",
+      "    -h, --help",
+      "",
+      "      This help."
     ];
   for ( _line of _text ) {
     _echo(
