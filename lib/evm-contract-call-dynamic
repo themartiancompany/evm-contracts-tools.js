@@ -1666,7 +1666,8 @@ async function
   const
     _method_check_args = [
       _contract_method,
-      _method
+      _method,
+      _contract
     ];
   try {
     _method =
