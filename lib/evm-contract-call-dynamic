@@ -615,6 +615,7 @@ async function
     _fee_priority,
     _target_network,
     _api_key_path,
+    _measure_unit,
     _retries_max) {
   let
     _msg;
@@ -1274,6 +1275,7 @@ async function
       _fee_priority,
       _target_network,
       _api_key_path,
+      _measure_unit,
       _retries_max
     ];
   try {
