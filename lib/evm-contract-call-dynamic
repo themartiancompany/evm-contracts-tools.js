@@ -844,7 +844,8 @@ async function
     _contract_method,
     _method) {
   let
-    _method_object_get;
+    _method_object_get,
+    _msg;
   const
     _method_type =
       typeof(
