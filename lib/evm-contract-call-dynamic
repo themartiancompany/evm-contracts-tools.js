@@ -489,7 +489,8 @@ async function
     _contract) {
   let
     _contract_object_get,
-    _contract_get_args;
+    _contract_get_args,
+    _msg;
   const
     _contract_type =
       typeof(
