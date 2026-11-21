@@ -842,7 +842,8 @@ function
 async function
   _method_check(
     _contract_method,
-    _method) {
+    _method,
+    _contract) {
   let
     _method_object_get,
     _msg;
@@ -1328,7 +1329,8 @@ async function
   const
     _method_check_args = [
       _contract_method,
-      _method
+      _method,
+      _contract
     ];
   try {
     _method =
