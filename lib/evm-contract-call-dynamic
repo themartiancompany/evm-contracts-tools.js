@@ -614,6 +614,7 @@ async function
     _gas_fee,
     _fee_priority,
     _target_network,
+    _api_key_path,
     _retries_max) {
   let
     _msg;
