@@ -1266,24 +1266,33 @@ async function
   _measure_unit =
     _measure_unit_check(
       _measure_unit);
+  const
+    _price_gas_check_args = [
+      _price_gas,
+      _gas_fee,
+      _fee_priority,
+      _target_network,
+      _api_key_path,
+      _retries_max
+    ];
   try {
     [ _price_gas,
       _gas_fee,
       _fee_priority ] =
-      await _price_gas_check(
-        _price_gas,
-        _gas_fee,
-        _fee_priority,
-        _target_network,
-        _retries_max);
+      await _price_gas_check.apply(
+        null,
+        _price_gas_check_args);
   }
   catch(
     _error) {
     _msg =
-      "Error checking input gas price.";
+      "Error running '_price_gas_check' " +
+      "with arguments:";
     _msg_error(
       _msg,
       0);
+    _echo2(
+      _price_gas_check_args);
     _echo2(
       _error);
     throw _error;
