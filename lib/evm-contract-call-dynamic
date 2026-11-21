@@ -613,6 +613,7 @@ async function
     _price_gas,
     _gas_fee,
     _fee_priority,
+    _target_network,
     _retries_max) {
   let
     _msg;
@@ -1273,6 +1274,7 @@ async function
         _price_gas,
         _gas_fee,
         _fee_priority,
+        _target_network,
         _retries_max);
   }
   catch(
