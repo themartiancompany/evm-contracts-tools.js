@@ -723,7 +723,13 @@ async function
   _fee_priority =
     Number(
       _fee_priority);
-  return _fee_priority;
+  const
+    _output = [
+      _price_gas,
+      _gas_fee,
+      _fee_priority
+    ];
+  return _output;
 }
 
 function

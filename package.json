@@ -128,7 +128,7 @@
     "evm-transactions-tools":
       "^0.1.10000000000001",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.104",
+      "npm:evm-wallet.js@^0.0.105",
     "libevm":
       "^0.0.57",
     "ws":
@@ -142,9 +142,9 @@
     "evm-contracts-tools":
       "./evm-contracts-tools",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.104",
+      "npm:evm-wallet.js@^0.0.105",
     "evm-wallet.js":
-      "npm:evm-wallet.js@^0.0.104",
+      "npm:evm-wallet.js@^0.0.105",
     "libevm":
       "^0.0.57"
   },
