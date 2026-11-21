@@ -100,7 +100,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.86",
+      "^0.0.89",
     "brace-expansion":
       "^5.0.9",
     "eslint":
@@ -112,7 +112,7 @@
     "globals":
       "^17.3.0",
     "safely-serve":
-      "^0.0.22",
+      "^0.0.26",
     "webpack":
       "^5.109.2",
     "webpack-cli":
@@ -120,7 +120,7 @@
   },
   "dependencies": {
     "libcrash-js":
-      "npm:crash-js@^1000000000000025.1000000000000001.1000000000000001",
+      "npm:crash-js@^1000000000000026.1000000000000001.1000000000000001",
     "ethers":
       "^6.13.2",
     "evm-chains-info":
@@ -128,9 +128,9 @@
     "evm-transactions-tools":
       "^0.1.10000000000001",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.103",
+      "npm:evm-wallet.js@^0.0.104",
     "libevm":
-      "^0.0.50",
+      "^0.0.56",
     "ws":
       "^8.21.0",
     "yargs":
@@ -138,15 +138,15 @@
   },
   "overrides": {
     "libcrash-js":
-      "npm:crash-js@^1000000000000025.1000000000000001.1000000000000001",
+      "npm:crash-js@^1000000000000026.1000000000000001.1000000000000001",
     "evm-contracts-tools":
       "./evm-contracts-tools",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.103",
+      "npm:evm-wallet.js@^0.0.104",
     "evm-wallet.js":
-      "npm:evm-wallet.js@^0.0.103",
+      "npm:evm-wallet.js@^0.0.104",
     "libevm":
-      "^0.0.50"
+      "^0.0.56"
   },
   "type":
     "module",

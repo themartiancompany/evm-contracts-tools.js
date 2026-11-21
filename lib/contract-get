@@ -449,6 +449,86 @@ async function
   return _contract;
 }
 
+function
+  _api_key_path_check(
+    _api_key_path) {
+  let
+    _api_key_path_empty,
+    _msg;
+  _api_key_path_empty =
+    false;
+  const
+    _api_key_path_type =
+      typeof(
+        _api_key_path);
+  if ( _api_key_path_type === "undefined" ) {
+    _api_key_path_empty =
+      true;
+  }
+  else if ( _api_key_path_type === "string" ) {
+    if ( _api_key_path.length < 1 ) {
+      _api_key_path_empty =
+        true;
+    }
+  }
+  else if ( _api_key_path_type === "number" ) {
+    _api_key_path =
+      String(
+        _api_key_path);
+  }
+  else if ( _api_key_path_type === "object" ) {
+    _api_key_path_keys =
+      Object.keys(
+        _api_key_path);
+    if ( _api_key_path_keys.length < 1 ) {
+      _api_key_path_empty =
+        true;
+    }
+    else {
+      _msg =
+        "RPC API key path variable " +
+        "has type 'object', but " +
+        "it should be a path string. " +
+        "Current value:";
+      _msg_error(
+        _msg,
+        0);
+      _echo2(
+        _api_key_path);
+      throw _msg;
+    }
+  }
+  else {
+    _msg =
+      "RPC API key path variable " +
+      `has type '${_api_key_path_type}', but ` +
+      "it should be a path string.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _api_key_path_empty ) {
+    _api_key_path =
+      "";
+  }
+  if ( _api_key_path != "" ) {
+    if ( ! _file_exists(
+             _api_key_path) ) {
+      _msg =
+        "The API key file at location " +
+        `'${_api_key_path}' does not exist, `,
+	"setting an empty string instead.";
+      _msg_error(
+        _msg,
+        0);
+      _api_key_path =
+        "";
+    }
+  }
+  return _api_key_path;
+}
+
 async function
   _contract_get(
     _wallet_seed,
@@ -470,6 +550,22 @@ async function
     _wallet_get_opts,
     _wallet_path_list,
     _wallet_path;
+  try {
+    _api_key =
+      _api_key_path_check(
+        _api_key_path);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_api_key_path_check'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   if ( _api_key_path != "" ) {
     _api_key =
       _file_read(
