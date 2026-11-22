@@ -912,6 +912,93 @@ async function
   return _method;
 }
 
+function
+  _price_gas_max_check(
+    _price_gas_max) {
+  let
+    _price_gas_max_get,
+    _msg;
+  const
+    _default =
+      100000000;
+  _price_gas_max_get =
+    false;
+  const
+    _price_gas_max_type =
+      typeof(
+        _price_gas_max);
+  if ( _price_gas_max_type === "undefined" ) {
+    _msg =
+      "Maximum gas price variable undefined, " +
+      `setting default. (${_default})`;
+    _msg_info(
+      _msg);
+    _price_gas_max_get =
+      true;
+  }
+  else if ( _price_gas_max_type === "string" ) {
+    if ( _price_gas_max.length < 1 ) {
+      _msg =
+        "Maximum gas price variable is an empty string, " +
+        `setting default. (${_default})`;
+      _msg_info(
+        _msg);
+      _price_gas_max_get =
+        true;
+    }
+  }
+  else if ( _price_gas_max_type === "object" ) {
+    _price_gas_max_keys =
+      Object.keys(
+        _price_gas_max);
+    if ( _price_gas_max_keys.length < 1 ) {
+      _msg =
+        "Maximum gas price variable is an empty object, " +
+        `setting default. (${_default})`;
+      _msg_info(
+        _msg);
+      _price_gas_max_get =
+        true;
+    }
+    else {
+      _msg =
+        "Maximum gas price variable is an " +
+        "object but it should be a positive integer.";
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  else if ( _price_gas_max_type === "number" ) {
+    true;
+  }
+  else {
+    _msg =
+      "Maximum gas price variable has type " +
+      `'${_price_gas_max_type}' but it should be` +
+      "a positive integer.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _price_gas_max_get ) {
+    _price_gas_max =
+      _default;
+  }
+  if ( _price_gas_max_get < 1 ) {
+    _msg =
+      "Maximum gas price variable should be " +
+      "a positive integer, but has value " +
+      `'${_price_gas_max}'`;
+    _msg_error(
+      _msg,
+      0);
+  }
+  return _price_gas_max;
+}
+
 async function
   _call_price_gas_manual(
     _price_feasible_retries_max,
@@ -921,6 +1008,7 @@ async function
     _price_gas,
     _gas_fee,
     _fee_priority,
+    _price_gas_max,
     _method,
     _method_args,
     _tx) {
@@ -928,8 +1016,24 @@ async function
     _gas_limit,
     _msg,
     _price_feasible_retries,
-    _price_gas_max,
     _price_gas_transaction_get_args;
+  try {
+    _price_gas_max =
+      _price_gas_max_check(
+        _price_gas_max);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_price_gas_max_check' " +
+      `with argument '${_price_gas_max}'.`;
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _price_gas_type =
       typeof(
@@ -976,10 +1080,9 @@ async function
       0);
     throw _msg;
   }
-  _price_gas_transaction_get_selection_mode =
-    _price_gas;
-  _price_gas_max =
-    100000000;
+  const
+    _price_gas_transaction_get_selection_mode =
+      _price_gas;
   try {
     _tx = await
       _method.populateTransaction.apply(
@@ -1250,7 +1353,8 @@ async function
     _verbose,
     _retries_max,
     _contract,
-    _method) {
+    _method,
+    _price_gas_max) {
   let
     _amount,
     _call_price_gas_manual_args,
@@ -1261,7 +1365,6 @@ async function
     _msg,
     _eip_1559,
     _price_feasible_retries_max,
-    _price_gas_max,
     _price_gas_transaction_get_args,
     _price_gas_transaction_get_retries_max,
     _price_gas_transaction_get_selection_mode,
@@ -1379,6 +1482,7 @@ async function
         _price_gas,
         _gas_fee,
         _fee_priority,
+        _price_gas_max,
         _method,
         _method_args,
         _tx
