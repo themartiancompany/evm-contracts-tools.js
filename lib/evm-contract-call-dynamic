@@ -1481,7 +1481,6 @@ async function
     _fee_priority,
     _gas_fee,
     _msg,
-    _eip_1559,
     _price_feasible_retries_max,
     _price_gas_transaction_get_args,
     _price_gas_transaction_get_retries_max,
