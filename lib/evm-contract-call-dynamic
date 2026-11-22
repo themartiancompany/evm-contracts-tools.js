@@ -633,6 +633,9 @@ async function
     _price_gas =
       0;
   }
+  else if ( _price_gas_type === "number" ) {
+    true;
+  }
   else if ( _price_gas_type === "string" ) {
     if ( 0 < _price_gas.length ) {
       const
@@ -1221,8 +1224,9 @@ async function
   }
   // An hardcoded gas limit parameter.
   _gas_limit =
-    Math.floor(
-      15803479 * 12 / 10);
+    15000000
+  //   Math.floor(
+  //     15803479 * 12 / 10);
   // 17000000;
   // Setting as gas limit double
   // of how much you wanna spend.
@@ -1400,14 +1404,15 @@ async function
 
 async function
   _call_price_gas_auto(
+    _retries_max,
     _measure_unit,
     _msg_value,
     _method,
-    _method_args) {
+    _method_args,
+    _tx) {
   let
     _amount,
-    _msg,
-    _tx;
+    _msg;
   const
     _send_opts =
       {};
@@ -1457,7 +1462,7 @@ async function
     _error) {
     _msg =
       "Error sending transaction to the " +
-      "network using the 'send' method" +
+      "network using the 'send' method " +
       "of the Ethers method object.";
     _msg_error(
       _msg,
@@ -1769,12 +1774,6 @@ async function
     _method,
     _contract
   ];
-}
-
-function
-  _receipt_cost_get(
-    _receipt) {
-  true;
 }
 
 function
