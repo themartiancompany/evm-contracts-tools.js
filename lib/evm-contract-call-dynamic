@@ -930,7 +930,7 @@ function
   if ( _price_gas_max_type === "undefined" ) {
     _msg =
       "Maximum gas price variable undefined, " +
-      `setting default. (${_default})`;
+      `setting default. (${_default}).`;
     _msg_info(
       _msg);
     _price_gas_max_get =
@@ -940,7 +940,7 @@ function
     if ( _price_gas_max.length < 1 ) {
       _msg =
         "Maximum gas price variable is an empty string, " +
-        `setting default. (${_default})`;
+        `setting default. (${_default}).`;
       _msg_info(
         _msg);
       _price_gas_max_get =
@@ -954,7 +954,7 @@ function
     if ( _price_gas_max_keys.length < 1 ) {
       _msg =
         "Maximum gas price variable is an empty object, " +
-        `setting default. (${_default})`;
+        `setting default. (${_default}).`;
       _msg_info(
         _msg);
       _price_gas_max_get =
@@ -999,6 +999,122 @@ function
   return _price_gas_max;
 }
 
+function
+  _eip_1559_check(
+    _eip_1559) {
+  let
+    _eip_1559_get,
+    _msg;
+  const
+    _default =
+      true;
+  _eip_1559_get =
+    false;
+  const
+    _eip_1559_type =
+      typeof(
+        _eip_1559);
+  if ( _eip_1559_type === "undefined" ) {
+    _msg =
+      "EIP-1559 switch setting undefined, " +
+      `setting default. (${_default})`;
+    _msg_info(
+      _msg);
+    _eip_1559_get =
+      true;
+  }
+  else if ( _eip_1559_type === "string" ) {
+    if ( _eip_1559_max.length < 1 ) {
+      _msg =
+        "EIP-1559 switch setting is an empty string, " +
+        `setting default. (${_default}).`;
+      _msg_info(
+        _msg);
+      _eip_1559_get =
+        true;
+    }
+    else {
+      if ( _eip_1559 === "true" ) {
+        _eip_1559 =
+          true;
+      }
+      if ( _eip_1559 === "false" ) {
+        _eip_1559 =
+          false;
+      }
+      else {
+        _msg =
+          "EIP-1559 switch setting is a non-boolean string, " +
+          "but it should be a boolean " +
+          `(current value: ${_eip_1559}).`;
+        _msg_error(
+          _msg,
+          0);
+        throw _msg;
+      }
+    }
+  }
+  else if ( _eip_1559_type === "object" ) {
+    _eip_1559_keys =
+      Object.keys(
+        _eip_1559);
+    if ( _eip_1559_keys.length < 1 ) {
+      _msg =
+        "EIP-1559 switch setting is an empty object, " +
+        `setting default. (${_default}).`;
+      _msg_info(
+        _msg);
+      _eip_1559_get =
+        true;
+    }
+    else {
+      _msg =
+        "EIP-1559 switch setting is an " +
+        "object but it should be a boolean. " +
+        `(current value: ${_eip_1559}).`;
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  else if ( _eip_1559_type === "number" ) {
+    if ( _eip_1559 === 0 ) {
+      _eip_1559 =
+        false;
+    }
+    if ( _eip_1559 === 1 ) {
+      _eip_1559 =
+        true;
+    }
+    else {
+      _msg =
+        "EIP-1559 switch setting is an " +
+        "object but it should be a boolean " +
+        `(current value: ${_eip_1559}).`;
+      _msg_error(
+        _msg,
+        0);
+      throw _msg;
+    }
+  }
+  else {
+    _msg =
+      "EIP-1559 switch setting has type " +
+      `'${_eip_1559_type}' but it should be` +
+      "a boolean.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
+  if ( _eip_1559_get ) {
+    _eip_1559 =
+      _default;
+  }
+  return _eip_1559;
+}
+
 async function
   _call_price_gas_manual(
     _price_feasible_retries_max,
@@ -1009,6 +1125,7 @@ async function
     _gas_fee,
     _fee_priority,
     _price_gas_max,
+    _eip_1559,
     _method,
     _method_args,
     _tx) {
@@ -1354,7 +1471,8 @@ async function
     _retries_max,
     _contract,
     _method,
-    _price_gas_max) {
+    _price_gas_max,
+    _eip_1559) {
   let
     _amount,
     _call_price_gas_manual_args,
@@ -1371,8 +1489,20 @@ async function
     _send_opts,
     _receipt,
     _tx;
-  _eip_1559 =
-    true;
+  try {
+    _eip_1559 =
+      _eip_1559_check(
+        _eip_1559);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_eip_1559_check'.";
+    _msg_error(
+      _msg,
+      0);
+    throw _msg;
+  }
   _send_opts =
     {};
   _measure_unit =
@@ -1483,6 +1613,7 @@ async function
         _gas_fee,
         _fee_priority,
         _price_gas_max,
+        _eip_1559,
         _method,
         _method_args,
         _tx
