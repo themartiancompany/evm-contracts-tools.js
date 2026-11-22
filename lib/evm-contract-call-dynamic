@@ -1126,6 +1126,7 @@ async function
     _fee_priority,
     _price_gas_max,
     _eip_1559,
+    _msg_value,
     _method,
     _method_args,
     _tx) {
@@ -1613,6 +1614,7 @@ async function
         _fee_priority,
         _price_gas_max,
         _eip_1559,
+        _msg_value,
         _method,
         _method_args,
         _tx
