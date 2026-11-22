@@ -1377,7 +1377,23 @@ async function
     _msg_error(
       _msg,
       0);
-    throw _error;
+    const
+      _code =
+        _error[
+          "info"][
+            "error"][
+              "code"];
+    if ( _code === -32000 ) {
+      _msg =
+        _error[
+          "info"][
+            "error"][
+              "message"];
+      throw _msg;
+    }
+    else {
+      throw _error;
+    }
   }
   return _tx;
 }
