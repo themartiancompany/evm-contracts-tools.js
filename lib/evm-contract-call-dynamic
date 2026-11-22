@@ -1806,6 +1806,43 @@ function
   return _retries_max;
 }
 
+function
+  _receipt_tx_cost_get(
+    _receipt,
+    _measure_unit) {
+  const
+    _tx_cost =
+      _receipt[
+        "gasUsed"] *
+      _receipt[
+        "gasPrice"];
+  return _tx_cost;
+}
+
+function
+  _receipt_display(
+    _receipt,
+    _measure_unit) {
+  _msg =
+    `Transaction hash: '${_receipt.hash}'.`;
+  _msg_info(
+    _msg);
+  const
+    _tx_cost =
+      _receipt_tx_cost_get(
+        _receipt,
+        _measure_unit);
+  if ( _measure_unit == "ether" ) {
+    _tx_cost =
+      _wei_to_ether(
+        _tx_cost);
+  }
+  _msg =
+    `Transaction cost: '${_tx_cost}'.`;
+  _msg_info(
+    _msg);
+}
+
 async function
   _contract_run(
     _retries_max,
@@ -1829,6 +1866,7 @@ async function
     _method) {
   let
     _attempt,
+    _hash_type,
     _msg,
     _receipt,
     _receipt_type,
@@ -1969,86 +2007,104 @@ async function
     1;
   while ( _attempt <= _retries_max ) {
     try {
-      [ _tx,
-        _receipt,
-        _method,
-        _contract ] =
-        await _contract_call_dynamic.apply(
-          null,
-          _contract_call_dynamic_args);
-      _receipt_type =
-        typeof(
-          _receipt);
-      if ( _receipt_type == "undefined" ) {
-        _msg_error_transaction_undefined(
-          _attempt);
-        _msg =
-          "No receipt, transaction may have failed.";
-        throw _msg;
+      try {
+        [ _tx,
+          _receipt,
+          _method,
+          _contract ] =
+          await _contract_call_dynamic.apply(
+            null,
+            _contract_call_dynamic_args);
       }
-      else if ( _receipt_type != "undefined" ) {
+      catch (
+        _error) {
         _msg =
-          `Transaction no. '${_tx.nonce}'.`;
-        _msg_info(
-          _msg);
-        if ( _verbose == "y" ) {
-          _msg =
-            "Transaction response:";
-          _msg_info(
-            _msg);
-          _echo(
-            _tx);
-          _msg =
-            "Transaction receipt:";
-          _msg_info(
-            _msg);
-          _echo(
+          "Error running '_evm_contract_call_dynamic'. " +
+          "Arguments unsatized, not showing.";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _error);
+        throw _error;
+      }
+      try {
+        _receipt_type =
+          typeof(
             _receipt);
-        }
-        if ( _receipt.hash != undefined ) {
-          _receipt_tx_cost_get(
-            _receipt,
-            _measure_unit);
-          _receipt_display(
-            _receipt,
-            _measure_unit);
-          _msg =
-            `Transaction hash: '${_receipt.hash}'.`;
-          _msg_info(
-            _msg);
-          _tx_cost =
-            _receipt[
-              "gasUsed"] *
-            _receipt[
-              "gasPrice"];
-          if ( _measure_unit == "ether" ) {
-            _tx_cost =
-              _wei_to_ether(
-                _tx_cost);
-          }
-          _msg =
-            `Transaction cost: '${_tx_cost}'.`;
-          _msg_info(
-            _msg);
-          break;
-        }
-        else if ( _receipt.hash == undefined ) {
-        _msg_error_transaction_failed(
-          _attempt);
-        _msg =
-          "Transaction hash undefined.";
-        throw _msg;
-        }
-        else {
-          _msg_error_transaction_failed(
+        if ( _receipt_type === "undefined" ) {
+          _msg_error_transaction_undefined(
             _attempt);
           _msg =
-            "Unknown transaction error.";
+            "No receipt, transaction may have failed.";
           throw _msg;
         }
+        else if ( _receipt_type !== "undefined" ) {
+          _msg =
+            `Transaction no. '${_tx.nonce}'.`;
+          _msg_info(
+            _msg);
+          if ( _verbose == "y" ) {
+            _msg =
+              "Transaction response:";
+            _msg_info(
+              _msg);
+            _echo(
+              _tx);
+            _msg =
+              "Transaction receipt:";
+            _msg_info(
+              _msg);
+            _echo(
+              _receipt);
+          }
+          _hash_type =
+            typeof(
+              _receipt.hash);
+          if ( _hash_type !== "undefined" ) {
+            _receipt_display(
+              _receipt,
+              _measure_unit);
+            break;
+          }
+          else if ( _hash_type === "undefined" ) {
+            _msg_error_transaction_failed(
+              _attempt);
+            _msg =
+              "Transaction hash undefined.";
+            _msg_error(
+              _msg,
+              0);
+            throw _msg;
+          }
+          else {
+            _msg_error_transaction_failed(
+              _attempt);
+            _msg =
+              "Unknown transaction error.";
+            _msg_error(
+              _msg,
+              0);
+            throw _msg;
+          }
+        }
       }
-    } catch (
+      catch (
         _error) {
+        _msg =
+          "Error processing receipt with value:";
+        _msg_error(
+          _msg,
+          0);
+        _echo2(
+          _receipt);
+        _echo2(
+          _error);
+        throw _error;
+      }
+    }
+    catch (
+      _error) {
       _error_display(
         _error);
       _msg =
@@ -2061,7 +2117,7 @@ async function
           _attempt + 1;
     }
   }
-  if ( _attempt > _retries_max ) {
+  if ( _retries_max < _attempt ) {
     _msg =
       "Maximum number of retries reached.";
     throw _msg;
