@@ -1224,7 +1224,7 @@ async function
   }
   // An hardcoded gas limit parameter.
   _gas_limit =
-    15000000
+    10000000
   //   Math.floor(
   //     15803479 * 12 / 10);
   // 17000000;
