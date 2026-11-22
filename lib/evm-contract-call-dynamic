@@ -1396,6 +1396,8 @@ async function
       throw _msg;
     }
     else {
+      _echo2(
+        _error);
       throw _error;
     }
   }
@@ -1467,8 +1469,25 @@ async function
     _msg_error(
       _msg,
       0);
-    _echo2(
-      _error);
+    const
+      _code =
+        _error[
+          "info"][
+            "error"][
+              "code"];
+    if ( _code === -32000 ) {
+      _msg =
+        _error[
+          "info"][
+            "error"][
+              "message"];
+      throw _msg;
+    }
+    else {
+      _echo2(
+        _error);
+      throw _error;
+    }
     throw _error;
   }
   return _tx;
