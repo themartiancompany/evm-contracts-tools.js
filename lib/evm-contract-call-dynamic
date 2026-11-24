@@ -923,7 +923,7 @@ function
     _msg;
   const
     _default =
-      100000000;
+      10000000000000;
   _price_gas_max_get =
     false;
   const
@@ -1224,7 +1224,7 @@ async function
   }
   // An hardcoded gas limit parameter.
   _gas_limit =
-    10000000
+    100000000000000000;
   //   Math.floor(
   //     15803479 * 12 / 10);
   // 17000000;
@@ -1381,6 +1381,8 @@ async function
     _msg_error(
       _msg,
       0);
+    _echo2(
+      _error);
     const
       _code =
         _error[
