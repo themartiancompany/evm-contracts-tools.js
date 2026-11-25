@@ -142,11 +142,11 @@
     "evm-contracts-tools":
       "./evm-contracts-tools",
     "evm-wallet":
-      "npm:evm-wallet.js@^0.0.108",
+      "npm:evm-wallet.js@^0.0.109",
     "evm-wallet.js":
-      "npm:evm-wallet.js@^0.0.108",
+      "npm:evm-wallet.js@^0.0.109",
     "libevm":
-      "^0.0.58"
+      "^0.0.60"
   },
   "type":
     "module",
