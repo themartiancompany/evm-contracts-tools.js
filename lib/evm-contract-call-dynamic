@@ -116,6 +116,11 @@ const
 const
   _sleep =
     _libcrash._sleep;
+/* global
+     _verbose_check */
+const
+  _verbose_check =
+    _libcrash._verbose_check;
 const
   _ethers_module =
     await _require(
@@ -486,11 +491,25 @@ async function
     _contract_compiler_output_path,
     _target_network,
     _api_key_path,
-    _contract) {
+    _contract,
+    _method) {
   let
     _contract_object_get,
     _contract_get_args,
     _msg;
+  const
+    _method_type =
+      typeof(
+        _method);
+  if ( _method_type === "function" ) {
+    _msg =
+      "Method object seems okay, so there is " +
+      "no reason to generate the contract object " +
+      "even if missing.";
+    _msg_info(
+      _msg);
+    return _contract;
+  }
   const
     _contract_type =
       typeof(
@@ -1548,9 +1567,22 @@ async function
   }
   _send_opts =
     {};
-  _measure_unit =
-    _measure_unit_check(
-      _measure_unit);
+  try {
+    _measure_unit =
+      _measure_unit_check(
+        _measure_unit);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_measure_unit_check'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
   const
     _price_gas_check_args = [
       _price_gas,
@@ -1583,17 +1615,53 @@ async function
       _error);
     throw _error;
   }
-  _msg_value =
-    _msg_value_check(
-      _msg_value);
-  _call_timeout =
-    _call_timeout_check(
-      _call_timeout);
-  if ( typeof(
-         _verbose) === "undefined" ||
-         _verbose == "" ) {
+  try {
+    _msg_value =
+      _msg_value_check(
+        _msg_value);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_msg_value_check'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  try {
+    _call_timeout =
+      _call_timeout_check(
+        _call_timeout);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_call_timeout_check'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
+  }
+  try {
     _verbose =
-      "n";
+      _verbose_check(
+        _verbose);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_verbose_check'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
   }
   const
     _contract_check_args = [
@@ -1605,7 +1673,8 @@ async function
       _contract_compiler_output_path,
       _target_network,
       _api_key_path,
-      _contract
+      _contract,
+      _method
     ];
   try {
     _contract =
@@ -1789,11 +1858,17 @@ async function
       _msg);
     throw _error;
   }
+  const
+    _provider =
+      _contract.runner.provider;
+  _echo(
+    _provider)
   return [
     _tx,
     _receipt,
     _method,
-    _contract
+    _contract,
+    _target_network
   ];
 }
 
@@ -1964,11 +2039,21 @@ async function
       _msg_info_wallet_selected(
         _wallet_path);
   }
-  if ( typeof(
-         _verbose) === "undefined" ||
-       _verbose == "" ) {
+  try {
     _verbose =
-      "n";
+      _verbose_check(
+        _verbose);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_verbose_check'.";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _error);
+    throw _error;
   }
   const
     _contract_check_args = [

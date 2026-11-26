@@ -244,8 +244,9 @@ function
 }
 
 async function
-  _contract_object_check(
+  _contract_check(
     _contract_object,
+    _method_object,
     _wallet_seed,
     _wallet_password,
     _contract_address,
@@ -257,6 +258,18 @@ async function
   let
     _contract_object_get,
     _msg;
+  const
+    _method_object_type =
+      typeof(
+        _method_object);
+  if ( _method_object_type === "function" ) {
+    _msg =
+      "Method object seems correct already, " +
+      "skipping contract object generation.";
+    _msg_info(
+      _msg);
+    return _contract_object;
+  }
   const
     _contract_object_type =
       typeof(
@@ -400,8 +413,9 @@ async function
   }
   if ( _method_object_get ) {
     const
-      _contract_object_check_args = [
+      _contract_check_args = [
         _contract_object,
+        _method_object,
         _wallet_seed,
         _wallet_password,
         _contract_address,
@@ -413,9 +427,9 @@ async function
       ];
     try {
       _contract_object =
-        await _contract_object_check.apply(
+        await _contract_check.apply(
           null,
-          _contract_object_check_args);
+          _contract_check_args);
       _msg =
         "Contract object to derive method " +
         "object checked.";
@@ -425,13 +439,13 @@ async function
     catch(
       _error) {
       _msg =
-        "Error running '_contract_object_check' " +
+        "Error running '_contract_check' " +
         "with parameters:";
       _msg_error(
         _msg,
         0);
       _echo2(
-        _contract_object_check_args);
+        _contract_check_args);
       _echo2(
         _error);
       throw _error;
@@ -555,8 +569,9 @@ async function
     _wallet_password =
       "";
   const
-    _contract_object_check_args = [
+    _contract_check_args = [
       _contract_object,
+      _method_object,
       _wallet_seed,
       _wallet_password,
       _contract_address,
@@ -572,9 +587,9 @@ async function
           _passed == false ) {
     try {
       _contract_object =
-        await _contract_object_check.apply(
+        await _contract_check.apply(
           null,
-          _contract_object_check_args);
+          _contract_check_args);
       _msg =
         "Checked ethers contract object.";
       _msg_info(
@@ -583,13 +598,13 @@ async function
     catch(
       _error) {
       _msg =
-        "Error running '_contract_object_check' " +
+        "Error running '_contract_check' " +
         "parameters:";
       _msg_error(
         _msg,
         0);
       _echo2(
-        _contract_object_check_args);
+        _contract_check_args);
       _echo2(
         _error);
       throw _error;
